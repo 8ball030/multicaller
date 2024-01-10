@@ -30,3 +30,4 @@ class SolanaTraderDecisionMakerPayload(BaseTxPayload):
     """A transaction payload for the SolanaTraderDecisionMakingRound."""
 
     contents: Optional[str]
+    selected_strategy: Optional[str]
