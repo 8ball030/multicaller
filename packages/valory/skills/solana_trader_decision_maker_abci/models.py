@@ -43,5 +43,11 @@ class SharedState(BaseSharedState):
     abci_app_cls = SolanaTraderDecisionMakerAbciApp
 
 
-SolanaTraderDecisionMakerParams = BaseParams
+class SolanaTraderDecisionMakerParams(BaseParams):
+    """Market manager's parameters."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize the parameters' object."""
+        self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
+        super().__init__(*args, **kwargs)
 

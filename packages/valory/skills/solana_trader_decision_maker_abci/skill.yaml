@@ -122,6 +122,7 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
+      selected_strategy: follow_trend_strategy
     class_name: SolanaTraderDecisionMakerParams
   requests:
     args: {}
