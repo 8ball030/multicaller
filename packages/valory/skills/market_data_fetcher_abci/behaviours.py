@@ -148,7 +148,9 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             token_id = token_data.get("coingecko", None)
 
             if not token_id:
-                self.context.logger.error(f"No token_id set for Coingecko in {token_data}")
+                self.context.logger.error(
+                    f"No token_id set for Coingecko in {token_data}"
+                )
 
             success, response_json = yield from self._request_with_retries(
                 endpoint=self.params.format(token_id=token_id), headers=headers
