@@ -45,7 +45,6 @@ class Event(Enum):
     NONE = "none"
     NO_MAJORITY = "no_majority"
     ROUND_TIMEOUT = "round_timeout"
-    FETCH_ERROR = "fetch_error"
 
 
 class SynchronizedData(BaseSynchronizedData):
