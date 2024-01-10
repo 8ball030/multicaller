@@ -21,11 +21,20 @@
 
 from enum import Enum
 
-from packages.valory.skills.abstract_round_abci.base import DeserializedCollection, CollectionRound
+from packages.valory.skills.abstract_round_abci.base import (
+    DeserializedCollection,
+    CollectionRound,
+)
 
 # TODO replace with Solana tx settlement
 from packages.valory.skills.transaction_settlement_abci.rounds import (
     SynchronizedData as TxSettlementSyncedData,
+)
+from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+    SynchronizedData as DecisionMakerSyncedData,
+)
+from packages.valory.skills.market_data_fetcher_abci.rounds import (
+    SynchronizedData as MarketFetcherSyncedData,
 )
 
 
@@ -40,8 +49,9 @@ class Event(Enum):
     NO_MAJORITY = "no_majority"
 
 
-# TODO also subclass from market fetcher's synced data here to make `data_hash` available
-class SynchronizedData(TxSettlementSyncedData):
+class SynchronizedData(
+    DecisionMakerSyncedData, MarketFetcherSyncedData, TxSettlementSyncedData
+):
     """Class to represent the synchronized data.
 
     This data is replicated by the tendermint application.
