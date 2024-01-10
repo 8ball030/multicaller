@@ -17,17 +17,4 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the 'solana_trader_decision_maker_abci' skill."""
-
-from dataclasses import dataclass
-from typing import Optional
-
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
-
-
-@dataclass(frozen=True)
-class SolanaTraderDecisionMakerPayload(BaseTxPayload):
-    """A transaction payload for the SolanaTraderDecisionMakingRound."""
-
-    contents: Optional[str]
-    selected_strategy: Optional[str]
+"""Scripts."""

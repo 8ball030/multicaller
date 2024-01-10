@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2023-2024 Valory AG
+#   Copyright 2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ class Event(Enum):
     NONE = "none"
     NO_MAJORITY = "no_majority"
     ROUND_TIMEOUT = "round_timeout"
-    FETCH_ERROR = "fetch_error"
 
 
 class SynchronizedData(BaseSynchronizedData):
@@ -58,6 +57,21 @@ class SynchronizedData(BaseSynchronizedData):
         """Strictly get a collection and return it deserialized."""
         serialized = self.db.get_strict(key)
         return CollectionRound.deserialize_collection(serialized)
+
+    @property
+    def decision(self) -> str:
+        """Get the most voted decision."""
+        return str(self.db.get_strict("decision"))
+
+    @property
+    def participant_to_decision(self) -> DeserializedCollection:
+        """Get the participants to decision."""
+        return self._get_deserialized("participant_to_decision")
+
+    @property
+    def selected_strategy(self) -> str:
+        """Get the most voted bets' hash."""
+        return str(self.db.get_strict("selected_strategy"))
 
 
 class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
@@ -76,15 +90,7 @@ class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
         """
         return self.synchronized_data, Event.NO_MAJORITY
 
-    @property
-    def decision(self) -> str:
-        """Get the most voted decision."""
-        return str(self.db.get_strict("decision"))
 
-    @property
-    def participant_to_decision(self) -> DeserializedCollection:
-        """Get the participants to decision."""
-        return self._get_deserialized("participant_to_decision")
 
 
 class SolanaTraderDecisionMakerRound(CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound):
@@ -94,7 +100,10 @@ class SolanaTraderDecisionMakerRound(CollectSameUntilThresholdRound, SolanaTrade
     done_event: Enum = Event.DONE
     none_event: Enum = Event.NONE
     no_majority_event: Enum = Event.NO_MAJORITY
-    selection_key = get_name(SynchronizedData.decision)
+    selection_key = get_name(
+        SynchronizedData.decision,
+        SynchronizedData.selected_strategy
+        )
     collection_key = get_name(SynchronizedData.participant_to_decision)
     synchronized_data_class = SynchronizedData
 
@@ -115,7 +124,7 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):  # pylint: disable=too-f
     transition_function: AbciAppTransitionFunction = {
         SolanaTraderDecisionMakerRound: {
             Event.DONE: FinishedSolanaTraderDecisionMakerRound,
-            Event.FETCH_ERROR: FailedSolanaTraderDecisionMakerRound,
+            Event.NONE: FailedSolanaTraderDecisionMakerRound,
             Event.ROUND_TIMEOUT: FailedSolanaTraderDecisionMakerRound,
             Event.NO_MAJORITY: FailedSolanaTraderDecisionMakerRound,
         },

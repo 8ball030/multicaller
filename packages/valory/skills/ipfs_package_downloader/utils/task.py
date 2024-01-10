@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2024 Valory AG
+#   Copyright 2023 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,17 +17,20 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the 'solana_trader_decision_maker_abci' skill."""
+"""This package contains a custom Loader for the ipfs connection."""
 
-from dataclasses import dataclass
-from typing import Optional
-
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
+from typing import Any
 
 
-@dataclass(frozen=True)
-class SolanaTraderDecisionMakerPayload(BaseTxPayload):
-    """A transaction payload for the SolanaTraderDecisionMakingRound."""
+class AnyToolAsTask:
+    """AnyToolAsTask"""
 
-    contents: Optional[str]
-    selected_strategy: Optional[str]
+    def execute(self, *args: Any, **kwargs: Any) -> Any:
+        """Execute the task."""
+        tool_py = kwargs.pop("tool_py")
+        callable_method = kwargs.pop("callable_method")
+        if callable_method in globals():
+            del globals()[callable_method]
+        exec(tool_py, globals())  # pylint: disable=W0122  # nosec
+        method = globals()[callable_method]
+        return method(*args, **kwargs)

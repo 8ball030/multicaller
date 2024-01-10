@@ -17,17 +17,15 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains the transaction payloads of the MarketDataFetcherAbciApp."""
 
 from dataclasses import dataclass
-from typing import Optional
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
 @dataclass(frozen=True)
-class SolanaTraderDecisionMakerPayload(BaseTxPayload):
-    """A transaction payload for the SolanaTraderDecisionMakingRound."""
+class FetchMarketDataPayload(BaseTxPayload):
+    """Represent a transaction payload for the FetchMarketDataRound."""
 
-    contents: Optional[str]
-    selected_strategy: Optional[str]
+    data_hash: str

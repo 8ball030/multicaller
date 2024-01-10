@@ -17,12 +17,11 @@
 #
 # ------------------------------------------------------------------------------
 
+"""This module contains the shared state for the abci skill of MarketDataFetcherAbciApp."""
 
-"""Custom objects for the 'solana_trader_decision_maker_abci' skill."""
+from typing import Any
 
-from typing import Any, Dict, Iterator, List, Tuple
-
-from packages.valory.skills.abstract_round_abci.models import ApiSpecs, BaseParams
+from packages.valory.skills.abstract_round_abci.models import BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
@@ -30,24 +29,31 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import SolanaTraderDecisionMakerAbciApp
-
-
-Requests = BaseRequests
-BenchmarkTool = BaseBenchmarkTool
+from packages.valory.skills.market_data_fetcher_abci.rounds import (
+    MarketDataFetcherAbciApp,
+)
 
 
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
-    abci_app_cls = SolanaTraderDecisionMakerAbciApp
+    abci_app_cls = MarketDataFetcherAbciApp
 
 
-class SolanaTraderDecisionMakerParams(BaseParams):
-    """Market manager's parameters."""
+class Params(BaseParams):
+    """Parameters."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize the parameters' object."""
-        self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
+        """Initialize the parameters object."""
+        self.token_symbol_whitelist: List[str] = self._ensure(
+            "token_symbol_whitelist", kwargs, List[str]
+        )
+        self.coingecko_api_key: str = self._ensure("coingecko_api_key", kwargs, str)
+        self.coingecko_market_endpoint: str = self._ensure(
+            "coingecko_market_endpoint", kwargs, str
+        )
         super().__init__(*args, **kwargs)
 
+
+Requests = BaseRequests
+BenchmarkTool = BaseBenchmarkTool

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2024 Valory AG
+#   Copyright 2023 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,17 +17,9 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains the implementation of the task execution skill."""
 
-from dataclasses import dataclass
-from typing import Optional
-
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
+from aea.configurations.base import PublicId
 
 
-@dataclass(frozen=True)
-class SolanaTraderDecisionMakerPayload(BaseTxPayload):
-    """A transaction payload for the SolanaTraderDecisionMakingRound."""
-
-    contents: Optional[str]
-    selected_strategy: Optional[str]
+PUBLIC_ID = PublicId.from_str("valory/ipfs_package_downloader:0.1.0")
