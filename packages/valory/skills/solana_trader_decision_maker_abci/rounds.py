@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2023-2024 Valory AG
+#   Copyright 2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):  # pylint: disable=too-f
     transition_function: AbciAppTransitionFunction = {
         SolanaTraderDecisionMakerRound: {
             Event.DONE: FinishedSolanaTraderDecisionMakerRound,
-            Event.FETCH_ERROR: FailedSolanaTraderDecisionMakerRound,
+            Event.NONE: FailedSolanaTraderDecisionMakerRound,
             Event.ROUND_TIMEOUT: FailedSolanaTraderDecisionMakerRound,
             Event.NO_MAJORITY: FailedSolanaTraderDecisionMakerRound,
         },
