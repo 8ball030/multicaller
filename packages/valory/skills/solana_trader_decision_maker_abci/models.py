@@ -43,13 +43,5 @@ class SharedState(BaseSharedState):
     abci_app_cls = SolanaTraderDecisionMakerAbciApp
 
 
-class SolanaTraderDecisionMakerParams(BaseParams):
-    """SolanaTraderDecisionMaker parameters."""
-
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize the parameters' object."""
-        self.languages: List[str] = self._ensure("languages", kwargs, List[str])
-        self.average_block_time: int = self._ensure("average_block_time", kwargs, int)
-        self.abt_error_mult: int = self._ensure("abt_error_mult", kwargs, int)
-        super().__init__(*args, **kwargs)
+SolanaTraderDecisionMakerParams = BaseParams
 
