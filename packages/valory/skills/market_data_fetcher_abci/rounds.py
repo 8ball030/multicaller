@@ -66,7 +66,7 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     no_majority_event = Event.NO_MAJORITY
-    selection_key = (get_name(SynchronizedData.data_hash),)
+    selection_key = get_name(SynchronizedData.data_hash)
     collection_key = get_name(SynchronizedData.participant_to_fetching)
 
 
