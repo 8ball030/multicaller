@@ -84,12 +84,12 @@ default_connection: null
 public_id: valory/abci:0.1.0
 type: connection
 config:
-  target_skill_id: valory/trader_abci:0.1.0
+  target_skill_id: valory/solana_trader_abci:0.1.0
   host: ${str:localhost}
   port: ${int:26658}
   use_tendermint: ${bool:false}
 ---
-public_id: valory/trader_abci:0.1.0
+public_id: valory/solana_trader_abci:0.1.0
 type: skill
 models:
   benchmark_tool:
@@ -129,7 +129,7 @@ models:
       retry_timeout: ${int:3}
       request_retry_delay: ${float:1.0}
       request_timeout: ${float:10.0}
-      service_id: ${str:trader}
+      service_id: ${str:solana_trader}
       tendermint_url: ${str:http://localhost:26657}
       tendermint_com_url: ${str:http://localhost:8080}
       tendermint_check_sleep_delay: ${int:3}
