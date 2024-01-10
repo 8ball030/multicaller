@@ -100,10 +100,10 @@ class SolanaTraderDecisionMakerRound(CollectSameUntilThresholdRound, SolanaTrade
     done_event: Enum = Event.DONE
     none_event: Enum = Event.NONE
     no_majority_event: Enum = Event.NO_MAJORITY
-    selection_key = get_name(
-        SynchronizedData.decision,
-        SynchronizedData.selected_strategy
-        )
+    selection_key = (
+        get_name(SynchronizedData.decision),
+        get_name(SynchronizedData.selected_strategy),
+    )
     collection_key = get_name(SynchronizedData.participant_to_decision)
     synchronized_data_class = SynchronizedData
 
