@@ -22,12 +22,8 @@ import json
 import threading
 import time
 from asyncio import Future
-from concurrent.futures import ProcessPoolExecutor
-from concurrent.futures.process import BrokenProcessPool
-from typing import Any, Callable, Dict, List, Optional, Tuple, cast
+from typing import Any, Callable, Dict, Optional, Tuple, cast
 
-from aea.helpers.cid import to_v1
-from aea.mail.base import EnvelopeContext
 from aea.protocols.base import Message
 from aea.protocols.dialogue.base import Dialogue
 from aea.skills.behaviours import SimpleBehaviour
@@ -39,10 +35,7 @@ from packages.valory.protocols.ipfs.dialogues import IpfsDialogue
 from packages.valory.skills.ipfs_package_downloader.models import Params
 from packages.valory.skills.ipfs_package_downloader.utils.ipfs import (
     ComponentPackageLoader,
-    get_ipfs_file_hash,
-    to_multihash,
 )
-from packages.valory.skills.ipfs_package_downloader.utils.task import AnyToolAsTask
 
 
 class IpfsPackageDownloader(SimpleBehaviour):

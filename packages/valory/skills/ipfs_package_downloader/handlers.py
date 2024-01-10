@@ -19,7 +19,7 @@
 
 """This package contains a scaffold of a handler."""
 import threading
-from typing import Any, Dict, List, cast
+from typing import cast
 
 from aea.protocols.base import Message
 from aea.skills.base import Handler
