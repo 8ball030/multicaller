@@ -1,5 +1,6 @@
 {
     "dev": {
+        "agent/valory/solana_trader/0.1.0": "bafybeid75avdmbe5kpz4ngxtqqebwh57km4djvd4frefoufugjdmyd3p5e",
         "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeifdf6uoscrgvlgqceqcph2pgoygobznw6hbodpav7lubbqsyh4kby"
     },
     "third_party": {
