@@ -6,26 +6,23 @@ description: A skill used for monitoring and executing tasks.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeidqhvvlnthkbnmrdkdeyjyx2f2ab6z4xdgmagh7welqnh2v6wczx4
-  behaviours.py: bafybeifa72egwarcmfneqmo3ak6wfygjc3i7hplxl6ptafb263vuaey3fm
-  dialogues.py: bafybeid4zxalqdlo5mw4yfbuf34hx4jp5ay5z6chm4zviwu4cj7fudtwca
-  handlers.py: bafybeidbt5ezj74cgfogk3w4uw4si2grlnk5g54veyumw7g5yh6gdscywu
-  models.py: bafybeihgclxctyltuehj2f4fzj26edptqugrrm4phd6ovuulezrqot6qo4
+  __init__.py: bafybeifal4j72aurv2sinmub5w3eqta64oxbrci4l4ccsk5wbul3keneqa
+  behaviours.py: bafybeihotblasflezdbgmbrvuswmtyfyuegtibjly3bonlrlw6ugcvx3iu
+  dialogues.py: bafybeicrgwwm4rjq3egiuj2ett3hw6yz4ux2ro5nwuxdqtjp47ex5pzrky
+  handlers.py: bafybeiemx7iejo5s6srsu3vxo2oq5q4ki4ejfl6jkbravkkirjyivmirvi
+  models.py: bafybeihooiy4qw2mamh4ifn7xxgmhcxewwxucgtyvmdhhz7kcd54eareze
   utils/__init__.py: bafybeiccdijaigu6e5p2iruwo5mkk224o7ywedc7nr6xeu5fpmhjqgk24e
   utils/ipfs.py: bafybeidinbdqkidix44ibz5hug7inkcbijooag53gr5mtbaa72tk335uqq
   utils/task.py: bafybeieuziu7owtk543z3umgmayhjh67klftk7vrhz24l6rlaii5lvkqh4
 fingerprint_ignore_patterns: []
 connections:
 - valory/ledger:0.19.0:bafybeia47rr37ianvwsh77tjjpv3nwif5sywhhy2fbdshnz4a2icwln76a
-- valory/ipfs:0.1.0:bafybeihx7wb5hngjobw2salzqqryrhxvmxfuw7o2npjyqd2talmh2flqeq
+- valory/ipfs:0.1.0:bafybeigjtca6b5wwiobl37es3wllzt6ai3qef5gqxzfy5fmmc65jkbnec4
 - valory/p2p_libp2p_client:0.1.0:bafybeihge56dn3xep2dzomu7rtvbgo4uc2qqh7ljl3fubqdi2lq44gs5lq
-contracts:
-- valory/agent_mech:0.1.0:bafybeig7zpqhcpt6z4eutedx6prciuq4g7mpadw636zkkcx3ach6oytdry
+contracts: []
 protocols:
-- valory/acn_data_share:0.1.0:bafybeih5ydonnvrwvy2ygfqgfabkr47s4yw3uqxztmwyfprulwfsoe7ipq
 - valory/contract_api:1.0.0:bafybeialhbjvwiwcnqq3ysxcyemobcbie7xza66gaofcvla5njezkvhcka
 - valory/ledger_api:1.0.0:bafybeige5agrztgzfevyglf7mb4o7pzfttmq4f6zi765y4g2zvftbyowru
-- valory/default:1.0.0:bafybeifqcqy5hfbnd7fjv4mqdjrtujh2vx3p2xhe33y67zoxa6ph7wdpaq
 - valory/ipfs:0.1.0:bafybeiedxeismnx3k5ty4mvvhlqideixlhqmi5mtcki4lxqfa7uqh7p33u
 skills: []
 behaviours:
@@ -33,9 +30,6 @@ behaviours:
     args: {}
     class_name: IpfsPackageDownloader
 handlers:
-  acn_data_share_handler:
-    args: {}
-    class_name: AcnHandler
   contract_handler:
     args: {}
     class_name: ContractHandler
@@ -46,9 +40,6 @@ handlers:
     args: {}
     class_name: LedgerHandler
 models:
-  acn_data_share_dialogues:
-    args: {}
-    class_name: AcnDataShareDialogues
   contract_dialogues:
     args: {}
     class_name: ContractDialogues

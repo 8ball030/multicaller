@@ -46,7 +46,7 @@ from packages.valory.skills.solana_transaction_settlement_abci.behaviours import
 from packages.valory.skills.market_data_fetcher_abci.behaviours import (
     MarketDataFetcherRoundBehaviour
 )
-from packages.valory.skills.strategy_evaluator_abci.behaviours import (
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours import (
     StrategyEvaluatorRoundBehaviour
 )
 

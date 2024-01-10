@@ -2,12 +2,28 @@ name: solana_strategy_evaluator_abci
 author: valory
 version: 0.1.0
 type: skill
-description: This skill is responsible for the execution of the strategy and preparing the swapping transaction.
+description: This skill is responsible for the execution of the strategy and preparing
+  the swapping transaction.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  __init__.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+  README.md: bafybeicuikjki6yvgwmv6sxudjagjb3bhfsnypna36eceza2mzmqnthuiy
+  __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
+  behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
+  behaviours/base.py: bafybeic3axaujaxjayrr5f4oacmxhdnutwet3c7d2ddmac42urvjhdntnu
+  behaviours/prepare_swap_tx.py: bafybeigo6n2zx7ywvox6rqqnj3nyklfuyewm7xvihrke4lhrijre3t5j5y
+  behaviours/round_behaviour.py: bafybeia4xlmutp7ogtbvm444xlml5vcd3igkumonrab3d7u3brrf3u3mb4
+  behaviours/strategy_exec.py: bafybeifr2gctxphx2moculigzw4xxfhmtpfeeq6pzuwxwwpdvozwmnaqoy
+  dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
+  handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
+  models.py: bafybeiba7pdx7jwlg65byirnamfzen4x7lvoluienantedj7v6bag4tekq
+  payloads.py: bafybeigehjlqlvfq5qxduyvl236cha3skbuvyjizfqmd4j2u63gzco2hsm
+  rounds.py: bafybeiayfphfipcjro6gqjxlogzgqyd34amkya45xxuflyqcgmmts7ntf4
+  states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
+  states/base.py: bafybeic7m6s47sue7a5ykhene4ki344bkiz67pa6gjhpvz7wr7m6jzsgyy
+  states/final_states.py: bafybeidvbd73knju2tllbc2wnr44nmqrbfmshdolo37j6orvqird63hy4i
+  states/prepare_swap.py: bafybeibprqnsdfq3l67eihvs4jreavvgipgqozzhdmy2kcsza6kciz6c34
+  states/strategy_exec.py: bafybeihhsz5i4jf44xquwtzqh5ke6spvh5sfjqnttzfvipwklivgw3m4we
 fingerprint_ignore_patterns: []
 connections: []
 contracts:

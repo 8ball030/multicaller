@@ -6,31 +6,26 @@ description: The chained abci for the solana_trader.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeigmhxenrqb2ysjhcm2au2lang4abyny6irkzqqg4dtclz6net6zpy
-  behaviours.py: bafybeibdq5p4zi47nsycpcjs7ouw2fjxqjn7hgbd4aalp7yumdhnmlfufq
-  composition.py: bafybeidqds5nsbwp56cduwmypcu3j4qvufuo7dbyw2xzqhiqed67ax2qsa
-  dialogues.py: bafybeigjknz4qqynbsltjje46gidg4rftsqw6ybjwegz24wetmycutpzh4
-  fsm_specification.yaml: bafybeigmlh4m2ua6alsy4skohxfy4yz7mhoks4lheacugdv3b4qlqghjiy
-  handlers.py: bafybeidkli6fphcmdgwsys4lkyf3fx6fbawet4nt2pnixfypzijhg6b3ze
-  models.py: bafybeiaeczqvmcosk4cer4oq5n7cgbihjgtkdspzporymluuefwyb5irnm
-  tests/__init__.py: bafybeievwzwojvq4aofk5kjpf4jzygfes7ew6s6svc6b6frktjnt3sicce
-  tests/test_behaviours.py: bafybeifkazsevd6vsfaapulouxepez3rl24y3rxgja5zhmj7s323zdjlmq
-  tests/test_dialogues.py: bafybeieaos2byphju6i6xvytppqqcuqqvnpilnflsy73l3wqazzjttbg7m
-  tests/test_handlers.py: bafybeiacfkjcxqw73vk36wmilpq2wmejwyfy4sycosgswgzpq35tfvr2ia
-  tests/test_models.py: bafybeia66e3peyycqutyu3yhshqd6ctolisggrsegagpf5vplwiy53gnum
+  README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
+  __init__.py: bafybeiavr5i5xag7ha2x3rnd34hnujjuswoophj6a7qsvzbjp34xjfc2uq
+  behaviours.py: bafybeiff5cekaayvmz255hjouxsi233ixbncvtxcp7rjinkeaqfa44oeie
+  composition.py: bafybeiftysrjjnhojieuxsgtcyfy2xz7m6ayg4spgbaqokf3nxrbxg5c3q
+  dialogues.py: bafybeiebofyykseqp3fmif36cqmmyf3k7d2zbocpl6t6wnlpv4szghrxbm
+  handlers.py: bafybeiaopqrlyq2kcdx6wqgsyp363vhbq3g7hcdp6caqrnfiraj7vl5xmq
+  models.py: bafybeicjcvbirj2errrhv7lpgp2o3dshjewzeuz5lz55try44xugfchoze
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeiaqcl7h2famylusiffigwem7tevkcsyocdu5xd42jkmgq6kvowzgq
-- valory/registration_abci:0.1.0:bafybeic2ynseiak7jpta7jfwuqwyp453b4p7lolr4wihxmpn633uekv5am
-- valory/reset_pause_abci:0.1.0:bafybeidzajbe3erygeh2xbd6lrjv7nsptznjuzrt24ykgvhgotdeyhfnba
-- valory/termination_abci:0.1.0:bafybeie4zvjfxvdu7qrulmur3chpjz3kpj5m4bjsxvpk4gvj5zbyyayfaa
-- valory/transaction_settlement_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
-- valory/market_data_fetcher_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
-- valory/strategy_evaluator_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
+- valory/abstract_round_abci:0.1.0:bafybeicrzndcdbue34yxwwb4hmmdhgzw4owcdcdag3ifj6thpx5wie3dp4
+- valory/registration_abci:0.1.0:bafybeihjlapvviakobxg7aa5qubgqoz6xurlhu7xxtnrg5ah3ag2qj626i
+- valory/reset_pause_abci:0.1.0:bafybeibnwjcjx4lluf4cwb6es5peelu3gm7vrzlieygrzpbjlubxpvbvzy
+- valory/termination_abci:0.1.0:bafybeifdtxgldw33kwvsavcituzewwbr6iqfcsgk5qouqfhpwdrivyyyom
+- valory/transaction_settlement_abci:0.1.0:bafybeifpnkwgwpzz6uwrvfgurm26allr6shjfbp7bfbrxwy64sw3nf3fsa
+- valory/market_data_fetcher_abci:0.1.0:bafybeididec7jceic3szvvw5wxgz6uua2wwf5cq2vkhoeok6l6erd3q4we
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeigfjotte6hs45ito5caojumy3s3pkjh24jgki3bt7kppsugviampa
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeihsadb6vcrws5sthtwuyeerj4wmf3cbknn72xvj4ocyixhxklppxa
 behaviours:
   main:
     args: {}
@@ -153,7 +148,7 @@ models:
       ipfs_address: https://gateway.autonolas.tech/ipfs/
       selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
-      coingecko_api_key: ""
+      coingecko_api_key: ''
     class_name: Params
   randomness_api:
     args:
