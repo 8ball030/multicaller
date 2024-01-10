@@ -20,16 +20,19 @@
 """This package contains the rounds of MarketDataFetcherAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, List, Optional, Set, Tuple
+from typing import Dict, FrozenSet, Set, Optional, Tuple
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
     AbciAppTransitionFunction,
-    AbstractRound,
+    CollectSameUntilThresholdRound,
     AppState,
     BaseSynchronizedData,
     DegenerateRound,
     EventToTimeout,
+    get_name,
+    DeserializedCollection,
+    BaseSynchronizedData
 )
 
 from packages.valory.skills.market_data_fetcher_abci.payloads import (
@@ -53,57 +56,40 @@ class SynchronizedData(BaseSynchronizedData):
     This data is replicated by the tendermint application.
     """
 
+    @property
+    def participant_to_fetching(self) -> DeserializedCollection:
+        """Get the participants to market fetching."""
+        return self._get_deserialized("participant_to_fetching")
 
-class FetchMarketDataRound(AbstractRound):
+
+class FetchMarketDataRound(CollectSameUntilThresholdRound):
     """FetchMarketDataRound"""
 
     payload_class = FetchMarketDataPayload
-    payload_attribute = ""  # TODO: update
     synchronized_data_class = SynchronizedData
-
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound,
-    # CollectSameUntilAllRound, CollectSameUntilThresholdRound,
-    # CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound,
-    # from packages/valory/skills/abstract_round_abci/base.py
-    # or implement the methods
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: FetchMarketDataPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: FetchMarketDataPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    done_event = Event.DONE
+    no_majority_event = Event.NO_MAJORITY
+    selection_key = (
+        get_name(SynchronizedData.market_hash),
+    )
+    collection_key = get_name(SynchronizedData.participant_to_fetching)
 
 
-class VerifyMarketDataRound(AbstractRound):
+class VerifyMarketDataRound(CollectSameUntilThresholdRound):
     """VerifyMarketDataRound"""
 
     payload_class = VerifyMarketDataPayload
-    payload_attribute = ""  # TODO: update
     synchronized_data_class = SynchronizedData
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound,
-    # CollectSameUntilAllRound, CollectSameUntilThresholdRound,
-    # CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound,
-    # from packages/valory/skills/abstract_round_abci/base.py
-    # or implement the methods
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
+    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Event]]:
         """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: VerifyMarketDataPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: VerifyMarketDataPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+        if self.threshold_reached:
+            return self.synchronized_data, Event.DONE
+        if not self.is_majority_possible(
+            self.collection, self.synchronized_data.nb_participants
+        ):
+            return self.synchronized_data, Event.NO_MAJORITY
+        return None
 
 
 class FinishedMarketFetchRound(DegenerateRound):
@@ -132,8 +118,8 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     event_to_timeout: EventToTimeout = {}
     cross_period_persisted_keys: FrozenSet[str] = frozenset()
     db_pre_conditions: Dict[AppState, Set[str]] = {
-        FetchMarketDataRound: [],
+        FetchMarketDataRound: set(),
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
-        FinishedMarketFetchRound: [],
+        FinishedMarketFetchRound: set(),
     }

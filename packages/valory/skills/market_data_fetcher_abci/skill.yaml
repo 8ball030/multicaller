@@ -126,6 +126,7 @@ models:
       tendermint_url: http://localhost:26657
       tx_timeout: 10.0
       validate_timeout: 1205
+      token_symbol_whitelist: []
     class_name: Params
   requests:
     args: {}
@@ -140,4 +141,4 @@ models:
     args: {}
     class_name: TendermintDialogues
 dependencies: {}
-is_abstract: false
+is_abstract: true

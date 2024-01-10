@@ -28,12 +28,12 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 class FetchMarketDataPayload(BaseTxPayload):
     """Represent a transaction payload for the FetchMarketDataRound."""
 
-    # TODO: define your attributes
+    market_hash: str
 
 
 @dataclass(frozen=True)
 class VerifyMarketDataPayload(BaseTxPayload):
     """Represent a transaction payload for the VerifyMarketDataRound."""
 
-    # TODO: define your attributes
+    success: bool
 
