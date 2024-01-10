@@ -1,10 +1,10 @@
 # Security Policy
 
-This document outlines security procedures and general policies for the `trader` project.
+This document outlines security procedures and general policies for the `solana-trader` project.
 
 ## Supported Versions
 
-The following table shows which versions of `trader` are currently being supported with security updates.
+The following table shows which versions of `solana-trader` are currently being supported with security updates.
 
 | Version | Supported          |
 |---------|--------------------|
@@ -13,7 +13,7 @@ The following table shows which versions of `trader` are currently being support
 
 ## Reporting a Vulnerability
 
-The `trader` team and community take all security bugs in `trader` seriously. Thank you for improving the security of `trader`. We appreciate your efforts and responsible disclosure and will make every effort to acknowledge your contributions.
+The `solana-trader` team and community take all security bugs in `solana-trader` seriously. Thank you for improving the security of `solana-trader`. We appreciate your efforts and responsible disclosure and will make every effort to acknowledge your contributions.
 
 Report security bugs by emailing `info@valory.xyz`.
 
