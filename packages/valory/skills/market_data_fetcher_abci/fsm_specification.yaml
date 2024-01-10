@@ -1,0 +1,17 @@
+alphabet_in:
+- DONE
+- NO_MAJORITY
+- ROUND_TIMEOUT
+default_start_state: FetchMarketDataRound
+final_states:
+- FinishedMarketFetchRound
+label: MarketDataFetcherAbciApp
+start_states:
+- FetchMarketDataRound
+states:
+- FetchMarketDataRound
+- FinishedMarketFetchRound
+transition_func:
+    (FetchMarketDataRound, DONE): FinishedMarketFetchRound
+    (FetchMarketDataRound, NO_MAJORITY): FetchMarketDataRound
+    (FetchMarketDataRound, ROUND_TIMEOUT): FetchMarketDataRound
