@@ -20,21 +20,19 @@
 """This package contains the rounds of MarketDataFetcherAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Set, Optional, Tuple
+from typing import Dict, FrozenSet, Optional, Set, Tuple
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
     AbciAppTransitionFunction,
-    CollectSameUntilThresholdRound,
     AppState,
     BaseSynchronizedData,
+    CollectSameUntilThresholdRound,
     DegenerateRound,
+    DeserializedCollection,
     EventToTimeout,
     get_name,
-    DeserializedCollection,
-    BaseSynchronizedData
 )
-
 from packages.valory.skills.market_data_fetcher_abci.payloads import (
     FetchMarketDataPayload,
 )
@@ -68,9 +66,7 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     no_majority_event = Event.NO_MAJORITY
-    selection_key = (
-        get_name(SynchronizedData.market_hash),
-    )
+    selection_key = (get_name(SynchronizedData.market_hash),)
     collection_key = get_name(SynchronizedData.participant_to_fetching)
 
 
@@ -87,9 +83,9 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
         FetchMarketDataRound: {
             Event.DONE: FinishedMarketFetchRound,
             Event.NO_MAJORITY: FetchMarketDataRound,
-            Event.ROUND_TIMEOUT: FetchMarketDataRound
+            Event.ROUND_TIMEOUT: FetchMarketDataRound,
         },
-        FinishedMarketFetchRound: {}
+        FinishedMarketFetchRound: {},
     }
     final_states: Set[AppState] = {FinishedMarketFetchRound}
     event_to_timeout: EventToTimeout = {}

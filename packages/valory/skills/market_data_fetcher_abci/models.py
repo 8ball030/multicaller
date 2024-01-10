@@ -20,6 +20,7 @@
 """This module contains the shared state for the abci skill of MarketDataFetcherAbciApp."""
 
 from typing import Any
+
 from packages.valory.skills.abstract_round_abci.models import BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
@@ -28,7 +29,9 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.market_data_fetcher_abci.rounds import MarketDataFetcherAbciApp
+from packages.valory.skills.market_data_fetcher_abci.rounds import (
+    MarketDataFetcherAbciApp,
+)
 
 
 class SharedState(BaseSharedState):
@@ -45,13 +48,12 @@ class Params(BaseParams):
         self.token_symbol_whitelist = self._ensure(
             "token_symbol_whitelist", kwargs, int
         )
-        self.coingecko_api_key = self._ensure(
-            "coingecko_api_key", kwargs, int
-        )
+        self.coingecko_api_key = self._ensure("coingecko_api_key", kwargs, int)
         self.coingecko_market_endpoint = self._ensure(
             "coingecko_market_endpoint", kwargs, int
         )
         super().__init__(*args, **kwargs)
+
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool

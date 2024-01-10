@@ -19,32 +19,31 @@
 
 """This package contains round behaviours of MarketDataFetcherAbciApp."""
 
+import json
+import os
 from abc import ABC
 from typing import Generator, Set, Type, cast
-import json
+
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
-import os
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.market_data_fetcher_abci.models import Params
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    SynchronizedData,
-    MarketDataFetcherAbciApp,
+    FetchMarketDataPayload,
     FetchMarketDataRound,
+    MarketDataFetcherAbciApp,
+    SynchronizedData,
+    VerifyMarketDataPayload,
     VerifyMarketDataRound,
 )
-from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    FetchMarketDataPayload,
-    VerifyMarketDataPayload,
-)
+
 
 HTTP_OK = [200, 201]
 MAX_RETRIES = 3
 MARKETS_FILE_NAME = "markets.json"
-
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -140,7 +139,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         markets = {}
         headers = {
             "x-cg-pro-api-key": self.params.coingecko_api_key,
-            "Accept": "application/json"
+            "Accept": "application/json",
         }
 
         # Get the market data for each token
@@ -148,8 +147,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             token_id = token_data["coingecko"]
 
             success, response_json = yield from self._request_with_retries(
-                endpoint=self.params.format(token_id=token_id),
-                headers=headers
+                endpoint=self.params.format(token_id=token_id), headers=headers
             )
 
             # Skip failed markets. The strategy will need to verify market availability
@@ -166,7 +164,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         market_hash = yield from self.send_to_ipfs(
             filename=self.from_data_dir(MARKETS_FILE_NAME),
             obj=markets,
-            filetype=SupportedFiletype.JSON
+            filetype=SupportedFiletype.JSON,
         )
 
         # TODO: handle market_hash=None
