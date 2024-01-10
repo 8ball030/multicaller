@@ -88,9 +88,8 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         Event.ROUND_TIMEOUT: 30.0,
     }
     db_pre_conditions: Dict[AppState, Set[str]] = {
-        # TODO make sure the `SynchronizedData` of the skills with these synced data properties.
         StrategyExecRound: {
-            get_name(SynchronizedData.strategy_name),
+            get_name(SynchronizedData.selected_strategy),
             get_name(SynchronizedData.data_hash),
         },
     }
