@@ -96,7 +96,8 @@ all-checks: format code-checks security generators common-checks-1 common-checks
 
 .PHONY: fix-abci-app-specs
 fix-abci-app-specs:
-	autonomy analyse fsm-specs --update --app-class StakingAbciApp --package packages/valory/skills/staking_abci
+	autonomy analyse fsm-specs --update --app-class MarketDataFetcherAbciApp --package packages/valory/skills/market_data_fetcher_abci
+	autonomy analyse fsm-specs --update --app-class SolanaTraderDecisionMakerAbciApp --package packages/valory/skills/ipfs_package_downloader
 	echo "Successfully validated abcis!"
 
 protolint_install:
