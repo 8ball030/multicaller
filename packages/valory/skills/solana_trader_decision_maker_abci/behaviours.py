@@ -29,24 +29,22 @@ from aea.helpers.ipfs.base import IPFSHashOnly
 
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
 from packages.valory.skills.abstract_round_abci.behaviours import AbstractRoundBehaviour
+from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
+    SolanaTraderDecisionMakerPayload,
+)
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     SolanaTraderDecisionMakerAbciApp,
     SolanaTraderDecisionMakerRound,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
-    SolanaTraderDecisionMakerPayload,
-)
 
 
 class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
-
     def async_act(self) -> Generator:
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             payload = SolanaTraderDecisionMakerPayload(
-                self.context.agent_address,
-                "contents",
-                self.context.selected_strategy)
+                self.context.agent_address, "contents", self.context.selected_strategy
+            )
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)

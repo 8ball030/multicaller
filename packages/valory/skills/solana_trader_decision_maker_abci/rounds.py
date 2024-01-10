@@ -35,7 +35,9 @@ from packages.valory.skills.abstract_round_abci.base import (
     DeserializedCollection,
     get_name,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.payloads import SolanaTraderDecisionMakerPayload
+from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
+    SolanaTraderDecisionMakerPayload,
+)
 
 
 class Event(Enum):
@@ -91,9 +93,9 @@ class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
         return self.synchronized_data, Event.NO_MAJORITY
 
 
-
-
-class SolanaTraderDecisionMakerRound(CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound):
+class SolanaTraderDecisionMakerRound(
+    CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound
+):
     """A round for the bets fetching & updating."""
 
     payload_class = SolanaTraderDecisionMakerPayload
@@ -133,12 +135,17 @@ class SolanaTraderDecisionMakerAbciApp(
         FinishedSolanaTraderDecisionMakerRound: {},
         FailedSolanaTraderDecisionMakerRound: {},
     }
-    #cross_period_persisted_keys = frozenset()
-    final_states: Set[AppState] = {FinishedSolanaTraderDecisionMakerRound, FailedSolanaTraderDecisionMakerRound}
+    # cross_period_persisted_keys = frozenset()
+    final_states: Set[AppState] = {
+        FinishedSolanaTraderDecisionMakerRound,
+        FailedSolanaTraderDecisionMakerRound,
+    }
     event_to_timeout: Dict[Event, float] = {
         Event.ROUND_TIMEOUT: 30.0,
     }
-    db_pre_conditions: Dict[AppState, Set[str]] = {SolanaTraderDecisionMakerRound: set()}
+    db_pre_conditions: Dict[AppState, Set[str]] = {
+        SolanaTraderDecisionMakerRound: set()
+    }
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedSolanaTraderDecisionMakerRound: set(),
         FailedSolanaTraderDecisionMakerRound: set(),

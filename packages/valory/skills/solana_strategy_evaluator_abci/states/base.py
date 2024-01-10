@@ -22,19 +22,19 @@
 from enum import Enum
 
 from packages.valory.skills.abstract_round_abci.base import (
-    DeserializedCollection,
     CollectionRound,
+    DeserializedCollection,
+)
+from packages.valory.skills.market_data_fetcher_abci.rounds import (
+    SynchronizedData as MarketFetcherSyncedData,
+)
+from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+    SynchronizedData as DecisionMakerSyncedData,
 )
 
 # TODO replace with Solana tx settlement
 from packages.valory.skills.transaction_settlement_abci.rounds import (
     SynchronizedData as TxSettlementSyncedData,
-)
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
-    SynchronizedData as DecisionMakerSyncedData,
-)
-from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    SynchronizedData as MarketFetcherSyncedData,
 )
 
 

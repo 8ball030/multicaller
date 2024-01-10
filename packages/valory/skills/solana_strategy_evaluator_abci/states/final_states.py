@@ -33,6 +33,7 @@ class HodlRound(DegenerateRound):
 class TxPreparationFailed(DegenerateRound):
     """A round representing that the strategy evaluator has failed to prepare swap(s) transactions."""
 
+
 # TODO use this
 # class RefillRequiredRound(DegenerateRound):
 #     """A round representing that a refill is required for swapping."""

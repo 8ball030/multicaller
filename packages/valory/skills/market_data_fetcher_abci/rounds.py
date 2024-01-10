@@ -28,10 +28,11 @@ from packages.valory.skills.abstract_round_abci.base import (
     AppState,
     BaseSynchronizedData,
     CollectSameUntilThresholdRound,
+    CollectionRound,
     DegenerateRound,
     DeserializedCollection,
     EventToTimeout,
-    get_name, CollectionRound,
+    get_name,
 )
 from packages.valory.skills.market_data_fetcher_abci.payloads import (
     FetchMarketDataPayload,

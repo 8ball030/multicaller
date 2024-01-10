@@ -19,25 +19,20 @@
 
 """This module contains the models for the skill."""
 
-from typing import (
-    Any,
-    Dict,
-    List,
-    Iterable,
-)
-
-from packages.valory.skills.ipfs_package_downloader.models import (
-    SharedState as BaseSharedState,
-)
+from typing import Any, Dict, Iterable, List
 
 from packages.valory.skills.abstract_round_abci.models import BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
 from packages.valory.skills.abstract_round_abci.models import Requests as BaseRequests
+from packages.valory.skills.ipfs_package_downloader.models import (
+    SharedState as BaseSharedState,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
     StrategyEvaluatorAbciApp,
 )
+
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool

@@ -26,7 +26,6 @@ from packages.valory.skills.abstract_round_abci.base import (
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
     StrategyExecPayload,
 )
-
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
     SynchronizedData,

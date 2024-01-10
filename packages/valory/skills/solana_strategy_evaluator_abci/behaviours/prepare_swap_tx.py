@@ -20,13 +20,18 @@
 """This module contains the behaviour for preparing a swap transaction."""
 
 import json
-from typing import Generator, Any, Dict, List, Optional
+from typing import Any, Dict, Generator, List, Optional
 
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
-
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import StrategyEvaluatorBaseBehaviour
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import PrepareSwapPayload
-from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import PrepareSwapRound
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
+    StrategyEvaluatorBaseBehaviour,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+    PrepareSwapPayload,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (
+    PrepareSwapRound,
+)
 
 
 class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
@@ -38,7 +43,9 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         """Build instructions for a swap transaction."""
         # TODO
 
-    def prepare_instructions(self, swaps: List[str]) -> Generator[None, None, Optional[List[Dict[str, Any]]]]:
+    def prepare_instructions(
+        self, swaps: List[str]
+    ) -> Generator[None, None, Optional[List[Dict[str, Any]]]]:
         """Prepare the instructions for a Swap transaction."""
         instructions = []
         for swap in swaps:
@@ -49,11 +56,15 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
     def async_act(self) -> Generator:
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            swaps = yield from self.get_from_ipfs(self.synchronized_data.swaps_hash, SupportedFiletype.JSON)
+            swaps = yield from self.get_from_ipfs(
+                self.synchronized_data.swaps_hash, SupportedFiletype.JSON
+            )
             instructions = self.prepare_instructions(swaps)
             serialized_instructions = None
             if instructions is not None:
                 serialized_instructions = json.dumps(instructions)
-            payload = PrepareSwapPayload(self.context.agent_address, serialized_instructions)
+            payload = PrepareSwapPayload(
+                self.context.agent_address, serialized_instructions
+            )
 
         yield from self.finish_behaviour(payload)

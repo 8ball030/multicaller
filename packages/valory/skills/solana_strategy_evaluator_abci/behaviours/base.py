@@ -27,16 +27,19 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState,
+    StrategyEvaluatorParams,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import StrategyEvaluatorParams
-from packages.valory.skills.solana_strategy_evaluator_abci.states.base import SynchronizedData
+from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+    SynchronizedData,
+)
+
 
 SWAP_DECISION_FILENAME = "swap_decision.json"
 
 
 def wei_to_native(wei: int) -> float:
     """Convert WEI to native token."""
-    return wei / 10 ** 18
+    return wei / 10**18
 
 
 class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
@@ -45,7 +48,9 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     def __init__(self, **kwargs: Any) -> None:
         """Initialize the bet placement behaviour."""
         super().__init__(**kwargs)
-        self.swap_decision_filepath = Path(self.context.data_dir) / SWAP_DECISION_FILENAME
+        self.swap_decision_filepath = (
+            Path(self.context.data_dir) / SWAP_DECISION_FILENAME
+        )
         self.token_balance = 0
         self.wallet_balance = 0
 

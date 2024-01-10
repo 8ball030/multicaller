@@ -87,4 +87,3 @@ class IpfsHandler(BaseHandler):
         callback(ipfs_msg, dialogue)
         self.params.in_flight_req = False
         self.on_message_handled(message)
-

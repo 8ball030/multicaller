@@ -45,8 +45,6 @@ from packages.valory.skills.ipfs_package_downloader.utils.ipfs import (
 from packages.valory.skills.ipfs_package_downloader.utils.task import AnyToolAsTask
 
 
-
-
 class IpfsPackageDownloader(SimpleBehaviour):
     """A class to execute tasks."""
 
@@ -145,7 +143,6 @@ class IpfsPackageDownloader(SimpleBehaviour):
         self._all_tools[tool_req] = tool_py, callable_method
         self._inflight_tool_req = None
 
-
     def send_message(
         self, msg: Message, dialogue: Dialogue, callback: Callable
     ) -> None:
@@ -189,4 +186,3 @@ class IpfsPackageDownloader(SimpleBehaviour):
             timeout=timeout,
         )
         return message, dialogue
-

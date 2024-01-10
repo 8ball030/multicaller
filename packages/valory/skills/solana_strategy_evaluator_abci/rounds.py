@@ -32,8 +32,8 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     SynchronizedData,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states import (
-    SwapTxPreparedRound,
     HodlRound,
+    SwapTxPreparedRound,
     TxPreparationFailed,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (

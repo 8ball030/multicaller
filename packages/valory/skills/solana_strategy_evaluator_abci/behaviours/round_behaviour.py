@@ -21,13 +21,18 @@
 
 from typing import Set, Type
 
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.prepare_swap_tx import PrepareSwapBehaviour
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import StrategyExecBehaviour
-from packages.valory.skills.solana_strategy_evaluator_abci.rounds import StrategyEvaluatorAbciApp
-
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.prepare_swap_tx import (
+    PrepareSwapBehaviour,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import (
+    StrategyExecBehaviour,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
+    StrategyEvaluatorAbciApp,
 )
 
 
