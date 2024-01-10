@@ -46,11 +46,11 @@ class Params(BaseParams):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters object."""
         self.token_symbol_whitelist = self._ensure(
-            "token_symbol_whitelist", kwargs, int
+            "token_symbol_whitelist", kwargs, list
         )
-        self.coingecko_api_key = self._ensure("coingecko_api_key", kwargs, int)
+        self.coingecko_api_key = self._ensure("coingecko_api_key", kwargs, str)
         self.coingecko_market_endpoint = self._ensure(
-            "coingecko_market_endpoint", kwargs, int
+            "coingecko_market_endpoint", kwargs, str
         )
         super().__init__(*args, **kwargs)
 
