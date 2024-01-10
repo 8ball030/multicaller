@@ -28,4 +28,4 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 class FetchMarketDataPayload(BaseTxPayload):
     """Represent a transaction payload for the FetchMarketDataRound."""
 
-    market_hash: str
+    data_hash: str

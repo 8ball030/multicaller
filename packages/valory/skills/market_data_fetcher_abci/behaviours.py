@@ -123,9 +123,9 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            market_hash = yield from self.fetch_markets()
+            data_hash = yield from self.fetch_markets()
             sender = self.context.agent_address
-            payload = FetchMarketDataPayload(sender=sender, market_hash=market_hash)
+            payload = FetchMarketDataPayload(sender=sender, data_hash=data_hash)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -161,16 +161,16 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             markets[token_data["jupiter"]] = response_json["prices"]
 
         # Send to IPFS
-        market_hash = yield from self.send_to_ipfs(
+        data_hash = yield from self.send_to_ipfs(
             filename=self.from_data_dir(MARKETS_FILE_NAME),
             obj=markets,
             filetype=SupportedFiletype.JSON,
         )
 
-        # TODO: handle market_hash=None
-        self.context.logger.info(f"Market file stored in IPFS. Hash is {market_hash}")
+        # TODO: handle data_hash=None
+        self.context.logger.info(f"Market file stored in IPFS. Hash is {data_hash}")
 
-        return market_hash
+        return data_hash
 
 
 class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
