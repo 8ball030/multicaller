@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2023 Valory AG
+#   Copyright 2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,20 +17,23 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains a custom Loader for the ipfs connection."""
+"""This module contains the transaction payloads of the MarketDataFetcherAbciApp."""
 
-from typing import Any
+from dataclasses import dataclass
+
+from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
-class AnyToolAsTask:
-    """AnyToolAsTask"""
+@dataclass(frozen=True)
+class FetchMarketDataPayload(BaseTxPayload):
+    """Represent a transaction payload for the FetchMarketDataRound."""
 
-    def execute(self, *args: Any, **kwargs: Any) -> Any:
-        """Execute the task."""
-        tool_py = kwargs.pop("tool_py")
-        callable_method = kwargs.pop("callable_method")
-        if callable_method in globals():
-            del globals()[callable_method]
-        exec(tool_py, globals())  # pylint: disable=W0122  # nosec
-        method = globals()[callable_method]
-        return method(*args, **kwargs)
+    # TODO: define your attributes
+
+
+@dataclass(frozen=True)
+class VerifyMarketDataPayload(BaseTxPayload):
+    """Represent a transaction payload for the VerifyMarketDataRound."""
+
+    # TODO: define your attributes
+
