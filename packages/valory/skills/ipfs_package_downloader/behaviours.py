@@ -18,7 +18,6 @@
 # ------------------------------------------------------------------------------
 
 """This package contains the implementation of ."""
-import threading
 import time
 from asyncio import Future
 from typing import Any, Callable, Dict, Optional, Tuple, cast
@@ -66,11 +65,6 @@ class IpfsPackageDownloader(SimpleBehaviour):
         self._download_tools()
         self._execute_task()
         self._check_for_new_reqs()
-
-    @property
-    def done_tasks_lock(self) -> threading.Lock:
-        """Get done_tasks_lock."""
-        return self.context.shared_state[DONE_TASKS_LOCK]
 
     @property
     def params(self) -> Params:
