@@ -1,4 +1,4 @@
-# Trader abci
+# Solana trader abci
 
 ## Description
 
