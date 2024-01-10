@@ -36,8 +36,6 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
     FetchMarketDataRound,
     MarketDataFetcherAbciApp,
     SynchronizedData,
-    VerifyMarketDataPayload,
-    VerifyMarketDataRound,
 )
 
 

@@ -30,7 +30,9 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import SolanaTraderDecisionMakerAbciApp
+from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+    SolanaTraderDecisionMakerAbciApp,
+)
 
 
 Requests = BaseRequests

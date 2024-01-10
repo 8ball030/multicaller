@@ -35,7 +35,9 @@ from packages.valory.skills.abstract_round_abci.base import (
     DeserializedCollection,
     get_name,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.payloads import SolanaTraderDecisionMakerPayload
+from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
+    SolanaTraderDecisionMakerPayload,
+)
 
 
 class Event(Enum):
@@ -91,19 +93,19 @@ class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
         return self.synchronized_data, Event.NO_MAJORITY
 
 
-
-
-class SolanaTraderDecisionMakerRound(CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound):
+class SolanaTraderDecisionMakerRound(
+    CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound
+):
     """A round for the bets fetching & updating."""
 
     payload_class = SolanaTraderDecisionMakerPayload
     done_event: Enum = Event.DONE
     none_event: Enum = Event.NONE
     no_majority_event: Enum = Event.NO_MAJORITY
-    selection_key = get_name(
-        SynchronizedData.decision,
-        SynchronizedData.selected_strategy
-        )
+    selection_key = (
+        get_name(SynchronizedData.decision),
+        get_name(SynchronizedData.selected_strategy),
+    )
     collection_key = get_name(SynchronizedData.participant_to_decision)
     synchronized_data_class = SynchronizedData
 
@@ -116,9 +118,11 @@ class FailedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
     """A round that represents that the ABCI app has failed"""
 
 
-class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):  # pylint: disable=too-few-public-methods
-    """ Docsctring
-    """
+class SolanaTraderDecisionMakerAbciApp(
+    AbciApp[Event]
+):  # pylint: disable=too-few-public-methods
+    # TODO add docstring
+    """Docsctring"""
 
     initial_round_cls: Type[AbstractRound] = SolanaTraderDecisionMakerRound
     transition_function: AbciAppTransitionFunction = {
@@ -131,12 +135,17 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):  # pylint: disable=too-f
         FinishedSolanaTraderDecisionMakerRound: {},
         FailedSolanaTraderDecisionMakerRound: {},
     }
-    #cross_period_persisted_keys = frozenset()
-    final_states: Set[AppState] = {FinishedSolanaTraderDecisionMakerRound, FailedSolanaTraderDecisionMakerRound}
+    # cross_period_persisted_keys = frozenset()
+    final_states: Set[AppState] = {
+        FinishedSolanaTraderDecisionMakerRound,
+        FailedSolanaTraderDecisionMakerRound,
+    }
     event_to_timeout: Dict[Event, float] = {
         Event.ROUND_TIMEOUT: 30.0,
     }
-    db_pre_conditions: Dict[AppState, Set[str]] = {SolanaTraderDecisionMakerRound: set()}
+    db_pre_conditions: Dict[AppState, Set[str]] = {
+        SolanaTraderDecisionMakerRound: set()
+    }
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedSolanaTraderDecisionMakerRound: set(),
         FailedSolanaTraderDecisionMakerRound: set(),
