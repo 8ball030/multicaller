@@ -133,14 +133,6 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
-      creator_per_subgraph:
-        omen_subgraph: []
-      slot_count: 2
-      opening_margin: 300
-      languages:
-      - en_US
-      average_block_time: 5
-      abt_error_mult: 5
     class_name: SolanaTraderDecisionMakerParams
   requests:
     args: {}
