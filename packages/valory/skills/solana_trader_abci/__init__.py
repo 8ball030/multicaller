@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the solana-trader chained skill for an AEA."""
+"""This module contains the solana_trader chained skill for an AEA."""
 
 from aea.configurations.base import PublicId
 
