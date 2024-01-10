@@ -18,8 +18,6 @@ contracts:
 - valory/gnosis_safe:0.1.0:bafybeiegkl6zrbvlbpwmoziw4hfkocjfqdqphkmpgow7ovsmv7bwa3f4pe
 - valory/gnosis_safe_proxy_factory:0.1.0:bafybeiehjccqvhrcarhahhyyrshaifoipfqwvpxjucpucslp22l2wc3sl4
 - valory/service_registry:0.1.0:bafybeieeuruq7dp4b6souetv5ce7wlm52pw7vyrxuhqa7kuy5m3rwwxks4
-- valory/market_maker:0.1.0:bafybeiain372i5t6eteem36vzhwh6ppka6hc4oyrxjtyzuar6rd6bjocem
-- valory/erc20:0.1.0:bafybeiad6qbyhr3sgvclqne7tvyvqt32pcj5aq47hhkd2vmawaflhy5vna
 - valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
 - valory/agent_registry:0.1.0:bafybeia64nagvpw3rcxa7datevxhc57klbpaai5ntkthfjqdldxic3ywai
 protocols:
@@ -39,7 +37,7 @@ skills:
 - valory/termination_abci:0.1.0:bafybeifdtxgldw33kwvsavcituzewwbr6iqfcsgk5qouqfhpwdrivyyyom
 - valory/solana_transaction_settlement_abci:0.1.0:bafybeifpnkwgwpzz6uwrvfgurm26allr6shjfbp7bfbrxwy64sw3nf3fsa
 - valory/market_data_fetcher_abci:0.1.0:bafybeifdf6uoscrgvlgqceqcph2pgoygobznw6hbodpav7lubbqsyh4kby
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeibqsaei2puprlwdwtvt3bf6golmvpdozblcw22qurx5bdymmvwvzy
+- valory/solana_transaction_settlement_abci:0.1.0:bafybeifpnkwgwpzz6uwrvfgurm26allr6shjfbp7bfbrxwy64sw3nf3fsa
 - valory/solana_trader_abci:0.1.0:bafybeidyej2rr2j25zv5uvohrc7nreygvg5tiq65xgjvpfkdlf7plvqfre
 default_ledger: ethereum
 required_ledgers:
@@ -152,16 +150,17 @@ models:
       on_chain_service_id: ${int:null}
       average_block_time: ${int:5}
       abt_error_mult: ${int:5}
-      selected_strategy: follow_trend_strategy
       ipfs_address: ${str:https://gateway.autonolas.tech/ipfs/}
       policy_epsilon: ${float:0.1}
       policy_store_path: ${str:/data/}
       agent_balance_threshold: ${int:10000000000000000}
-      refill_check_interval: ${int:10}
       tool_punishment_multiplier: ${int:1}
       contract_timeout: ${float:300.0}
       file_hash_to_strategies_json: ${list:[["bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy",["follow_trend_strategy"]]]}
       strategies_kwargs: ${list:[["kwarg_param_1",0.5]]}
+      selected_strategy: follow_trend_strategy
+      token_symbol_whitelist: []
+      coingecko_api_key: ""
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection
