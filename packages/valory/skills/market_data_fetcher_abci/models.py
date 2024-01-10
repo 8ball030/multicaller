@@ -19,7 +19,7 @@
 
 """This module contains the shared state for the abci skill of MarketDataFetcherAbciApp."""
 
-from typing import Any, List
+from typing import Any, Dict, List
 
 from packages.valory.skills.abstract_round_abci.models import BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
@@ -45,8 +45,8 @@ class Params(BaseParams):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters object."""
-        self.token_symbol_whitelist: List[str] = self._ensure(
-            "token_symbol_whitelist", kwargs, List[str]
+        self.token_symbol_whitelist: List[Dict] = self._ensure(
+            "token_symbol_whitelist", kwargs, List[Dict]
         )
         self.coingecko_api_key: str = self._ensure("coingecko_api_key", kwargs, str)
         self.coingecko_market_endpoint: str = self._ensure(
