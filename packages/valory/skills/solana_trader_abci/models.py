@@ -66,8 +66,6 @@ class RandomnessApi(ApiSpecs):
     """A model for randomness api specifications."""
 
 
-MARGIN = 5
-MULTIPLIER = 10
 
 
 class SharedState(BaseSharedState):
