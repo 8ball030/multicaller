@@ -80,8 +80,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         token_data: Any,
     ) -> bool:
         """Get the swap decision given a token's data."""
-        # TODO change name when skill that sets this is implemented
-        strategy = self.synchronized_data.strategy_name
+        strategy = self.synchronized_data.selected_strategy
         self.context.logger.info(f"Using trading strategy {strategy!r}.")
         # the following are always passed to a strategy script, which may choose to ignore any
         kwargs: Dict[str, Any] = self.params.strategies_kwargs
