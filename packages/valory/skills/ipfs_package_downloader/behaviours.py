@@ -18,7 +18,6 @@
 # ------------------------------------------------------------------------------
 
 """This package contains the implementation of ."""
-import json
 import threading
 import time
 from asyncio import Future
@@ -90,16 +89,6 @@ class IpfsPackageDownloader(SimpleBehaviour):
     def timeout_limit_reached(self, request_id: int) -> bool:
         """Check if the timeout limit has been reached."""
         return self.params.timeout_limit <= self.request_id_to_num_timeouts[request_id]
-
-    # @property
-    # def pending_tasks(self) -> List[Dict[str, Any]]:
-    #     """Get pending_tasks."""
-    #     return self.context.shared_state[PENDING_TASKS]
-
-    # @property
-    # def done_tasks(self) -> List[Dict[str, Any]]:
-    #     """Get done_tasks."""
-    #     return self.context.shared_state[DONE_TASKS]
 
     def _has_executing_task_timed_out(self) -> bool:
         """Check if the executing task timed out."""

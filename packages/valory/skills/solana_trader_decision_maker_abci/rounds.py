@@ -21,7 +21,7 @@
 
 from abc import ABC
 from enum import Enum
-from typing import Dict, Optional, Set, Tuple, Type, cast
+from typing import Dict, Set, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
@@ -135,7 +135,7 @@ class SolanaTraderDecisionMakerAbciApp(
         FinishedSolanaTraderDecisionMakerRound: {},
         FailedSolanaTraderDecisionMakerRound: {},
     }
-    # cross_period_persisted_keys = frozenset()
+    cross_period_persisted_keys = frozenset()
     final_states: Set[AppState] = {
         FinishedSolanaTraderDecisionMakerRound,
         FailedSolanaTraderDecisionMakerRound,

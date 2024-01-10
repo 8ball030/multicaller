@@ -18,7 +18,6 @@
 # ------------------------------------------------------------------------------
 
 """This package contains a scaffold of a handler."""
-import threading
 from typing import cast
 
 from aea.protocols.base import Message
