@@ -127,6 +127,8 @@ models:
       tx_timeout: 10.0
       validate_timeout: 1205
       token_symbol_whitelist: []
+      coingecko_api_key: ""
+      coingecko_market_endpoint: "https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"
     class_name: Params
   requests:
     args: {}

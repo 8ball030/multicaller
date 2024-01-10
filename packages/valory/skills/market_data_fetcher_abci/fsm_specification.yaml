@@ -10,12 +10,8 @@ start_states:
 - FetchMarketDataRound
 states:
 - FetchMarketDataRound
-- VerifyMarketDataRound
 - FinishedMarketFetchRound
 transition_func:
-    (FetchMarketDataRound, DONE): VerifyMarketDataRound
+    (FetchMarketDataRound, DONE): FinishedMarketFetchRound
     (FetchMarketDataRound, NO_MAJORITY): FetchMarketDataRound
     (FetchMarketDataRound, ROUND_TIMEOUT): FetchMarketDataRound
-    (VerifyMarketDataRound, DONE): FinishedMarketFetchRound
-    (VerifyMarketDataRound, NO_MAJORITY): FetchMarketDataRound
-    (VerifyMarketDataRound, ROUND_TIMEOUT): FetchMarketDataRound

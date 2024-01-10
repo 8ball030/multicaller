@@ -45,6 +45,12 @@ class Params(BaseParams):
         self.token_symbol_whitelist = self._ensure(
             "token_symbol_whitelist", kwargs, int
         )
+        self.coingecko_api_key = self._ensure(
+            "coingecko_api_key", kwargs, int
+        )
+        self.coingecko_market_endpoint = self._ensure(
+            "coingecko_market_endpoint", kwargs, int
+        )
         super().__init__(*args, **kwargs)
 
 Requests = BaseRequests

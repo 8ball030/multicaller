@@ -29,11 +29,3 @@ class FetchMarketDataPayload(BaseTxPayload):
     """Represent a transaction payload for the FetchMarketDataRound."""
 
     market_hash: str
-
-
-@dataclass(frozen=True)
-class VerifyMarketDataPayload(BaseTxPayload):
-    """Represent a transaction payload for the VerifyMarketDataRound."""
-
-    success: bool
-

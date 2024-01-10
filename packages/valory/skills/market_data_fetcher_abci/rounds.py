@@ -37,7 +37,6 @@ from packages.valory.skills.abstract_round_abci.base import (
 
 from packages.valory.skills.market_data_fetcher_abci.payloads import (
     FetchMarketDataPayload,
-    VerifyMarketDataPayload,
 )
 
 
@@ -75,23 +74,6 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
     collection_key = get_name(SynchronizedData.participant_to_fetching)
 
 
-class VerifyMarketDataRound(CollectSameUntilThresholdRound):
-    """VerifyMarketDataRound"""
-
-    payload_class = VerifyMarketDataPayload
-    synchronized_data_class = SynchronizedData
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Event]]:
-        """Process the end of the block."""
-        if self.threshold_reached:
-            return self.synchronized_data, Event.DONE
-        if not self.is_majority_possible(
-            self.collection, self.synchronized_data.nb_participants
-        ):
-            return self.synchronized_data, Event.NO_MAJORITY
-        return None
-
-
 class FinishedMarketFetchRound(DegenerateRound):
     """FinishedMarketFetchRound"""
 
@@ -103,11 +85,6 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     initial_states: Set[AppState] = {FetchMarketDataRound}
     transition_function: AbciAppTransitionFunction = {
         FetchMarketDataRound: {
-            Event.DONE: VerifyMarketDataRound,
-            Event.NO_MAJORITY: FetchMarketDataRound,
-            Event.ROUND_TIMEOUT: FetchMarketDataRound
-        },
-        VerifyMarketDataRound: {
             Event.DONE: FinishedMarketFetchRound,
             Event.NO_MAJORITY: FetchMarketDataRound,
             Event.ROUND_TIMEOUT: FetchMarketDataRound

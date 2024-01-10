@@ -21,13 +21,14 @@
 
 from abc import ABC
 from typing import Generator, Set, Type, cast
-
+import json
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
-
+import os
+from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.market_data_fetcher_abci.models import Params
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     SynchronizedData,
@@ -39,6 +40,11 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
     FetchMarketDataPayload,
     VerifyMarketDataPayload,
 )
+
+HTTP_OK = [200, 201]
+MAX_RETRIES = 3
+MARKETS_FILE_NAME = "markets.json"
+
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -54,19 +60,73 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         """Return the params."""
         return cast(Params, super().params)
 
+    def from_data_dir(self, path: str) -> str:
+        """Return the given path appended to the data dir."""
+        return os.path.join(self.context.data_dir, path)
+
+    def _request_with_retries(
+        self,
+        endpoint,
+        method="GET",
+        body=None,
+        headers=None,
+        max_retries=MAX_RETRIES,
+        retry_wait=0,
+    ):
+        """Request wrapped around a retry mechanism"""
+
+        self.context.logger.info(f"HTTP {method} call: {endpoint}")
+
+        kwargs = dict(
+            method=method,
+            url=endpoint,
+        )
+
+        if body:
+            kwargs["content"] = json.dumps(body).encode("utf-8")
+
+        if headers:
+            kwargs["headers"] = headers
+
+        retries = 0
+        response_json = {}
+
+        while retries < max_retries:
+            # Make the request
+            response = yield from self.get_http_response(**kwargs)
+
+            try:
+                response_json = json.loads(response.body)
+            except json.decoder.JSONDecodeError as exc:
+                response_json = {"exception": str(exc)}
+
+            if response.status_code not in HTTP_OK:
+                self.context.logger.error(
+                    f"Request failed [{response.status_code}]: {response_json}"
+                )
+                retries += 1
+                yield from self.sleep(retry_wait)
+                continue
+            else:
+                self.context.logger.info("Request succeeded")
+                return True, response_json
+
+        self.context.logger.error(f"Request failed after {max_retries} retries")
+        return False, response_json
+
 
 class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
     """FetchMarketDataBehaviour"""
 
     matching_round: Type[AbstractRound] = FetchMarketDataRound
 
-    # TODO: implement logic required to set payload content for synchronization
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            market_hash = yield from self.fetch_markets()
             sender = self.context.agent_address
-            payload = FetchMarketDataPayload(sender=sender, content=...)
+            payload = FetchMarketDataPayload(sender=sender, market_hash=market_hash)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -74,25 +134,45 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         self.set_done()
 
+    def fetch_markets(self):
+        """Fetch markets from Coingecko and send to IPFS"""
 
-class VerifyMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
-    """VerifyMarketDataBehaviour"""
+        markets = {}
+        headers = {
+            "x-cg-pro-api-key": self.params.coingecko_api_key,
+            "Accept": "application/json"
+        }
 
-    matching_round: Type[AbstractRound] = VerifyMarketDataRound
+        # Get the market data for each token
+        for token_data in self.params.token_symbol_whitelist:
+            token_id = token_data["coingecko"]
 
-    # TODO: implement logic required to set payload content for synchronization
-    def async_act(self) -> Generator:
-        """Do the act, supporting asynchronous execution."""
+            success, response_json = yield from self._request_with_retries(
+                endpoint=self.params.format(token_id=token_id),
+                headers=headers
+            )
 
-        with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-            payload = VerifyMarketDataPayload(sender=sender, content=...)
+            # Skip failed markets. The strategy will need to verify market availability
+            if not success:
+                self.context.logger.error(f"Failed to fecth market for {token_id}")
+                continue
 
-        with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
-            yield from self.send_a2a_transaction(payload)
-            yield from self.wait_until_round_end()
+            self.context.logger.info(f"Succesfully fecthed market for {token_id}")
 
-        self.set_done()
+            # We use Jupiter symbol as the market key
+            markets[token_data["jupiter"]] = response_json["prices"]
+
+        # Send to IPFS
+        market_hash = yield from self.send_to_ipfs(
+            filename=self.from_data_dir(MARKETS_FILE_NAME),
+            obj=markets,
+            filetype=SupportedFiletype.JSON
+        )
+
+        # TODO: handle market_hash=None
+        self.context.logger.info(f"Market file stored in IPFS. Hash is {market_hash}")
+
+        return market_hash
 
 
 class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
@@ -102,5 +182,4 @@ class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
     abci_app_cls = MarketDataFetcherAbciApp  # type: ignore
     behaviours: Set[Type[BaseBehaviour]] = [
         FetchMarketDataBehaviour,
-        VerifyMarketDataBehaviour
     ]
