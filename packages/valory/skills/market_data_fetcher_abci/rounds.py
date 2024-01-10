@@ -28,6 +28,7 @@ from packages.valory.skills.abstract_round_abci.base import (
     AppState,
     BaseSynchronizedData,
     CollectSameUntilThresholdRound,
+    CollectionRound,
     DegenerateRound,
     DeserializedCollection,
     EventToTimeout,
@@ -52,6 +53,16 @@ class SynchronizedData(BaseSynchronizedData):
 
     This data is replicated by the tendermint application.
     """
+
+    def _get_deserialized(self, key: str) -> DeserializedCollection:
+        """Strictly get a collection and return it deserialized."""
+        serialized = self.db.get_strict(key)
+        return CollectionRound.deserialize_collection(serialized)
+
+    @property
+    def data_hash(self) -> str:
+        """Get the hash of the tokens' data."""
+        return str(self.db.get_strict("data_hash"))
 
     @property
     def participant_to_fetching(self) -> DeserializedCollection:

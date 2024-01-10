@@ -30,7 +30,9 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import SolanaTraderDecisionMakerAbciApp
+from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+    SolanaTraderDecisionMakerAbciApp,
+)
 
 
 Requests = BaseRequests
@@ -50,4 +52,3 @@ class SolanaTraderDecisionMakerParams(BaseParams):
         """Initialize the parameters' object."""
         self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
         super().__init__(*args, **kwargs)
-
