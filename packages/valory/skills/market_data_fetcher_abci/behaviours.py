@@ -97,9 +97,10 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
             try:
                 response_json = json.loads(response.body)
             except json.decoder.JSONDecodeError as exc:
+                self.context.logger.error(f"Exception during json loading: {exc}")
                 response_json = {"exception": str(exc)}
 
-            if response.status_code not in HTTP_OK:
+            if response.status_code not in HTTP_OK or "exception" in response_json:
                 self.context.logger.error(
                     f"Request failed [{response.status_code}]: {response_json}"
                 )
