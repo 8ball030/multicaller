@@ -24,87 +24,28 @@ from packages.valory.skills.abstract_round_abci.abci_app_chain import (
     chain,
 )
 from packages.valory.skills.abstract_round_abci.base import BackgroundAppConfig
-from packages.valory.skills.decision_maker_abci.rounds import DecisionMakerAbciApp
-from packages.valory.skills.decision_maker_abci.states.decision_receive import (
-    DecisionReceiveRound,
-)
-from packages.valory.skills.decision_maker_abci.states.final_states import (
-    FinishedDecisionMakerRound,
-    FinishedWithoutDecisionRound,
-    FinishedWithoutRedeemingRound,
-    RefillRequiredRound,
-)
-from packages.valory.skills.decision_maker_abci.states.handle_failed_tx import (
-    HandleFailedTxRound,
-)
-from packages.valory.skills.decision_maker_abci.states.redeem import RedeemRound
-from packages.valory.skills.decision_maker_abci.states.sampling import SamplingRound
-from packages.valory.skills.market_manager_abci.rounds import (
-    FailedMarketManagerRound,
-    FinishedMarketManagerRound,
-    MarketManagerAbciApp,
-    UpdateBetsRound,
-)
-from packages.valory.skills.registration_abci.rounds import (
-    AgentRegistrationAbciApp,
-    FinishedRegistrationRound,
-)
-from packages.valory.skills.reset_pause_abci.rounds import (
-    FinishedResetAndPauseErrorRound,
-    FinishedResetAndPauseRound,
-    ResetAndPauseRound,
-    ResetPauseAbciApp,
-)
-from packages.valory.skills.staking_abci.rounds import (
-    CallCheckpointRound,
-    CheckpointCallPreparedRound,
-    FinishedStakingRound,
-    StakingAbciApp,
-)
+import packages.valory.skills.registration_abci.rounds as RegistrationAbci
+import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
+import packages.valory.skills.solana_trader_decision_maker_abci.rounds as SolanaTraderDecisionMakerAbci
+import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
+import packages.valory.skills.strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
+import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
 from packages.valory.skills.termination_abci.rounds import (
     BackgroundRound,
     Event,
     TerminationAbciApp,
 )
-from packages.valory.skills.transaction_settlement_abci.rounds import (
-    FailedRound as FailedTransactionSubmissionRound,
-)
-from packages.valory.skills.transaction_settlement_abci.rounds import (
-    FinishedTransactionSubmissionRound,
-    RandomnessTransactionSubmissionRound,
-    TransactionSubmissionAbciApp,
-)
-from packages.valory.skills.tx_settlement_multiplexer_abci.rounds import (
-    ChecksPassedRound,
-    FinishedBetPlacementTxRound,
-    FinishedDecisionRequestTxRound,
-    FinishedRedeemingTxRound,
-    FinishedStakingTxRound,
-    PostTxSettlementRound,
-    PreTxSettlementRound,
-    TxSettlementMultiplexerAbciApp,
-)
-
 
 abci_app_transition_mapping: AbciAppTransitionMapping = {
-    FinishedRegistrationRound: UpdateBetsRound,
-    FinishedMarketManagerRound: SamplingRound,
-    FailedMarketManagerRound: ResetAndPauseRound,
-    FinishedDecisionMakerRound: PreTxSettlementRound,
-    ChecksPassedRound: RandomnessTransactionSubmissionRound,
-    RefillRequiredRound: ResetAndPauseRound,
-    FinishedTransactionSubmissionRound: PostTxSettlementRound,
-    FailedTransactionSubmissionRound: HandleFailedTxRound,
-    FinishedDecisionRequestTxRound: DecisionReceiveRound,
-    FinishedBetPlacementTxRound: RedeemRound,
-    FinishedRedeemingTxRound: CallCheckpointRound,
-    FinishedWithoutDecisionRound: RedeemRound,
-    FinishedWithoutRedeemingRound: CallCheckpointRound,
-    FinishedStakingRound: ResetAndPauseRound,
-    CheckpointCallPreparedRound: PreTxSettlementRound,
-    FinishedStakingTxRound: ResetAndPauseRound,
-    FinishedResetAndPauseRound: UpdateBetsRound,
-    FinishedResetAndPauseErrorRound: ResetAndPauseRound,
+    RegistrationAbci.FinishedRegistrationRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    SolanaTraderDecisionMakerAbci.FinishedSolanaTraderDecisionMakerRound: MarketDataFetcherAbci.FetchMarketDataRound,
+    SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    MarketDataFetcherAbci.FinishedMarketFetchRound: StrategyEvaluatorAbci.StrategyExecRound,
+    StrategyEvaluatorAbci.FinishedStrategyEvaluation: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,
+    SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    SolanaTransactionSettlementAbci.FailedRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    ResetAndPauseAbci.FinishedResetAndPauseRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    ResetAndPauseAbci.FinishedResetAndPauseErrorRound: RegistrationAbci.RegistrationRound,
 }
 
 termination_config = BackgroundAppConfig(
@@ -113,16 +54,14 @@ termination_config = BackgroundAppConfig(
     abci_app=TerminationAbciApp,
 )
 
-
-TraderAbciApp = chain(
+SolanaTraderAbciApp = chain(
     (
-        AgentRegistrationAbciApp,
-        DecisionMakerAbciApp,
-        MarketManagerAbciApp,
-        TransactionSubmissionAbciApp,
-        TxSettlementMultiplexerAbciApp,
-        ResetPauseAbciApp,
-        StakingAbciApp,
+        RegistrationAbci.AgentRegistrationAbciApp,
+        SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerAbciApp,
+        MarketDataFetcherAbci.MarketDataFetcherAbciApp,
+        StrategyEvaluatorAbci.StrategyEvaluatorAbciApp,
+        SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,
+        ResetAndPauseAbci.ResetPauseAbciApp,
     ),
     abci_app_transition_mapping,
 ).add_background_app(termination_config)

@@ -40,11 +40,14 @@ from packages.valory.skills.termination_abci.behaviours import (
     TerminationAbciBehaviours,
 )
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
-from packages.valory.skills.transaction_settlement_abci.behaviours import (
-    TransactionSettlementRoundBehaviour,
+from packages.valory.skills.solana_transaction_settlement_abci.behaviours import (
+    SolanaTransactionSettlementRoundBehaviour,
 )
-from packages.valory.skills.tx_settlement_multiplexer_abci.behaviours import (
-    PostTxSettlementFullBehaviour,
+from packages.valory.skills.market_data_fetcher_abci.behaviours import (
+    MarketDataFetcherRoundBehaviour
+)
+from packages.valory.skills.strategy_evaluator_abci.behaviours import (
+    StrategyEvaluatorRoundBehaviour
 )
 
 
@@ -57,9 +60,10 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
     behaviours: Set[Type[BaseBehaviour]] = {
         *AgentRegistrationRoundBehaviour.behaviours,
         *SolanaTraderDecisionMakerRoundBehaviour.behaviours,
+        *MarketDataFetcherRoundBehaviour.behaviours,
+        *StrategyEvaluatorRoundBehaviour.behaviours,
+        *SolanaTransactionSettlementRoundBehaviour.behaviours,
         *ResetPauseABCIConsensusBehaviour.behaviours,
         *TerminationAbciBehaviours.behaviours,
-        *TransactionSettlementRoundBehaviour.behaviours,
-        *PostTxSettlementFullBehaviour.behaviours,
     }
     background_behaviours_cls = {BackgroundBehaviour}  # type: ignore

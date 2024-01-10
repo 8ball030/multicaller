@@ -51,3 +51,6 @@ class SolanaTraderDecisionMakerParams(BaseParams):
         self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
         super().__init__(*args, **kwargs)
 
+
+class Params(BaseParams):
+    """Params"""

@@ -19,8 +19,6 @@
 
 """Custom objects for the 'solana_trader_abci' application."""
 
-from typing import Dict, Type, Union, cast
-
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
@@ -30,40 +28,46 @@ from packages.valory.skills.solana_trader_decision_maker_abci.models import Sola
 from packages.valory.skills.solana_trader_decision_maker_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
-    Event as SolanaTraderDecisionMakerEvent,
-)
-from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
-from packages.valory.skills.termination_abci.models import TerminationParams
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
-from packages.valory.skills.transaction_settlement_abci.rounds import Event as TSEvent
 
 
-EventType = Union[
-    Type[SolanaTraderDecisionMakerEvent],
-    Type[TSEvent],
-    Type[ResetPauseEvent],
-]
-EventToTimeoutMappingType = Dict[
-    Union[MarketManagerEvent, TSEvent, ResetPauseEvent],
-    float,
-]
+from packages.valory.skills.market_data_fetcher_abci.models import (
+    Params as MarketDataFetcherAbciParams,
+)
+from packages.valory.skills.market_data_fetcher_abci.rounds import (
+    Event as MarketDataFetcherEvent,
+)
 
+from packages.valory.skills.strategy_evaluator_abci.models import (
+    Params as StrategyEvaluatorAbciParams,
+)
+from packages.valory.skills.strategy_evaluator_abci.rounds import (
+    Event as StrategyEvaluatorEvent,
+)
+
+from packages.valory.skills.solana_trader_decision_maker_abci.models import (
+    Params as SolanaTraderDecisionMakerAbciParams,
+)
+from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+    Event as DecisionMakingEvent,
+)
+from packages.valory.skills.termination_abci.models import TerminationParams
+
+
+SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
+MarketDataFetcherParams = MarketDataFetcherAbciParams
+StrategyEvaluatorParams = StrategyEvaluatorAbciParams
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool
-
-
 
 
 class RandomnessApi(ApiSpecs):
     """A model for randomness api specifications."""
 
 
-class SolanaTraderParams(
-    SolanaDecisionMakerParams, TerminationParams,
-):
-    """A model to represent the solana_trader params."""
+MARGIN = 5
+MULTIPLIER = 10
 
 
 class SharedState(BaseSharedState):
@@ -71,30 +75,24 @@ class SharedState(BaseSharedState):
 
     abci_app_cls = SolanaTraderAbciApp
 
-    @property
-    def params(self) -> SolanaTraderParams:
-        """Get the parameters."""
-        return cast(SolanaTraderParams, self.context.params)
-
     def setup(self) -> None:
         """Set up."""
         super().setup()
+        SolanaTraderAbciApp.event_to_timeout[
+            DecisionMakingEvent.ROUND_TIMEOUT
+        ] = self.context.params.round_timeout_seconds
+        SolanaTraderAbciApp.event_to_timeout[
+            MarketDataFetcherEvent.ROUND_TIMEOUT
+        ] = self.context.params.round_timeout_seconds
+        SolanaTraderAbciApp.event_to_timeout[
+            StrategyEvaluatorEvent.ROUND_TIMEOUT
+        ] = self.context.params.round_timeout_seconds
 
-        events = (SolanaTraderDecisionMakerEvent, TSEvent, ResetPauseEvent)
-        round_timeout = self.params.round_timeout_seconds
-        round_timeout_overrides = {
-            cast(EventType, event).ROUND_TIMEOUT: round_timeout for event in events
-        }
-        reset_pause_timeout = self.params.reset_pause_duration + MARGIN
-        event_to_timeout_overrides: EventToTimeoutMappingType = {
-            **round_timeout_overrides,
-            TSEvent.RESET_TIMEOUT: round_timeout,
-            TSEvent.VALIDATE_TIMEOUT: self.params.validate_timeout,
-            TSEvent.FINALIZE_TIMEOUT: self.params.finalize_timeout,
-            TSEvent.CHECK_TIMEOUT: self.params.history_check_timeout,
-            DecisionMakerEvent.REDEEM_ROUND_TIMEOUT: self.params.redeem_round_timeout,
-            ResetPauseEvent.RESET_AND_PAUSE_TIMEOUT: reset_pause_timeout,
-        }
 
-        for event, override in event_to_timeout_overrides.items():
-            TraderAbciApp.event_to_timeout[event] = override
+class Params(
+    SolanaTraderDecisionMakerParams,
+    MarketDataFetcherParams,
+    StrategyEvaluatorParams,
+    TerminationParams,
+):
+    """A model to represent params for multiple abci apps."""
