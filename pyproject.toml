@@ -3,7 +3,7 @@ requires = [ "poetry-core>=1.0.0",]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "trader"
+name = "solana-trader"
 version = "0.1.0"
 description = ""
 authors = [ "David Minarsch <david.minarsch@googlemail.com>", "Jose Moreira Sanchez <jose.moreira.sanchez@valory.xyz>", "Adamantios Zaras <adamantios.zaras@valory.xyz>", "David Vilela Freire <david.vilelafreire@valory.xyz>"]
