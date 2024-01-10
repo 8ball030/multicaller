@@ -116,9 +116,11 @@ class FailedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
     """A round that represents that the ABCI app has failed"""
 
 
-class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):  # pylint: disable=too-few-public-methods
-    """ Docsctring
-    """
+class SolanaTraderDecisionMakerAbciApp(
+    AbciApp[Event]
+):  # pylint: disable=too-few-public-methods
+    # TODO add docstring
+    """Docsctring"""
 
     initial_round_cls: Type[AbstractRound] = SolanaTraderDecisionMakerRound
     transition_function: AbciAppTransitionFunction = {
