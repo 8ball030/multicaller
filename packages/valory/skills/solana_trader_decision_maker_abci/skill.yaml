@@ -8,10 +8,10 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeidgkgixh2lc4nom362dfunytny5yabi723ddzzkag3kv42cfysqxm
   __init__.py: bafybeig6wvdheo5qxgpc4wn3oddlfncqkvb2whdxfkbhv754r6f2ed7x3q
-  behaviours.py: bafybeiet7vxew3vpsdjetgrp3atllvkyolujx4gm75cwtviepoifqvg56m
+  behaviours.py: bafybeihpoi2fcxmm4v6jhbxvmefydgm5fcv3z456z7t2y5mlhdonbdkepy
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeicldadey2dleij242fzvk4gp6dmntcnryome3rsaxf2ekbsdgnjbe
-  models.py: bafybeidoxhl5sg3i2zsqplo5zqudtioxtobohpdjk4lgizazc6faltqtki
+  models.py: bafybeiguxznscwzvw3w3mnkikpjo47gfqqdixi6oqpq5r4roxurdojcnx4
   payloads.py: bafybeig3yyjx5gomh6l4bmbn5gnfh2fzyuds3um47h2qaqdqpkrjbvp6hm
   rounds.py: bafybeibk6gwve3uvyf745jetnknjmondhh2wzgzlg43u3wpewepzqgpqrq
 fingerprint_ignore_patterns: []

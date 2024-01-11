@@ -30,11 +30,11 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeibnac4udplyx6ug6e5xgpsp76j5gdfwjenff5urg4m5tgn4fg6zua
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeiaflhpybc7an6nd6z263vnd3g6cujvcu7y4zzgw5vxmr5c4pkct2i
-- valory/solana_trader_abci:0.1.0:bafybeieev46oo34rpllick4yh5nhsw27rpwobgo5unyjxmp35xkbqcgbqu
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeicn5czkwsowy5jn4u6zcpmarh3lnrktlkx2vodlg5owzrsfjtxy7q
-- valory/ipfs_package_downloader:0.1.0:bafybeic7n2lnccwi746xuuogafjww5jdwqejr2blyxpgamwmcjnelwlmva
+- valory/market_data_fetcher_abci:0.1.0:bafybeifkwx4q3jsvjyhh6kmrobqsoak7qyt54zm7bof2hsakmwjemiq22y
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeicslsfgg4l32s5m25kwezqxl3u3evuhwefztetmmkyk55xyyzodra
+- valory/solana_trader_abci:0.1.0:bafybeieq23cmingv4ltrcgdam6o67kygszm5eqh4ikdym23emwyi6og7lq
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeievzcxuyu7b76yimesjd4ytsmduf5xbb2r6fs3hnyimsuraicwmsa
+- valory/ipfs_package_downloader:0.1.0:bafybeicthrssr6icl4z2oc5uh7kauh6ulatwlof3fulcmerfhl4kogyife
 default_ledger: ethereum
 required_ledgers:
 - ethereum
