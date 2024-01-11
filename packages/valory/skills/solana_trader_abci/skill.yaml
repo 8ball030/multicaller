@@ -139,7 +139,6 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
-      multisend_batch_size: 50
       ipfs_address: https://gateway.autonolas.tech/ipfs/
       selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
