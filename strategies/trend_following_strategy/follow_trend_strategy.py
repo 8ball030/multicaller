@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2023 Valory AG
+#   Copyright 2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -64,8 +64,8 @@ def trend_following_signal(
         if price_data[i] < price_data[i - 1]
     ]
 
-    avg_gain = sum(gains) / rsi_period if gains else 0
-    avg_loss = sum(losses) / rsi_period if losses else 0
+    avg_gain = sum(gains) / rsi_period
+    avg_loss = sum(losses) / rsi_period
 
     if avg_loss != 0:
         rs = avg_gain / avg_loss

@@ -2,7 +2,7 @@ name: trend_following_strategy
 author: valory
 version: 0.1.0
 type: custom
-description: A simple strategy that bets a fixed amount when the confidence is of a given threshold.
+description: A simple trading strategy according to which one should buy an asset when its price trend goes up, and sell when its trend goes down, expecting price movements to continue.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
