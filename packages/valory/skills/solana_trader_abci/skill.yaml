@@ -110,17 +110,12 @@ models:
       keeper_allowed_retries: 3
       reset_pause_duration: 10
       on_chain_service_id: null
-      points_to_image_hashes: '{"0": "bafybeiabtdl53v2a3irrgrg7eujzffjallpymli763wvhv6gceurfmcemm",
-        "100": "bafybeid46w6yzbehir7ackcnsyuasdkun5aq7jnckt4sknvmiewpph776q", "50000":
-        "bafybeigbxlwzljbxnlwteupmt6c6k7k2m4bbhunvxxa53dc7niuedilnr4", "100000": "bafybeiawxpq4mqckbau3mjwzd3ic2o7ywlhp6zqo7jnaft26zeqm3xsjjy",
-        "150000": "bafybeie6k53dupf7rf6622rzfxu3dmlv36hytqrmzs5yrilxwcrlhrml2m"}'
       request_retry_delay: 1.0
       request_timeout: 10.0
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3
       round_timeout_seconds: 30.0
-      tweet_evaluation_round_timeout: 600.0
       service_id: impact_evaluator
       service_registry_address: null
       setup:
@@ -161,18 +156,6 @@ models:
       retries: 5
       url: https://drand.cloudflare.com/public/latest
     class_name: RandomnessApi
-  mech_response:
-    args:
-      api_id: mech_response
-      headers:
-        Content-Type: application/json
-      method: GET
-      parameters: {}
-      response_key: result
-      response_type: str
-      retries: 5
-      url: ''
-    class_name: MechResponseSpecs
   requests:
     args: {}
     class_name: Requests
