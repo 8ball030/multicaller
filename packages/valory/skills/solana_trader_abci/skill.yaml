@@ -7,12 +7,12 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
-  __init__.py: bafybeiavr5i5xag7ha2x3rnd34hnujjuswoophj6a7qsvzbjp34xjfc2uq
-  behaviours.py: bafybeiff5cekaayvmz255hjouxsi233ixbncvtxcp7rjinkeaqfa44oeie
-  composition.py: bafybeiftysrjjnhojieuxsgtcyfy2xz7m6ayg4spgbaqokf3nxrbxg5c3q
-  dialogues.py: bafybeiebofyykseqp3fmif36cqmmyf3k7d2zbocpl6t6wnlpv4szghrxbm
-  handlers.py: bafybeiaopqrlyq2kcdx6wqgsyp363vhbq3g7hcdp6caqrnfiraj7vl5xmq
-  models.py: bafybeicjcvbirj2errrhv7lpgp2o3dshjewzeuz5lz55try44xugfchoze
+  __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
+  behaviours.py: bafybeic772ubd5lgx2otztxrtxydgpteqgark2oyefnckhvwedw2jba72i
+  composition.py: bafybeiea3bs2ipfoeqfspivc7klwyw5c2nsgmt5ohil2ujjo3agzn7e6te
+  dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
+  handlers.py: bafybeihlupmxu5mijro2id7fc62iad72ng57qv7qblcgkpgklyaap7uonq
+  models.py: bafybeibzzvzbsinohefl7zyenzken6qh7tuq3paj7ztljpdzcjlc7lbpyi
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -24,8 +24,8 @@ skills:
 - valory/termination_abci:0.1.0:bafybeifdtxgldw33kwvsavcituzewwbr6iqfcsgk5qouqfhpwdrivyyyom
 - valory/transaction_settlement_abci:0.1.0:bafybeifpnkwgwpzz6uwrvfgurm26allr6shjfbp7bfbrxwy64sw3nf3fsa
 - valory/market_data_fetcher_abci:0.1.0:bafybeidpsbv2tqnclzlrh6v7ejezuzy4fjgf5wlunzr7czkd24qxo7mug4
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeigfjotte6hs45ito5caojumy3s3pkjh24jgki3bt7kppsugviampa
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeihsadb6vcrws5sthtwuyeerj4wmf3cbknn72xvj4ocyixhxklppxa
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiagjw3cpz4tjtej5miutsdidsy5civ2ghsxqb3rdxgnk2imbbcxim
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeif63glyctlc7h2bwaof5zyhup36qosdxa57ktfihkrs7moh27vusu
 behaviours:
   main:
     args: {}

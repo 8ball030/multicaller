@@ -5,7 +5,7 @@ license: Apache-2.0
 description: Solana trader agent.
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeidxq5rjhmfrezttx5mitfs5bb44mojnhfs6p5yjnwkcjbw67ejfcq
+  README.md: bafybeig5bnpyiwsvqdaqubiw342kn3ncbd22i4vstlk3t5vcbtbdcfcad4
   __init__.py: bafybeig4rclm2fca7pv35dtigdm3slje4o4urhybxdkkdy2gd5p6d5gfju
 fingerprint_ignore_patterns: []
 connections:
@@ -33,8 +33,8 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeibnwjcjx4lluf4cwb6es5peelu3gm7vrzlieygrzpbjlubxpvbvzy
 - valory/termination_abci:0.1.0:bafybeifdtxgldw33kwvsavcituzewwbr6iqfcsgk5qouqfhpwdrivyyyom
 - valory/market_data_fetcher_abci:0.1.0:bafybeidpsbv2tqnclzlrh6v7ejezuzy4fjgf5wlunzr7czkd24qxo7mug4
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeihsadb6vcrws5sthtwuyeerj4wmf3cbknn72xvj4ocyixhxklppxa
-- valory/solana_trader_abci:0.1.0:bafybeidaq3ahuajh6izjwre7qywjcrswwfpego4shv4wdq2moncr4z4dnq
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeif63glyctlc7h2bwaof5zyhup36qosdxa57ktfihkrs7moh27vusu
+- valory/solana_trader_abci:0.1.0:bafybeiamsjdoci5eu4gdpyxb4yerocwfqktgaiu4fvuzkzaxd6nd54iit4
 default_ledger: ethereum
 required_ledgers:
 - ethereum
