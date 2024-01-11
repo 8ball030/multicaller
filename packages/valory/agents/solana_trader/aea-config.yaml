@@ -32,9 +32,9 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeiee2uhhay4mflvt5n2g75sv43bvciiemwxd5ago4rosp3pdqvjotm
 - valory/solana_strategy_evaluator_abci:0.1.0:bafybeie3b4v35jzepennaggjeznm53bsibhhrd35csmyt7vq2pys3ntyji
-- valory/solana_trader_abci:0.1.0:bafybeigz3e5cxq35zbh5lyyv4x6qbbitcytpmyew4myfrrdhu2t7axsquu
+- valory/solana_trader_abci:0.1.0:bafybeiaobz62oxhddnvon76puiqh6ymgzlcwxf3g3ezucg36lhqbninhay
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeidzf5mfrsuiycupewbthohrtnspmkukt6g4rathqx37lienrtwnau
-- valory/ipfs_package_downloader:0.1.0:bafybeidtm4wiguiat4mn5zupmxjwfl6ejj4uk7omwjeqxaqfhfeo6iduu4
+- valory/ipfs_package_downloader:0.1.0:bafybeid6fst4i7g6onfyj4anudygghvtq73talkl4hglcbvyjmandycivi
 default_ledger: ethereum
 required_ledgers:
 - ethereum

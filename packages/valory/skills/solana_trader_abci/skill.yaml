@@ -9,10 +9,10 @@ fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
   behaviours.py: bafybeigvff7f2k3mdbbipkcuxgr4lj5dferul7wtyccehdpmurxbwutvka
-  composition.py: bafybeiennj4ddoaoov7p43iipqbsfohutnxudl6u4pvfw4eimewpybedma
+  composition.py: bafybeihu2kciiixp52gqu6hbudubwzbz7mw46qipa6mmpqdl555f5cdul4
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
-  models.py: bafybeiacjhsmygxmhkv63vn2ly7j72dzq3ywirvb6h7vx45bnynpscdqpu
+  models.py: bafybeidwcx7ryy7u45h7breaa6sdsyzxhi7sun4pyshyo2zr2uq6k3msrm
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -44,9 +44,6 @@ handlers:
   ledger_api:
     args: {}
     class_name: LedgerApiHandler
-  llm:
-    args: {}
-    class_name: LlmHandler
   signing:
     args: {}
     class_name: SigningHandler
@@ -142,6 +139,14 @@ models:
       selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
       coingecko_api_key: ''
+      coingecko_market_endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
+      trading_strategy: strategy_name
+      slippage: 0.05
+      strategies_kwargs:
+      - - extra_1
+        - value
+      - - extra_2
+        - value
     class_name: Params
   randomness_api:
     args:
@@ -166,9 +171,6 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
-  twitter_dialogues:
-    args: {}
-    class_name: TwitterDialogues
 dependencies:
   open-aea-cli-ipfs:
     version: ==1.44.0

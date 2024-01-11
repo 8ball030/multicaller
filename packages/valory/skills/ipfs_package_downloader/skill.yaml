@@ -16,13 +16,9 @@ fingerprint:
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
 fingerprint_ignore_patterns: []
 connections:
-- valory/ledger:0.19.0:bafybeic3ft7l7ca3qgnderm4xupsfmyoihgi27ukotnz7b5hdczla2enya
 - valory/ipfs:0.1.0:bafybeifkrynw6jjg7bs7nw535m5bcrav5qab27vr5ktgfuvf65dpazc4ci
-- valory/p2p_libp2p_client:0.1.0:bafybeid3xg5k2ol5adflqloy75ibgljmol6xsvzvezebsg7oudxeeolz7e
 contracts: []
 protocols:
-- valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
-- valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
 - valory/ipfs:0.1.0:bafybeiftxi2qhreewgsc5wevogi7yc5g6hbcbo4uiuaibauhv3nhfcdtvm
 skills: []
 behaviours:
@@ -30,25 +26,13 @@ behaviours:
     args: {}
     class_name: IpfsPackageDownloader
 handlers:
-  contract_handler:
-    args: {}
-    class_name: ContractHandler
   ipfs_handler:
     args: {}
     class_name: IpfsHandler
-  ledger_handler:
-    args: {}
-    class_name: LedgerHandler
 models:
-  contract_dialogues:
-    args: {}
-    class_name: ContractDialogues
   ipfs_dialogues:
     args: {}
     class_name: IpfsDialogues
-  ledger_dialogues:
-    args: {}
-    class_name: LedgerDialogues
   params:
     args:
       agent_index: 0
