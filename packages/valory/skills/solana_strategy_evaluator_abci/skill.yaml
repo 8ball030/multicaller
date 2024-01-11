@@ -26,8 +26,7 @@ fingerprint:
   states/strategy_exec.py: bafybeihhsz5i4jf44xquwtzqh5ke6spvh5sfjqnttzfvipwklivgw3m4we
 fingerprint_ignore_patterns: []
 connections: []
-contracts:
-- valory/gnosis_safe:0.1.0:bafybeiagwlfdlebwlxaupez7m5ntsqddordlj3prjc7wotngyqikjgvlme
+contracts: []
 protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 - valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni

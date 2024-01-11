@@ -80,7 +80,9 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
-      file_hash_to_strategies_json: [["bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy",["follow_trend_strategy"]]]
+      file_hash_to_strategies_json:
+      - - bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy
+        - - follow_trend_strategy
     class_name: Params
 dependencies:
   beautifulsoup4:

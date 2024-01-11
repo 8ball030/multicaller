@@ -16,7 +16,6 @@ connections:
 - valory/p2p_libp2p_client:0.1.0:bafybeid3xg5k2ol5adflqloy75ibgljmol6xsvzvezebsg7oudxeeolz7e
 contracts:
 - valory/service_registry:0.1.0:bafybeihnvoscfmgmdl44vcoyqtraqdgmy3xqprqkgtuwfav3zdvek3eije
-- valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
 protocols:
 - open_aea/signing:1.0.0:bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi
 - valory/abci:0.1.0:bafybeiaqmp7kocbfdboksayeqhkbrynvlfzsx4uy4x6nohywnmaig4an7u
@@ -31,12 +30,11 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/termination_abci:0.1.0:bafybeiee6z4bftouxd2s54tfymhiyskpyigsifxjwfu37e45tmegqih5za
 - valory/market_data_fetcher_abci:0.1.0:bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeifxsxuaenvzqb3ttebfcuifzq3x5xom53bckyw6txhor2tqodznzy
-- valory/solana_trader_abci:0.1.0:bafybeiczhqpzxymhtywdem2ekpnbff3wgvh3ywsvsypthvbnsfwq4kqm6y
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeihipidzzkobt7p42oxblffksxd45xx2guzlzwxs4j3uea44olltma
+- valory/solana_trader_abci:0.1.0:bafybeihifwxcxf5jltkhrt2a2bxodqeihvxqofae6djlmsuhlpt2yf2qg4
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaa4zauvnw4jymjl2zs2txzsce3ra5unwldaqkj7n2dfuz57orm3y
-- valory/transaction_settlement_abci:0.1.0:bafybeidv5ygaxa66u57fyslqdjkhwexeztrtvknf4hzjbob4ncsqvi6k5m
+- valory/ipfs_package_downloader:0.1.0:bafybeidtm4wiguiat4mn5zupmxjwfl6ejj4uk7omwjeqxaqfhfeo6iduu4
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -147,8 +145,6 @@ models:
       use_termination: ${bool:false}
       on_chain_service_id: ${int:null}
       ipfs_address: ${str:https://gateway.autonolas.tech/ipfs/}
-      file_hash_to_strategies_json: ${list:[["bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy",["follow_trend_strategy"]]]}
-      strategies_kwargs: ${list:[["kwarg_param_1",0.5]]}
       selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
       coingecko_api_key: ''
