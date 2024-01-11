@@ -20,18 +20,18 @@ fingerprint:
   payloads.py: bafybeigehjlqlvfq5qxduyvl236cha3skbuvyjizfqmd4j2u63gzco2hsm
   rounds.py: bafybeiayfphfipcjro6gqjxlogzgqyd34amkya45xxuflyqcgmmts7ntf4
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
-  states/base.py: bafybeie7sujkffj5753v4pkbozigjvtnvztefket42g4lc6kla3olwczja
+  states/base.py: bafybeiadc24incjqb4iaxwpmcizmj664n4bomodv3x3cx74snm3fl2hx54
   states/final_states.py: bafybeidvbd73knju2tllbc2wnr44nmqrbfmshdolo37j6orvqird63hy4i
   states/prepare_swap.py: bafybeibprqnsdfq3l67eihvs4jreavvgipgqozzhdmy2kcsza6kciz6c34
   states/strategy_exec.py: bafybeihhsz5i4jf44xquwtzqh5ke6spvh5sfjqnttzfvipwklivgw3m4we
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
-protocols:
-- valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
-- valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
+protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
+- valory/market_data_fetcher_abci:0.1.0:bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaa4zauvnw4jymjl2zs2txzsce3ra5unwldaqkj7n2dfuz57orm3y
 behaviours:
   main:
     args: {}

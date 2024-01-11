@@ -36,9 +36,9 @@ from packages.valory.skills.reset_pause_abci.behaviours import (
     ResetPauseABCIConsensusBehaviour,
 )
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
-from packages.valory.skills.solana_transaction_settlement_abci.behaviours import (
-    SolanaTransactionSettlementRoundBehaviour,
-)
+# from packages.valory.skills.solana_transaction_settlement_abci.behaviours import (
+#     SolanaTransactionSettlementRoundBehaviour,
+# )
 from packages.valory.skills.market_data_fetcher_abci.behaviours import (
     MarketDataFetcherRoundBehaviour
 )
@@ -58,7 +58,7 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
         *SolanaTraderDecisionMakerRoundBehaviour.behaviours,
         *MarketDataFetcherRoundBehaviour.behaviours,
         *StrategyEvaluatorRoundBehaviour.behaviours,
-        *SolanaTransactionSettlementRoundBehaviour.behaviours,
+        # *SolanaTransactionSettlementRoundBehaviour.behaviours,  # TODO
         *ResetPauseABCIConsensusBehaviour.behaviours,
     }
     background_behaviours_cls = {BackgroundBehaviour}  # type: ignore

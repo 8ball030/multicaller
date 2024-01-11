@@ -28,16 +28,16 @@ import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
 import packages.valory.skills.solana_trader_decision_maker_abci.rounds as SolanaTraderDecisionMakerAbci
 import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
 import packages.valory.skills.strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
-import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
+# import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
 
 abci_app_transition_mapping: AbciAppTransitionMapping = {
     RegistrationAbci.FinishedRegistrationRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
     SolanaTraderDecisionMakerAbci.FinishedSolanaTraderDecisionMakerRound: MarketDataFetcherAbci.FetchMarketDataRound,
     SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
     MarketDataFetcherAbci.FinishedMarketFetchRound: StrategyEvaluatorAbci.StrategyExecRound,
-    StrategyEvaluatorAbci.FinishedStrategyEvaluation: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,
-    SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
-    SolanaTransactionSettlementAbci.FailedRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    # StrategyEvaluatorAbci.FinishedStrategyEvaluation: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,   # TODO
+    # SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,    # TODO
+    # SolanaTransactionSettlementAbci.FailedRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,    # TODO
     ResetAndPauseAbci.FinishedResetAndPauseRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
     ResetAndPauseAbci.FinishedResetAndPauseErrorRound: RegistrationAbci.RegistrationRound,
 }
@@ -48,7 +48,7 @@ SolanaTraderAbciApp = chain(
         SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerAbciApp,
         MarketDataFetcherAbci.MarketDataFetcherAbciApp,
         StrategyEvaluatorAbci.StrategyEvaluatorAbciApp,
-        SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,
+        # SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,  # TODO
         ResetAndPauseAbci.ResetPauseAbciApp,
     ),
     abci_app_transition_mapping,
