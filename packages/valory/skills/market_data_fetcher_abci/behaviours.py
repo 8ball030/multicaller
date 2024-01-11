@@ -143,7 +143,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         # Get the market data for each token
         for token_data in self.params.token_symbol_whitelist:
-            token_id = token_data.get("coingecko", None)
+            token_id = token_data.get("coingecko_id", None)
 
             if not token_id:
                 self.context.logger.error(
@@ -164,19 +164,20 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
             self.context.logger.info(f"Succesfully fecthed market for {token_id}")
 
-            # We use Jupiter symbol as the market key
-            markets[token_data["jupiter"]] = response_json["prices"]
+            markets[token_data["address"]] = response_json["prices"]
 
         # Send to IPFS
-        data_hash = yield from self.send_to_ipfs(
-            filename=self.from_data_dir(MARKETS_FILE_NAME),
-            obj=markets,
-            filetype=SupportedFiletype.JSON,
-        )
+        data_hash = None
+
+        if markets:
+            data_hash = yield from self.send_to_ipfs(
+                filename=self.from_data_dir(MARKETS_FILE_NAME),
+                obj=markets,
+                filetype=SupportedFiletype.JSON,
+            )
+            self.context.logger.info(f"Market file stored in IPFS. Hash is {data_hash}")
 
         # TODO: handle data_hash=None
-        self.context.logger.info(f"Market file stored in IPFS. Hash is {data_hash}")
-
         return data_hash
 
 
