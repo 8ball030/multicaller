@@ -147,11 +147,6 @@ models:
       average_block_time: ${int:5}
       abt_error_mult: ${int:5}
       ipfs_address: ${str:https://gateway.autonolas.tech/ipfs/}
-      policy_epsilon: ${float:0.1}
-      policy_store_path: ${str:/data/}
-      agent_balance_threshold: ${int:10000000000000000}
-      tool_punishment_multiplier: ${int:1}
-      contract_timeout: ${float:300.0}
       file_hash_to_strategies_json: ${list:[["bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy",["follow_trend_strategy"]]]}
       strategies_kwargs: ${list:[["kwarg_param_1",0.5]]}
       selected_strategy: follow_trend_strategy
