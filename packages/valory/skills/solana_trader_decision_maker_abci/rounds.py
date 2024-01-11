@@ -146,6 +146,8 @@ class SolanaTraderDecisionMakerAbciApp(
         SolanaTraderDecisionMakerRound: set()
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
-        FinishedSolanaTraderDecisionMakerRound: set(),
+        FinishedSolanaTraderDecisionMakerRound: {
+            get_name(SynchronizedData.selected_strategy)
+        },
         FailedSolanaTraderDecisionMakerRound: set(),
     }

@@ -105,5 +105,5 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
         FetchMarketDataRound: set(),
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
-        FinishedMarketFetchRound: set(),
+        FinishedMarketFetchRound: {get_name(SynchronizedData.data_hash)},
     }

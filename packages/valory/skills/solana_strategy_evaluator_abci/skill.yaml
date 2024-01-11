@@ -18,7 +18,7 @@ fingerprint:
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
   models.py: bafybeibba3qsrculu6acroakxppc6lfyhk6gbcxihfcpsnfwivrepnxddu
   payloads.py: bafybeigehjlqlvfq5qxduyvl236cha3skbuvyjizfqmd4j2u63gzco2hsm
-  rounds.py: bafybeib5y4guqcyxxrf3rrx73n7neostucb3xitqhvu4mtcwl4xtijoqbu
+  rounds.py: bafybeiepd7ljsct37ljq5vdqvetjzlm23taajln27v7jos5yqtrhmqsnyy
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
   states/base.py: bafybeih54jo4ulmym6sukpwutgajikhdbcwlme7n5mtf3e2yx27uxhijua
   states/final_states.py: bafybeidvbd73knju2tllbc2wnr44nmqrbfmshdolo37j6orvqird63hy4i
@@ -30,8 +30,8 @@ contracts: []
 protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
-- valory/market_data_fetcher_abci:0.1.0:bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeibjpjpa6t2obbmg6eqa6u4uhnf2qh7e5kt2fvq5dijyiac6tlb6ia
+- valory/market_data_fetcher_abci:0.1.0:bafybeiee2uhhay4mflvt5n2g75sv43bvciiemwxd5ago4rosp3pdqvjotm
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeidzf5mfrsuiycupewbthohrtnspmkukt6g4rathqx37lienrtwnau
 behaviours:
   main:
     args: {}

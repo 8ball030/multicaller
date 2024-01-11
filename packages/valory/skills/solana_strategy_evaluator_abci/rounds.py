@@ -95,7 +95,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
         # TODO replace with `most_voted_instruction_set`
-        # SwapTxPreparedRound: {get_name(SynchronizedData.most_voted_tx_hash)},
+        SwapTxPreparedRound: set(),  # TODO: {get_name(SynchronizedData.most_voted_tx_hash)},
         TxPreparationFailed: set(),
         HodlRound: set(),
     }

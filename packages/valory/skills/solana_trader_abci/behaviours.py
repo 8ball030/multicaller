@@ -61,4 +61,3 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
         # *SolanaTransactionSettlementRoundBehaviour.behaviours,  # TODO
         *ResetPauseABCIConsensusBehaviour.behaviours,
     }
-    background_behaviours_cls = {BackgroundBehaviour}  # type: ignore
