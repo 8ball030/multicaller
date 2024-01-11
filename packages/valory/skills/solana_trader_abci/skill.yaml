@@ -9,10 +9,10 @@ fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
   behaviours.py: bafybeihe7ylmswgpkmszw43f2mxxtmklfd6e5ctd6eielmk3s2bvzv6gqi
-  composition.py: bafybeienpjy2ml6ni6m6nfcszttayqoejp6xrtypt4d6tfxntsgnwlfqpy
+  composition.py: bafybeiennj4ddoaoov7p43iipqbsfohutnxudl6u4pvfw4eimewpybedma
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
-  handlers.py: bafybeihlupmxu5mijro2id7fc62iad72ng57qv7qblcgkpgklyaap7uonq
-  models.py: bafybeibzzvzbsinohefl7zyenzken6qh7tuq3paj7ztljpdzcjlc7lbpyi
+  handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
+  models.py: bafybeidjcgy7i6ajh4viv6b7d3y54ixzui5n6wxn6wopqqj3na77qb7e2e
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -23,8 +23,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaa4zauvnw4jymjl2zs2txzsce3ra5unwldaqkj7n2dfuz57orm3y
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeifqzbif4bu5dfxb7wkybbdktqypdkmbxnuivb5vhnx6qmi75yuz6m
-- valory/strategy_evaluator_abci:0.1.0:bafybeifqzbif4bu5dfxb7wkybbdktqypdkmbxnuivb5vhnx6qmi75yuz6m
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeidjzbszdb57noxjpkol4mwjarhe5wejls6qcx4q5vg2ngm72cdtca
 behaviours:
   main:
     args: {}
