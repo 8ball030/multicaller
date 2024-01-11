@@ -20,6 +20,7 @@
 """This module contains the transaction payloads of the MarketDataFetcherAbciApp."""
 
 from dataclasses import dataclass
+from typing import Optional
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
@@ -28,4 +29,4 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 class FetchMarketDataPayload(BaseTxPayload):
     """Represent a transaction payload for the FetchMarketDataRound."""
 
-    data_hash: str
+    data_hash: Optional[str]

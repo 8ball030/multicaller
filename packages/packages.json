@@ -1,7 +1,11 @@
 {
     "dev": {
-        "agent/valory/solana_trader/0.1.0": "bafybeid75avdmbe5kpz4ngxtqqebwh57km4djvd4frefoufugjdmyd3p5e",
-        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeifdf6uoscrgvlgqceqcph2pgoygobznw6hbodpav7lubbqsyh4kby"
+        "agent/valory/solana_trader/0.1.0": "bafybeichbkldp723epgba6omdffi6kwpfznjaczjh5qdzrdg2u3qjdvooy",
+        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiagjw3cpz4tjtej5miutsdidsy5civ2ghsxqb3rdxgnk2imbbcxim",
+        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeif63glyctlc7h2bwaof5zyhup36qosdxa57ktfihkrs7moh27vusu",
+        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeidpsbv2tqnclzlrh6v7ejezuzy4fjgf5wlunzr7czkd24qxo7mug4",
+        "skill/valory/solana_trader_abci/0.1.0": "bafybeihgbgidhetlpxpss24ajry4p4sswbmfc4extsehggnvwqsb5dtnoa",
+        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeigdmrqvnrntnnl3y7nq54fwe6ygkxj7u5s2rjfpoovy6rpq2nwd3a"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeie7xyems76v5b4wc2lmaidcujizpxfzjnnwdeokmhje53g7ym25ii",

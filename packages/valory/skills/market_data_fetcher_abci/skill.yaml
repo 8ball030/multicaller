@@ -6,27 +6,20 @@ description: The scaffold skill is a scaffold for your own skill implementation.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeibpedc7gv7ki657ilbzayncztkrikgryovnh4hz4b5ih2wgjllc6u
-  behaviours.py: bafybeih4gshuqeb2qgg6anwmkaj6sp7zzf4gnukglvsugfh5jqsecbgn7u
+  __init__.py: bafybeih2dsi3e5ax36ooryzjkeoprkeqif3sguc4h63ldx6clkhmdsztka
+  behaviours.py: bafybeicmhfo6crbjpr3znyhowo575aom7wdrq26xyjmivhmzb5kds7boni
   dialogues.py: bafybeigyppu2yxzqx5gvbmcm4g653wkjjxlsancbio53xmdfu3wizh3fty
-  fsm_specification.yaml: bafybeibyzd6cz6t3xlkb3kv5x37vmop2h7yl6rkn4lufby6nzdatvpebyy
+  fsm_specification.yaml: bafybeiauahejwncqkmycifhv46zp26fqhyspw5egwq2odeg7p2ztwffsky
   handlers.py: bafybeifkugrofhi6ers2ovvbva6gqnnkrarvuwr5qspun6ndids5vxdzxq
-  models.py: bafybeidp4ga335wpieneuaph5j73eudu3ckfsemcrsrx4ylvtcr3gl7obe
-  payloads.py: bafybeigh7kll4u6n5nt3h74z35marjvhhyhbzjh6hcuhtfzmb2bmjxhdla
-  rounds.py: bafybeifgb7vmg5a2vg4bwj45d7tj7edlqcazg2ejbvyzz55khskhn4jk3y
-  tests/__init__.py: bafybeifigp64li3j3yidpan5arc27etm3jytadjsckjaidrem57hst73ry
-  tests/test_behaviours.py: bafybeih2sjtb5udmbfwjgvova7gqi3weerj5cjw76r42bsuithdvr6wace
-  tests/test_dialogues.py: bafybeif747zq3lfpifshwxfpn74a6dlageunu4a6ysskg56sf6qceh4nti
-  tests/test_handlers.py: bafybeiay26cua76qpkjihodejtjno2mgabx6dhqd6pptxctb7afj6w4gnu
-  tests/test_models.py: bafybeieywxlkyzfwjwfsmpwv2bmtxkswl7om3m7bqbiv23wk2wdqizuucq
-  tests/test_payloads.py: bafybeih6pssna4lte7cl4sfdfoocznvx2kovvgz3bzc263iqja77ittnsa
-  tests/test_rounds.py: bafybeicqtblenqk5eson5trkzd4bgmdvcggdbyhftjdlwx7e7wmehzdg7a
+  models.py: bafybeicdax7uh5mw4u5n3b2lkdy7bq3vf5iwryjvk3hjlman64az5mmh6q
+  payloads.py: bafybeif46l2zd4ixsapeerpv2lfh4zyu4rzkfbgbh44nrndlzusqthtvie
+  rounds.py: bafybeifqyflszcjrrgopdwddt6ufmr3skdx43rnpgcrwnva7osu6vxjmny
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
+- valory/abstract_round_abci:0.1.0:bafybeicrzndcdbue34yxwwb4hmmdhgzw4owcdcdag3ifj6thpx5wie3dp4
 behaviours:
   main:
     args: {}
@@ -127,8 +120,8 @@ models:
       tx_timeout: 10.0
       validate_timeout: 1205
       token_symbol_whitelist: []
-      coingecko_api_key: ""
-      coingecko_market_endpoint: "https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"
+      coingecko_api_key: ''
+      coingecko_market_endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
     class_name: Params
   requests:
     args: {}

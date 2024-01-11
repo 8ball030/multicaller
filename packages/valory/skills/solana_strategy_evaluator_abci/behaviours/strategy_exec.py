@@ -123,11 +123,11 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             token_data = yield from self.get_from_ipfs(
                 self.synchronized_data.data_hash, SupportedFiletype.JSON
             )
-            swaps = self.get_swaps(token_data)
+            swaps = self.get_swaps(token_data)  # type: ignore
             swaps_hash = None
             if len(swaps) > 0:
-                swaps_hash = self.send_to_ipfs(
-                    self.swap_decision_filepath,
+                swaps_hash = yield from self.send_to_ipfs(
+                    str(self.swap_decision_filepath),
                     swaps,
                     filetype=SupportedFiletype.JSON,
                 )

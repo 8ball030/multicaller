@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2023 Valory AG
+#   Copyright 2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -18,8 +18,7 @@
 # ------------------------------------------------------------------------------
 
 """This package contains a scaffold of a handler."""
-import threading
-from typing import Any, Dict, List, cast
+from typing import cast
 
 from aea.protocols.base import Message
 from aea.skills.base import Handler
