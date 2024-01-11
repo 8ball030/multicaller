@@ -51,7 +51,6 @@ from packages.valory.skills.solana_trader_decision_maker_abci.models import (
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
 )
-from packages.valory.skills.termination_abci.models import TerminationParams
 
 
 SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
@@ -91,6 +90,5 @@ class Params(
     SolanaTraderDecisionMakerParams,
     MarketDataFetcherParams,
     StrategyEvaluatorParams,
-    TerminationParams,
 ):
     """A model to represent params for multiple abci apps."""
