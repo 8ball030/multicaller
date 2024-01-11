@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the shared state for the abci skill of Mech."""
+"""This module contains the shared state for the skill."""
 from collections import defaultdict
 from typing import Any, Callable, Dict, List, cast
 

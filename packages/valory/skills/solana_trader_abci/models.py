@@ -24,7 +24,6 @@ from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
 from packages.valory.skills.abstract_round_abci.models import Requests as BaseRequests
-from packages.valory.skills.solana_trader_decision_maker_abci.models import SolanaTraderDecisionMakerParams
 from packages.valory.skills.solana_trader_decision_maker_abci.models import (
     SharedState as BaseSharedState,
 )

@@ -43,7 +43,7 @@ class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             payload = SolanaTraderDecisionMakerPayload(
-                self.context.agent_address, "contents", self.context.selected_strategy
+                self.context.agent_address, "contents", self.context.params.selected_strategy
             )
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():

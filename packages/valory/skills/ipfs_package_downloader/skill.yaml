@@ -7,10 +7,10 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiaqd27il3osn4novyzipdtql4p36mnrskk2dqdsqthgjnb4gqixii
-  behaviours.py: bafybeiegp3447dfmqtujeh6werwasdh6o3j32wh3atgbaqc5xzxos73dci
+  behaviours.py: bafybeidt5cmufkaickldjoubstdxqhhvz6ru57jazeofkcbm52rfu2r26a
   dialogues.py: bafybeibdxvhpzzqn4qa7us6cpkmtliwl7qziodt2srnicrdamfcev2mumi
   handlers.py: bafybeifcnlb2no2uilzlgjcnr3x7wyhlf53ccoiscj5yoluor7qc4t5p2u
-  models.py: bafybeietyvx47mtmonbjab357elk4jjr4tvsvpudd5uexhcroiw32df434
+  models.py: bafybeiaxzkzqr2korlsd3ebdfdoabwmfgkwml733eku36mqbffyjo75izm
   utils/__init__.py: bafybeige5xuo32v4dykt6shggs452eliha5e5qzci5dwr6uowash3fq23q
   utils/ipfs.py: bafybeihjb237abhcjupmmyswvfk7xmzgx3d4iufixes7v3yjmlycnca4xm
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
@@ -64,6 +64,7 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
+      selected_strategy: follow_trend_strategy
       file_hash_to_strategies_json:
       - - bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy
         - - follow_trend_strategy
