@@ -18,22 +18,20 @@ fingerprint:
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
   models.py: bafybeibba3qsrculu6acroakxppc6lfyhk6gbcxihfcpsnfwivrepnxddu
   payloads.py: bafybeigehjlqlvfq5qxduyvl236cha3skbuvyjizfqmd4j2u63gzco2hsm
-  rounds.py: bafybeiayfphfipcjro6gqjxlogzgqyd34amkya45xxuflyqcgmmts7ntf4
+  rounds.py: bafybeiepd7ljsct37ljq5vdqvetjzlm23taajln27v7jos5yqtrhmqsnyy
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
-  states/base.py: bafybeic7m6s47sue7a5ykhene4ki344bkiz67pa6gjhpvz7wr7m6jzsgyy
+  states/base.py: bafybeih54jo4ulmym6sukpwutgajikhdbcwlme7n5mtf3e2yx27uxhijua
   states/final_states.py: bafybeidvbd73knju2tllbc2wnr44nmqrbfmshdolo37j6orvqird63hy4i
-  states/prepare_swap.py: bafybeibprqnsdfq3l67eihvs4jreavvgipgqozzhdmy2kcsza6kciz6c34
+  states/prepare_swap.py: bafybeiainhgineoi5qeoac3pdhuuw4kx5vdpizy2k25i7a53gc2q7bu2pi
   states/strategy_exec.py: bafybeihhsz5i4jf44xquwtzqh5ke6spvh5sfjqnttzfvipwklivgw3m4we
 fingerprint_ignore_patterns: []
 connections: []
-contracts:
-- valory/gnosis_safe:0.1.0:bafybeiegkl6zrbvlbpwmoziw4hfkocjfqdqphkmpgow7ovsmv7bwa3f4pe
-protocols:
-- valory/contract_api:1.0.0:bafybeialhbjvwiwcnqq3ysxcyemobcbie7xza66gaofcvla5njezkvhcka
-- valory/ledger_api:1.0.0:bafybeige5agrztgzfevyglf7mb4o7pzfttmq4f6zi765y4g2zvftbyowru
+contracts: []
+protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeicrzndcdbue34yxwwb4hmmdhgzw4owcdcdag3ifj6thpx5wie3dp4
-- valory/transaction_settlement_abci:0.1.0:bafybeifpnkwgwpzz6uwrvfgurm26allr6shjfbp7bfbrxwy64sw3nf3fsa
+- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
+- valory/market_data_fetcher_abci:0.1.0:bafybeiee2uhhay4mflvt5n2g75sv43bvciiemwxd5ago4rosp3pdqvjotm
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeicn5czkwsowy5jn4u6zcpmarh3lnrktlkx2vodlg5owzrsfjtxy7q
 behaviours:
   main:
     args: {}

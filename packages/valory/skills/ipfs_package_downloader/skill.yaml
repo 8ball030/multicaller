@@ -7,48 +7,32 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiaqd27il3osn4novyzipdtql4p36mnrskk2dqdsqthgjnb4gqixii
-  behaviours.py: bafybeiegp3447dfmqtujeh6werwasdh6o3j32wh3atgbaqc5xzxos73dci
+  behaviours.py: bafybeidt5cmufkaickldjoubstdxqhhvz6ru57jazeofkcbm52rfu2r26a
   dialogues.py: bafybeibdxvhpzzqn4qa7us6cpkmtliwl7qziodt2srnicrdamfcev2mumi
   handlers.py: bafybeifcnlb2no2uilzlgjcnr3x7wyhlf53ccoiscj5yoluor7qc4t5p2u
-  models.py: bafybeietyvx47mtmonbjab357elk4jjr4tvsvpudd5uexhcroiw32df434
+  models.py: bafybeiaxzkzqr2korlsd3ebdfdoabwmfgkwml733eku36mqbffyjo75izm
   utils/__init__.py: bafybeige5xuo32v4dykt6shggs452eliha5e5qzci5dwr6uowash3fq23q
   utils/ipfs.py: bafybeihjb237abhcjupmmyswvfk7xmzgx3d4iufixes7v3yjmlycnca4xm
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
 fingerprint_ignore_patterns: []
 connections:
-- valory/ledger:0.19.0:bafybeia47rr37ianvwsh77tjjpv3nwif5sywhhy2fbdshnz4a2icwln76a
-- valory/ipfs:0.1.0:bafybeigjtca6b5wwiobl37es3wllzt6ai3qef5gqxzfy5fmmc65jkbnec4
-- valory/p2p_libp2p_client:0.1.0:bafybeihge56dn3xep2dzomu7rtvbgo4uc2qqh7ljl3fubqdi2lq44gs5lq
+- valory/ipfs:0.1.0:bafybeifkrynw6jjg7bs7nw535m5bcrav5qab27vr5ktgfuvf65dpazc4ci
 contracts: []
 protocols:
-- valory/contract_api:1.0.0:bafybeialhbjvwiwcnqq3ysxcyemobcbie7xza66gaofcvla5njezkvhcka
-- valory/ledger_api:1.0.0:bafybeige5agrztgzfevyglf7mb4o7pzfttmq4f6zi765y4g2zvftbyowru
-- valory/ipfs:0.1.0:bafybeiedxeismnx3k5ty4mvvhlqideixlhqmi5mtcki4lxqfa7uqh7p33u
+- valory/ipfs:0.1.0:bafybeiftxi2qhreewgsc5wevogi7yc5g6hbcbo4uiuaibauhv3nhfcdtvm
 skills: []
 behaviours:
   ipfs_package_downloader:
     args: {}
     class_name: IpfsPackageDownloader
 handlers:
-  contract_handler:
-    args: {}
-    class_name: ContractHandler
   ipfs_handler:
     args: {}
     class_name: IpfsHandler
-  ledger_handler:
-    args: {}
-    class_name: LedgerHandler
 models:
-  contract_dialogues:
-    args: {}
-    class_name: ContractDialogues
   ipfs_dialogues:
     args: {}
     class_name: IpfsDialogues
-  ledger_dialogues:
-    args: {}
-    class_name: LedgerDialogues
   params:
     args:
       agent_index: 0
@@ -80,6 +64,9 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
+      file_hash_to_strategies_json:
+      - - bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy
+        - - follow_trend_strategy
     class_name: Params
 dependencies:
   beautifulsoup4:
