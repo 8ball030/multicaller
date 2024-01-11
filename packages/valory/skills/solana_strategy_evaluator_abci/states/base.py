@@ -33,7 +33,7 @@ from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
 )
 
 # TODO replace with Solana tx settlement
-from packages.valory.skills.transaction_settlement_abci.rounds import (
+from packages.valory.skills.solana_transaction_settlement_abci.rounds import (
     SynchronizedData as TxSettlementSyncedData,
 )
 

@@ -12,13 +12,13 @@ packages/valory/skills/abstract_abci/
 packages/valory/skills/abstract_round_abci/
 packages/valory/skills/registration_abci/
 packages/valory/skills/reset_pause_abci/
-packages/valory/skills/transaction_settlement_abci/
+packages/valory/skills/solana_transaction_settlement_abci/
 packages/valory/skills/termination_abci/
 
-packages/valory/contracts/gnosis_safe_proxy_factory/
 packages/valory/contracts/multisend/
 packages/valory/contracts/service_registry/
 packages/valory/contracts/gnosis_safe/
+packages/valory/contracts/gnosis_safe_proxy_factory/
 
 packages/valory/protocols/abci
 packages/valory/protocols/acn

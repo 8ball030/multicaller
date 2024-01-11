@@ -35,6 +35,7 @@ skills:
 - valory/market_data_fetcher_abci:0.1.0:bafybeidpsbv2tqnclzlrh6v7ejezuzy4fjgf5wlunzr7czkd24qxo7mug4
 - valory/solana_strategy_evaluator_abci:0.1.0:bafybeif63glyctlc7h2bwaof5zyhup36qosdxa57ktfihkrs7moh27vusu
 - valory/solana_trader_abci:0.1.0:bafybeihgbgidhetlpxpss24ajry4p4sswbmfc4extsehggnvwqsb5dtnoa
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeihgbgidhetlpxpss24ajry4p4sswbmfc4extsehggnvwqsb5dtnoa
 default_ledger: ethereum
 required_ledgers:
 - ethereum
