@@ -18,13 +18,13 @@ connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeicrzndcdbue34yxwwb4hmmdhgzw4owcdcdag3ifj6thpx5wie3dp4
-- valory/registration_abci:0.1.0:bafybeihjlapvviakobxg7aa5qubgqoz6xurlhu7xxtnrg5ah3ag2qj626i
-- valory/reset_pause_abci:0.1.0:bafybeibnwjcjx4lluf4cwb6es5peelu3gm7vrzlieygrzpbjlubxpvbvzy
-- valory/termination_abci:0.1.0:bafybeifdtxgldw33kwvsavcituzewwbr6iqfcsgk5qouqfhpwdrivyyyom
-- valory/market_data_fetcher_abci:0.1.0:bafybeidpsbv2tqnclzlrh6v7ejezuzy4fjgf5wlunzr7czkd24qxo7mug4
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiagjw3cpz4tjtej5miutsdidsy5civ2ghsxqb3rdxgnk2imbbcxim
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeif63glyctlc7h2bwaof5zyhup36qosdxa57ktfihkrs7moh27vusu
+- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
+- valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
+- valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
+- valory/termination_abci:0.1.0:bafybeiee6z4bftouxd2s54tfymhiyskpyigsifxjwfu37e45tmegqih5za
+- valory/market_data_fetcher_abci:0.1.0:bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaa4zauvnw4jymjl2zs2txzsce3ra5unwldaqkj7n2dfuz57orm3y
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeifxsxuaenvzqb3ttebfcuifzq3x5xom53bckyw6txhor2tqodznzy
 behaviours:
   main:
     args: {}
@@ -117,6 +117,7 @@ models:
       round_timeout_seconds: 30.0
       service_id: impact_evaluator
       service_registry_address: null
+      agent_registry_address: null
       setup:
         all_participants: []
         safe_contract_address: '0x0000000000000000000000000000000000000000'

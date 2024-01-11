@@ -1,11 +1,11 @@
 {
     "dev": {
-        "agent/valory/solana_trader/0.1.0": "bafybeichbkldp723epgba6omdffi6kwpfznjaczjh5qdzrdg2u3qjdvooy",
-        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiagjw3cpz4tjtej5miutsdidsy5civ2ghsxqb3rdxgnk2imbbcxim",
-        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeif63glyctlc7h2bwaof5zyhup36qosdxa57ktfihkrs7moh27vusu",
-        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeidpsbv2tqnclzlrh6v7ejezuzy4fjgf5wlunzr7czkd24qxo7mug4",
-        "skill/valory/solana_trader_abci/0.1.0": "bafybeihgbgidhetlpxpss24ajry4p4sswbmfc4extsehggnvwqsb5dtnoa",
-        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeigdmrqvnrntnnl3y7nq54fwe6ygkxj7u5s2rjfpoovy6rpq2nwd3a"
+        "agent/valory/solana_trader/0.1.0": "bafybeicrafvwiqcgskar44hjx57mdlr6wuaga6hwgwhtfwz2mekpggpfne",
+        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiaa4zauvnw4jymjl2zs2txzsce3ra5unwldaqkj7n2dfuz57orm3y",
+        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeifxsxuaenvzqb3ttebfcuifzq3x5xom53bckyw6txhor2tqodznzy",
+        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri",
+        "skill/valory/solana_trader_abci/0.1.0": "bafybeiczhqpzxymhtywdem2ekpnbff3wgvh3ywsvsypthvbnsfwq4kqm6y",
+        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeidsxmqnbez362nlwv5mum3jjpjyy7k77v54krisag5yrntoeeymni"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
@@ -29,6 +29,7 @@
         "contract/valory/gnosis_safe/0.1.0": "bafybeiagwlfdlebwlxaupez7m5ntsqddordlj3prjc7wotngyqikjgvlme",
         "contract/valory/service_registry/0.1.0": "bafybeihnvoscfmgmdl44vcoyqtraqdgmy3xqprqkgtuwfav3zdvek3eije",
         "contract/valory/multisend/0.1.0": "bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y",
-        "skill/valory/termination_abci/0.1.0": "bafybeiee6z4bftouxd2s54tfymhiyskpyigsifxjwfu37e45tmegqih5za"
+        "skill/valory/termination_abci/0.1.0": "bafybeiee6z4bftouxd2s54tfymhiyskpyigsifxjwfu37e45tmegqih5za",
+        "skill/valory/transaction_settlement_abci/0.1.0": "bafybeidv5ygaxa66u57fyslqdjkhwexeztrtvknf4hzjbob4ncsqvi6k5m"
     }
 }
