@@ -135,7 +135,6 @@ class SolanaTraderDecisionMakerAbciApp(
         FinishedSolanaTraderDecisionMakerRound: {},
         FailedSolanaTraderDecisionMakerRound: {},
     }
-    cross_period_persisted_keys = frozenset()
     final_states: Set[AppState] = {
         FinishedSolanaTraderDecisionMakerRound,
         FailedSolanaTraderDecisionMakerRound,
