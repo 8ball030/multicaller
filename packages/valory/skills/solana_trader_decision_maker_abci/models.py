@@ -52,4 +52,3 @@ class Params(BaseParams):
         """Initialize the parameters' object."""
         self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
         super().__init__(*args, **kwargs)
-

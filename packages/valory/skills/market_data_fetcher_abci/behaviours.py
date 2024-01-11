@@ -142,7 +142,9 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         }
 
         # Get the market data for each token
-        import pdb;pdb.set_trace()
+        import pdb
+
+        pdb.set_trace()
         for token_data in self.params.token_symbol_whitelist:
             token_id = token_data.get("coingecko", None)
 
