@@ -44,3 +44,6 @@ solana_trader_service/
 ./solana_trader/
 
 packages/valory/skills/transaction_settlement_abci/
+
+solana_trader/
+!/packages/valory/agents/solana_trader/
