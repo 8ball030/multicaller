@@ -41,5 +41,5 @@ class PrepareSwapRound(CollectSameUntilThresholdRound):
     none_event = Event.TX_PREPARATION_FAILED
     no_majority_event = Event.NO_MAJORITY
     # TODO replace with `most_voted_instruction_set` when solana tx settlement is ready
-    selection_key = get_name(SynchronizedData.most_voted_tx_hash)
+    # selection_key = get_name(SynchronizedData.most_voted_tx_hash)
     collection_key = get_name(SynchronizedData.participant_to_instructions)

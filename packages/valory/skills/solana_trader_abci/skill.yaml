@@ -8,7 +8,7 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
-  behaviours.py: bafybeihe7ylmswgpkmszw43f2mxxtmklfd6e5ctd6eielmk3s2bvzv6gqi
+  behaviours.py: bafybeia5w4zkwo6kxstahuciekdq6hfet2hk6dghctdbakr3f7ckahbqzu
   composition.py: bafybeiennj4ddoaoov7p43iipqbsfohutnxudl6u4pvfw4eimewpybedma
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
@@ -22,8 +22,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeiczwbxpsrtupdqapujzzuzf5naedbp3aymf24ggsysglbth2t6dri
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaa4zauvnw4jymjl2zs2txzsce3ra5unwldaqkj7n2dfuz57orm3y
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeidjzbszdb57noxjpkol4mwjarhe5wejls6qcx4q5vg2ngm72cdtca
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeibjpjpa6t2obbmg6eqa6u4uhnf2qh7e5kt2fvq5dijyiac6tlb6ia
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeiac5xnxkb4zlkfcjgkimioyo7wltpuf32wotficjwqgm2y3vvdhq4
 behaviours:
   main:
     args: {}

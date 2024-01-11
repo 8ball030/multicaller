@@ -25,7 +25,7 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.behaviours.round_behaviour import (
+from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import (
     SolanaTraderDecisionMakerRoundBehaviour,
 )
 from packages.valory.skills.registration_abci.behaviours import (
@@ -42,8 +42,8 @@ from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAb
 from packages.valory.skills.market_data_fetcher_abci.behaviours import (
     MarketDataFetcherRoundBehaviour
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours import (
-    StrategyEvaluatorRoundBehaviour
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.round_behaviour import (
+    AgentStrategyEvaluatorRoundBehaviour
 )
 
 
@@ -57,7 +57,7 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
         *AgentRegistrationRoundBehaviour.behaviours,
         *SolanaTraderDecisionMakerRoundBehaviour.behaviours,
         *MarketDataFetcherRoundBehaviour.behaviours,
-        *StrategyEvaluatorRoundBehaviour.behaviours,
+        *AgentStrategyEvaluatorRoundBehaviour.behaviours,
         # *SolanaTransactionSettlementRoundBehaviour.behaviours,  # TODO
         *ResetPauseABCIConsensusBehaviour.behaviours,
     }
