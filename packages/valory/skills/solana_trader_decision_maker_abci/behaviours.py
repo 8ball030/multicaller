@@ -19,14 +19,10 @@
 
 """This module contains the behaviours for the 'solana_trader_decision_maker_abci' skill."""
 
-import json
-import os.path
 from abc import ABC
-from json import JSONDecodeError
-from typing import Any, Generator, Iterator, List, Set, Tuple, Type
+from typing import Generator, Set, Type
 
-from aea.helpers.ipfs.base import IPFSHashOnly
-
+from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
 from packages.valory.skills.abstract_round_abci.behaviours import AbstractRoundBehaviour
 from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
@@ -39,11 +35,15 @@ from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
 
 
 class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
+    """SolanaTraderDecisionMakerBehaviour"""
+
+    matching_round: Type[AbstractRound] = SolanaTraderDecisionMakerRound
+
     def async_act(self) -> Generator:
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             payload = SolanaTraderDecisionMakerPayload(
-                self.context.agent_address, "contents", self.context.selected_strategy
+                self.context.agent_address, "contents", self.context.params.selected_strategy
             )
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():

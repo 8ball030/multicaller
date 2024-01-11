@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 #
-#   Copyright 2023 Valory AG
+#   Copyright 2024 Valory AG
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -23,36 +23,24 @@ from packages.valory.skills.abstract_round_abci.abci_app_chain import (
     AbciAppTransitionMapping,
     chain,
 )
-from packages.valory.skills.abstract_round_abci.base import BackgroundAppConfig
 import packages.valory.skills.registration_abci.rounds as RegistrationAbci
 import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
 import packages.valory.skills.solana_trader_decision_maker_abci.rounds as SolanaTraderDecisionMakerAbci
 import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
-import packages.valory.skills.strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
-import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
-from packages.valory.skills.termination_abci.rounds import (
-    BackgroundRound,
-    Event,
-    TerminationAbciApp,
-)
+import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
+# import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
 
 abci_app_transition_mapping: AbciAppTransitionMapping = {
     RegistrationAbci.FinishedRegistrationRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
     SolanaTraderDecisionMakerAbci.FinishedSolanaTraderDecisionMakerRound: MarketDataFetcherAbci.FetchMarketDataRound,
     SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
-    MarketDataFetcherAbci.FinishedMarketFetchRound: StrategyEvaluatorAbci.StrategyExecRound,
-    StrategyEvaluatorAbci.FinishedStrategyEvaluation: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,
-    SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
-    SolanaTransactionSettlementAbci.FailedRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    MarketDataFetcherAbci.FinishedMarketFetchRound: ResetAndPauseAbci.ResetAndPauseRound,  # TODO: StrategyEvaluatorAbci.StrategyExecRound,
+    # StrategyEvaluatorAbci.FinishedStrategyEvaluation: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,   # TODO
+    # SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,    # TODO
+    # SolanaTransactionSettlementAbci.FailedRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,    # TODO
     ResetAndPauseAbci.FinishedResetAndPauseRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
     ResetAndPauseAbci.FinishedResetAndPauseErrorRound: RegistrationAbci.RegistrationRound,
 }
-
-termination_config = BackgroundAppConfig(
-    round_cls=BackgroundRound,
-    start_event=Event.TERMINATE,
-    abci_app=TerminationAbciApp,
-)
 
 SolanaTraderAbciApp = chain(
     (
@@ -60,8 +48,8 @@ SolanaTraderAbciApp = chain(
         SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerAbciApp,
         MarketDataFetcherAbci.MarketDataFetcherAbciApp,
         StrategyEvaluatorAbci.StrategyEvaluatorAbciApp,
-        SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,
+        # SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,  # TODO
         ResetAndPauseAbci.ResetPauseAbciApp,
     ),
     abci_app_transition_mapping,
-).add_background_app(termination_config)
+)

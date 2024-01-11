@@ -20,9 +20,9 @@
 
 """Custom objects for the 'solana_trader_decision_maker_abci' skill."""
 
-from typing import Any, Dict, Iterator, List, Tuple
+from typing import Any
 
-from packages.valory.skills.abstract_round_abci.models import ApiSpecs, BaseParams
+from packages.valory.skills.abstract_round_abci.models import BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
@@ -45,7 +45,7 @@ class SharedState(BaseSharedState):
     abci_app_cls = SolanaTraderDecisionMakerAbciApp
 
 
-class SolanaTraderDecisionMakerParams(BaseParams):
+class Params(BaseParams):
     """Market manager's parameters."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -53,6 +53,3 @@ class SolanaTraderDecisionMakerParams(BaseParams):
         self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
         super().__init__(*args, **kwargs)
 
-
-class Params(BaseParams):
-    """Params"""

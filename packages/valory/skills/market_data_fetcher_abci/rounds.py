@@ -20,7 +20,7 @@
 """This package contains the rounds of MarketDataFetcherAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Optional, Set, Tuple
+from typing import Dict, FrozenSet, Set
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
@@ -105,5 +105,5 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
         FetchMarketDataRound: set(),
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
-        FinishedMarketFetchRound: set(),
+        FinishedMarketFetchRound: {get_name(SynchronizedData.data_hash)},
     }

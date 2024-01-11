@@ -2,22 +2,36 @@ name: solana_strategy_evaluator_abci
 author: valory
 version: 0.1.0
 type: skill
-description: This skill is responsible for the execution of the strategy and preparing the swapping transaction.
+description: This skill is responsible for the execution of the strategy and preparing
+  the swapping transaction.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  __init__.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+  README.md: bafybeicuikjki6yvgwmv6sxudjagjb3bhfsnypna36eceza2mzmqnthuiy
+  __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
+  behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
+  behaviours/base.py: bafybeic3axaujaxjayrr5f4oacmxhdnutwet3c7d2ddmac42urvjhdntnu
+  behaviours/prepare_swap_tx.py: bafybeihkh5rctvf5mwckysj3bblhxqxthnbkzookraq44nmazkfxpxnn4u
+  behaviours/round_behaviour.py: bafybeia4xlmutp7ogtbvm444xlml5vcd3igkumonrab3d7u3brrf3u3mb4
+  behaviours/strategy_exec.py: bafybeiffa5oqnuoe2gwonj55jfpoawywwjxjjrup2glnekauhmfzzpc5by
+  dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
+  handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
+  models.py: bafybeibba3qsrculu6acroakxppc6lfyhk6gbcxihfcpsnfwivrepnxddu
+  payloads.py: bafybeigehjlqlvfq5qxduyvl236cha3skbuvyjizfqmd4j2u63gzco2hsm
+  rounds.py: bafybeiepd7ljsct37ljq5vdqvetjzlm23taajln27v7jos5yqtrhmqsnyy
+  states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
+  states/base.py: bafybeih54jo4ulmym6sukpwutgajikhdbcwlme7n5mtf3e2yx27uxhijua
+  states/final_states.py: bafybeidvbd73knju2tllbc2wnr44nmqrbfmshdolo37j6orvqird63hy4i
+  states/prepare_swap.py: bafybeiainhgineoi5qeoac3pdhuuw4kx5vdpizy2k25i7a53gc2q7bu2pi
+  states/strategy_exec.py: bafybeihhsz5i4jf44xquwtzqh5ke6spvh5sfjqnttzfvipwklivgw3m4we
 fingerprint_ignore_patterns: []
 connections: []
-contracts:
-- valory/gnosis_safe:0.1.0:bafybeiegkl6zrbvlbpwmoziw4hfkocjfqdqphkmpgow7ovsmv7bwa3f4pe
-protocols:
-- valory/contract_api:1.0.0:bafybeialhbjvwiwcnqq3ysxcyemobcbie7xza66gaofcvla5njezkvhcka
-- valory/ledger_api:1.0.0:bafybeige5agrztgzfevyglf7mb4o7pzfttmq4f6zi765y4g2zvftbyowru
+contracts: []
+protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeicrzndcdbue34yxwwb4hmmdhgzw4owcdcdag3ifj6thpx5wie3dp4
-- valory/transaction_settlement_abci:0.1.0:bafybeifpnkwgwpzz6uwrvfgurm26allr6shjfbp7bfbrxwy64sw3nf3fsa
+- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
+- valory/market_data_fetcher_abci:0.1.0:bafybeiee2uhhay4mflvt5n2g75sv43bvciiemwxd5ago4rosp3pdqvjotm
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeicn5czkwsowy5jn4u6zcpmarh3lnrktlkx2vodlg5owzrsfjtxy7q
 behaviours:
   main:
     args: {}

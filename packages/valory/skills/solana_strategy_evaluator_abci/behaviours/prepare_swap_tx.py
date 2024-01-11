@@ -39,7 +39,7 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
 
     matching_round = PrepareSwapRound
 
-    def build_swap_tx(self, swap: str):
+    def build_swap_tx(self, swap: str) -> Any:
         """Build instructions for a swap transaction."""
         # TODO
 
@@ -59,7 +59,7 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             swaps = yield from self.get_from_ipfs(
                 self.synchronized_data.swaps_hash, SupportedFiletype.JSON
             )
-            instructions = self.prepare_instructions(swaps)
+            instructions = self.prepare_instructions(swaps)  # type: ignore
             serialized_instructions = None
             if instructions is not None:
                 serialized_instructions = json.dumps(instructions)

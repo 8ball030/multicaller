@@ -6,20 +6,20 @@ description: This skill implements the SolanaTraderDecisionMakerAbci for an AEA.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeie6miwn67uin3bphukmf7qgiifh4xtm42i5v3nuyqxzxtehxsqvcq
-  __init__.py: bafybeigrtedqzlq5mtql2ssjsdriw76ml3666m4e2c3fay6vmyzofl6v6e
-  behaviours.py: bafybeidixvs5z6evcwu2nyiii4n4h7vwdc6xsyevp5wszf7h5sokfu5ryy
-  dialogues.py: bafybeiebofyykseqp3fmif36cqmmyf3k7d2zbocpl6t6wnlpv4szghrxbm
-  handlers.py: bafybeihot2i2yvfkz2gcowvt66wdu6tkjbmv7hsmc4jzt4reqeaiuphbtu
-  models.py: bafybeifmb4cojxesv2lcw6j3pm3yqjpsiuwyxpuexjbz656fpapdqcj2ba
-  payloads.py: bafybeicfymvvtdpkcgmkvthfzmb7dqakepkzslqrz6rcs7nxkz7qq3mrzy
-  rounds.py: bafybeig4767ilvcz6w5xbp42y6ih3av7p4oz4a7tpm2yqmtezrjs5acebe
+  README.md: bafybeidgkgixh2lc4nom362dfunytny5yabi723ddzzkag3kv42cfysqxm
+  __init__.py: bafybeig6wvdheo5qxgpc4wn3oddlfncqkvb2whdxfkbhv754r6f2ed7x3q
+  behaviours.py: bafybeiet7vxew3vpsdjetgrp3atllvkyolujx4gm75cwtviepoifqvg56m
+  dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
+  handlers.py: bafybeicldadey2dleij242fzvk4gp6dmntcnryome3rsaxf2ekbsdgnjbe
+  models.py: bafybeidoxhl5sg3i2zsqplo5zqudtioxtobohpdjk4lgizazc6faltqtki
+  payloads.py: bafybeig3yyjx5gomh6l4bmbn5gnfh2fzyuds3um47h2qaqdqpkrjbvp6hm
+  rounds.py: bafybeibk6gwve3uvyf745jetnknjmondhh2wzgzlg43u3wpewepzqgpqrq
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeicrzndcdbue34yxwwb4hmmdhgzw4owcdcdag3ifj6thpx5wie3dp4
+- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 behaviours:
   main:
     args: {}

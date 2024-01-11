@@ -6,31 +6,24 @@ description: The chained abci for the solana_trader.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeigmhxenrqb2ysjhcm2au2lang4abyny6irkzqqg4dtclz6net6zpy
-  behaviours.py: bafybeibdq5p4zi47nsycpcjs7ouw2fjxqjn7hgbd4aalp7yumdhnmlfufq
-  composition.py: bafybeidqds5nsbwp56cduwmypcu3j4qvufuo7dbyw2xzqhiqed67ax2qsa
-  dialogues.py: bafybeigjknz4qqynbsltjje46gidg4rftsqw6ybjwegz24wetmycutpzh4
-  fsm_specification.yaml: bafybeigmlh4m2ua6alsy4skohxfy4yz7mhoks4lheacugdv3b4qlqghjiy
-  handlers.py: bafybeidkli6fphcmdgwsys4lkyf3fx6fbawet4nt2pnixfypzijhg6b3ze
-  models.py: bafybeiaeczqvmcosk4cer4oq5n7cgbihjgtkdspzporymluuefwyb5irnm
-  tests/__init__.py: bafybeievwzwojvq4aofk5kjpf4jzygfes7ew6s6svc6b6frktjnt3sicce
-  tests/test_behaviours.py: bafybeifkazsevd6vsfaapulouxepez3rl24y3rxgja5zhmj7s323zdjlmq
-  tests/test_dialogues.py: bafybeieaos2byphju6i6xvytppqqcuqqvnpilnflsy73l3wqazzjttbg7m
-  tests/test_handlers.py: bafybeiacfkjcxqw73vk36wmilpq2wmejwyfy4sycosgswgzpq35tfvr2ia
-  tests/test_models.py: bafybeia66e3peyycqutyu3yhshqd6ctolisggrsegagpf5vplwiy53gnum
+  README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
+  __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
+  behaviours.py: bafybeigvff7f2k3mdbbipkcuxgr4lj5dferul7wtyccehdpmurxbwutvka
+  composition.py: bafybeihu2kciiixp52gqu6hbudubwzbz7mw46qipa6mmpqdl555f5cdul4
+  dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
+  handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
+  models.py: bafybeigjvpesrfkfbw7vriwu6ywjeet2obgi3my67ziyutx5dtvbjiiat4
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeiaqcl7h2famylusiffigwem7tevkcsyocdu5xd42jkmgq6kvowzgq
-- valory/registration_abci:0.1.0:bafybeic2ynseiak7jpta7jfwuqwyp453b4p7lolr4wihxmpn633uekv5am
-- valory/reset_pause_abci:0.1.0:bafybeidzajbe3erygeh2xbd6lrjv7nsptznjuzrt24ykgvhgotdeyhfnba
-- valory/termination_abci:0.1.0:bafybeie4zvjfxvdu7qrulmur3chpjz3kpj5m4bjsxvpk4gvj5zbyyayfaa
-- valory/transaction_settlement_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
-- valory/market_data_fetcher_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
-- valory/strategy_evaluator_abci:0.1.0:bafybeiaefgqbs7zsn5xe5kdwrujj7ivygkn3ujpw6crnvi3knvxw75qmja
+- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
+- valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
+- valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
+- valory/market_data_fetcher_abci:0.1.0:bafybeiee2uhhay4mflvt5n2g75sv43bvciiemwxd5ago4rosp3pdqvjotm
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeicn5czkwsowy5jn4u6zcpmarh3lnrktlkx2vodlg5owzrsfjtxy7q
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeicpewuf4nmhig5x5b6ziz57un6ydmbxxsakf26oqrdi2k4omdax4i
 behaviours:
   main:
     args: {}
@@ -51,9 +44,6 @@ handlers:
   ledger_api:
     args: {}
     class_name: LedgerApiHandler
-  llm:
-    args: {}
-    class_name: LlmHandler
   signing:
     args: {}
     class_name: SigningHandler
@@ -115,19 +105,15 @@ models:
       keeper_allowed_retries: 3
       reset_pause_duration: 10
       on_chain_service_id: null
-      points_to_image_hashes: '{"0": "bafybeiabtdl53v2a3irrgrg7eujzffjallpymli763wvhv6gceurfmcemm",
-        "100": "bafybeid46w6yzbehir7ackcnsyuasdkun5aq7jnckt4sknvmiewpph776q", "50000":
-        "bafybeigbxlwzljbxnlwteupmt6c6k7k2m4bbhunvxxa53dc7niuedilnr4", "100000": "bafybeiawxpq4mqckbau3mjwzd3ic2o7ywlhp6zqo7jnaft26zeqm3xsjjy",
-        "150000": "bafybeie6k53dupf7rf6622rzfxu3dmlv36hytqrmzs5yrilxwcrlhrml2m"}'
       request_retry_delay: 1.0
       request_timeout: 10.0
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3
       round_timeout_seconds: 30.0
-      tweet_evaluation_round_timeout: 600.0
       service_id: impact_evaluator
       service_registry_address: null
+      agent_registry_address: null
       setup:
         all_participants: []
         safe_contract_address: '0x0000000000000000000000000000000000000000'
@@ -149,11 +135,18 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
-      multisend_batch_size: 50
       ipfs_address: https://gateway.autonolas.tech/ipfs/
       selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
-      coingecko_api_key: ""
+      coingecko_api_key: ''
+      coingecko_market_endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
+      trading_strategy: strategy_name
+      slippage: 0.05
+      strategies_kwargs:
+      - - extra_1
+        - value
+      - - extra_2
+        - value
     class_name: Params
   randomness_api:
     args:
@@ -166,18 +159,6 @@ models:
       retries: 5
       url: https://drand.cloudflare.com/public/latest
     class_name: RandomnessApi
-  mech_response:
-    args:
-      api_id: mech_response
-      headers:
-        Content-Type: application/json
-      method: GET
-      parameters: {}
-      response_key: result
-      response_type: str
-      retries: 5
-      url: ''
-    class_name: MechResponseSpecs
   requests:
     args: {}
     class_name: Requests
@@ -190,10 +171,7 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
-  twitter_dialogues:
-    args: {}
-    class_name: TwitterDialogues
 dependencies:
   open-aea-cli-ipfs:
-    version: ==1.42.0
+    version: ==1.44.0
 is_abstract: false

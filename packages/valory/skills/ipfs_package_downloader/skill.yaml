@@ -6,61 +6,33 @@ description: A skill used for monitoring and executing tasks.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeidqhvvlnthkbnmrdkdeyjyx2f2ab6z4xdgmagh7welqnh2v6wczx4
-  behaviours.py: bafybeifa72egwarcmfneqmo3ak6wfygjc3i7hplxl6ptafb263vuaey3fm
-  dialogues.py: bafybeid4zxalqdlo5mw4yfbuf34hx4jp5ay5z6chm4zviwu4cj7fudtwca
-  handlers.py: bafybeidbt5ezj74cgfogk3w4uw4si2grlnk5g54veyumw7g5yh6gdscywu
-  models.py: bafybeihgclxctyltuehj2f4fzj26edptqugrrm4phd6ovuulezrqot6qo4
-  utils/__init__.py: bafybeiccdijaigu6e5p2iruwo5mkk224o7ywedc7nr6xeu5fpmhjqgk24e
-  utils/ipfs.py: bafybeidinbdqkidix44ibz5hug7inkcbijooag53gr5mtbaa72tk335uqq
-  utils/task.py: bafybeieuziu7owtk543z3umgmayhjh67klftk7vrhz24l6rlaii5lvkqh4
+  __init__.py: bafybeiaqd27il3osn4novyzipdtql4p36mnrskk2dqdsqthgjnb4gqixii
+  behaviours.py: bafybeidt5cmufkaickldjoubstdxqhhvz6ru57jazeofkcbm52rfu2r26a
+  dialogues.py: bafybeibdxvhpzzqn4qa7us6cpkmtliwl7qziodt2srnicrdamfcev2mumi
+  handlers.py: bafybeifcnlb2no2uilzlgjcnr3x7wyhlf53ccoiscj5yoluor7qc4t5p2u
+  models.py: bafybeiaxzkzqr2korlsd3ebdfdoabwmfgkwml733eku36mqbffyjo75izm
+  utils/__init__.py: bafybeige5xuo32v4dykt6shggs452eliha5e5qzci5dwr6uowash3fq23q
+  utils/ipfs.py: bafybeihjb237abhcjupmmyswvfk7xmzgx3d4iufixes7v3yjmlycnca4xm
+  utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
 fingerprint_ignore_patterns: []
 connections:
-- valory/ledger:0.19.0:bafybeia47rr37ianvwsh77tjjpv3nwif5sywhhy2fbdshnz4a2icwln76a
-- valory/ipfs:0.1.0:bafybeihx7wb5hngjobw2salzqqryrhxvmxfuw7o2npjyqd2talmh2flqeq
-- valory/p2p_libp2p_client:0.1.0:bafybeihge56dn3xep2dzomu7rtvbgo4uc2qqh7ljl3fubqdi2lq44gs5lq
-contracts:
-- valory/agent_mech:0.1.0:bafybeig7zpqhcpt6z4eutedx6prciuq4g7mpadw636zkkcx3ach6oytdry
+- valory/ipfs:0.1.0:bafybeifkrynw6jjg7bs7nw535m5bcrav5qab27vr5ktgfuvf65dpazc4ci
+contracts: []
 protocols:
-- valory/acn_data_share:0.1.0:bafybeih5ydonnvrwvy2ygfqgfabkr47s4yw3uqxztmwyfprulwfsoe7ipq
-- valory/contract_api:1.0.0:bafybeialhbjvwiwcnqq3ysxcyemobcbie7xza66gaofcvla5njezkvhcka
-- valory/ledger_api:1.0.0:bafybeige5agrztgzfevyglf7mb4o7pzfttmq4f6zi765y4g2zvftbyowru
-- valory/default:1.0.0:bafybeifqcqy5hfbnd7fjv4mqdjrtujh2vx3p2xhe33y67zoxa6ph7wdpaq
-- valory/ipfs:0.1.0:bafybeiedxeismnx3k5ty4mvvhlqideixlhqmi5mtcki4lxqfa7uqh7p33u
+- valory/ipfs:0.1.0:bafybeiftxi2qhreewgsc5wevogi7yc5g6hbcbo4uiuaibauhv3nhfcdtvm
 skills: []
 behaviours:
   ipfs_package_downloader:
     args: {}
     class_name: IpfsPackageDownloader
 handlers:
-  acn_data_share_handler:
-    args: {}
-    class_name: AcnHandler
-  contract_handler:
-    args: {}
-    class_name: ContractHandler
   ipfs_handler:
     args: {}
     class_name: IpfsHandler
-  ledger_handler:
-    args: {}
-    class_name: LedgerHandler
 models:
-  acn_data_share_dialogues:
-    args: {}
-    class_name: AcnDataShareDialogues
-  contract_dialogues:
-    args: {}
-    class_name: ContractDialogues
-  default_dialogues:
-    args: {}
-    class_name: DefaultDialogues
   ipfs_dialogues:
     args: {}
     class_name: IpfsDialogues
-  ledger_dialogues:
-    args: {}
-    class_name: LedgerDialogues
   params:
     args:
       agent_index: 0
@@ -92,6 +64,9 @@ models:
       slash_threshold_amount: 10000000000000000
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
+      file_hash_to_strategies_json:
+      - - bafybeia4m2mzhedzjbm3enmhgd6csd6hredgwsgpgs2wm2j43vodeqxjfy
+        - - follow_trend_strategy
     class_name: Params
 dependencies:
   beautifulsoup4:

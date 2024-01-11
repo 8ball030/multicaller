@@ -22,7 +22,7 @@
 import json
 import os
 from abc import ABC
-from typing import Generator, Set, Type, cast
+from typing import Any, Dict, Generator, Optional, Set, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
@@ -63,13 +63,13 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
 
     def _request_with_retries(
         self,
-        endpoint,
-        method="GET",
-        body=None,
-        headers=None,
-        max_retries=MAX_RETRIES,
-        retry_wait=0,
-    ):
+        endpoint: str,
+        method: str = "GET",
+        body: Optional[Any] = None,
+        headers: Optional[Dict] = None,
+        max_retries: int = MAX_RETRIES,
+        retry_wait: int = 0,
+    ) -> Generator[None, None, Tuple[bool, Dict]]:
         """Request wrapped around a retry mechanism"""
 
         self.context.logger.info(f"HTTP {method} call: {endpoint}")
@@ -80,17 +80,17 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         )
 
         if body:
-            kwargs["content"] = json.dumps(body).encode("utf-8")
+            kwargs["content"] = json.dumps(body).encode("utf-8")  # type: ignore
 
         if headers:
-            kwargs["headers"] = headers
+            kwargs["headers"] = headers  # type: ignore
 
         retries = 0
         response_json = {}
 
         while retries < max_retries:
             # Make the request
-            response = yield from self.get_http_response(**kwargs)
+            response = yield from self.get_http_response(**kwargs)  # type: ignore
 
             try:
                 response_json = json.loads(response.body)
@@ -132,7 +132,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         self.set_done()
 
-    def fetch_markets(self):
+    def fetch_markets(self) -> Generator[None, None, Optional[str]]:
         """Fetch markets from Coingecko and send to IPFS"""
 
         markets = {}
@@ -151,7 +151,10 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                 )
 
             success, response_json = yield from self._request_with_retries(
-                endpoint=self.params.format(token_id=token_id), headers=headers
+                endpoint=self.params.coingecko_market_endpoint.format(
+                    token_id=token_id
+                ),
+                headers=headers,
             )
 
             # Skip failed markets. The strategy will need to verify market availability
@@ -182,6 +185,6 @@ class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
 
     initial_behaviour_cls = FetchMarketDataBehaviour
     abci_app_cls = MarketDataFetcherAbciApp  # type: ignore
-    behaviours: Set[Type[BaseBehaviour]] = [
+    behaviours: Set[Type[BaseBehaviour]] = [  # type: ignore
         FetchMarketDataBehaviour,
     ]

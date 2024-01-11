@@ -32,10 +32,11 @@ from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
 )
 
+
 # TODO replace with Solana tx settlement
-from packages.valory.skills.transaction_settlement_abci.rounds import (
-    SynchronizedData as TxSettlementSyncedData,
-)
+# from packages.valory.skills.solana_transaction_settlement_abci.rounds import (
+#     SynchronizedData as TxSettlementSyncedData,
+# )
 
 
 class Event(Enum):
@@ -50,7 +51,8 @@ class Event(Enum):
 
 
 class SynchronizedData(
-    DecisionMakerSyncedData, MarketFetcherSyncedData, TxSettlementSyncedData
+    DecisionMakerSyncedData,
+    MarketFetcherSyncedData,  # TODO: TxSettlementSyncedData
 ):
     """Class to represent the synchronized data.
 

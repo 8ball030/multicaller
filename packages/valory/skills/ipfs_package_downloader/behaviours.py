@@ -18,16 +18,10 @@
 # ------------------------------------------------------------------------------
 
 """This package contains the implementation of ."""
-import json
-import threading
 import time
 from asyncio import Future
-from concurrent.futures import ProcessPoolExecutor
-from concurrent.futures.process import BrokenProcessPool
-from typing import Any, Callable, Dict, List, Optional, Tuple, cast
+from typing import Any, Callable, Dict, Optional, Tuple, cast
 
-from aea.helpers.cid import to_v1
-from aea.mail.base import EnvelopeContext
 from aea.protocols.base import Message
 from aea.protocols.dialogue.base import Dialogue
 from aea.skills.behaviours import SimpleBehaviour
@@ -39,10 +33,7 @@ from packages.valory.protocols.ipfs.dialogues import IpfsDialogue
 from packages.valory.skills.ipfs_package_downloader.models import Params
 from packages.valory.skills.ipfs_package_downloader.utils.ipfs import (
     ComponentPackageLoader,
-    get_ipfs_file_hash,
-    to_multihash,
 )
-from packages.valory.skills.ipfs_package_downloader.utils.task import AnyToolAsTask
 
 
 class IpfsPackageDownloader(SimpleBehaviour):
@@ -71,14 +62,8 @@ class IpfsPackageDownloader(SimpleBehaviour):
 
     def act(self) -> None:
         """Implement the act."""
-        self._download_tools()
-        self._execute_task()
-        self._check_for_new_reqs()
-
-    @property
-    def done_tasks_lock(self) -> threading.Lock:
-        """Get done_tasks_lock."""
-        return self.context.shared_state[DONE_TASKS_LOCK]
+        #self._download_tools()
+        
 
     @property
     def params(self) -> Params:
@@ -97,16 +82,6 @@ class IpfsPackageDownloader(SimpleBehaviour):
     def timeout_limit_reached(self, request_id: int) -> bool:
         """Check if the timeout limit has been reached."""
         return self.params.timeout_limit <= self.request_id_to_num_timeouts[request_id]
-
-    # @property
-    # def pending_tasks(self) -> List[Dict[str, Any]]:
-    #     """Get pending_tasks."""
-    #     return self.context.shared_state[PENDING_TASKS]
-
-    # @property
-    # def done_tasks(self) -> List[Dict[str, Any]]:
-    #     """Get done_tasks."""
-    #     return self.context.shared_state[DONE_TASKS]
 
     def _has_executing_task_timed_out(self) -> bool:
         """Check if the executing task timed out."""
