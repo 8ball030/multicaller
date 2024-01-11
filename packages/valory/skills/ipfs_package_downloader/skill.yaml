@@ -43,9 +43,6 @@ models:
   contract_dialogues:
     args: {}
     class_name: ContractDialogues
-  default_dialogues:
-    args: {}
-    class_name: DefaultDialogues
   ipfs_dialogues:
     args: {}
     class_name: IpfsDialogues
