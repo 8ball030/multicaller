@@ -41,7 +41,7 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     Params as StrategyEvaluatorAbciParams,
 )
-from packages.valory.skills.solana_strategy_evaluator_abcistrategy_evaluator_abci.rounds import (
+from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
     Event as StrategyEvaluatorEvent,
 )
 
