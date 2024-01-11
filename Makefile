@@ -90,6 +90,7 @@ common-checks-2:
 	tox -e check-abciapp-specs
 	tox -e check-dependencies
 	tox -e check-handlers
+	tox -e analyse-service
 
 .PHONY: all-checks
 all-checks: format code-checks security generators common-checks-1 common-checks-2
