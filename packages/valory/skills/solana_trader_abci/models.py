@@ -51,6 +51,7 @@ from packages.valory.skills.solana_trader_decision_maker_abci.models import (
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
 )
+from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
 
 
 SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
@@ -65,7 +66,7 @@ class RandomnessApi(ApiSpecs):
     """A model for randomness api specifications."""
 
 
-
+MARGIN = 5
 
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
@@ -84,6 +85,12 @@ class SharedState(BaseSharedState):
         SolanaTraderAbciApp.event_to_timeout[
             StrategyEvaluatorEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
+        SolanaTraderAbciApp.event_to_timeout[
+            ResetPauseEvent.ROUND_TIMEOUT
+        ] = self.context.params.round_timeout_seconds
+        SolanaTraderAbciApp.event_to_timeout[
+            ResetPauseEvent.RESET_AND_PAUSE_TIMEOUT
+        ] = (self.context.params.reset_pause_duration + MARGIN)
 
 
 class Params(
