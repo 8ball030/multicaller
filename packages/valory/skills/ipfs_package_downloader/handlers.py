@@ -18,7 +18,7 @@
 # ------------------------------------------------------------------------------
 
 """This package contains a scaffold of a handler."""
-from typing import cast
+from typing import cast, Dict
 
 from aea.protocols.base import Message
 from aea.skills.base import Handler
@@ -33,6 +33,7 @@ class BaseHandler(Handler):
     def setup(self) -> None:
         """Set up the handler."""
         self.context.logger.info(f"{self.__class__.__name__}: setup method called.")
+        self.context.shared_state["downloaded_ipfs_packages"] = {}
 
     def cleanup_dialogues(self) -> None:
         """Clean up all dialogues."""
@@ -45,6 +46,11 @@ class BaseHandler(Handler):
     def params(self) -> Params:
         """Get the parameters."""
         return cast(Params, self.context.params)
+
+    @property
+    def downloaded_ipfs_packages(self) -> Dict[str, Dict[str, str]]:
+        """Get downloaded_ipfs_packages."""
+        return self.context.shared_state["downloaded_ipfs_packages"]
 
     def teardown(self) -> None:
         """Teardown the handler."""

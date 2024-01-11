@@ -107,6 +107,7 @@ class IpfsPackageDownloader(SimpleBehaviour):
         """Handle get package response"""
         package_req = cast(str, self._inflight_package_req)
         self._all_packages[package_req] = message.files
+        self.context.shared_state["downloaded_ipfs_packages"][package_req] = message.files
         self._inflight_package_req = None
 
     def send_message(
