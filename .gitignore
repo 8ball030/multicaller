@@ -41,6 +41,6 @@ leak_report
 agent/
 solana_trader_service/
 
-solana_trader/
+./solana_trader/
 
 packages/valory/skills/transaction_settlement_abci/
