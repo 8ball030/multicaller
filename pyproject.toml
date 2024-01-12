@@ -25,6 +25,8 @@ grpcio = "==1.53.0"
 asn1crypto = "<1.5.0,>=1.4.0"
 open-aea-ledger-ethereum = "==1.44.0"
 open-aea-ledger-cosmos = "==1.44.0"
+#TODO uncomment when `tomte` and `open-aea-ledger-solana` conflict is resolved
+#open-aea-ledger-solana = "==1.44.0"
 protobuf = "<4.25.0,>=4.21.6"
 open-aea-test-autonomy = "==0.13.10"
 web3 = "<7,>=6.0.0"
