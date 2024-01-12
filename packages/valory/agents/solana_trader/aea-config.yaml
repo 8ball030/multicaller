@@ -149,7 +149,7 @@ models:
       selected_strategy: ${str:follow_trend_strategy}
       token_symbol_whitelist: ${list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
       coingecko_api_key: ${str:""}
-      coingecko_market_endpoint: ${str:https://api.coingecko.com/api/v3/coins/{ token_id }/market_chart?vs_currency=usd&days=1}
+      coingecko_market_endpoint: ${str:"https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"}
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
       file_hash_to_id: ${list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
