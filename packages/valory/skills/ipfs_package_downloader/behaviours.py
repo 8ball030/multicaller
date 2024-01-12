@@ -31,22 +31,17 @@ from packages.valory.connections.ipfs.connection import PUBLIC_ID as IPFS_CONNEC
 from packages.valory.protocols.ipfs import IpfsMessage
 from packages.valory.protocols.ipfs.dialogues import IpfsDialogue
 from packages.valory.skills.ipfs_package_downloader.models import Params
-from packages.valory.skills.ipfs_package_downloader.utils.ipfs import (
-    ComponentPackageLoader,
-)
 
 
 class IpfsPackageDownloader(SimpleBehaviour):
-    """A class to execute tasks."""
+    """A class to download packages from IPFS."""
 
     def __init__(self, **kwargs: Any):
         """Initialise the agent."""
         super().__init__(**kwargs)
-        # we only want to execute one task at a time, for the time being
-        self._tools_to_file_hash: Dict[str, str] = {}
-        self._all_tools: Dict[str, Tuple[str, str]] = {}
-        self._inflight_tool_req: Optional[str] = None
-        self._done_task: Optional[Dict[str, Any]] = None
+        self._packages_to_file_hash: Dict[str, str] = {}
+        self._all_packages: Dict[str, Dict[str, str]] = {}
+        self._inflight_package_req: Optional[str] = None
         self._last_polling: Optional[float] = None
         self._invalid_request = False
         self._async_result: Optional[Future] = None
@@ -54,15 +49,15 @@ class IpfsPackageDownloader(SimpleBehaviour):
     def setup(self) -> None:
         """Implement the setup."""
         self.context.logger.info("Setting up IpfsPackageDownloader")
-        self._tools_to_file_hash = {
+        self._packages_to_file_hash = {
             value: key
-            for key, values in self.params.file_hash_to_tools.items()
+            for key, values in self.params.file_hash_to_id.items()
             for value in values
         }
 
     def act(self) -> None:
         """Implement the act."""
-        # self._download_tools()
+        self._download_packages()
 
     @property
     def params(self) -> Params:
@@ -91,31 +86,32 @@ class IpfsPackageDownloader(SimpleBehaviour):
             return False
         return timeout_deadline <= time.time()
 
-    def _download_tools(self) -> None:
-        """Download tools."""
-        if self._inflight_tool_req is not None:
+    def _download_packages(self) -> None:
+        """Download packages."""
+        if self._inflight_package_req is not None:
             # there already is a req in flight
             return
-        if len(self._tools_to_file_hash) == len(self._all_tools):
-            # we already have all the tools
+        if len(self._packages_to_file_hash) == len(self._all_packages):
+            # we already have all the packages
             return
-        for tool, file_hash in self._tools_to_file_hash.items():
-            if tool in self._all_tools:
+        for package, file_hash in self._packages_to_file_hash.items():
+            if package in self._all_packages:
                 continue
             # read one at a time
             ipfs_msg, message = self._build_ipfs_get_file_req(file_hash)
-            self._inflight_tool_req = tool
-            self.send_message(ipfs_msg, message, self._handle_get_tool)
+            self._inflight_package_req = package
+            self.send_message(ipfs_msg, message, self._handle_get_package)
             return
 
-    def _handle_get_tool(self, message: IpfsMessage, dialogue: Dialogue) -> None:
-        """Handle get tool response"""
-        _component_yaml, tool_py, callable_method = ComponentPackageLoader.load(
-            message.files
-        )
-        tool_req = cast(str, self._inflight_tool_req)
-        self._all_tools[tool_req] = tool_py, callable_method
-        self._inflight_tool_req = None
+    def _handle_get_package(self, message: IpfsMessage, dialogue: Dialogue) -> None:
+        """Handle get package response"""
+        package_req = cast(str, self._inflight_package_req)
+        self._all_packages[package_req] = message.files
+
+        # TODO check if package is well-formed.
+
+        self.context.shared_state["downloaded_ipfs_packages"][package_req] = message.files
+        self._inflight_package_req = None
 
     def send_message(
         self, msg: Message, dialogue: Dialogue, callback: Callable

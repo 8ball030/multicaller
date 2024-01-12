@@ -36,15 +36,16 @@ class Params(Model):
         self.api_keys: Dict = self._nested_list_todict_workaround(
             kwargs, "api_keys_json"
         )
-        self.file_hash_to_tools: Dict[
+        self.file_hash_to_id: Dict[
             str, List[str]
         ] = self._nested_list_todict_workaround(
             kwargs,
-            "file_hash_to_tools_json",
+            "file_hash_to_id",
         )
         self.polling_interval = kwargs.get("polling_interval", 30.0)
         self.num_agents = kwargs.get("num_agents", None)
         self.request_count: int = 0
+        self.cleanup_freq = kwargs.get("cleanup_freq", 50)
         self.agent_index = kwargs.get("agent_index", None)
         enforce(self.agent_index is not None, "agent_index must be set!")
         self.timeout_limit = kwargs.get("timeout_limit", None)
