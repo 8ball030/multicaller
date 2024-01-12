@@ -35,25 +35,8 @@ models:
     class_name: IpfsDialogues
   params:
     args:
-      agent_index: 0
-      agent_mech_contract_addresses:
-      - '0x9A676e781A523b5d0C0e43731313A708CB607508'
-      api_keys_json:
-      - - openai
-        - dummy_api_key
-      - - stabilityai
-        - dummy_api_key
       cleanup_freq: 50
-      num_agents: 4
-      polling_interval: 30.0
-      task_deadline: 240.0
-      max_block_window: 500
-      use_slashing: false
       timeout_limit: 3
-      slash_cooldown_hours: 3
-      slash_threshold_amount: 10000000000000000
-      light_slash_unit_amount: 5000000000000000
-      serious_slash_unit_amount: 8000000000000000
       file_hash_to_id:
       - - bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi
         - - follow_trend_strategy

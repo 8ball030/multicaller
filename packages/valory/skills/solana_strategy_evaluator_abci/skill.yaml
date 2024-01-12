@@ -133,7 +133,6 @@ models:
       tendermint_url: http://localhost:26657
       tx_timeout: 10.0
       use_termination: false
-      trading_strategy: strategy_name
       slippage: 0.05
       strategies_kwargs:
       - - extra_1

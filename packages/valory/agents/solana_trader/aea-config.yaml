@@ -144,10 +144,15 @@ models:
       termination_sleep: ${int:900}
       use_termination: ${bool:false}
       on_chain_service_id: ${int:null}
-      ipfs_address: ${str:https://gateway.autonolas.tech/ipfs/}
-      selected_strategy: follow_trend_strategy
+      selected_strategy: ${str:follow_trend_strategy}
       token_symbol_whitelist: ${list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
-      coingecko_api_key: ''
+      coingecko_api_key: ${str:""}
+      coingecko_market_endpoint: ${str:https://api.coingecko.com/api/v3/coins/{ token_id }/market_chart?vs_currency=usd&days=1}
+      cleanup_freq: ${int:50}
+      timeout_limit: ${int:3}
+      file_hash_to_id: ${list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
+      slippage: ${float:0.05}
+      strategies_kwargs: ${list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

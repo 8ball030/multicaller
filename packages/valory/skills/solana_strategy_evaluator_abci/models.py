@@ -72,7 +72,6 @@ class StrategyEvaluatorParams(BaseParams):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters' object."""
-        self.trading_strategy: str = self._ensure("trading_strategy", kwargs, str)
         self.slippage: float = self._ensure("slippage", kwargs, float)
         self.strategies_kwargs: Dict[str, List[Any]] = nested_list_todict_workaround(
             kwargs, "strategies_kwargs"
