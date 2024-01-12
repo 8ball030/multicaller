@@ -5,9 +5,9 @@ description: A set of agents trading tokens
 aea_version: '>=1.0.0, <2.0.0'
 license: Apache-2.0
 fingerprint:
-  README.md: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+  README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/trader:0.1.0:bafybeied6bzxpfihofkknn7txl4r4rbcdhiyhpvyiqmsizwjdoinczf54e
+agent: valory/trader:0.1.0
 number_of_agents: 4
 deployment: {}
 ---

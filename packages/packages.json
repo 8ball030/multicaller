@@ -1,11 +1,12 @@
 {
     "dev": {
-        "agent/valory/solana_trader/0.1.0": "bafybeiad2fydo7yw7ei2gw2kmfgusnd7kena35pnjhnenjvlb47dq5c7wa",
-        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeievzcxuyu7b76yimesjd4ytsmduf5xbb2r6fs3hnyimsuraicwmsa",
-        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeiczqojehdxrusjkcekhuufeyr3nvta5ytpld7xemrvjc5imf6i4ei",
+        "agent/valory/solana_trader/0.1.0": "bafybeif5tcnuwm76fyj6fk2xkbm7crvix66voux6bg6kh2qfvwpqcwyu6a",
+        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiewqffrgiqxuzc2tuvjefaptcn2uzdry5cfadian2f6teunnnpbjm",
+        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeieq747w5uyrky2icv22ntqyihgse4hux6m7zejfc7353rt5enr5gm",
         "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeieud7dyo2pvbbwaeni22za7oa2wagbrx5ycu3qogfuxq3w6vcjx6a",
-        "skill/valory/solana_trader_abci/0.1.0": "bafybeifsqfruhg6sveessxuhp6i2ccuzghfe4brjphj25ipaxivp2z2g6a",
-        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeiblomxxqb4rr6ete37cbbazprzlwpokzpdi4zbyjla656yngamkme"
+        "skill/valory/solana_trader_abci/0.1.0": "bafybeighjvoc2zhv37g3azvdmvkl4womj6a6mq4vlropkirrt53s4zzarm",
+        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeigj3h6bvmmg546vkdxg6d2n6gio5l5iwjqn35dyanp4wo23jieydm",
+        "service/valory/solana_trader/0.1.0": "bafybeiab3ii2tzbhhbvblysi7xrhzdwswebysiavivspo7pmum7q2df4sy"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
@@ -25,6 +26,9 @@
         "connection/valory/ledger/0.19.0": "bafybeic3ft7l7ca3qgnderm4xupsfmyoihgi27ukotnz7b5hdczla2enya",
         "connection/valory/p2p_libp2p_client/0.1.0": "bafybeid3xg5k2ol5adflqloy75ibgljmol6xsvzvezebsg7oudxeeolz7e",
         "connection/valory/ipfs/0.1.0": "bafybeifkrynw6jjg7bs7nw535m5bcrav5qab27vr5ktgfuvf65dpazc4ci",
+        "contract/valory/gnosis_safe_proxy_factory/0.1.0": "bafybeicmiq5brmxgirz7ruqkq3d2meso2r6pky65zzkkgyuuzqbrdx4h6u",
+        "contract/valory/gnosis_safe/0.1.0": "bafybeiagwlfdlebwlxaupez7m5ntsqddordlj3prjc7wotngyqikjgvlme",
+        "contract/valory/multisend/0.1.0": "bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y",
         "contract/valory/service_registry/0.1.0": "bafybeihnvoscfmgmdl44vcoyqtraqdgmy3xqprqkgtuwfav3zdvek3eije"
     }
 }
