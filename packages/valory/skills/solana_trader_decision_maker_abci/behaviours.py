@@ -46,8 +46,6 @@ class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
                 self.context.agent_address, "contents", self.context.params.selected_strategy
             )
 
-            print(self.context.shared_state["downloaded_ipfs_packages"])
-
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
             yield from self.wait_until_round_end()
