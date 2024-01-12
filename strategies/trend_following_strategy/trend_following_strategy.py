@@ -59,7 +59,7 @@ def trend_following_signal(
     rsi_period: int = DEFAULT_RSI_PERIOD,
     rsi_overbought_threshold: int = DEFAULT_RSI_OVERBOUGHT_THRESHOLD,
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
-) -> Dict[str, str]:
+) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
     if len(price_data) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
@@ -102,4 +102,4 @@ def run(*_args, **kwargs) -> Dict[str, Union[str, List[str]]]:
         return {"error": f"Required kwargs {missing} were not provided."}
 
     kwargs = remove_irrelevant_fields(kwargs)
-    return {"error": [f"Required kwargs {missing} were not provided."]}
+    return trend_following_signal(**kwargs)
