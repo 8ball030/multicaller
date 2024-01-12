@@ -47,11 +47,6 @@ class BaseHandler(Handler):
         """Get the parameters."""
         return cast(Params, self.context.params)
 
-    @property
-    def downloaded_ipfs_packages(self) -> Dict[str, Dict[str, str]]:
-        """Get downloaded_ipfs_packages."""
-        return self.context.shared_state["downloaded_ipfs_packages"]
-
     def teardown(self) -> None:
         """Teardown the handler."""
         self.context.logger.info(f"{self.__class__.__name__}: teardown called.")
