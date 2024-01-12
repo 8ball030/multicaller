@@ -18,7 +18,7 @@
 # ------------------------------------------------------------------------------
 
 """This package contains a scaffold of a handler."""
-from typing import cast
+from typing import cast, Dict
 
 from aea.protocols.base import Message
 from aea.skills.base import Handler
@@ -33,6 +33,7 @@ class BaseHandler(Handler):
     def setup(self) -> None:
         """Set up the handler."""
         self.context.logger.info(f"{self.__class__.__name__}: setup method called.")
+        self.context.shared_state["downloaded_ipfs_packages"] = {}
 
     def cleanup_dialogues(self) -> None:
         """Clean up all dialogues."""
