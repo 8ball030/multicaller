@@ -53,7 +53,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      run: pip install tomte[tox,cli]==0.2.15
+      run: pip install tomte[tox,cli]==0.2.16
     - name: Check copyright headers
       run: tomte check-copyright --author valory --exclude-part abci --exclude-part http_client --exclude-part ipfs --exclude-part ledger --exclude-part p2p_libp2p_client --exclude-part service_registry --exclude-part protocols --exclude-part abstract_abci --exclude-part abstract_round_abci --exclude-part registration_abci --exclude-part reset_pause_abci --exclude-part solana_transaction_settlement_abci
     - name: License compatibility check
@@ -83,7 +83,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run:  |
-        pip install tomte[tox,cli]==0.2.15
+        pip install tomte[tox,cli]==0.2.16
 
         # Install `mdspell` for spelling checks
         sudo npm install -g markdown-spellcheck
