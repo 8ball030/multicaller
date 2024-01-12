@@ -7,10 +7,10 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiaqd27il3osn4novyzipdtql4p36mnrskk2dqdsqthgjnb4gqixii
-  behaviours.py: bafybeif3plsilmv5432qq7qucyxsrj3s2bkzpt6k4qzzn3qhx3eeujxhya
+  behaviours.py: bafybeib2lpyeaxs6kkfmdp7ltdwp5odh2por2qcxr26bdbfzwz73mwfo7u
   dialogues.py: bafybeibdxvhpzzqn4qa7us6cpkmtliwl7qziodt2srnicrdamfcev2mumi
-  handlers.py: bafybeics4l7gofh7yhfn4l2brh7ngsou3axzkoazgbkroj4nvjmik4klou
-  models.py: bafybeiewnsocwjr3vqv2rgxhoo5iaqmktrnuswpraznp56qgnes3xhnvfe
+  handlers.py: bafybeibfvjuuauygzqhaut7dn2dr3maeatjok2jcuztksxjwbqusx65jlq
+  models.py: bafybeia6vmborqt5i3tzhvjb4um2c7w2fltt3rjhe4b6wddkmcyvbhw3fa
   utils/__init__.py: bafybeige5xuo32v4dykt6shggs452eliha5e5qzci5dwr6uowash3fq23q
   utils/ipfs.py: bafybeihjb237abhcjupmmyswvfk7xmzgx3d4iufixes7v3yjmlycnca4xm
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
@@ -35,36 +35,13 @@ models:
     class_name: IpfsDialogues
   params:
     args:
-      agent_index: 0
-      agent_mech_contract_addresses:
-      - '0x9A676e781A523b5d0C0e43731313A708CB607508'
-      api_keys_json:
-      - - openai
-        - dummy_api_key
-      - - stabilityai
-        - dummy_api_key
       cleanup_freq: 50
-      num_agents: 4
-      polling_interval: 30.0
-      task_deadline: 240.0
-      max_block_window: 500
-      use_slashing: false
       timeout_limit: 3
-      slash_cooldown_hours: 3
-      slash_threshold_amount: 10000000000000000
-      light_slash_unit_amount: 5000000000000000
-      serious_slash_unit_amount: 8000000000000000
       file_hash_to_id:
       - - bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi
         - - follow_trend_strategy
     class_name: Params
 dependencies:
-  beautifulsoup4:
-    version: ==4.12.2
-  googlesearch-python:
-    version: ==1.2.3
-  openai:
-    version: ==0.27.2
   py-multibase:
     version: ==1.0.3
   py-multicodec:

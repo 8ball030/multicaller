@@ -67,6 +67,7 @@ class RandomnessApi(ApiSpecs):
 
 MARGIN = 5
 
+
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 

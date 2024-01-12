@@ -12,7 +12,7 @@ fingerprint:
   composition.py: bafybeihu2kciiixp52gqu6hbudubwzbz7mw46qipa6mmpqdl555f5cdul4
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
-  models.py: bafybeigjvpesrfkfbw7vriwu6ywjeet2obgi3my67ziyutx5dtvbjiiat4
+  models.py: bafybeical5c5fzvx7pwih7cl6ellchku4avlne5hjekzxap76w3grkibp4
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -21,9 +21,9 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeieud7dyo2pvbbwaeni22za7oa2wagbrx5ycu3qogfuxq3w6vcjx6a
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeievzcxuyu7b76yimesjd4ytsmduf5xbb2r6fs3hnyimsuraicwmsa
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeiczqojehdxrusjkcekhuufeyr3nvta5ytpld7xemrvjc5imf6i4ei
+- valory/market_data_fetcher_abci:0.1.0:bafybeicflamagqirjgasito2kelmlsxtmv75b4skrawt7c35ndendd6xfy
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeid3eh3jumyivflty42zqy6xorv3xm5wh42aawa27fcakiux6wekty
 behaviours:
   main:
     args: {}

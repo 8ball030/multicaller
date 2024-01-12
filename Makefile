@@ -82,7 +82,7 @@ generators: clean-cache fix-abci-app-specs
 common-checks-1:
 	tomte check-copyright --author valory --exclude-part abci --exclude-part http_client --exclude-part ipfs --exclude-part ledger --exclude-part p2p_libp2p_client --exclude-part gnosis_safe --exclude-part service_registry --exclude-part protocols --exclude-part abstract_abci --exclude-part abstract_round_abci --exclude-part registration_abci --exclude-part reset_pause_abci --exclude-part solana_transaction_settlement_abci
 	tomte check-doc-links --url-skips https://github.com/valory-xyz/solana-trader.git
-	tox -p -e check-hash -e check-packages -e check-doc-hashes -e analyse-service
+	tox -p -e check-hash -e check-packages -e check-doc-hashes -e analyse-service -e spell-check
 
 .PHONY: common-checks-2
 common-checks-2:
@@ -97,9 +97,7 @@ all-checks: format code-checks security generators common-checks-1 common-checks
 
 .PHONY: fix-abci-app-specs
 fix-abci-app-specs:
-	autonomy analyse fsm-specs --update --app-class MarketDataFetcherAbciApp --package packages/valory/skills/market_data_fetcher_abci
-	autonomy analyse fsm-specs --update --app-class SolanaTraderDecisionMakerAbciApp --package packages/valory/skills/solana_trader_decision_maker_abci
-	echo "Successfully validated abcis!"
+	tox -e abci-docstrings
 
 protolint_install:
 	GO111MODULE=on GOPATH=~/go go get -u -v github.com/yoheimuta/protolint/cmd/protolint@v0.27.0

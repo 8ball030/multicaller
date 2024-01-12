@@ -95,7 +95,7 @@ def trend_following_signal(
     return {"signal": HOLD_SIGNAL}
 
 
-def run(*_args, **kwargs) -> Dict[str, Union[str, List[str]]]:
+def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     """Run the strategy."""
     missing = check_missing_fields(kwargs)
     if len(missing) > 0:

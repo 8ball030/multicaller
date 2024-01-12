@@ -1,0 +1,21 @@
+alphabet_in:
+- DONE
+- NONE
+- NO_MAJORITY
+- ROUND_TIMEOUT
+default_start_state: SolanaTraderDecisionMakerRound
+final_states:
+- FailedSolanaTraderDecisionMakerRound
+- FinishedSolanaTraderDecisionMakerRound
+label: SolanaTraderDecisionMakerAbciApp
+start_states:
+- SolanaTraderDecisionMakerRound
+states:
+- FailedSolanaTraderDecisionMakerRound
+- FinishedSolanaTraderDecisionMakerRound
+- SolanaTraderDecisionMakerRound
+transition_func:
+    (SolanaTraderDecisionMakerRound, DONE): FinishedSolanaTraderDecisionMakerRound
+    (SolanaTraderDecisionMakerRound, NONE): FailedSolanaTraderDecisionMakerRound
+    (SolanaTraderDecisionMakerRound, NO_MAJORITY): FailedSolanaTraderDecisionMakerRound
+    (SolanaTraderDecisionMakerRound, ROUND_TIMEOUT): FailedSolanaTraderDecisionMakerRound
