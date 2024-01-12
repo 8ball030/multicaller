@@ -42,12 +42,6 @@ models:
         - - follow_trend_strategy
     class_name: Params
 dependencies:
-  beautifulsoup4:
-    version: ==4.12.2
-  googlesearch-python:
-    version: ==1.2.3
-  openai:
-    version: ==0.27.2
   py-multibase:
     version: ==1.0.3
   py-multicodec:

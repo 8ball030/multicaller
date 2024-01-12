@@ -15,14 +15,15 @@ fingerprint:
   behaviours/round_behaviour.py: bafybeia4xlmutp7ogtbvm444xlml5vcd3igkumonrab3d7u3brrf3u3mb4
   behaviours/strategy_exec.py: bafybeiffa5oqnuoe2gwonj55jfpoawywwjxjjrup2glnekauhmfzzpc5by
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
+  fsm_specification.yaml: bafybeid73qkuoamvsz6tyiioyhxljndavk7sbhhss7uprponlfdg26cs7q
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
   models.py: bafybeieb62uvvp2tzdygdwkmoj2b57k5jymdlieabptvuewbiiazxv2hqe
   payloads.py: bafybeigehjlqlvfq5qxduyvl236cha3skbuvyjizfqmd4j2u63gzco2hsm
-  rounds.py: bafybeiepd7ljsct37ljq5vdqvetjzlm23taajln27v7jos5yqtrhmqsnyy
+  rounds.py: bafybeiddcrmbisn3z6chxx667fid7suzbt5qowov5a7cqgzureld5ypqqu
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
-  states/base.py: bafybeih54jo4ulmym6sukpwutgajikhdbcwlme7n5mtf3e2yx27uxhijua
-  states/final_states.py: bafybeidvbd73knju2tllbc2wnr44nmqrbfmshdolo37j6orvqird63hy4i
-  states/prepare_swap.py: bafybeiainhgineoi5qeoac3pdhuuw4kx5vdpizy2k25i7a53gc2q7bu2pi
+  states/base.py: bafybeig6keaswalz6batoaskqcebm2j4wrkowra4ftvmxnzwiuo7n6mxqe
+  states/final_states.py: bafybeico452kk3rfywr7cxesioktvf4db7a2i6454ch6n5uxwqfk35iscy
+  states/prepare_swap.py: bafybeibiisq4tf5m54bf5kcj5egax4gruek7w2j4xmmhjjqmwjqoqfoora
   states/strategy_exec.py: bafybeihhsz5i4jf44xquwtzqh5ke6spvh5sfjqnttzfvipwklivgw3m4we
 fingerprint_ignore_patterns: []
 connections: []
@@ -30,8 +31,8 @@ contracts: []
 protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
-- valory/market_data_fetcher_abci:0.1.0:bafybeieud7dyo2pvbbwaeni22za7oa2wagbrx5ycu3qogfuxq3w6vcjx6a
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiewqffrgiqxuzc2tuvjefaptcn2uzdry5cfadian2f6teunnnpbjm
+- valory/market_data_fetcher_abci:0.1.0:bafybeicflamagqirjgasito2kelmlsxtmv75b4skrawt7c35ndendd6xfy
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
 behaviours:
   main:
     args: {}

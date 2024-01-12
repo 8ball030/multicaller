@@ -118,11 +118,27 @@ class FailedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
     """A round that represents that the ABCI app has failed"""
 
 
-class SolanaTraderDecisionMakerAbciApp(
-    AbciApp[Event]
-):  # pylint: disable=too-few-public-methods
-    # TODO add docstring
-    """Docsctring"""
+class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
+    """SolanaTraderDecisionMakerAbciApp
+
+    Initial round: SolanaTraderDecisionMakerRound
+
+    Initial states: {SolanaTraderDecisionMakerRound}
+
+    Transition states:
+        0. SolanaTraderDecisionMakerRound
+            - done: 1.
+            - none: 2.
+            - round timeout: 2.
+            - no majority: 2.
+        1. FinishedSolanaTraderDecisionMakerRound
+        2. FailedSolanaTraderDecisionMakerRound
+
+    Final states: {FailedSolanaTraderDecisionMakerRound, FinishedSolanaTraderDecisionMakerRound}
+
+    Timeouts:
+        round timeout: 30.0
+    """
 
     initial_round_cls: Type[AbstractRound] = SolanaTraderDecisionMakerRound
     transition_function: AbciAppTransitionFunction = {

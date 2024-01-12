@@ -18,7 +18,8 @@
 # ------------------------------------------------------------------------------
 
 """This package contains a scaffold of a handler."""
-from typing import cast, Dict
+
+from typing import cast
 
 from aea.protocols.base import Message
 from aea.skills.base import Handler
