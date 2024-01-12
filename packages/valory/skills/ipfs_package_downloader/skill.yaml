@@ -43,7 +43,7 @@ models:
         - dummy_api_key
       - - stabilityai
         - dummy_api_key
-      from_block_range: 50000
+      cleanup_freq: 50
       num_agents: 4
       polling_interval: 30.0
       task_deadline: 240.0

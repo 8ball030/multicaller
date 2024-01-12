@@ -19,7 +19,7 @@
 
 """This module contains the trend_following_strategy."""
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 
 BUY_SIGNAL = "buy"
@@ -27,7 +27,16 @@ SELL_SIGNAL = "sell"
 HOLD_SIGNAL = "hold"
 NA_SIGNAL = "insufficient_data"
 
-REQUIRED_FIELDS = ("price_data", "ma_period", "rsi_period")
+DEFAULT_MA_PERIOD = 20
+DEFAULT_RSI_PERIOD = 14
+DEFAULT_RSI_OVERBOUGHT_THRESHOLD = 70
+DEFAULT_RSI_OVERSOLD_THRESHOLD = 30
+
+REQUIRED_FIELDS = frozenset({"price_data"})
+OPTIONAL_FIELDS = frozenset(
+    {"ma_period", "rsi_period", "rsi_overbought_threshold", "rsi_oversold_threshold"}
+)
+ALL_FIELDS = REQUIRED_FIELDS.union(OPTIONAL_FIELDS)
 
 
 def check_missing_fields(kwargs: Dict[str, Any]) -> List[str]:
@@ -41,12 +50,16 @@ def check_missing_fields(kwargs: Dict[str, Any]) -> List[str]:
 
 def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
     """Remove the irrelevant fields from the given kwargs."""
-    return {key: value for key, value in kwargs.items() if key in REQUIRED_FIELDS}
+    return {key: value for key, value in kwargs.items() if key in ALL_FIELDS}
 
 
 def trend_following_signal(
-    price_data: List[float], ma_period: int, rsi_period: int
-) -> Dict[str, str]:
+    price_data: List[float],
+    ma_period: int = DEFAULT_MA_PERIOD,
+    rsi_period: int = DEFAULT_RSI_PERIOD,
+    rsi_overbought_threshold: int = DEFAULT_RSI_OVERBOUGHT_THRESHOLD,
+    rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
+) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
     if len(price_data) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
@@ -73,16 +86,16 @@ def trend_following_signal(
     else:
         rsi = 100
 
-    if price_data[-1] > ma and rsi < 70:
+    if price_data[-1] > ma and rsi < rsi_overbought_threshold:
         return {"signal": BUY_SIGNAL}
 
-    if price_data[-1] < ma and rsi > 30:
+    if price_data[-1] < ma and rsi > rsi_oversold_threshold:
         return {"signal": SELL_SIGNAL}
 
     return {"signal": HOLD_SIGNAL}
 
 
-def run(*_args, **kwargs) -> Dict[str, str]:
+def run(*_args, **kwargs) -> Dict[str, Union[str, List[str]]]:
     """Run the strategy."""
     missing = check_missing_fields(kwargs)
     if len(missing) > 0:
