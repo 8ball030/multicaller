@@ -86,7 +86,24 @@ class FinishedMarketFetchRound(DegenerateRound):
 
 
 class MarketDataFetcherAbciApp(AbciApp[Event]):
-    """MarketDataFetcherAbciApp"""
+    """MarketDataFetcherAbciApp
+
+    Initial round: FetchMarketDataRound
+
+    Initial states: {FetchMarketDataRound}
+
+    Transition states:
+        0. FetchMarketDataRound
+            - done: 1.
+            - no majority: 0.
+            - round timeout: 0.
+        1. FinishedMarketFetchRound
+
+    Final states: {FinishedMarketFetchRound}
+
+    Timeouts:
+        round timeout: 30.0
+    """
 
     initial_round_cls: AppState = FetchMarketDataRound
     initial_states: Set[AppState] = {FetchMarketDataRound}
@@ -99,7 +116,9 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
         FinishedMarketFetchRound: {},
     }
     final_states: Set[AppState] = {FinishedMarketFetchRound}
-    event_to_timeout: EventToTimeout = {}
+    event_to_timeout: EventToTimeout = {
+        Event.ROUND_TIMEOUT: 30.0,
+    }
     cross_period_persisted_keys: FrozenSet[str] = frozenset()
     db_pre_conditions: Dict[AppState, Set[str]] = {
         FetchMarketDataRound: set(),

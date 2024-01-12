@@ -110,7 +110,9 @@ class IpfsPackageDownloader(SimpleBehaviour):
 
         # TODO check if package is well-formed.
 
-        self.context.shared_state["downloaded_ipfs_packages"][package_req] = message.files
+        self.context.shared_state["downloaded_ipfs_packages"][
+            package_req
+        ] = message.files
         self._inflight_package_req = None
 
     def send_message(

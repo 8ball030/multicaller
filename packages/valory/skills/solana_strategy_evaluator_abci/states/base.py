@@ -34,9 +34,9 @@ from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
 
 
 # TODO replace with Solana tx settlement
-# from packages.valory.skills.solana_transaction_settlement_abci.rounds import (
-#     SynchronizedData as TxSettlementSyncedData,
-# )
+# from packages.valory.skills.solana_transaction_settlement_abci.rounds import (  noqa: E800
+#     SynchronizedData as TxSettlementSyncedData,  noqa: E800
+# )  noqa: E800
 
 
 class Event(Enum):
