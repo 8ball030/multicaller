@@ -51,7 +51,7 @@ app.post('/tx', async (req, res) => {
         maxRetries: 2
     });
     await connection.confirmTransaction(txid);
-    console.log(`https://solscan.io/tx/${txid}`);
+    res.json({ tx: `https://solscan.io/tx/${txid}` });
 });
 
 app.use(express.json());
