@@ -51,5 +51,5 @@ urllib3 = "==1.26.16"
 jsonschema = "<4.4.0,>=4.3.0"
 
 [tool.poetry.group.dev.dependencies.tomte]
-version = "==0.2.14"
+version = "==0.2.15"
 extras = [ "cli", "tests",]
