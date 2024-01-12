@@ -10,7 +10,7 @@ fingerprint:
   behaviours.py: bafybeieyqbk2uf54iqjbslw4mjexqcspbdigweputs3hnphr4uox4d7lwe
   dialogues.py: bafybeibdxvhpzzqn4qa7us6cpkmtliwl7qziodt2srnicrdamfcev2mumi
   handlers.py: bafybeifcnlb2no2uilzlgjcnr3x7wyhlf53ccoiscj5yoluor7qc4t5p2u
-  models.py: bafybeiebus657zeinmrix3chtvcgr5acy2uqrnyhongjjjldghraq27jea
+  models.py: bafybeiewnsocwjr3vqv2rgxhoo5iaqmktrnuswpraznp56qgnes3xhnvfe
   utils/__init__.py: bafybeige5xuo32v4dykt6shggs452eliha5e5qzci5dwr6uowash3fq23q
   utils/ipfs.py: bafybeihjb237abhcjupmmyswvfk7xmzgx3d4iufixes7v3yjmlycnca4xm
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
@@ -43,7 +43,7 @@ models:
         - dummy_api_key
       - - stabilityai
         - dummy_api_key
-      from_block_range: 50000
+      cleanup_freq: 50
       num_agents: 4
       polling_interval: 30.0
       task_deadline: 240.0
