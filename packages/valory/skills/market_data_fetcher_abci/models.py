@@ -34,6 +34,18 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
 )
 
 
+def format_whitelist(token_whitelist: List) -> List:
+    """Load the token whitelist into its proper format"""
+    fixed_whitelist = []
+    for element in token_whitelist:
+        token_config = {}
+        for i in element.split("&"):
+            key, value = i.split("=")
+            token_config[key] = value
+        fixed_whitelist.append(token_config)
+    return fixed_whitelist
+
+
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
@@ -45,8 +57,8 @@ class Params(BaseParams):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters object."""
-        self.token_symbol_whitelist: List[Dict] = self._ensure(
-            "token_symbol_whitelist", kwargs, List[Dict]
+        self.token_symbol_whitelist: List[Dict] = format_whitelist(
+            self._ensure("token_symbol_whitelist", kwargs, List[str])
         )
         self.coingecko_api_key: str = self._ensure("coingecko_api_key", kwargs, str)
         self.coingecko_market_endpoint: str = self._ensure(
