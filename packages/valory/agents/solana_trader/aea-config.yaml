@@ -35,7 +35,7 @@ skills:
 - valory/solana_trader_abci:0.1.0:bafybeifsqfruhg6sveessxuhp6i2ccuzghfe4brjphj25ipaxivp2z2g6a
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeievzcxuyu7b76yimesjd4ytsmduf5xbb2r6fs3hnyimsuraicwmsa
 - valory/ipfs_package_downloader:0.1.0:bafybeiblomxxqb4rr6ete37cbbazprzlwpokzpdi4zbyjla656yngamkme
-default_ledger: ethereum
+default_ledger: solana
 required_ledgers:
 - ethereum
 - solana
