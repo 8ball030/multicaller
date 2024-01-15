@@ -13,7 +13,7 @@
     <img alt="Latest release" src="https://img.shields.io/github/v/release/valory-xyz/open-operator"></a> -->
 </h1>
 
-The Solana Trader is an autonomous service built with the [Open Autonomy framework](https://docs.autonolas.network/open-autonomy/) which automatically execute token swaps on Solana's swap aggregator [Jupiter](https://jup.ag/).
+The Solana Trader is an autonomous service built with the [Open Autonomy framework](https://docs.autonolas.network/open-autonomy/) which automatically executes token swaps on Solana's swap aggregator [Jupiter](https://jup.ag/).
 
 ## How it works
 
