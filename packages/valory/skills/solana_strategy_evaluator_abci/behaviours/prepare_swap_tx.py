@@ -27,7 +27,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base impor
     StrategyEvaluatorBaseBehaviour,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
-    PrepareSwapPayload,
+    SendSwapPayload,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (
     PrepareSwapRound,
@@ -57,13 +57,13 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             swaps = yield from self.get_from_ipfs(
-                self.synchronized_data.swaps_hash, SupportedFiletype.JSON
+                self.synchronized_data.orders_hash, SupportedFiletype.JSON
             )
             instructions = self.prepare_instructions(swaps)  # type: ignore
             serialized_instructions = None
             if instructions is not None:
                 serialized_instructions = json.dumps(instructions)
-            payload = PrepareSwapPayload(
+            payload = SendSwapPayload(
                 self.context.agent_address, serialized_instructions
             )
 

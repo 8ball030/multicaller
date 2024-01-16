@@ -33,6 +33,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states import (
     HodlRound,
+    StrategyExecutionFailedRound,
     SwapTxPreparedRound,
     TxPreparationFailedRound,
 )
@@ -77,7 +78,9 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     transition_function: AbciAppTransitionFunction = {
         StrategyExecRound: {
             Event.PREPARE_SWAP: PrepareSwapRound,
-            Event.HODL: HodlRound,
+            Event.PREPARE_INCOMPLETE_SWAP: PrepareSwapRound,
+            Event.NO_ORDERS: HodlRound,
+            Event.ERROR_PREPARING_SWAPS: StrategyExecutionFailedRound,
             Event.NO_MAJORITY: StrategyExecRound,
             Event.ROUND_TIMEOUT: StrategyExecRound,
         },
@@ -88,11 +91,13 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.NO_MAJORITY: PrepareSwapRound,
         },
         SwapTxPreparedRound: {},
+        StrategyExecutionFailedRound: {},
         TxPreparationFailedRound: {},
         HodlRound: {},
     }
     final_states: Set[AppState] = {
         SwapTxPreparedRound,
+        StrategyExecutionFailedRound,
         TxPreparationFailedRound,
         HodlRound,
     }
@@ -106,8 +111,8 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         },
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
-        # TODO replace with `most_voted_instruction_set`
-        SwapTxPreparedRound: set(),  # TODO: {get_name(SynchronizedData.most_voted_tx_hash)},
+        SwapTxPreparedRound: set(),  # TODO: {get_name(SynchronizedData.most_voted_instruction_set)},
+        StrategyExecutionFailedRound: set(),
         TxPreparationFailedRound: set(),
         HodlRound: set(),
     }

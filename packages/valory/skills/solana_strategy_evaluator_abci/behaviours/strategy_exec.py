@@ -19,7 +19,7 @@
 
 """This module contains the behaviour for executing a strategy."""
 
-from typing import Any, Dict, Generator, List, Optional, Tuple
+from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
@@ -33,8 +33,14 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec 
 )
 
 
-SWAP_DECISION_FIELD = "decision"
-NO_SWAP_DECISION = {SWAP_DECISION_FIELD: False}
+STRATEGY_KEY = "trading_strategy"
+PRICE_DATA_KEY = "price_data"
+SWAP_DECISION_FIELD = "signal"
+BUY_DECISION = "buy"
+SELL_DECISION = "sell"
+HODl_DECISION = "hold"
+AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODl_DECISION)
+NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODl_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 
 
@@ -45,11 +51,12 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
     def strategy_exec(self, strategy_name: str) -> Optional[Tuple[str, str]]:
         """Get the executable strategy's contents."""
-        return self.shared_state.strategies_executables.get(strategy_name, None)
+        # TODO access executables correctly when ipfs skill is complete
+        return self.shared_state["downloaded_ipfs_packages"].get(strategy_name, None)
 
     def execute_strategy(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """Execute the strategy and return the results."""
-        trading_strategy = kwargs.pop("trading_strategy", None)
+        trading_strategy = kwargs.pop(STRATEGY_KEY, None)
         if trading_strategy is None:
             self.context.logger.error(f"No {trading_strategy!r} was given!")
             return NO_SWAP_DECISION
@@ -79,7 +86,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def get_swap_decision(
         self,
         token_data: Any,
-    ) -> bool:
+    ) -> Optional[str]:
         """Get the swap decision given a token's data."""
         strategy = self.synchronized_data.selected_strategy
         self.context.logger.info(f"Using trading strategy {strategy!r}.")
@@ -87,8 +94,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         kwargs: Dict[str, Any] = self.params.strategies_kwargs
         kwargs.update(
             {
-                "trading_strategy": strategy,
-                "token_data": token_data,
+                STRATEGY_KEY: strategy,
+                PRICE_DATA_KEY: token_data,
             }
         )
         results = self.execute_strategy(**kwargs)
@@ -101,21 +108,33 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         if decision is None:
             self.context.logger.error(
                 f"Required field {SWAP_DECISION_FIELD!r} was not returned by {strategy} strategy."
-                "Not swapping."
+                "Not taking any actions."
             )
-            decision = False
+        if decision not in AVAILABLE_DECISIONS:
+            self.context.logger.error(
+                f"Invalid decision {decision!r} was detected! Expected one of {AVAILABLE_DECISIONS}."
+                "Not taking any actions."
+            )
+            decision = None
 
         return decision
 
-    def get_swaps(self, token_data: Dict[str, Any]) -> List[str]:
-        """Get a list of possible swaps."""
+    def get_orders(
+        self, token_data: Dict[str, Any]
+    ) -> Tuple[Dict[str, List[str]], bool]:
+        """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
         # TODO this method is blocking, needs to be run from an aea skill.
-        swaps = []
+        orders: Dict[str, List[str]] = {
+            decision: [] for decision in AVAILABLE_DECISIONS
+        }
+        incomplete = False
         for token, data in token_data.items():
             decision = self.get_swap_decision(data)
-            if decision:
-                swaps.append(token)
-        return swaps
+            if decision is None:
+                incomplete = True
+                continue
+            orders[decision].append(token)
+        return orders, incomplete
 
     def async_act(self) -> Generator:
         """Do the action."""
@@ -123,14 +142,26 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             token_data = yield from self.get_from_ipfs(
                 self.synchronized_data.data_hash, SupportedFiletype.JSON
             )
-            swaps = self.get_swaps(token_data)  # type: ignore
-            swaps_hash = None
-            if len(swaps) > 0:
-                swaps_hash = yield from self.send_to_ipfs(
+            if token_data is None:
+                self.context.logger.error("Could not get the swap data from IPFS!")
+                self.sleep(self.params.sleep_time)
+                return
+            token_data = cast(Dict[str, Any], token_data)
+
+            orders, incomplete = self.get_orders(token_data)
+            if len(orders) == 0:
+                orders_hash = None
+                if incomplete:
+                    status = None
+            else:
+                orders_hash = yield from self.send_to_ipfs(
                     str(self.swap_decision_filepath),
-                    swaps,
+                    orders,
                     filetype=SupportedFiletype.JSON,
                 )
-            payload = StrategyExecPayload(self.context.agent_address, swaps_hash)
+                status = incomplete
+            payload = StrategyExecPayload(
+                self.context.agent_address, orders_hash, status
+            )
 
         yield from self.finish_behaviour(payload)

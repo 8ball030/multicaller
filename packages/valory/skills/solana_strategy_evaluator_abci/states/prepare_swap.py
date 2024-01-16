@@ -24,7 +24,7 @@ from packages.valory.skills.abstract_round_abci.base import (
     get_name,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
-    PrepareSwapPayload,
+    SendSwapPayload,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
@@ -35,7 +35,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
 class PrepareSwapRound(CollectSameUntilThresholdRound):
     """A round in which the agents prepare swap(s) transaction."""
 
-    payload_class = PrepareSwapPayload
+    payload_class = SendSwapPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     none_event = Event.TX_PREPARATION_FAILED

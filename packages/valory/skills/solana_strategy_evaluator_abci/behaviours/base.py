@@ -35,6 +35,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
 
 
 SWAP_DECISION_FILENAME = "swap_decision.json"
+SWAP_INSTRUCTIONS_FILENAME = "swap_instructions.json"
 
 
 def wei_to_native(wei: int) -> float:
@@ -50,6 +51,9 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         super().__init__(**kwargs)
         self.swap_decision_filepath = (
             Path(self.context.data_dir) / SWAP_DECISION_FILENAME
+        )
+        self.swap_instructions_filepath = (
+            Path(self.context.data_dir) / SWAP_INSTRUCTIONS_FILENAME
         )
         self.token_balance = 0
         self.wallet_balance = 0
