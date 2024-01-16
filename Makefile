@@ -97,7 +97,10 @@ all-checks: format code-checks security generators common-checks-1 common-checks
 
 .PHONY: fix-abci-app-specs
 fix-abci-app-specs:
-	tox -e abci-docstrings
+	autonomy analyse fsm-specs --update --app-class MarketDataFetcherAbciApp --package packages/valory/skills/market_data_fetcher_abci
+	autonomy analyse fsm-specs --update --app-class SolanaTraderDecisionMakerAbciApp --package packages/valory/skills/solana_trader_decision_maker_abci
+	autonomy analyse fsm-specs --update --app-class StrategyEvaluatorAbciApp --package packages/valory/skills/solana_strategy_evaluator_abci
+	echo "Successfully validated abcis!"
 
 protolint_install:
 	GO111MODULE=on GOPATH=~/go go get -u -v github.com/yoheimuta/protolint/cmd/protolint@v0.27.0
