@@ -31,8 +31,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeicflamagqirjgasito2kelmlsxtmv75b4skrawt7c35ndendd6xfy
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeid3eh3jumyivflty42zqy6xorv3xm5wh42aawa27fcakiux6wekty
-- valory/solana_trader_abci:0.1.0:bafybeibtga4u3offsa2trtaykuebsqryv76xhps5ihihrhzyi6lukactse
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeiapnm2e7tx33q354fgwj7q5bft5w4me5wfpti7tdmphogb7avehb4
+- valory/solana_trader_abci:0.1.0:bafybeiaqdnnv4gjqjevn5z5lhqikc4lfq2cscnpcioccf4gg74rgckji6i
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
 - valory/ipfs_package_downloader:0.1.0:bafybeidvhxiqshwmgcnlqjf66sco4sh5k4xcsvwhsu5hvmmmpnq5gcbtr4
 default_ledger: solana
