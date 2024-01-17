@@ -23,7 +23,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeicflamagqirjgasito2kelmlsxtmv75b4skrawt7c35ndendd6xfy
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeid3eh3jumyivflty42zqy6xorv3xm5wh42aawa27fcakiux6wekty
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeifkw62voll2sfnhfy5epewhsf74dshc2hxlsq5luo7ccc3vnmp7cm
 behaviours:
   main:
     args: {}

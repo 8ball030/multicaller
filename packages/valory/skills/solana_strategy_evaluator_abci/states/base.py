@@ -43,8 +43,10 @@ class Event(Enum):
     """Event enumeration for the price estimation demo."""
 
     DONE = "done"
-    HODL = "hodl"
+    NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
+    PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
+    ERROR_PREPARING_SWAPS = "error_preparing_swaps"
     TX_PREPARATION_FAILED = "none"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
@@ -65,14 +67,19 @@ class SynchronizedData(
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def swaps_hash(self) -> str:
-        """Get the hash of the swaps' data."""
-        return str(self.db.get_strict("swaps_hash"))
+    def orders_hash(self) -> str:
+        """Get the hash of the orders' data."""
+        return str(self.db.get_strict("orders_hash"))
 
     @property
-    def participant_to_swaps(self) -> DeserializedCollection:
-        """Get the participants to swaps."""
-        return self._get_deserialized("participant_to_swaps")
+    def incomplete_exec(self) -> bool:
+        """Get whether the strategies did not complete successfully."""
+        return bool(self.db.get_strict("incomplete_exec"))
+
+    @property
+    def participant_to_orders(self) -> DeserializedCollection:
+        """Get the participants to orders."""
+        return self._get_deserialized("participant_to_orders")
 
     @property
     def participant_to_instructions(self) -> DeserializedCollection:

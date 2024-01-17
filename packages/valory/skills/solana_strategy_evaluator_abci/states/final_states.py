@@ -30,6 +30,10 @@ class HodlRound(DegenerateRound):
     """A round representing that the strategy evaluator has not prepared any swap transactions."""
 
 
+class StrategyExecutionFailedRound(DegenerateRound):
+    """A round representing that the strategy evaluator has failed to execute the strategy."""
+
+
 class TxPreparationFailedRound(DegenerateRound):
     """A round representing that the strategy evaluator has failed to prepare swap(s) transactions."""
 

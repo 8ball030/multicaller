@@ -26,14 +26,21 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
 @dataclass(frozen=True)
-class StrategyExecPayload(BaseTxPayload):
-    """Represents a transaction payload for strategy execution."""
+class IPFSHashPayload(BaseTxPayload):
+    """Represents a transaction payload for an IPFS hash."""
 
-    swaps_hash: Optional[str]
+    ipfs_hash: Optional[str]
 
 
 @dataclass(frozen=True)
-class PrepareSwapPayload(BaseTxPayload):
+class StrategyExecPayload(IPFSHashPayload):
+    """Represents a transaction payload for strategy execution."""
+
+    incomplete: Optional[bool]
+
+
+@dataclass(frozen=True)
+class SendSwapPayload(BaseTxPayload):
     """Represents a transaction payload for preparing the instruction for a swap transaction."""
 
     # `instructions` is a serialized `List[Dict[str, Any]]`

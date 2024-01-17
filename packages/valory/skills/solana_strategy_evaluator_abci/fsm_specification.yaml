@@ -1,13 +1,16 @@
 alphabet_in:
 - DONE
-- HODL
+- ERROR_PREPARING_SWAPS
 - NO_MAJORITY
+- NO_ORDERS
+- PREPARE_INCOMPLETE_SWAP
 - PREPARE_SWAP
 - ROUND_TIMEOUT
 - TX_PREPARATION_FAILED
 default_start_state: StrategyExecRound
 final_states:
 - HodlRound
+- StrategyExecutionFailedRound
 - SwapTxPreparedRound
 - TxPreparationFailedRound
 label: StrategyEvaluatorAbciApp
@@ -17,6 +20,7 @@ states:
 - HodlRound
 - PrepareSwapRound
 - StrategyExecRound
+- StrategyExecutionFailedRound
 - SwapTxPreparedRound
 - TxPreparationFailedRound
 transition_func:
@@ -24,7 +28,9 @@ transition_func:
     (PrepareSwapRound, NO_MAJORITY): PrepareSwapRound
     (PrepareSwapRound, ROUND_TIMEOUT): PrepareSwapRound
     (PrepareSwapRound, TX_PREPARATION_FAILED): TxPreparationFailedRound
-    (StrategyExecRound, HODL): HodlRound
+    (StrategyExecRound, ERROR_PREPARING_SWAPS): StrategyExecutionFailedRound
     (StrategyExecRound, NO_MAJORITY): StrategyExecRound
+    (StrategyExecRound, NO_ORDERS): HodlRound
+    (StrategyExecRound, PREPARE_INCOMPLETE_SWAP): PrepareSwapRound
     (StrategyExecRound, PREPARE_SWAP): PrepareSwapRound
     (StrategyExecRound, ROUND_TIMEOUT): StrategyExecRound
