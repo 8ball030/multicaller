@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center" style="margin-bottom: 0;">
-    Solana Trader Service
+    Baby Degen
     <br /><sub>An autonomous trader service on Jupiter</sub>
     <br />
     <a href="https://github.com/valory-xyz/solana-trader/blob/main/LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/github/license/valory-xyz/solana-trader"></a>
