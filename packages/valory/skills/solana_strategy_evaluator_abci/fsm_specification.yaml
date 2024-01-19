@@ -1,36 +1,51 @@
 alphabet_in:
-- DONE
+- ERROR_PREPARING_INSTRUCTIONS
 - ERROR_PREPARING_SWAPS
+- INCOMPLETE_INSTRUCTIONS_PREPARED
+- INSTRUCTIONS_PREPARED
+- NO_INSTRUCTIONS
 - NO_MAJORITY
 - NO_ORDERS
 - PREPARE_INCOMPLETE_SWAP
 - PREPARE_SWAP
 - ROUND_TIMEOUT
+- SWAPS_QUEUE_EMPTY
+- SWAP_TX_PREPARED
 - TX_PREPARATION_FAILED
 default_start_state: StrategyExecRound
 final_states:
 - HodlRound
+- InstructionPreparationFailedRound
+- NoMoreSwapsRound
 - StrategyExecutionFailedRound
 - SwapTxPreparedRound
-- TxPreparationFailedRound
 label: StrategyEvaluatorAbciApp
 start_states:
 - StrategyExecRound
 states:
 - HodlRound
+- InstructionPreparationFailedRound
+- NoMoreSwapsRound
 - PrepareSwapRound
 - StrategyExecRound
 - StrategyExecutionFailedRound
+- SwapQueueRound
 - SwapTxPreparedRound
-- TxPreparationFailedRound
 transition_func:
-    (PrepareSwapRound, DONE): SwapTxPreparedRound
+    (PrepareSwapRound, ERROR_PREPARING_INSTRUCTIONS): InstructionPreparationFailedRound
+    (PrepareSwapRound, INCOMPLETE_INSTRUCTIONS_PREPARED): SwapQueueRound
+    (PrepareSwapRound, INSTRUCTIONS_PREPARED): SwapQueueRound
+    (PrepareSwapRound, NO_INSTRUCTIONS): HodlRound
     (PrepareSwapRound, NO_MAJORITY): PrepareSwapRound
     (PrepareSwapRound, ROUND_TIMEOUT): PrepareSwapRound
-    (PrepareSwapRound, TX_PREPARATION_FAILED): TxPreparationFailedRound
     (StrategyExecRound, ERROR_PREPARING_SWAPS): StrategyExecutionFailedRound
     (StrategyExecRound, NO_MAJORITY): StrategyExecRound
     (StrategyExecRound, NO_ORDERS): HodlRound
     (StrategyExecRound, PREPARE_INCOMPLETE_SWAP): PrepareSwapRound
     (StrategyExecRound, PREPARE_SWAP): PrepareSwapRound
     (StrategyExecRound, ROUND_TIMEOUT): StrategyExecRound
+    (SwapQueueRound, NO_MAJORITY): SwapQueueRound
+    (SwapQueueRound, ROUND_TIMEOUT): SwapQueueRound
+    (SwapQueueRound, SWAPS_QUEUE_EMPTY): NoMoreSwapsRound
+    (SwapQueueRound, SWAP_TX_PREPARED): SwapTxPreparedRound
+    (SwapQueueRound, TX_PREPARATION_FAILED): SwapQueueRound

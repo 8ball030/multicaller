@@ -60,21 +60,30 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         0. StrategyExecRound
             - prepare swap: 1.
             - prepare incomplete swap: 1.
-            - no orders: 5.
-            - error preparing swaps: 3.
+            - no orders: 7.
+            - error preparing swaps: 5.
             - no majority: 0.
             - round timeout: 0.
         1. PrepareSwapRound
-            - done: 2.
-            - none: 4.
-            - round timeout: 1.
+            - instructions prepared: 2.
+            - incomplete instructions prepared: 2.
+            - no instructions: 7.
+            - error preparing instructions: 6.
             - no majority: 1.
-        2. SwapTxPreparedRound
-        3. StrategyExecutionFailedRound
-        4. TxPreparationFailedRound
-        5. HodlRound
+            - round timeout: 1.
+        2. SwapQueueRound
+            - swap tx prepared: 3.
+            - swaps queue empty: 4.
+            - none: 2.
+            - no majority: 2.
+            - round timeout: 2.
+        3. SwapTxPreparedRound
+        4. NoMoreSwapsRound
+        5. StrategyExecutionFailedRound
+        6. InstructionPreparationFailedRound
+        7. HodlRound
 
-    Final states: {HodlRound, StrategyExecutionFailedRound, SwapTxPreparedRound, TxPreparationFailedRound}
+    Final states: {HodlRound, InstructionPreparationFailedRound, NoMoreSwapsRound, StrategyExecutionFailedRound, SwapTxPreparedRound}
 
     Timeouts:
         round timeout: 30.0
