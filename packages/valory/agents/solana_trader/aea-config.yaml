@@ -153,7 +153,6 @@ models:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
       file_hash_to_id: ${list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-      slippage: ${float:0.05}
       strategies_kwargs: ${list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0

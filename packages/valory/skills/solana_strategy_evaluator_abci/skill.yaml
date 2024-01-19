@@ -134,13 +134,38 @@ models:
       tendermint_url: http://localhost:26657
       tx_timeout: 10.0
       use_termination: false
-      slippage: 0.05
       strategies_kwargs:
       - - extra_1
         - value
       - - extra_2
         - value
     class_name: StrategyEvaluatorParams
+  swap_quotes:
+    args:
+      api_id: swap_quotes
+      headers:
+        Content-Type: application/json
+      method: GET
+      parameters:
+        amount: 1000000
+        slippageBps: 1
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/quote
+    class_name: SwapQuotesSpecs
+  swap_instructions:
+    args:
+      api_id: swap_instructions
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/swap-instructions
+    class_name: SwapInstructionsSpecs
   requests:
     args: {}
     class_name: Requests

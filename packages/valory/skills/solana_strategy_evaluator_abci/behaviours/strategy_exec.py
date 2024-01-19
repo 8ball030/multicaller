@@ -19,14 +19,10 @@
 
 """This module contains the behaviour for executing a strategy."""
 
-from typing import Any, Dict, Generator, List, Optional, Tuple, cast
+from typing import Any, Dict, Generator, List, Optional, Tuple
 
-from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
-)
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
-    StrategyExecPayload,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
@@ -38,9 +34,9 @@ PRICE_DATA_KEY = "price_data"
 SWAP_DECISION_FIELD = "signal"
 BUY_DECISION = "buy"
 SELL_DECISION = "sell"
-HODl_DECISION = "hold"
-AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODl_DECISION)
-NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODl_DECISION}
+HODL_DECISION = "hold"
+AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODL_DECISION)
+NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODL_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 
 
@@ -51,7 +47,6 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
     def strategy_exec(self, strategy_name: str) -> Optional[Tuple[str, str]]:
         """Get the executable strategy's contents."""
-        # TODO access executables correctly when ipfs skill is complete
         return self.shared_state["downloaded_ipfs_packages"].get(strategy_name, None)
 
     def execute_strategy(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
@@ -121,7 +116,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
     def get_orders(
         self, token_data: Dict[str, Any]
-    ) -> Tuple[Dict[str, List[str]], bool]:
+    ) -> Generator[None, None, Tuple[Dict[str, List[str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
         # TODO this method is blocking, needs to be run from an aea skill.
         orders: Dict[str, List[str]] = {
@@ -134,34 +129,15 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 incomplete = True
                 continue
             orders[decision].append(token)
+
+        # we only yield here to convert this method to a generator, so that it can be used by `get_process_store_act`
+        yield
         return orders, incomplete
 
     def async_act(self) -> Generator:
         """Do the action."""
-        with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            token_data = yield from self.get_from_ipfs(
-                self.synchronized_data.data_hash, SupportedFiletype.JSON
-            )
-            if token_data is None:
-                self.context.logger.error("Could not get the swap data from IPFS!")
-                self.sleep(self.params.sleep_time)
-                return
-            token_data = cast(Dict[str, Any], token_data)
-
-            orders, incomplete = self.get_orders(token_data)
-            if len(orders) == 0:
-                orders_hash = None
-                if incomplete:
-                    status = None
-            else:
-                orders_hash = yield from self.send_to_ipfs(
-                    str(self.swap_decision_filepath),
-                    orders,
-                    filetype=SupportedFiletype.JSON,
-                )
-                status = incomplete
-            payload = StrategyExecPayload(
-                self.context.agent_address, orders_hash, status
-            )
-
-        yield from self.finish_behaviour(payload)
+        yield from self.get_process_store_act(
+            self.synchronized_data.data_hash,
+            self.get_orders,
+            str(self.swap_decision_filepath),
+        )

@@ -30,15 +30,21 @@ import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetch
 import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
 # import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
 
+DECISION_MAKING = SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound
+
 abci_app_transition_mapping: AbciAppTransitionMapping = {
-    RegistrationAbci.FinishedRegistrationRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    RegistrationAbci.FinishedRegistrationRound: DECISION_MAKING,
     SolanaTraderDecisionMakerAbci.FinishedSolanaTraderDecisionMakerRound: MarketDataFetcherAbci.FetchMarketDataRound,
-    SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
-    MarketDataFetcherAbci.FinishedMarketFetchRound: ResetAndPauseAbci.ResetAndPauseRound,  # TODO: StrategyEvaluatorAbci.StrategyExecRound,
-    # StrategyEvaluatorAbci.FinishedStrategyEvaluation: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,   # TODO
-    # SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,    # TODO
-    # SolanaTransactionSettlementAbci.FailedRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,    # TODO
-    ResetAndPauseAbci.FinishedResetAndPauseRound: SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound,
+    SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: DECISION_MAKING,
+    MarketDataFetcherAbci.FinishedMarketFetchRound: StrategyEvaluatorAbci.StrategyExecRound,
+    # StrategyEvaluatorAbci.SwapTxPreparedRound: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,    # TODO
+    StrategyEvaluatorAbci.NoMoreSwapsRound: DECISION_MAKING,
+    StrategyEvaluatorAbci.StrategyExecutionFailedRound: DECISION_MAKING,
+    StrategyEvaluatorAbci.InstructionPreparationFailedRound: DECISION_MAKING,
+    StrategyEvaluatorAbci.HodlRound: DECISION_MAKING,
+    # SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: DECISION_MAKING,    # TODO
+    # SolanaTransactionSettlementAbci.FailedRound: DECISION_MAKING,    # TODO
+    ResetAndPauseAbci.FinishedResetAndPauseRound: DECISION_MAKING,
     ResetAndPauseAbci.FinishedResetAndPauseErrorRound: RegistrationAbci.RegistrationRound,
 }
 

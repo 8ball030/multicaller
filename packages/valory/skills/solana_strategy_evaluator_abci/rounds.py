@@ -33,15 +33,19 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states import (
     HodlRound,
+    InstructionPreparationFailedRound,
+    NoMoreSwapsRound,
     StrategyExecutionFailedRound,
     SwapTxPreparedRound,
-    TxPreparationFailedRound,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (
     PrepareSwapRound,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.states.swap_queue import (
+    SwapQueueRound,
 )
 
 
@@ -88,20 +92,31 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.ROUND_TIMEOUT: StrategyExecRound,
         },
         PrepareSwapRound: {
-            Event.DONE: SwapTxPreparedRound,
-            Event.TX_PREPARATION_FAILED: TxPreparationFailedRound,
-            Event.ROUND_TIMEOUT: PrepareSwapRound,
+            Event.INSTRUCTIONS_PREPARED: SwapQueueRound,
+            Event.INCOMPLETE_INSTRUCTIONS_PREPARED: SwapQueueRound,
+            Event.NO_INSTRUCTIONS: HodlRound,
+            Event.ERROR_PREPARING_INSTRUCTIONS: InstructionPreparationFailedRound,
             Event.NO_MAJORITY: PrepareSwapRound,
+            Event.ROUND_TIMEOUT: PrepareSwapRound,
+        },
+        SwapQueueRound: {
+            Event.SWAP_TX_PREPARED: SwapTxPreparedRound,
+            Event.SWAPS_QUEUE_EMPTY: NoMoreSwapsRound,
+            Event.TX_PREPARATION_FAILED: SwapQueueRound,
+            Event.NO_MAJORITY: SwapQueueRound,
+            Event.ROUND_TIMEOUT: SwapQueueRound,
         },
         SwapTxPreparedRound: {},
+        NoMoreSwapsRound: {},
         StrategyExecutionFailedRound: {},
-        TxPreparationFailedRound: {},
+        InstructionPreparationFailedRound: {},
         HodlRound: {},
     }
     final_states: Set[AppState] = {
         SwapTxPreparedRound,
+        NoMoreSwapsRound,
         StrategyExecutionFailedRound,
-        TxPreparationFailedRound,
+        InstructionPreparationFailedRound,
         HodlRound,
     }
     event_to_timeout: Dict[Event, float] = {
@@ -115,7 +130,8 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
         SwapTxPreparedRound: set(),  # TODO: {get_name(SynchronizedData.most_voted_instruction_set)},
+        NoMoreSwapsRound: set(),
         StrategyExecutionFailedRound: set(),
-        TxPreparationFailedRound: set(),
+        InstructionPreparationFailedRound: set(),
         HodlRound: set(),
     }

@@ -77,7 +77,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: &id003
       args:
@@ -128,7 +127,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: *id003
 2:
@@ -177,7 +175,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: *id003
 3:
@@ -226,7 +223,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: *id003
 ---

@@ -17,29 +17,26 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the decision receiving state of the strategy evaluator abci app."""
+"""This module contains the swap(s) instructions' preparation state of the strategy evaluator abci app."""
 
-from packages.valory.skills.abstract_round_abci.base import (
-    CollectSameUntilThresholdRound,
-    get_name,
-)
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
-    SendSwapPayload,
-)
+from packages.valory.skills.abstract_round_abci.base import get_name
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
+    IPFSRound,
     SynchronizedData,
 )
 
 
-class PrepareSwapRound(CollectSameUntilThresholdRound):
-    """A round in which the agents prepare swap(s) transaction."""
+class PrepareSwapRound(IPFSRound):
+    """A round in which the agents prepare swap(s) instructions."""
 
-    payload_class = SendSwapPayload
-    synchronized_data_class = SynchronizedData
-    done_event = Event.DONE
-    none_event = Event.TX_PREPARATION_FAILED
-    no_majority_event = Event.NO_MAJORITY
-    # TODO replace with `most_voted_instruction_set` when solana tx settlement is ready
-    # selection_key = get_name(SynchronizedData.most_voted_tx_hash)  noqa: E800
+    done_event = Event.INSTRUCTIONS_PREPARED
+    incomplete_event = Event.INCOMPLETE_INSTRUCTIONS_PREPARED
+    no_hash_event = Event.NO_INSTRUCTIONS
+    none_event = Event.ERROR_PREPARING_INSTRUCTIONS
+    selection_key = (
+        get_name(SynchronizedData.instructions_hash),
+        get_name(SynchronizedData.incomplete_instructions),
+        get_name(SynchronizedData.instructions_length),
+    )
     collection_key = get_name(SynchronizedData.participant_to_instructions)

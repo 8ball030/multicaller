@@ -19,9 +19,11 @@
 
 """This module contains the models for the skill."""
 
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Optional
 
-from packages.valory.skills.abstract_round_abci.models import BaseParams
+from aea.skills.base import SkillContext
+
+from packages.valory.skills.abstract_round_abci.models import ApiSpecs, BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
@@ -42,6 +44,11 @@ class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
     abci_app_cls = StrategyEvaluatorAbciApp
+
+    def __init__(self, *args: Any, skill_context: SkillContext, **kwargs: Any) -> None:
+        """Initialize the state."""
+        super().__init__(*args, skill_context=skill_context, **kwargs)
+        self.instructions: Optional[List[Dict[str, Any]]] = None
 
 
 def _raise_incorrect_config(key: str, values: Any) -> None:
@@ -72,8 +79,15 @@ class StrategyEvaluatorParams(BaseParams):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters' object."""
-        self.slippage: float = self._ensure("slippage", kwargs, float)
         self.strategies_kwargs: Dict[str, List[Any]] = nested_list_todict_workaround(
             kwargs, "strategies_kwargs"
         )
         super().__init__(*args, **kwargs)
+
+
+class SwapQuotesSpecs(ApiSpecs):
+    """A model that wraps ApiSpecs for the Jupiter quotes specifications."""
+
+
+class SwapInstructionsSpecs(ApiSpecs):
+    """A model that wraps ApiSpecs for the Jupiter instructions specifications."""

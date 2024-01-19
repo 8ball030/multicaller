@@ -141,7 +141,6 @@ models:
       coingecko_api_key: ''
       coingecko_market_endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
       trading_strategy: strategy_name
-      slippage: 0.05
       strategies_kwargs:
       - - extra_1
         - value
@@ -159,6 +158,32 @@ models:
       retries: 5
       url: https://drand.cloudflare.com/public/latest
     class_name: RandomnessApi
+  swap_quotes:
+    args:
+      api_id: swap_quotes
+      headers:
+        Content-Type: application/json
+      method: GET
+      parameters:
+        amount: 1000000
+        slippageBps: 1
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/quote
+    class_name: SwapQuotesSpecs
+  swap_instructions:
+    args:
+      api_id: swap_instructions
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/swap-instructions
+    class_name: SwapInstructionsSpecs
   requests:
     args: {}
     class_name: Requests
