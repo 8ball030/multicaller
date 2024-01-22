@@ -30,13 +30,8 @@ class IPFSHashPayload(BaseTxPayload):
     """Represents a transaction payload for an IPFS hash."""
 
     ipfs_hash: Optional[str]
-
-
-@dataclass(frozen=True)
-class StrategyExecPayload(IPFSHashPayload):
-    """Represents a transaction payload for strategy execution."""
-
     incomplete: Optional[bool]
+    n_processed: Optional[int]
 
 
 @dataclass(frozen=True)

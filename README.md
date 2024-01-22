@@ -9,8 +9,6 @@
     <a href="https://github.com/valory-xyz/solana-trader/blob/main/LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/github/license/valory-xyz/solana-trader"></a>
     <a href="https://docs.docker.com/compose/"><img alt="Deployment: Docker Compose" src="https://img.shields.io/badge/deployment-Docker%20Compose-blue"></a>
     <a href="https://pypi.org/project/open-autonomy/"><img alt="Framework: Open Autonomy" src="https://img.shields.io/badge/framework-Open%20Autonomy-blueviolet"></a>
-    <!-- <a href="https://github.com/valory-xyz/open-operator/releases/latest">
-    <img alt="Latest release" src="https://img.shields.io/github/v/release/valory-xyz/open-operator"></a> -->
 </h1>
 
 The Solana Trader is an autonomous service built with the [Open Autonomy framework](https://docs.autonolas.network/open-autonomy/) which automatically executes token swaps on Solana's swap aggregator [Jupiter](https://jup.ag/).

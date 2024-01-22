@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeifu6hrsdl6wugtisjmeudc55l7aj6xb553iejgfllld2ebyqzjo4i
+agent: valory/solana_trader:0.1.0:bafybeieintwo4med3n75iihkcs2or6g7u2maehvsnygfnsdj4di6ted5jq
 number_of_agents: 4
 deployment: {}
 ---
@@ -77,7 +77,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: &id003
       args:
@@ -128,7 +127,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: *id003
 2:
@@ -177,7 +175,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: *id003
 3:
@@ -226,7 +223,6 @@ type: skill
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
-        slippage: ${SLIPPAGE:float:0.05}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
     benchmark_tool: *id003
 ---

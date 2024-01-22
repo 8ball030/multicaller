@@ -10,21 +10,23 @@ fingerprint:
   README.md: bafybeicuikjki6yvgwmv6sxudjagjb3bhfsnypna36eceza2mzmqnthuiy
   __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
   behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
-  behaviours/base.py: bafybeifkl5m3ph2rt5v2gyno6hyzpvauuj5a4sinhr6h27mutnmjon6yt4
-  behaviours/prepare_swap_tx.py: bafybeihbxmtlzx3j3qev5r5bwwh37ryjjjhqgq2wlga2cvfouve2btasza
-  behaviours/round_behaviour.py: bafybeia4xlmutp7ogtbvm444xlml5vcd3igkumonrab3d7u3brrf3u3mb4
-  behaviours/strategy_exec.py: bafybeiahbbsdjrsr3nnp4fnrx65ber7vgtswegnmoza6ncnelqvzqnoi44
+  behaviours/base.py: bafybeihbtn27fej5vmwgidauqzqgrme2wes2cuwxw7kwwk2vvope5p75je
+  behaviours/prepare_swap_tx.py: bafybeih7ygwzn4lrsajiyvyl56cifphuak2b3qcqosu4sgavbyoazwu2wy
+  behaviours/round_behaviour.py: bafybeiczg42xhmpf2qjk75sfxdpwkf4cswu3xnotdjh7ubqnserrt2h3wa
+  behaviours/strategy_exec.py: bafybeicw2spswgelmzawrojtu2icaqkj2rhdtvzfal7tck3opihuzgydci
+  behaviours/swap_queue.py: bafybeicutgzpcm3mnzwqowvbyzoto7sl7fafe3phictsh5gpeoycdvjvui
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
-  fsm_specification.yaml: bafybeibip5qxxdcryinaaevsexys6slj6dmf2ikabnyq6bfylyes6dcewu
+  fsm_specification.yaml: bafybeieyhuanmnhket45zndgyik2dsddop4let3bozkd55jc353coxi37e
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
-  models.py: bafybeieb62uvvp2tzdygdwkmoj2b57k5jymdlieabptvuewbiiazxv2hqe
-  payloads.py: bafybeia2pfato3fvfylujub3x6aydjsqdeafvzwpg7s5guclrnymsbbyaa
-  rounds.py: bafybeicpblyyuacx6owydhutv3tfot2vazykusmwuam54sf2zxj43fm2ji
+  models.py: bafybeiaaq3lixjl7wjs7semm4qm4qujkyxh7ro2qsry4wm33vtpbrghpuu
+  payloads.py: bafybeibxdvl7pjddknnwa3cal5ysbwh2qlwwxsqturbolmoy2es5gaqt74
+  rounds.py: bafybeigh7hjzxujjfgpukjjrg3ch7gqeizp3rjaru2xtpfpun6lwvkbude
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
-  states/base.py: bafybeidkfqvjekhzvsit2ldlfp6qlfepkw6kvk5yjp5m7kz5mcykes4b7q
-  states/final_states.py: bafybeiarub464l6ihqxt65syomkiaxbw7cy6pe3jmffea7ygfzb72rvrle
-  states/prepare_swap.py: bafybeiamwvq6tfm6t2fr2uwshkbuhysvy3i3ixxh4npgj3fs6cqdkvo5da
-  states/strategy_exec.py: bafybeibormxafhuvjo4zcmwlfrso7zwu5cbsqchtsl7k3qlwctwo5de45i
+  states/base.py: bafybeidg3guqmzamuvw5p7kyeg3mqdidck5dukg4oasmhbwmt7iu4wgvma
+  states/final_states.py: bafybeiey7vklhra3vbg7gjpvqdkft4xozuojbhqvrykylrvqtt6ctc7a6e
+  states/prepare_swap.py: bafybeidjain3unql722dbqmsxnmsqmht4bp62phjadwsduv2mvitjzwyti
+  states/strategy_exec.py: bafybeiany22z3uu7cvmlh3juosuzgedwpryablerlyvkgtt7rpqdkirqty
+  states/swap_queue.py: bafybeigfkbv7s2f3ja7tgcjfx4czx3trajcgvexlb4ztyyywjgbmuhacha
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -134,13 +136,38 @@ models:
       tendermint_url: http://localhost:26657
       tx_timeout: 10.0
       use_termination: false
-      slippage: 0.05
       strategies_kwargs:
       - - extra_1
         - value
       - - extra_2
         - value
     class_name: StrategyEvaluatorParams
+  swap_quotes:
+    args:
+      api_id: swap_quotes
+      headers:
+        Content-Type: application/json
+      method: GET
+      parameters:
+        amount: 1000000
+        slippageBps: 1
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/quote
+    class_name: SwapQuotesSpecs
+  swap_instructions:
+    args:
+      api_id: swap_instructions
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/swap-instructions
+    class_name: SwapInstructionsSpecs
   requests:
     args: {}
     class_name: Requests

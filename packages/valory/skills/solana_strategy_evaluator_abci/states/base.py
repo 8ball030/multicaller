@@ -20,13 +20,19 @@
 """This module contains the base functionality for the rounds of the decision-making abci app."""
 
 from enum import Enum
+from typing import Optional, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
+    BaseSynchronizedData,
+    CollectSameUntilThresholdRound,
     CollectionRound,
     DeserializedCollection,
 )
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     SynchronizedData as MarketFetcherSyncedData,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+    IPFSHashPayload,
 )
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
@@ -42,11 +48,16 @@ from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
 class Event(Enum):
     """Event enumeration for the price estimation demo."""
 
-    DONE = "done"
     NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
     PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
     ERROR_PREPARING_SWAPS = "error_preparing_swaps"
+    NO_INSTRUCTIONS = "no_instructions"
+    INSTRUCTIONS_PREPARED = "instructions_prepared"
+    INCOMPLETE_INSTRUCTIONS_PREPARED = "incomplete_instructions_prepared"
+    ERROR_PREPARING_INSTRUCTIONS = "error_preparing_instructions"
+    SWAP_TX_PREPARED = "swap_tx_prepared"
+    SWAPS_QUEUE_EMPTY = "swaps_queue_empty"
     TX_PREPARATION_FAILED = "none"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
@@ -77,6 +88,26 @@ class SynchronizedData(
         return bool(self.db.get_strict("incomplete_exec"))
 
     @property
+    def orders_length(self) -> int:
+        """Get the number of the orders."""
+        return int(self.db.get_strict("orders_length"))
+
+    @property
+    def instructions_hash(self) -> str:
+        """Get the hash of the instructions' data."""
+        return str(self.db.get_strict("instructions_hash"))
+
+    @property
+    def incomplete_instructions(self) -> bool:
+        """Get whether the instructions were not built for all the swaps."""
+        return bool(self.db.get_strict("incomplete_instructions"))
+
+    @property
+    def instructions_length(self) -> int:
+        """Get the number of the instructions' sets."""
+        return int(self.db.get_strict("instructions_length"))
+
+    @property
     def participant_to_orders(self) -> DeserializedCollection:
         """Get the participants to orders."""
         return self._get_deserialized("participant_to_orders")
@@ -85,3 +116,45 @@ class SynchronizedData(
     def participant_to_instructions(self) -> DeserializedCollection:
         """Get the participants to swap(s) instructions."""
         return self._get_deserialized("participant_to_instructions")
+
+    @property
+    def participant_to_tx_preparation(self) -> DeserializedCollection:
+        """Get the participants to the next swap's tx preparation."""
+        return self._get_deserialized("participant_to_tx_preparation")
+
+
+class IPFSRound(CollectSameUntilThresholdRound):
+    """A round for sending data to IPFS and storing the returned hash."""
+
+    payload_class = IPFSHashPayload
+    synchronized_data_class = SynchronizedData
+    incomplete_event: Event
+    no_hash_event: Event
+    no_majority_event = Event.NO_MAJORITY
+
+    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
+        """Process the end of the block."""
+        res = super().end_block()
+        if res is None:
+            return None
+
+        synced_data, event = cast(Tuple[SynchronizedData, Enum], res)
+        if event == self.done_event:
+            return synced_data, self.get_swap_event(synced_data)
+        return synced_data, event
+
+    def get_swap_event(self, synced_data: SynchronizedData) -> Enum:
+        """Get the swap event based on the synchronized data."""
+        if not isinstance(self.selection_key, tuple) or len(self.selection_key) != 2:
+            raise ValueError(
+                f"The default implementation of `get_swap_event` for {self.__class__!r} "
+                "only supports two selection keys. "
+                "Please override the method to match the intended logic."
+            )
+
+        hash_db_key, incomplete_db_key = self.selection_key
+        if getattr(synced_data, hash_db_key) is None:
+            return self.no_hash_event
+        if getattr(synced_data, incomplete_db_key):
+            return self.incomplete_event
+        return self.done_event

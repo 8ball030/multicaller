@@ -19,55 +19,24 @@
 
 """This module contains the strategy execution state of the strategy evaluator abci app."""
 
-from enum import Enum
-from typing import Optional, Tuple, cast
-
-from packages.valory.skills.abstract_round_abci.base import (
-    BaseSynchronizedData,
-    CollectSameUntilThresholdRound,
-    get_name,
-)
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
-    StrategyExecPayload,
-)
+from packages.valory.skills.abstract_round_abci.base import get_name
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
+    IPFSRound,
     SynchronizedData,
 )
 
 
-class StrategyExecRound(CollectSameUntilThresholdRound):
+class StrategyExecRound(IPFSRound):
     """A round for executing a strategy."""
 
-    payload_class = StrategyExecPayload
-    synchronized_data_class = SynchronizedData
-    prepare_swap_event = Event.PREPARE_SWAP
-    done_event = prepare_swap_event
-    incomplete_swap_event = Event.PREPARE_INCOMPLETE_SWAP
-    no_orders_event = Event.NO_ORDERS
+    done_event = Event.PREPARE_SWAP
+    incomplete_event = Event.PREPARE_INCOMPLETE_SWAP
+    no_hash_event = Event.NO_ORDERS
     none_event = Event.ERROR_PREPARING_SWAPS
-    no_majority_event = Event.NO_MAJORITY
     selection_key = (
         get_name(SynchronizedData.orders_hash),
         get_name(SynchronizedData.incomplete_exec),
+        get_name(SynchronizedData.orders_length),
     )
     collection_key = get_name(SynchronizedData.participant_to_orders)
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        res = super().end_block()
-        if res is None:
-            return None
-
-        synced_data, event = cast(Tuple[SynchronizedData, Enum], res)
-        if event == self.prepare_swap_event:
-            return synced_data, self.get_swap_event(synced_data)
-        return synced_data, event
-
-    def get_swap_event(self, synced_data: SynchronizedData) -> Enum:
-        """Get the swap event based on the synchronized data."""
-        if synced_data.orders_hash is None:
-            return self.no_orders_event
-        if synced_data.incomplete_exec:
-            return self.incomplete_swap_event
-        return self.prepare_swap_event

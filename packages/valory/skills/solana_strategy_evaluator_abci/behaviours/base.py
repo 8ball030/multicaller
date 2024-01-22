@@ -21,13 +21,17 @@
 
 from abc import ABC
 from pathlib import Path
-from typing import Any, Generator, cast
+from typing import Any, Callable, Generator, Optional, Sized, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
+from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState,
     StrategyEvaluatorParams,
+)
+from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+    IPFSHashPayload,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     SynchronizedData,
@@ -47,7 +51,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     """Represents the base class for the strategy evaluation FSM behaviour."""
 
     def __init__(self, **kwargs: Any) -> None:
-        """Initialize the bet placement behaviour."""
+        """Initialize the strategy evaluator behaviour."""
         super().__init__(**kwargs)
         self.swap_decision_filepath = (
             Path(self.context.data_dir) / SWAP_DECISION_FILENAME
@@ -72,6 +76,53 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     def synchronized_data(self) -> SynchronizedData:
         """Return the synchronized data."""
         return SynchronizedData(super().synchronized_data.db)
+
+    def get_process_store_act(
+        self,
+        hash_: str,
+        process_fn: Callable[[Any], Generator[None, None, Tuple[Sized, bool]]],
+        store_filepath: str,
+    ) -> Generator:
+        """An async act method for getting some data, processing them, and storing the result.
+
+        1. Get some data using the given hash.
+        2. Process them using the given fn.
+        3. Send them to IPFS using the given filepath as intermediate storage.
+
+        :param hash_: the hash of the data to process.
+        :param process_fn: the function to process the data.
+        :param store_filepath: path to the file to store the processed data.
+        :return: None
+        :yield: None
+        """
+        with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
+            if data is None:
+                self.context.logger.error(
+                    f"Could not get the data from IPFS using hash {hash_!r}!"
+                )
+                self.sleep(self.params.sleep_time)
+                return
+
+            processed, incomplete = yield from process_fn(data)
+            n_processed: Optional[int] = len(processed)
+            if n_processed == 0:
+                processed_hash = None
+                if incomplete:
+                    status = n_processed = None
+            else:
+                processed_hash = yield from self.send_to_ipfs(
+                    store_filepath,
+                    processed,
+                    filetype=SupportedFiletype.JSON,
+                )
+                status = incomplete
+
+            payload = IPFSHashPayload(
+                self.context.agent_address, processed_hash, status, n_processed
+            )
+
+        yield from self.finish_behaviour(payload)
 
     def finish_behaviour(self, payload: BaseTxPayload) -> Generator:
         """Finish the behaviour."""
