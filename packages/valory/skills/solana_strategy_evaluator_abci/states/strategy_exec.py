@@ -19,6 +19,8 @@
 
 """This module contains the strategy execution state of the strategy evaluator abci app."""
 
+from typing import Any
+
 from packages.valory.skills.abstract_round_abci.base import get_name
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
@@ -40,3 +42,10 @@ class StrategyExecRound(IPFSRound):
         get_name(SynchronizedData.orders_length),
     )
     collection_key = get_name(SynchronizedData.participant_to_orders)
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        """Initialize the strategy execution round."""
+        super().__init__(*args, **kwargs)
+        if self.context.params.use_proxy_server:
+            self.done_event = Event.PREPARE_SWAP_PROXY_SERVER
+            self.incomplete_event = Event.PREPARE_INCOMPLETE_SWAP_PROXY_SERVER

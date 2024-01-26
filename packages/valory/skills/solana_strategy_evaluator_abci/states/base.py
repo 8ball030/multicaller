@@ -50,7 +50,9 @@ class Event(Enum):
 
     NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
+    PREPARE_SWAP_PROXY_SERVER = "prepare_swap_proxy_server"
     PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
+    PREPARE_INCOMPLETE_SWAP_PROXY_SERVER = "prepare_incomplete_swap_proxy_server"
     ERROR_PREPARING_SWAPS = "error_preparing_swaps"
     NO_INSTRUCTIONS = "no_instructions"
     INSTRUCTIONS_PREPARED = "instructions_prepared"
