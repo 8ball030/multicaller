@@ -41,6 +41,9 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states i
 from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (
     PrepareSwapRound,
 )
+from packages.valory.skills.solana_strategy_evaluator_abci.states.proxy_swap_queue import (
+    ProxySwapQueueRound,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
 )
@@ -94,7 +97,9 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     transition_function: AbciAppTransitionFunction = {
         StrategyExecRound: {
             Event.PREPARE_SWAP: PrepareSwapRound,
+            Event.PREPARE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
             Event.PREPARE_INCOMPLETE_SWAP: PrepareSwapRound,
+            Event.PREPARE_INCOMPLETE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
             Event.NO_ORDERS: HodlRound,
             Event.ERROR_PREPARING_SWAPS: StrategyExecutionFailedRound,
             Event.NO_MAJORITY: StrategyExecRound,
@@ -114,6 +119,13 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.TX_PREPARATION_FAILED: SwapQueueRound,
             Event.NO_MAJORITY: SwapQueueRound,
             Event.ROUND_TIMEOUT: SwapQueueRound,
+        },
+        ProxySwapQueueRound: {
+            Event.PROXY_SWAPPED: ProxySwapQueueRound,
+            Event.SWAPS_QUEUE_EMPTY: NoMoreSwapsRound,
+            Event.PROXY_SWAP_FAILED: ProxySwapQueueRound,
+            Event.NO_MAJORITY: ProxySwapQueueRound,
+            Event.ROUND_TIMEOUT: ProxySwapQueueRound,
         },
         SwapTxPreparedRound: {},
         NoMoreSwapsRound: {},
