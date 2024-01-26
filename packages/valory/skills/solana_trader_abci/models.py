@@ -24,7 +24,7 @@ from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
 from packages.valory.skills.abstract_round_abci.models import Requests as BaseRequests
-from packages.valory.skills.solana_trader_decision_maker_abci.models import (
+from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState as BaseSharedState,
 )
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
@@ -63,6 +63,18 @@ BenchmarkTool = BaseBenchmarkTool
 
 class RandomnessApi(ApiSpecs):
     """A model for randomness api specifications."""
+
+
+class SwapQuotesSpecs(ApiSpecs):
+    """A model that wraps ApiSpecs for the Jupiter quotes specifications."""
+
+
+class SwapInstructionsSpecs(ApiSpecs):
+    """A model that wraps ApiSpecs for the Jupiter instructions specifications."""
+
+
+class TxSettlementProxy(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
 
 
 MARGIN = 5

@@ -53,6 +53,9 @@ class SharedState(BaseSharedState):
         # utilized if using the Solana tx settlement
         self.instructions: Optional[List[Dict[str, Any]]] = None
 
+    def setup(self) -> None:
+        """Set up the model."""
+        super().setup()
         if (
             self.context.params.use_proxy_server
             and self.synchronized_data.max_participants != 1

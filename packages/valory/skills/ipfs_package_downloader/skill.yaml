@@ -38,7 +38,7 @@ models:
       cleanup_freq: 50
       timeout_limit: 3
       file_hash_to_id:
-      - - bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi
+      - - bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m
         - - follow_trend_strategy
     class_name: Params
 dependencies:

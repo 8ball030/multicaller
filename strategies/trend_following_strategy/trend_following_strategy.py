@@ -19,7 +19,7 @@
 
 """This module contains the trend_following_strategy."""
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Tuple, Union
 
 
 BUY_SIGNAL = "buy"
@@ -54,27 +54,29 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def trend_following_signal(
-    price_data: List[float],
+    price_data: List[Tuple[int, float]],
     ma_period: int = DEFAULT_MA_PERIOD,
     rsi_period: int = DEFAULT_RSI_PERIOD,
     rsi_overbought_threshold: int = DEFAULT_RSI_OVERBOUGHT_THRESHOLD,
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
 ) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
-    if len(price_data) < max(ma_period, rsi_period + 1):
+    prices = [price for _timestamp, price in price_data]
+
+    if len(prices) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
 
-    ma = sum(price_data[-ma_period:]) / ma_period
+    ma = sum(prices[-ma_period:]) / ma_period
 
     gains = [
-        price_data[i] - price_data[i - 1]
-        for i in range(1, len(price_data))
-        if price_data[i] > price_data[i - 1]
+        prices[i] - prices[i - 1]
+        for i in range(1, len(prices))
+        if prices[i] > prices[i - 1]
     ]
     losses = [
-        -1 * (price_data[i] - price_data[i - 1])
-        for i in range(1, len(price_data))
-        if price_data[i] < price_data[i - 1]
+        -1 * (prices[i] - prices[i - 1])
+        for i in range(1, len(prices))
+        if prices[i] < prices[i - 1]
     ]
 
     avg_gain = sum(gains) / rsi_period
@@ -86,10 +88,10 @@ def trend_following_signal(
     else:
         rsi = 100
 
-    if price_data[-1] > ma and rsi < rsi_overbought_threshold:
+    if prices[-1] > ma and rsi < rsi_overbought_threshold:
         return {"signal": BUY_SIGNAL}
 
-    if price_data[-1] < ma and rsi > rsi_oversold_threshold:
+    if prices[-1] < ma and rsi > rsi_oversold_threshold:
         return {"signal": SELL_SIGNAL}
 
     return {"signal": HOLD_SIGNAL}
