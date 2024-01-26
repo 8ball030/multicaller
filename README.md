@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="./docs/images/solana-trader-logo.svg" width=300>
+   <img src="./docs/images/baby-degen-logo.png" width=300>
 </p>
 
 <h1 align="center" style="margin-bottom: 0;">
