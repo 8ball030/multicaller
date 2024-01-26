@@ -19,13 +19,15 @@
 
 """This module contains the base behaviour for the 'solana_strategy_evaluator_abci' skill."""
 
+import json
 from abc import ABC
 from pathlib import Path
-from typing import Any, Callable, Generator, Optional, Sized, Tuple, cast
+from typing import Any, Callable, Dict, Generator, Optional, Sized, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
+from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState,
     StrategyEvaluatorParams,
@@ -45,6 +47,11 @@ SWAP_INSTRUCTIONS_FILENAME = "swap_instructions.json"
 def wei_to_native(wei: int) -> float:
     """Convert WEI to native token."""
     return wei / 10**18
+
+
+def to_content(content: dict) -> bytes:
+    """Convert the given content to bytes' payload."""
+    return json.dumps(content, sort_keys=True).encode()
 
 
 class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
@@ -76,6 +83,53 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     def synchronized_data(self) -> SynchronizedData:
         """Return the synchronized data."""
         return SynchronizedData(super().synchronized_data.db)
+
+    def _handle_response(
+        self,
+        api: ApiSpecs,
+        res: Optional[dict],
+    ) -> Optional[Any]:
+        """Handle the response from an API.
+
+        :param api: the `ApiSpecs` instance of the API.
+        :param res: the response to handle.
+        :return: the response's result, using the given keys. `None` if response is `None` (has failed).
+        """
+        if res is None:
+            error = f"Could not get a response from {api.api_id!r} API."
+            self.context.logger.error(error)
+            api.increment_retries()
+            return None
+
+        self.context.logger.info(
+            f"Retrieved a response from {api.api_id!r} API: {res}."
+        )
+        api.reset_retries()
+        return res
+
+    def _get_response(
+        self,
+        api: ApiSpecs,
+        dynamic_parameters: Dict[str, str],
+        content: Optional[Dict[str, str]] = None,
+    ) -> Generator[None, None, Optional[dict]]:
+        """Get the response from an API."""
+        specs = api.get_spec()
+        specs["parameters"].update = dynamic_parameters
+        if content is not None:
+            specs["content"] = to_content(content)
+
+        while not api.is_retries_exceeded():
+            res_raw = yield from self.get_http_response(**specs)
+            res = api.process_response(res_raw)
+            response = self._handle_response(api, res)
+            if response is not None:
+                return response
+
+        error = f"Retries were exceeded for {api.api_id!r} API."
+        self.context.logger.error(error)
+        api.reset_retries()
+        return None
 
     def get_process_store_act(
         self,
