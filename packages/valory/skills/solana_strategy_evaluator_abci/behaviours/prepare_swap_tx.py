@@ -26,12 +26,6 @@ from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import (
-    AVAILABLE_DECISIONS,
-    BUY_DECISION,
-    HODL_DECISION,
-    SELL_DECISION,
-)
 from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (
     PrepareSwapRound,
 )
@@ -108,11 +102,10 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         return None
 
     def build_quote(
-        self, from_token: str, to_token: str
+        self, quote_data: Dict[str, str]
     ) -> Generator[None, None, Optional[dict]]:
         """Build the quote."""
-        params = {"inputMint": from_token, "outputMint": to_token}
-        response = yield from self._get_response(self.context.swap_quotes, params)
+        response = yield from self._get_response(self.context.swap_quotes, quote_data)
         return response
 
     def build_instructions(self, quote: dict) -> Generator[None, None, Optional[dict]]:
@@ -129,51 +122,26 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         return response
 
     def build_swap_tx(
-        self, from_token: str, to_token: str
+        self, quote_data: Dict[str, str]
     ) -> Generator[None, None, Optional[Dict[str, Any]]]:
         """Build instructions for a swap transaction."""
-        quote = yield from self.build_quote(from_token, to_token)
+        quote = yield from self.build_quote(quote_data)
         if quote is None:
             return None
         instructions = yield from self.build_instructions(quote)
         return instructions
 
-    def get_token_swap_position(self, decision: str) -> Optional[str]:
-        """Get the position of the non-native token in the swap operation."""
-        token_swap_position = None
-
-        if decision == BUY_DECISION:
-            token_swap_position = "to_token"  # nosec hardcoded_password_string
-        elif decision == SELL_DECISION:
-            token_swap_position = "from_token"  # nosec hardcoded_password_string
-        elif decision != HODL_DECISION:
-            self.context.logger.error(
-                f"Unrecognised decision {decision!r} found! Expected one of {AVAILABLE_DECISIONS}."
-            )
-            self.incomplete = True
-
-        return token_swap_position
-
     def prepare_instructions(
-        self, orders: Dict[str, List[str]]
+        self, orders: List[Dict[str, str]]
     ) -> Generator[None, None, Tuple[List[Dict[str, Any]], bool]]:
         """Prepare the instructions for a Swap transaction."""
         instructions = []
-        for decision, tokens in orders.items():
-            token_swap_position = self.get_token_swap_position(decision)
-            if token_swap_position is None:
-                continue
-
-            quote_data = {"from_token": SOL, "to_token": SOL}
-            for token in tokens:
-                if token == SOL:
-                    continue
-                quote_data[token_swap_position] = token
-                swap_instruction = yield from self.build_swap_tx(**quote_data)
-                if swap_instruction is None:
-                    self.incomplete = True
-                else:
-                    instructions.append(swap_instruction)
+        for quote_data in orders:
+            swap_instruction = yield from self.build_swap_tx(quote_data)
+            if swap_instruction is None:
+                self.incomplete = True
+            else:
+                instructions.append(swap_instruction)
 
         return instructions, self.incomplete
 
