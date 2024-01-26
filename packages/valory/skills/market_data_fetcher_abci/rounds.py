@@ -101,11 +101,13 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     Transition states:
         0. FetchMarketDataRound
             - done: 1.
+            - none: 2.
             - no majority: 0.
             - round timeout: 0.
         1. FinishedMarketFetchRound
+        2. FailedMarketFetchRound
 
-    Final states: {FinishedMarketFetchRound}
+    Final states: {FailedMarketFetchRound, FinishedMarketFetchRound}
 
     Timeouts:
         round timeout: 30.0
