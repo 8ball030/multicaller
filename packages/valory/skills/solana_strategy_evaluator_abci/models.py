@@ -48,7 +48,16 @@ class SharedState(BaseSharedState):
     def __init__(self, *args: Any, skill_context: SkillContext, **kwargs: Any) -> None:
         """Initialize the state."""
         super().__init__(*args, skill_context=skill_context, **kwargs)
+        # utilized if using the proxy server
+        self.orders: Optional[List[Dict[str, str]]] = None
+        # utilized if using the Solana tx settlement
         self.instructions: Optional[List[Dict[str, Any]]] = None
+
+        if (
+            self.context.params.use_proxy_server
+            and self.synchronized_data.max_participants != 1
+        ):
+            raise ValueError("Cannot use proxy server with a multi-agent service!")
 
 
 def _raise_incorrect_config(key: str, values: Any) -> None:
@@ -82,6 +91,7 @@ class StrategyEvaluatorParams(BaseParams):
         self.strategies_kwargs: Dict[str, List[Any]] = nested_list_todict_workaround(
             kwargs, "strategies_kwargs"
         )
+        self.use_proxy_server: bool = self._ensure("use_proxy_server", kwargs, bool)
         super().__init__(*args, **kwargs)
 
 
@@ -91,3 +101,7 @@ class SwapQuotesSpecs(ApiSpecs):
 
 class SwapInstructionsSpecs(ApiSpecs):
     """A model that wraps ApiSpecs for the Jupiter instructions specifications."""
+
+
+class TxSettlementProxy(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""

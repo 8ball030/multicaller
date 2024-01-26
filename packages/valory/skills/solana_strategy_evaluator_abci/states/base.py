@@ -50,7 +50,9 @@ class Event(Enum):
 
     NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
+    PREPARE_SWAP_PROXY_SERVER = "prepare_swap_proxy_server"
     PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
+    PREPARE_INCOMPLETE_SWAP_PROXY_SERVER = "prepare_incomplete_swap_proxy_server"
     ERROR_PREPARING_SWAPS = "error_preparing_swaps"
     NO_INSTRUCTIONS = "no_instructions"
     INSTRUCTIONS_PREPARED = "instructions_prepared"
@@ -59,6 +61,8 @@ class Event(Enum):
     SWAP_TX_PREPARED = "swap_tx_prepared"
     SWAPS_QUEUE_EMPTY = "swaps_queue_empty"
     TX_PREPARATION_FAILED = "none"
+    PROXY_SWAPPED = "proxy_swapped"
+    PROXY_SWAP_FAILED = "proxy_swap_failed"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
 
@@ -91,6 +95,11 @@ class SynchronizedData(
     def orders_length(self) -> int:
         """Get the number of the orders."""
         return int(self.db.get_strict("orders_length"))
+
+    @property
+    def tx_id(self) -> str:
+        """Get the transaction's id."""
+        return str(self.db.get_strict("tx_id"))
 
     @property
     def instructions_hash(self) -> str:

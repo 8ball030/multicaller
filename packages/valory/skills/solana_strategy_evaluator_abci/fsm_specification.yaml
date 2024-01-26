@@ -7,7 +7,11 @@ alphabet_in:
 - NO_MAJORITY
 - NO_ORDERS
 - PREPARE_INCOMPLETE_SWAP
+- PREPARE_INCOMPLETE_SWAP_PROXY_SERVER
 - PREPARE_SWAP
+- PREPARE_SWAP_PROXY_SERVER
+- PROXY_SWAPPED
+- PROXY_SWAP_FAILED
 - ROUND_TIMEOUT
 - SWAPS_QUEUE_EMPTY
 - SWAP_TX_PREPARED
@@ -27,6 +31,7 @@ states:
 - InstructionPreparationFailedRound
 - NoMoreSwapsRound
 - PrepareSwapRound
+- ProxySwapQueueRound
 - StrategyExecRound
 - StrategyExecutionFailedRound
 - SwapQueueRound
@@ -38,11 +43,18 @@ transition_func:
     (PrepareSwapRound, NO_INSTRUCTIONS): HodlRound
     (PrepareSwapRound, NO_MAJORITY): PrepareSwapRound
     (PrepareSwapRound, ROUND_TIMEOUT): PrepareSwapRound
+    (ProxySwapQueueRound, NO_MAJORITY): ProxySwapQueueRound
+    (ProxySwapQueueRound, PROXY_SWAPPED): ProxySwapQueueRound
+    (ProxySwapQueueRound, PROXY_SWAP_FAILED): ProxySwapQueueRound
+    (ProxySwapQueueRound, ROUND_TIMEOUT): ProxySwapQueueRound
+    (ProxySwapQueueRound, SWAPS_QUEUE_EMPTY): NoMoreSwapsRound
     (StrategyExecRound, ERROR_PREPARING_SWAPS): StrategyExecutionFailedRound
     (StrategyExecRound, NO_MAJORITY): StrategyExecRound
     (StrategyExecRound, NO_ORDERS): HodlRound
     (StrategyExecRound, PREPARE_INCOMPLETE_SWAP): PrepareSwapRound
+    (StrategyExecRound, PREPARE_INCOMPLETE_SWAP_PROXY_SERVER): ProxySwapQueueRound
     (StrategyExecRound, PREPARE_SWAP): PrepareSwapRound
+    (StrategyExecRound, PREPARE_SWAP_PROXY_SERVER): ProxySwapQueueRound
     (StrategyExecRound, ROUND_TIMEOUT): StrategyExecRound
     (SwapQueueRound, NO_MAJORITY): SwapQueueRound
     (SwapQueueRound, ROUND_TIMEOUT): SwapQueueRound

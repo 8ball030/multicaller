@@ -46,10 +46,10 @@ class SwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
 
     @instructions.setter
     def instructions(self, instructions: Optional[List[Dict[str, Any]]]) -> None:
-        """Get the instructions from the shared state."""
+        """Set the instructions to the shared state."""
         self.shared_state.instructions = instructions
 
-    def get_instructions(self) -> Generator[None, None, List[Dict[str, Any]]]:
+    def get_instructions(self) -> Generator[None, None, Optional[List[Dict[str, Any]]]]:
         """Get the instructions from IPFS."""
         # only fetch once per new queue and store in the shared state for future reference
         hash_ = self.synchronized_data.instructions_hash
@@ -62,7 +62,7 @@ class SwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
             )
             self.sleep(sleep_time)
 
-        return cast(List[Dict[str, Any]], instructions)
+        return cast(Optional[List[Dict[str, Any]]], instructions)
 
     def get_next_instructions(self) -> Optional[str]:
         """Return the next instructions in priority serialized or `None` if there are no instructions left."""

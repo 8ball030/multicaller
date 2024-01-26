@@ -28,6 +28,9 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.prepare_swap_tx import (
     PrepareSwapBehaviour,
 )
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.proxy_swap_queue import (
+    ProxySwapQueueBehaviour,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import (
     StrategyExecBehaviour,
 )
@@ -48,4 +51,5 @@ class AgentStrategyEvaluatorRoundBehaviour(AbstractRoundBehaviour):
         StrategyExecBehaviour,  # type: ignore
         PrepareSwapBehaviour,  # type: ignore
         SwapQueueBehaviour,  # type: ignore
+        ProxySwapQueueBehaviour,  # type: ignore
     }

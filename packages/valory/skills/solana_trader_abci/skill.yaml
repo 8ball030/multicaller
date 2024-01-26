@@ -23,7 +23,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeicflamagqirjgasito2kelmlsxtmv75b4skrawt7c35ndendd6xfy
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeigjftnrfy6mmwjg4k6v2m2xc5mvf7c5ktxf76fdaupgdse2jow5fi
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeibzecqaa6xnxz4zqf7yccg4uq4ttavjpch4a7lemdinv2hhwhuvna
 behaviours:
   main:
     args: {}
@@ -146,6 +146,7 @@ models:
         - value
       - - extra_2
         - value
+      use_proxy_server: false
     class_name: Params
   randomness_api:
     args:
@@ -184,6 +185,20 @@ models:
       retries: 5
       url: https://quote-api.jup.ag/v6/swap-instructions
     class_name: SwapInstructionsSpecs
+  tx_settlement_proxy:
+    args:
+      api_id: tx_settlement_proxy
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters:
+        amount: 1000000
+        slippageBps: 1
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: http://tx_proxy:3000/tx
+    class_name: TxSettlementProxy
   requests:
     args: {}
     class_name: Requests

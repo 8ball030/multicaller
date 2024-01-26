@@ -38,6 +38,7 @@ HODL_DECISION = "hold"
 AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODL_DECISION)
 NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODL_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
+SOL = "So11111111111111111111111111111111111111112"
 
 
 class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
@@ -114,21 +115,45 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
         return decision
 
+    def get_token_swap_position(self, decision: str) -> Optional[str]:
+        """Get the position of the non-native token in the swap operation."""
+        token_swap_position = None
+
+        if decision == BUY_DECISION:
+            token_swap_position = "outputMint"  # nosec hardcoded_password_string
+        elif decision == SELL_DECISION:
+            token_swap_position = "inputMint"  # nosec hardcoded_password_string
+        elif decision != HODL_DECISION:
+            self.context.logger.error(
+                f"Unrecognised decision {decision!r} found! Expected one of {AVAILABLE_DECISIONS}."
+            )
+
+        return token_swap_position
+
     def get_orders(
         self, token_data: Dict[str, Any]
-    ) -> Generator[None, None, Tuple[Dict[str, List[str]], bool]]:
+    ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
         # TODO this method is blocking, needs to be run from an aea skill.
-        orders: Dict[str, List[str]] = {
-            decision: [] for decision in AVAILABLE_DECISIONS
-        }
+        orders: List[Dict[str, str]] = []
         incomplete = False
         for token, data in token_data.items():
+            if token == SOL:
+                continue
+
             decision = self.get_swap_decision(data)
             if decision is None:
                 incomplete = True
                 continue
-            orders[decision].append(token)
+
+            quote_data = {"inputMint": SOL, "outputMint": SOL}
+            token_swap_position = self.get_token_swap_position(decision)
+            if token_swap_position is None:
+                # holding token, no tx to perform
+                continue
+
+            quote_data[token_swap_position] = token
+            orders.append(quote_data)
 
         # we only yield here to convert this method to a generator, so that it can be used by `get_process_store_act`
         yield
