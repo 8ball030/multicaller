@@ -43,6 +43,7 @@ class Event(Enum):
     """MarketDataFetcherAbciApp Events"""
 
     DONE = "done"
+    NONE = "none"
     NO_MAJORITY = "no_majority"
     ROUND_TIMEOUT = "round_timeout"
 
@@ -76,6 +77,7 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
     payload_class = FetchMarketDataPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
+    none_event = Event.NONE
     no_majority_event = Event.NO_MAJORITY
     selection_key = get_name(SynchronizedData.data_hash)
     collection_key = get_name(SynchronizedData.participant_to_fetching)
@@ -83,6 +85,10 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
 
 class FinishedMarketFetchRound(DegenerateRound):
     """FinishedMarketFetchRound"""
+
+
+class FailedMarketFetchRound(DegenerateRound):
+    """FailedMarketFetchRound"""
 
 
 class MarketDataFetcherAbciApp(AbciApp[Event]):
@@ -95,11 +101,13 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     Transition states:
         0. FetchMarketDataRound
             - done: 1.
+            - none: 2.
             - no majority: 0.
             - round timeout: 0.
         1. FinishedMarketFetchRound
+        2. FailedMarketFetchRound
 
-    Final states: {FinishedMarketFetchRound}
+    Final states: {FailedMarketFetchRound, FinishedMarketFetchRound}
 
     Timeouts:
         round timeout: 30.0
@@ -110,12 +118,14 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     transition_function: AbciAppTransitionFunction = {
         FetchMarketDataRound: {
             Event.DONE: FinishedMarketFetchRound,
+            Event.NONE: FailedMarketFetchRound,
             Event.NO_MAJORITY: FetchMarketDataRound,
             Event.ROUND_TIMEOUT: FetchMarketDataRound,
         },
         FinishedMarketFetchRound: {},
+        FailedMarketFetchRound: {},
     }
-    final_states: Set[AppState] = {FinishedMarketFetchRound}
+    final_states: Set[AppState] = {FinishedMarketFetchRound, FailedMarketFetchRound}
     event_to_timeout: EventToTimeout = {
         Event.ROUND_TIMEOUT: 30.0,
     }
@@ -125,4 +135,5 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedMarketFetchRound: {get_name(SynchronizedData.data_hash)},
+        FailedMarketFetchRound: set(),
     }

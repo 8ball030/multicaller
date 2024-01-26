@@ -92,11 +92,6 @@ class SynchronizedData(
         return bool(self.db.get_strict("incomplete_exec"))
 
     @property
-    def orders_length(self) -> int:
-        """Get the number of the orders."""
-        return int(self.db.get_strict("orders_length"))
-
-    @property
     def tx_id(self) -> str:
         """Get the transaction's id."""
         return str(self.db.get_strict("tx_id"))
@@ -110,11 +105,6 @@ class SynchronizedData(
     def incomplete_instructions(self) -> bool:
         """Get whether the instructions were not built for all the swaps."""
         return bool(self.db.get_strict("incomplete_instructions"))
-
-    @property
-    def instructions_length(self) -> int:
-        """Get the number of the instructions' sets."""
-        return int(self.db.get_strict("instructions_length"))
 
     @property
     def participant_to_orders(self) -> DeserializedCollection:

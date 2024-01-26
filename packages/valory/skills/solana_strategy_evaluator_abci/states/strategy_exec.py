@@ -39,7 +39,6 @@ class StrategyExecRound(IPFSRound):
     selection_key = (
         get_name(SynchronizedData.orders_hash),
         get_name(SynchronizedData.incomplete_exec),
-        get_name(SynchronizedData.orders_length),
     )
     collection_key = get_name(SynchronizedData.participant_to_orders)
 

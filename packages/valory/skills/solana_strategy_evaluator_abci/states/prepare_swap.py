@@ -37,6 +37,5 @@ class PrepareSwapRound(IPFSRound):
     selection_key = (
         get_name(SynchronizedData.instructions_hash),
         get_name(SynchronizedData.incomplete_instructions),
-        get_name(SynchronizedData.instructions_length),
     )
     collection_key = get_name(SynchronizedData.participant_to_instructions)

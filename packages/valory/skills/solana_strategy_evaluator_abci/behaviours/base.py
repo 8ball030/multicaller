@@ -115,7 +115,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     ) -> Generator[None, None, Optional[dict]]:
         """Get the response from an API."""
         specs = api.get_spec()
-        specs["parameters"].update = dynamic_parameters
+        specs["parameters"].update(dynamic_parameters)
         if content is not None:
             specs["content"] = to_content(content)
 

@@ -21,6 +21,8 @@
 
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
+import yaml
+
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
@@ -39,6 +41,10 @@ AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODL_DECISION)
 NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODL_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 SOL = "So11111111111111111111111111111111111111112"
+DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
+COMPONENT_YAML_FILENAME = "component.yaml"
+ENTRY_POINT_KEY = "entry_point"
+CALLABLE_KEY = "callable"
 
 
 class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
@@ -46,9 +52,48 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
     matching_round = StrategyExecRound
 
-    def strategy_exec(self, strategy_name: str) -> Optional[Tuple[str, str]]:
+    def strategy_exec(self, strategy_name: str) -> Optional[Dict[str, str]]:
         """Get the executable strategy's contents."""
-        return self.shared_state["downloaded_ipfs_packages"].get(strategy_name, None)
+        return self.context.shared_state.get(DOWNLOADED_PACKAGES_KEY, {}).get(
+            strategy_name, None
+        )
+
+    def load_custom_component(
+        self, serialized_objects: Dict[str, str]
+    ) -> Optional[Tuple[str, str, str]]:
+        """Load a custom component package.
+
+        :param serialized_objects: the serialized objects.
+        :return: the component.yaml, entry_point.py and callable as tuple.
+        """
+        # the package MUST contain a component.yaml file
+        if COMPONENT_YAML_FILENAME not in serialized_objects:
+            self.context.logger.error(
+                "Invalid component package. "
+                f"The package MUST contain a {COMPONENT_YAML_FILENAME}."
+            )
+            return None
+        # load the component.yaml file
+        component_yaml = yaml.safe_load(serialized_objects[COMPONENT_YAML_FILENAME])
+        if ENTRY_POINT_KEY not in component_yaml or CALLABLE_KEY not in component_yaml:
+            self.context.logger.error(
+                "Invalid component package. "
+                f"The {COMPONENT_YAML_FILENAME} file MUST contain the {ENTRY_POINT_KEY} and {CALLABLE_KEY} keys."
+            )
+            return None
+        # the name of the script that needs to be executed
+        entry_point_name = component_yaml[ENTRY_POINT_KEY]
+        # load the script
+        if entry_point_name not in serialized_objects:
+            self.context.logger.error(
+                f"Invalid component package. "
+                f"The entry point {entry_point_name!r} is not present in the component package."
+            )
+            return None
+        entry_point = serialized_objects[entry_point_name]
+        # the method that needs to be called
+        callable_method = component_yaml[CALLABLE_KEY]
+        return component_yaml, entry_point, callable_method
 
     def execute_strategy(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """Execute the strategy and return the results."""
@@ -64,7 +109,11 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             )
             return NO_SWAP_DECISION
 
-        strategy_exec, callable_method = strategy
+        res = self.load_custom_component(strategy)
+        if res is None:
+            return NO_SWAP_DECISION
+
+        _component_yaml, strategy_exec, callable_method = res
         if callable_method in globals():
             del globals()[callable_method]
 

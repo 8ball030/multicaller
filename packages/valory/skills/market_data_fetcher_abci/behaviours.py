@@ -86,9 +86,7 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
             kwargs["headers"] = headers  # type: ignore
 
         retries = 0
-        response_json = {}
-
-        while retries < max_retries:
+        while True:
             # Make the request
             response = yield from self.get_http_response(**kwargs)  # type: ignore
 
@@ -103,13 +101,15 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
                     f"Request failed [{response.status_code}]: {response_json}"
                 )
                 retries += 1
+                if retries == max_retries:
+                    break
                 yield from self.sleep(retry_wait)
                 continue
             else:
                 self.context.logger.info("Request succeeded")
                 return True, response_json
 
-        self.context.logger.error(f"Request failed after {max_retries} retries")
+        self.context.logger.error(f"Request failed after {retries} retries")
         return False, response_json
 
 
@@ -137,9 +137,10 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         markets = {}
         headers = {
-            "x-cg-pro-api-key": self.params.coingecko_api_key,
             "Accept": "application/json",
         }
+        if self.params.coingecko_api_key:
+            headers["x-cg-pro-api-key"] = self.params.coingecko_api_key
 
         # Get the market data for each token
         for token_data in self.params.token_symbol_whitelist:
@@ -155,14 +156,15 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                     token_id=token_id
                 ),
                 headers=headers,
+                retry_wait=self.params.sleep_time,
             )
 
             # Skip failed markets. The strategy will need to verify market availability
             if not success:
-                self.context.logger.error(f"Failed to fecth market for {token_id}")
+                self.context.logger.error(f"Failed to fetch market for {token_id}")
                 continue
 
-            self.context.logger.info(f"Succesfully fecthed market for {token_id}")
+            self.context.logger.info(f"Successfully fetched market for {token_id}")
 
             markets[token_data["address"]] = response_json["prices"]
 
@@ -177,7 +179,6 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             )
             self.context.logger.info(f"Market file stored in IPFS. Hash is {data_hash}")
 
-        # TODO: handle data_hash=None
         return data_hash
 
 

@@ -31,17 +31,20 @@ import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyE
 # import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
 
 DECISION_MAKING = SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound
+RESET_AND_PAUSE = ResetAndPauseAbci.ResetAndPauseRound
+
 
 abci_app_transition_mapping: AbciAppTransitionMapping = {
     RegistrationAbci.FinishedRegistrationRound: DECISION_MAKING,
     SolanaTraderDecisionMakerAbci.FinishedSolanaTraderDecisionMakerRound: MarketDataFetcherAbci.FetchMarketDataRound,
     SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: DECISION_MAKING,
     MarketDataFetcherAbci.FinishedMarketFetchRound: StrategyEvaluatorAbci.StrategyExecRound,
+    MarketDataFetcherAbci.FailedMarketFetchRound: DECISION_MAKING,
     # StrategyEvaluatorAbci.SwapTxPreparedRound: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,    # TODO
-    StrategyEvaluatorAbci.NoMoreSwapsRound: DECISION_MAKING,
+    StrategyEvaluatorAbci.NoMoreSwapsRound: RESET_AND_PAUSE,
     StrategyEvaluatorAbci.StrategyExecutionFailedRound: DECISION_MAKING,
     StrategyEvaluatorAbci.InstructionPreparationFailedRound: DECISION_MAKING,
-    StrategyEvaluatorAbci.HodlRound: DECISION_MAKING,
+    StrategyEvaluatorAbci.HodlRound: RESET_AND_PAUSE,
     # SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: DECISION_MAKING,    # TODO
     # SolanaTransactionSettlementAbci.FailedRound: DECISION_MAKING,    # TODO
     ResetAndPauseAbci.FinishedResetAndPauseRound: DECISION_MAKING,

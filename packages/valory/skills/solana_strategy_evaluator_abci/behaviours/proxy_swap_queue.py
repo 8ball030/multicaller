@@ -25,6 +25,9 @@ from packages.valory.skills.abstract_round_abci.io_.store import SupportedFilety
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
+from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+    TxSettlementProxy,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
     SendSwapProxyPayload,
 )
@@ -135,7 +138,16 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
         quote_data = self.orders.pop(0)
         msg = f"Attempting to swap {quote_data['inputMint']} -> {quote_data['outputMint']}..."
         self.context.logger.info(msg)
-        response = yield from self._get_response(self.context.swap_quotes, quote_data)
+
+        proxy_api = cast(TxSettlementProxy, self.context.tx_settlement_proxy)
+        # hacky solution
+        params = proxy_api.get_spec()["parameters"]
+        proxy_api.__dict__["_frozen"] = False
+        proxy_api.parameters = {}
+        proxy_api.__dict__["_frozen"] = True
+        quote_data.update(params)
+
+        response = yield from self._get_response(proxy_api, {}, content=quote_data)
         return self.handle_response(response)
 
     def async_act(self) -> Generator:
