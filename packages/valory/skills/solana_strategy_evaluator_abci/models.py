@@ -48,6 +48,9 @@ class SharedState(BaseSharedState):
     def __init__(self, *args: Any, skill_context: SkillContext, **kwargs: Any) -> None:
         """Initialize the state."""
         super().__init__(*args, skill_context=skill_context, **kwargs)
+        # utilized if using the proxy server
+        self.orders: Optional[List[Dict[str, str]]] = None
+        # utilized if using the Solana tx settlement
         self.instructions: Optional[List[Dict[str, Any]]] = None
 
         if (
