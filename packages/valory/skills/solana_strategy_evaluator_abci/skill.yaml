@@ -169,6 +169,20 @@ models:
       retries: 5
       url: https://quote-api.jup.ag/v6/swap-instructions
     class_name: SwapInstructionsSpecs
+  tx_settlement_proxy:
+    args:
+      api_id: tx_settlement_proxy
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters:
+        amount: 1000000
+        slippageBps: 1
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: http://tx_proxy:3000/tx
+    class_name: TxSettlementProxy
   requests:
     args: {}
     class_name: Requests

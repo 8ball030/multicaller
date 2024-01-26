@@ -98,3 +98,7 @@ class SwapQuotesSpecs(ApiSpecs):
 
 class SwapInstructionsSpecs(ApiSpecs):
     """A model that wraps ApiSpecs for the Jupiter instructions specifications."""
+
+
+class TxSettlementProxy(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
