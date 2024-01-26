@@ -154,6 +154,7 @@ models:
       timeout_limit: ${int:3}
       file_hash_to_id: ${list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
       strategies_kwargs: ${list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
+      use_proxy_server: ${bool:false}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

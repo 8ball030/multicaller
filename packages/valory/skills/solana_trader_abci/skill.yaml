@@ -146,6 +146,7 @@ models:
         - value
       - - extra_2
         - value
+      use_proxy_server: false
     class_name: Params
   randomness_api:
     args:

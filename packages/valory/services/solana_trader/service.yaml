@@ -78,6 +78,7 @@ type: skill
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
+        use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: &id003
       args:
         log_dir: ${LOG_DIR:str:/benchmarks}
@@ -128,6 +129,7 @@ type: skill
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
+        use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: *id003
 2:
   models:
@@ -176,6 +178,7 @@ type: skill
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
+        use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: *id003
 3:
   models:
@@ -224,6 +227,7 @@ type: skill
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
+        use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: *id003
 ---
 public_id: valory/ledger:0.19.0

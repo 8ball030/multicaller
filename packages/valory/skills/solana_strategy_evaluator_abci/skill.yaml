@@ -141,6 +141,7 @@ models:
         - value
       - - extra_2
         - value
+      use_proxy_server: false
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:
