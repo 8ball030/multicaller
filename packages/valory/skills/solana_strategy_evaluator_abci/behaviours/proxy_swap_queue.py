@@ -63,7 +63,7 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
 
     @orders.setter
     def orders(self, orders: OrdersType) -> None:
-        """Set the orders from the shared state."""
+        """Set the orders to the shared state."""
         self.shared_state.orders = orders
 
     def get_orders(self) -> Generator[None, None, OrdersType]:
