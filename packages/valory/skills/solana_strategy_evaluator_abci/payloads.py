@@ -35,6 +35,13 @@ class IPFSHashPayload(BaseTxPayload):
 
 
 @dataclass(frozen=True)
+class SendSwapProxyPayload(BaseTxPayload):
+    """Represents a transaction payload for attempting a swap transaction via the proxy server."""
+
+    tx_id: Optional[str]
+
+
+@dataclass(frozen=True)
 class SendSwapPayload(BaseTxPayload):
     """Represents a transaction payload for preparing the instruction for a swap transaction."""
 
