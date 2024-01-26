@@ -7,9 +7,40 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeicul7qv2rndnghfl7jamki3n4llvtmx6xrgbao3gcskmo3oiczuki
+agent: valory/solana_trader:0.1.0:bafybeidjl36q5bynppokrfyh3dsvl2goy37gcpqn6c4nfwucs6tdmimqfa
 number_of_agents: 4
 deployment: {}
+---
+public_id: valory/ipfs_package_downloader:0.1.0
+type: skill
+0:
+  models:
+    params:
+      args:
+        cleanup_freq: ${CLEANUP_FREQ:int:50}
+        timeout_limit: ${TIMEOUT_LIMIT:int:3}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
+1:
+  models:
+    params:
+      args:
+        cleanup_freq: ${CLEANUP_FREQ:int:50}
+        timeout_limit: ${TIMEOUT_LIMIT:int:3}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
+2:
+  models:
+    params:
+      args:
+        cleanup_freq: ${CLEANUP_FREQ:int:50}
+        timeout_limit: ${TIMEOUT_LIMIT:int:3}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
+3:
+  models:
+    params:
+      args:
+        cleanup_freq: ${CLEANUP_FREQ:int:50}
+        timeout_limit: ${TIMEOUT_LIMIT:int:3}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
@@ -74,9 +105,6 @@ type: skill
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         coingecko_api_key: ${COINGECKO_API_KEY:str:""}
         coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:"https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"}
-        cleanup_freq: ${CLEANUP_FREQ:int:50}
-        timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: &id003
@@ -125,9 +153,6 @@ type: skill
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         coingecko_api_key: ${COINGECKO_API_KEY:str:""}
         coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:"https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"}
-        cleanup_freq: ${CLEANUP_FREQ:int:50}
-        timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: *id003
@@ -174,9 +199,6 @@ type: skill
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         coingecko_api_key: ${COINGECKO_API_KEY:str:""}
         coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:"https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"}
-        cleanup_freq: ${CLEANUP_FREQ:int:50}
-        timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: *id003
@@ -223,9 +245,6 @@ type: skill
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         coingecko_api_key: ${COINGECKO_API_KEY:str:""}
         coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:"https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1"}
-        cleanup_freq: ${CLEANUP_FREQ:int:50}
-        timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
     benchmark_tool: *id003
