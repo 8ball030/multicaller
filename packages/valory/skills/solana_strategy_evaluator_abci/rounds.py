@@ -62,29 +62,37 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     Transition states:
         0. StrategyExecRound
             - prepare swap: 1.
+            - prepare swap proxy server: 3.
             - prepare incomplete swap: 1.
-            - no orders: 7.
-            - error preparing swaps: 5.
+            - prepare incomplete swap proxy server: 3.
+            - no orders: 8.
+            - error preparing swaps: 6.
             - no majority: 0.
             - round timeout: 0.
         1. PrepareSwapRound
             - instructions prepared: 2.
             - incomplete instructions prepared: 2.
-            - no instructions: 7.
-            - error preparing instructions: 6.
+            - no instructions: 8.
+            - error preparing instructions: 7.
             - no majority: 1.
             - round timeout: 1.
         2. SwapQueueRound
-            - swap tx prepared: 3.
-            - swaps queue empty: 4.
+            - swap tx prepared: 4.
+            - swaps queue empty: 5.
             - none: 2.
             - no majority: 2.
             - round timeout: 2.
-        3. SwapTxPreparedRound
-        4. NoMoreSwapsRound
-        5. StrategyExecutionFailedRound
-        6. InstructionPreparationFailedRound
-        7. HodlRound
+        3. ProxySwapQueueRound
+            - proxy swapped: 3.
+            - swaps queue empty: 5.
+            - proxy swap failed: 3.
+            - no majority: 3.
+            - round timeout: 3.
+        4. SwapTxPreparedRound
+        5. NoMoreSwapsRound
+        6. StrategyExecutionFailedRound
+        7. InstructionPreparationFailedRound
+        8. HodlRound
 
     Final states: {HodlRound, InstructionPreparationFailedRound, NoMoreSwapsRound, StrategyExecutionFailedRound, SwapTxPreparedRound}
 
