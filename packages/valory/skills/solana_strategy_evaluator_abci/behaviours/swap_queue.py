@@ -46,7 +46,7 @@ class SwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
 
     @instructions.setter
     def instructions(self, instructions: Optional[List[Dict[str, Any]]]) -> None:
-        """Get the instructions from the shared state."""
+        """Set the instructions from the shared state."""
         self.shared_state.instructions = instructions
 
     def get_instructions(self) -> Generator[None, None, List[Dict[str, Any]]]:
