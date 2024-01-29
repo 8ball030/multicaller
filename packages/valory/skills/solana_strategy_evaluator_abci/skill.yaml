@@ -10,9 +10,9 @@ fingerprint:
   README.md: bafybeicuikjki6yvgwmv6sxudjagjb3bhfsnypna36eceza2mzmqnthuiy
   __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
   behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
-  behaviours/base.py: bafybeiby2rjzxavi3764dy4ziy45tqlwseza7qtqqaw7stks27achypmhy
+  behaviours/base.py: bafybeidu5jpmqjla7mpg7fuvuoyontwzhfhfrs54mwgfzlfvia7gg4lp4i
   behaviours/prepare_swap_tx.py: bafybeihx7rx4wy5uzx6i2zsbxptn4p5gfedoonqri5q2rz5cjgfmphtu4a
-  behaviours/proxy_swap_queue.py: bafybeibbmh3ewepcxnfx2j4bwjdg3nszpqnqns6sfiteaw2b3anpcne6xy
+  behaviours/proxy_swap_queue.py: bafybeibktpxiiefpfxj23tpnlr73e35745mheg3dzg56xvh7n4viv22kia
   behaviours/round_behaviour.py: bafybeie7eepxnj4tuo6wcmeuywn6qc3f5ihoowiiyqbpydz5dcjjkenora
   behaviours/strategy_exec.py: bafybeifxpgolsw4ykbvstjcyae3s24w6zawy4ahtcnj6omkovn754dhsxq
   behaviours/swap_queue.py: bafybeifs4yrqov6ojc3ejdtnizg2fkzq5aq5hqeyx4jslxxltofvmgmkm4
