@@ -1,3 +1,5 @@
+import {ComputeBudgetProgram} from "@solana/web3.js";
+
 const fs = require('fs');
 const express = require('express');
 const bs58 = require('bs58');
@@ -12,7 +14,6 @@ const rpc = 'https://api.mainnet-beta.solana.com';
 const key = process.env.SOLANA_PRIVATE_KEY.trim()
 const keypair = Keypair.fromSecretKey(bs58.decode(key));
 const wallet = new Wallet(keypair);
-const squads = Squads.mainnet(wallet);
 
 const port = 3000;
 const app = express();
@@ -24,9 +25,18 @@ const multisigAddress = new PublicKey(process.env.MULTISIG_ADDRESS);
 const squadVault = process.env.VAULT_ADDRESS;
 app.post('/tx', async (req: any, res: any) => {
     try {
+        let {inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs} = req.body
+        if (timeoutInMs == undefined) {
+            timeoutInMs = 60_000
+        }
+        const config = {
+            confirmTransactionInitialTimeout: timeoutInMs,
+        };
+        const connection = new Connection(rpc, config);
+        const squads = Squads.mainnet(wallet, config as any);
+
         const txBuilder = await squads.getTransactionBuilder(multisigAddress, VAULT);
-        const {inputMint, outputMint, amount, slippageBps} = req.body
-        const connection = new Connection(rpc);
+
         const url = `https://quote-api.jup.ag/v6/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${slippageBps}&onlyDirectRoutes=true&maxAccounts=30`;
         const quoteResponse = await (
             await fetch(url)
@@ -45,10 +55,14 @@ app.post('/tx', async (req: any, res: any) => {
                 })
             })
         ).json();
-
         if (instructions.error) {
             throw new Error("Failed to get swap instructions: " + instructions.error);
         }
+
+        if (priorityFee == undefined) {
+            priorityFee = instructions.prioritizationFeeLamports
+        }
+
 
         const {
             setupInstructions, // Setup missing ATA for the users.
@@ -96,6 +110,7 @@ app.post('/tx', async (req: any, res: any) => {
         );
 
         const [instructions2, pda] = await txBuilder.withInstructions([
+            ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
             ...setupInstructions.map(deserializeInstruction),
         ]).getInstructions()
         const blockhash = (await connection.getLatestBlockhash()).blockhash;
@@ -104,24 +119,41 @@ app.post('/tx', async (req: any, res: any) => {
             recentBlockhash: blockhash,
             instructions: instructions2,
         }).compileToV0Message(addressLookupTableAccounts);
-        const transaction = new VersionedTransaction(messageV0);
+        let transaction = new VersionedTransaction(messageV0);
         transaction.sign([wallet.payer]);
-        const rawTransaction = transaction.serialize();
-        const txid = await connection.sendRawTransaction(rawTransaction, {
+        let rawTransaction = transaction.serialize();
+        let txid = await connection.sendRawTransaction(rawTransaction, {
             maxRetries: 2,
         });
         await connection.confirmTransaction(txid);
-
+        console.log("Confirmed transaction")
         await squads.addInstruction(pda, deserializeInstruction(swapInstructionPayload))
         console.log("Added swap instruction")
         await squads.addInstruction(pda, deserializeInstruction(cleanupInstruction))
         console.log("Added cleanup instruction")
 
         console.log(`https://solscan.io/tx/${txid}`);
-        await squads.activateTransaction(pda)
-        await squads.approveTransaction(pda)
-        await squads.executeTransaction(pda)
+        const activate = await squads.buildActivateTransaction(multisigAddress, pda)
+        const approve = await squads.buildApproveTransaction(multisigAddress, pda)
+        const execute = await squads.buildExecuteInstruction(multisigAddress, pda)
 
+        const txMessage = new TransactionMessage({
+            payerKey: wallet.payer.publicKey,
+            recentBlockhash: blockhash,
+            instructions: [
+                ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
+                activate,
+                approve,
+                execute
+            ],
+        }).compileToV0Message(addressLookupTableAccounts);
+        transaction = new VersionedTransaction(txMessage);
+        transaction.sign([wallet.payer]);
+        rawTransaction = transaction.serialize();
+        txid = await connection.sendRawTransaction(rawTransaction, {
+            maxRetries: 2,
+        });
+        await connection.confirmTransaction(txid);
         res.json({"status": "ok", "txId": pda, "url": `https://solscan.io/tx/${pda}`})
     } catch (e: any) {
         console.log(e)
