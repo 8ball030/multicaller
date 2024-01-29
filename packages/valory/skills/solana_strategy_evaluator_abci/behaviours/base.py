@@ -158,22 +158,22 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
                 self.sleep(self.params.sleep_time)
                 return
 
+            incomplete: Optional[bool]
             processed, incomplete = yield from process_fn(data)
             n_processed: Optional[int] = len(processed)
             if n_processed == 0:
                 processed_hash = None
                 if incomplete:
-                    status = n_processed = None
+                    incomplete = n_processed = None
             else:
                 processed_hash = yield from self.send_to_ipfs(
                     store_filepath,
                     processed,
                     filetype=SupportedFiletype.JSON,
                 )
-                status = incomplete
 
             payload = IPFSHashPayload(
-                self.context.agent_address, processed_hash, status, n_processed
+                self.context.agent_address, processed_hash, incomplete, n_processed
             )
 
         yield from self.finish_behaviour(payload)
