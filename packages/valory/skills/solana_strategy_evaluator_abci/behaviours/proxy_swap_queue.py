@@ -142,9 +142,6 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
         proxy_api = cast(TxSettlementProxy, self.context.tx_settlement_proxy)
         # hacky solution
         params = proxy_api.get_spec()["parameters"]
-        proxy_api.__dict__["_frozen"] = False
-        proxy_api.parameters = {}
-        proxy_api.__dict__["_frozen"] = True
         quote_data.update(params)
 
         response = yield from self._get_response(proxy_api, {}, content=quote_data)
