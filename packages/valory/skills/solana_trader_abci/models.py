@@ -77,6 +77,10 @@ class TxSettlementProxy(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
 
 
+class SolanaRPC(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana tokens' balance check."""
+
+
 MARGIN = 5
 
 

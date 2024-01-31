@@ -12,7 +12,7 @@ fingerprint:
   composition.py: bafybeighwt5ip2bbqhwzysg3knj4i72famsz6btoyv5qksin6nb5qvpz5q
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
-  models.py: bafybeidtnq6y2wujjqblk27hmso4koyj7wskw24lq2agzgd5eypxt5ppgq
+  models.py: bafybeigkjri55rx3jf4xq7gwmbyg4ek3bji3k55kg6k4dpx7sooeusthoe
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -23,7 +23,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeicazb6k6xpcfbdi7xyda7qigphvpno7xbuj4b2mhiu3bp3qtng5ne
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeihy2vvc4qzicvwezyh3tcmik2sqwtzmq24voj7dwt32qblofbno7a
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeibsrdf6ydilheoey6wclegsolxha6z2oaomdqylhcnyuexjed6wiy
 behaviours:
   main:
     args: {}
@@ -147,6 +147,8 @@ models:
       - - extra_2
         - value
       use_proxy_server: false
+      expected_swap_tx_cost: 20000000
+      squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
     class_name: Params
   randomness_api:
     args:
@@ -166,7 +168,7 @@ models:
         Content-Type: application/json
       method: GET
       parameters:
-        amount: 1000000
+        amount: 100000000
         slippageBps: 1
       response_key: null
       response_type: dict
@@ -192,13 +194,25 @@ models:
         Content-Type: application/json
       method: POST
       parameters:
-        amount: 1000000
+        amount: 100000000
         slippageBps: 1
       response_key: null
       response_type: dict
       retries: 5
       url: http://tx_proxy:3000/tx
     class_name: TxSettlementProxy
+  solana_rpc:
+    args:
+      api_id: solana_rpc
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: result:value
+      response_type: list
+      retries: 5
+      url: replace_with_a_solana_rpc
+    class_name: SolanaRPC
   requests:
     args: {}
     class_name: Requests

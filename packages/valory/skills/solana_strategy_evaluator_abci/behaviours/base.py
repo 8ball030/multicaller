@@ -111,8 +111,8 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         self,
         api: ApiSpecs,
         dynamic_parameters: Dict[str, str],
-        content: Optional[Dict[str, str]] = None,
-    ) -> Generator[None, None, Optional[dict]]:
+        content: Optional[dict] = None,
+    ) -> Generator[None, None, Any]:
         """Get the response from an API."""
         specs = api.get_spec()
         specs["parameters"].update(dynamic_parameters)

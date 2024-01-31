@@ -19,7 +19,7 @@
 
 """This module contains the models for the skill."""
 
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from aea.skills.base import SkillContext
 
@@ -38,6 +38,10 @@ from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool
+
+
+AMOUNT_PARAM = "amount"
+SLIPPAGE_PARAM = "slippageBps"
 
 
 class SharedState(BaseSharedState):
@@ -61,6 +65,23 @@ class SharedState(BaseSharedState):
             and self.synchronized_data.max_participants != 1
         ):
             raise ValueError("Cannot use proxy server with a multi-agent service!")
+
+        swap_apis: Tuple[ApiSpecs, ApiSpecs] = (
+            self.context.swap_quotes,
+            self.context.tx_settlement_proxy,
+        )
+        required_swap_params = (AMOUNT_PARAM, SLIPPAGE_PARAM)
+        for swap_api in swap_apis:
+            for swap_param in required_swap_params:
+                if swap_param not in swap_api.parameters:
+                    exc = f"Api with id {swap_api.api_id!r} missing required parameter: {swap_param}!"
+                    raise ValueError(exc)
+
+        amounts = (api.parameters[AMOUNT_PARAM] for api in swap_apis)
+        expected_swap_tx_cost = self.context.params.expected_swap_tx_cost
+        if any(expected_swap_tx_cost > amount for amount in amounts):
+            exc = "The expected cost of the swap transaction cannot be greater than the swap amount!"
+            raise ValueError(exc)
 
 
 def _raise_incorrect_config(key: str, values: Any) -> None:
@@ -95,6 +116,10 @@ class StrategyEvaluatorParams(BaseParams):
             kwargs, "strategies_kwargs"
         )
         self.use_proxy_server: bool = self._ensure("use_proxy_server", kwargs, bool)
+        self.expected_swap_tx_cost: int = self._ensure(
+            "expected_swap_tx_cost", kwargs, int
+        )
+        self.squad_vault: str = self._ensure("squad_vault", kwargs, str)
         super().__init__(*args, **kwargs)
 
 
@@ -108,3 +133,7 @@ class SwapInstructionsSpecs(ApiSpecs):
 
 class TxSettlementProxy(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
+
+
+class SolanaRPC(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana tokens' balance check."""
