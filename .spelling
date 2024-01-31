@@ -3,6 +3,11 @@
 # global dictionary is at the start, file overrides afterwards
 # one word per line, to define a file override use ' - filename'
 # where filename is relative to this configuration file
+Valory
+valory
+env
+file_hash_to_id
+service.yaml
 Solana
 solana_trader
 Freire

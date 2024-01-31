@@ -78,7 +78,7 @@ bash run_service.sh
 
 ## Build a custom strategy
 
-Trading strategies are located on the `./strategies` folder within the repository. Each strategy is defined as a package contianing a `component.yaml` configuration file and a number of additional python files which encode the business logic of the strategy. The `component.yaml` configuration file must define:
+Trading strategies are located on the `./strategies` folder within the repository. Each strategy is defined as a package containing a `component.yaml` configuration file and a number of additional python files which encode the business logic of the strategy. The `component.yaml` configuration file must define:
 
 1. `entry_point`: The name of the file which contains the main entry point of the strategy.
 2. `callable`: Name of the entry point method (typically `run`).
@@ -119,6 +119,6 @@ In order to use your strategy, you must:
     export FILE_HASH_TO_ID=[["<your_strategy_hash>", ["your_strategy"]], ..., ["bafybeiav273ufxg6743rzxkxpx7vzl742prjovngflxlugawxfkz6dhfhi",["follow_trend_strategy"]]]
     ``````
 
-    Alternatively, you can also modify the parameter `file_hash_to_id` in the file [`service.yaml`](./packages/valory/services/solana_trader/service.yaml).
+    Alternatively, you can also modify the parameter `file_hash_to_id` in the file `[`service.yaml`](./packages/valory/services/solana_trader/service.yaml).
 
 3. Run your service.
