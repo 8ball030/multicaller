@@ -4,8 +4,16 @@ const fs = require('fs');
 const express = require('express');
 const bs58 = require('bs58');
 const fetch = require('cross-fetch');
-const { Wallet } = require('@project-serum/anchor');
-const { Connection, Keypair, PublicKey, VersionedTransaction, TransactionMessage, AddressLookupTableAccount, TransactionInstruction } = require('@solana/web3.js');
+const {Wallet} = require('@project-serum/anchor');
+const {
+    Connection,
+    Keypair,
+    PublicKey,
+    VersionedTransaction,
+    TransactionMessage,
+    AddressLookupTableAccount,
+    TransactionInstruction
+} = require('@solana/web3.js');
 
 import Squads from "@sqds/sdk";
 
@@ -23,11 +31,57 @@ app.use(express.json())
 const VAULT = 1;
 const multisigAddress = new PublicKey(process.env.MULTISIG_ADDRESS);
 const squadVault = process.env.VAULT_ADDRESS;
+
+const sendTX = async (
+    connection: any,
+    instructions: any,
+    addressLookupTableAccounts: any,
+) => {
+    let blockhash = (await connection.getLatestBlockhash()).blockhash;
+    const messageV0 = new TransactionMessage({
+        payerKey: wallet.payer.publicKey,
+        recentBlockhash: blockhash,
+        instructions: instructions,
+    }).compileToV0Message(addressLookupTableAccounts);
+    let transaction = new VersionedTransaction(messageV0);
+    transaction.sign([wallet.payer]);
+    let rawTransaction = transaction.serialize();
+    let txid = await connection.sendRawTransaction(rawTransaction, {
+        maxRetries: 2,
+    });
+    await connection.confirmTransaction(txid);
+    console.log(`Confirmed ${txid}. https://solscan.io/tx/${txid}`);
+}
+
+const sendTXWithRetry = async (
+    connection: any,
+    instructions: any,
+    addressLookupTableAccounts: any,
+    maxRetries: number = 5,
+) => {
+    try {
+        await sendTX(connection, instructions, addressLookupTableAccounts)
+    } catch (e: any) {
+        console.log(e)
+        if (maxRetries > 0) {
+            // Wait for 3 seconds
+            const three_seconds = 3_000;
+            await new Promise(resolve => setTimeout(resolve, three_seconds));
+            await sendTXWithRetry(connection, instructions, addressLookupTableAccounts, maxRetries - 1)
+        } else {
+            throw e
+        }
+    }
+}
+
 app.post('/tx', async (req: any, res: any) => {
     try {
-        let {inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs} = req.body
+        let {inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs, maxRetries} = req.body
         if (timeoutInMs == undefined) {
             timeoutInMs = 60_000
+        }
+        if (maxRetries == undefined) {
+            maxRetries = 5;
         }
         const config = {
             confirmTransactionInitialTimeout: timeoutInMs,
@@ -37,7 +91,7 @@ app.post('/tx', async (req: any, res: any) => {
 
         const txBuilder = await squads.getTransactionBuilder(multisigAddress, VAULT);
 
-        const url = `https://quote-api.jup.ag/v6/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${slippageBps}&onlyDirectRoutes=true&maxAccounts=30`;
+        const url = `https://quote-api.jup.ag/v6/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${slippageBps}&onlyDirectRoutes=true&maxAccounts=10`;
         const quoteResponse = await (
             await fetch(url)
         ).json();
@@ -62,7 +116,6 @@ app.post('/tx', async (req: any, res: any) => {
         if (priorityFee == undefined) {
             priorityFee = instructions.prioritizationFeeLamports
         }
-
 
         const {
             setupInstructions, // Setup missing ATA for the users.
@@ -113,47 +166,33 @@ app.post('/tx', async (req: any, res: any) => {
             ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
             ...setupInstructions.map(deserializeInstruction),
         ]).getInstructions()
-        const blockhash = (await connection.getLatestBlockhash()).blockhash;
-        const messageV0 = new TransactionMessage({
-            payerKey: wallet.payer.publicKey,
-            recentBlockhash: blockhash,
-            instructions: instructions2,
-        }).compileToV0Message(addressLookupTableAccounts);
-        let transaction = new VersionedTransaction(messageV0);
-        transaction.sign([wallet.payer]);
-        let rawTransaction = transaction.serialize();
-        let txid = await connection.sendRawTransaction(rawTransaction, {
-            maxRetries: 2,
-        });
-        await connection.confirmTransaction(txid);
-        console.log("Confirmed transaction")
-        await squads.addInstruction(pda, deserializeInstruction(swapInstructionPayload))
-        console.log("Added swap instruction")
-        await squads.addInstruction(pda, deserializeInstruction(cleanupInstruction))
-        console.log("Added cleanup instruction")
+        await sendTXWithRetry(connection, instructions2, addressLookupTableAccounts, maxRetries)
+        console.log("Created squad transaction")
 
-        console.log(`https://solscan.io/tx/${txid}`);
+        const addInstruction = await squads.buildAddInstruction(multisigAddress, pda, deserializeInstruction(swapInstructionPayload), 0)
+        await sendTXWithRetry(
+            connection, [
+                addInstruction,
+            ],
+            addressLookupTableAccounts,
+            maxRetries
+        )
+        console.log("Added swap instruction")
+
         const activate = await squads.buildActivateTransaction(multisigAddress, pda)
         const approve = await squads.buildApproveTransaction(multisigAddress, pda)
         const execute = await squads.buildExecuteInstruction(multisigAddress, pda)
 
-        const txMessage = new TransactionMessage({
-            payerKey: wallet.payer.publicKey,
-            recentBlockhash: blockhash,
-            instructions: [
-                ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
-                activate,
-                approve,
-                execute
-            ],
-        }).compileToV0Message(addressLookupTableAccounts);
-        transaction = new VersionedTransaction(txMessage);
-        transaction.sign([wallet.payer]);
-        rawTransaction = transaction.serialize();
-        txid = await connection.sendRawTransaction(rawTransaction, {
-            maxRetries: 2,
-        });
-        await connection.confirmTransaction(txid);
+        await sendTXWithRetry(connection, [
+            ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
+            deserializeInstruction(cleanupInstruction),
+            activate,
+            approve,
+            execute,
+        ], addressLookupTableAccounts, maxRetries)
+
+        console.log("Done")
+
         res.json({"status": "ok", "txId": pda, "url": `https://solscan.io/tx/${pda}`})
     } catch (e: any) {
         console.log(e)
