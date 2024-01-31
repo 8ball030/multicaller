@@ -144,6 +144,8 @@ models:
       - - extra_2
         - value
       use_proxy_server: false
+      expected_swap_tx_cost: 20000000
+      squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:
@@ -152,7 +154,7 @@ models:
         Content-Type: application/json
       method: GET
       parameters:
-        amount: 1000000
+        amount: 100000000
         slippageBps: 1
       response_key: null
       response_type: dict
@@ -178,13 +180,25 @@ models:
         Content-Type: application/json
       method: POST
       parameters:
-        amount: 1000000
+        amount: 100000000
         slippageBps: 1
       response_key: null
       response_type: dict
       retries: 5
       url: http://tx_proxy:3000/tx
     class_name: TxSettlementProxy
+  solana_rpc:
+    args:
+      api_id: solana_rpc
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: result:value
+      response_type: list
+      retries: 5
+      url: replace_with_a_solana_rpc
+    class_name: SolanaRPC
   requests:
     args: {}
     class_name: Requests

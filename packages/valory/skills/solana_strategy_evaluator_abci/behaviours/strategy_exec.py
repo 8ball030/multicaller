@@ -19,6 +19,7 @@
 
 """This module contains the behaviour for executing a strategy."""
 
+from copy import deepcopy
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
 import yaml
@@ -26,6 +27,7 @@ import yaml
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
+from packages.valory.skills.solana_strategy_evaluator_abci.models import AMOUNT_PARAM
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
 )
@@ -45,6 +47,33 @@ DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
 CALLABLE_KEY = "callable"
+JSON_RPC_SPEC = "2.0"
+REQUEST_ID = 1
+TOKEN_ACCOUNTS_METHOD = "getTokenAccountsByOwner"  # nosec
+TOKEN_ENCODING = "jsonParsed"  # nosec
+TOKEN_AMOUNT_ACCESS_KEYS = (
+    "account",
+    "data",
+    "parsed",
+    "info",
+    "tokenAmount",
+    "amount",
+)
+
+
+def safely_get_from_nested_dict(
+    nested_dict: Dict[str, Any], keys: Tuple[str, ...]
+) -> Optional[Any]:
+    """Get a value safely from a nested dictionary."""
+    res = deepcopy(nested_dict)
+    for key in keys[:-1]:
+        res = res.get(key, {})
+        if not isinstance(res, dict):
+            return None
+
+    if keys[-1] not in res:
+        return None
+    return res[keys[-1]]
 
 
 class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
@@ -128,6 +157,77 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
         return method(*args, **kwargs)
 
+    def get_swap_amount(self) -> int:
+        """Get the swap amount."""
+        if self.params.use_proxy_server:
+            api = self.context.tx_settlement_proxy
+        else:
+            api = self.context.swap_quotes
+
+        return api.parameters.get(AMOUNT_PARAM, 0)
+
+    def unexpected_res_format_err(self, res: Any) -> None:
+        """Error log in case of an unexpected format error."""
+        self.context.logger.error(
+            f"Unexpected response format from {TOKEN_ACCOUNTS_METHOD!r}: {res}"
+        )
+
+    def get_balance(self, token: str) -> Generator[None, None, Optional[int]]:
+        """Get the balance of the token corresponding to the given address."""
+        payload = {
+            "id": REQUEST_ID,
+            "jsonrpc": JSON_RPC_SPEC,
+            "method": TOKEN_ACCOUNTS_METHOD,
+            "params": [
+                self.params.squad_vault,
+                {"mint": token},
+                {"encoding": TOKEN_ENCODING},
+            ],
+        }
+        response = yield from self._get_response(self.context.solana_rpc, {}, payload)
+        if response is None:
+            return None
+
+        if not isinstance(response, list):
+            self.unexpected_res_format_err(response)
+            return None
+
+        if len(response) == 0:
+            return 0
+
+        value_content = response.pop(0)
+
+        if not isinstance(value_content, dict):
+            self.unexpected_res_format_err(response)
+            return None
+
+        amount = safely_get_from_nested_dict(value_content, TOKEN_AMOUNT_ACCESS_KEYS)
+        if amount is None:
+            self.unexpected_res_format_err(response)
+        return amount
+
+    def is_balance_sufficient(
+        self, token: str
+    ) -> Generator[None, None, Optional[bool]]:
+        """Check whether the balance of the given token is enough to perform the swap transaction."""
+        self.context.logger.info(
+            f"Checking balance for token with address {token!r}..."
+        )
+        balance = yield from self.get_balance(token)
+        if balance is None:
+            self.context.logger.error(f"Failed to get balance for {token=}!")
+            return None
+
+        self.context.logger.info(f"Balance ({token}): {balance}.")
+        required_balance = self.get_swap_amount() + self.params.expected_swap_tx_cost
+        if required_balance > balance:
+            self.context.logger.warning(
+                f"There is not enough balance ({balance} < {required_balance}) "
+                f"for token with address {token!r} to perform a swap. Not taking any actions."
+            )
+            return False
+        return True
+
     def get_swap_decision(
         self,
         token_data: Any,
@@ -201,6 +301,10 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # holding token, no tx to perform
                 continue
 
+            enough_tokens = yield from self.is_balance_sufficient(token)
+            if not enough_tokens:
+                incomplete = True
+                continue
             quote_data[token_swap_position] = token
             orders.append(quote_data)
 
