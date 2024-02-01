@@ -26,7 +26,8 @@ from typing import Any, Callable, Dict, Generator, Optional, Sized, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
-from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
+from packages.valory.skills.abstract_round_abci.io_.load import CustomLoaderType
+from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype, SupportedObjectType
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState,
@@ -131,6 +132,27 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         api.reset_retries()
         return None
 
+    def get_from_ipfs(
+        self,
+        ipfs_hash: Optional[str],
+        filetype: Optional[SupportedFiletype] = None,
+        custom_loader: CustomLoaderType = None,
+        timeout: Optional[float] = None,
+    ) -> Generator[None, None, Optional[SupportedObjectType]]:
+        """
+        Gets an object from IPFS.
+
+        :param ipfs_hash: the ipfs hash of the file/dir to download.
+        :param filetype: the file type of the object being downloaded.
+        :param custom_loader: a custom deserializer for the object received from IPFS.
+        :param timeout: timeout for the request.
+        :returns: the downloaded object, corresponding to ipfs_hash.
+        """
+        if ipfs_hash is None:
+            return None
+        res = yield from super().get_from_ipfs(ipfs_hash, filetype, custom_loader, timeout)
+        return res
+
     def get_process_store_act(
         self,
         hash_: Optional[str],
@@ -150,11 +172,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         :yield: None
         """
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            if hash_ is None:
-                data = None
-            else:
-                data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-
+            data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
             if data is None:
                 self.context.logger.error(
                     f"Could not get the data from IPFS using hash {hash_!r}!"
