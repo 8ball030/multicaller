@@ -54,14 +54,6 @@ class SwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
         # only fetch once per new queue and store in the shared state for future reference
         hash_ = self.synchronized_data.instructions_hash
         instructions = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-        if instructions is None:
-            sleep_time = self.params.sleep_time
-            self.context.logger.error(
-                f"Could not get the instructions from IPFS using hash {hash_!r}!"
-                f"Retrying in {sleep_time}..."
-            )
-            self.sleep(sleep_time)
-
         return cast(Optional[List[Dict[str, Any]]], instructions)
 
     def get_next_instructions(self) -> Optional[str]:

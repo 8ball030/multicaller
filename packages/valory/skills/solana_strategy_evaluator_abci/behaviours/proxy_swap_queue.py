@@ -74,14 +74,6 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
         # only fetch once per new batch and store in the shared state for future reference
         hash_ = self.synchronized_data.orders_hash
         orders = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-        if orders is None:
-            sleep_time = self.params.sleep_time
-            self.context.logger.error(
-                f"Could not get the orders from IPFS using hash {hash_!r}!"
-                f"Retrying in {sleep_time}..."
-            )
-            self.sleep(sleep_time)
-
         return cast(OrdersType, orders)
 
     def handle_success(self, tx_id: Optional[str], url: Optional[str]) -> None:

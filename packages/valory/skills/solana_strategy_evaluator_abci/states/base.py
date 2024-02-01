@@ -76,15 +76,22 @@ class SynchronizedData(
     This data is replicated by the tendermint application.
     """
 
+    def _optional_str(self, db_key: str) -> Optional[str]:
+        """Get an optional string from the db."""
+        val = self.db.get_strict(db_key)
+        if val is None:
+            return None
+        return str(val)
+
     def _get_deserialized(self, key: str) -> DeserializedCollection:
         """Strictly get a collection and return it deserialized."""
         serialized = self.db.get_strict(key)
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def orders_hash(self) -> str:
+    def orders_hash(self) -> Optional[str]:
         """Get the hash of the orders' data."""
-        return str(self.db.get_strict("orders_hash"))
+        return self._optional_str("orders_hash")
 
     @property
     def incomplete_exec(self) -> bool:
@@ -97,9 +104,9 @@ class SynchronizedData(
         return str(self.db.get_strict("tx_id"))
 
     @property
-    def instructions_hash(self) -> str:
+    def instructions_hash(self) -> Optional[str]:
         """Get the hash of the instructions' data."""
-        return str(self.db.get_strict("instructions_hash"))
+        return self._optional_str("instructions_hash")
 
     @property
     def incomplete_instructions(self) -> bool:

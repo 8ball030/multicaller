@@ -26,7 +26,11 @@ from typing import Any, Callable, Dict, Generator, Optional, Sized, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
-from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
+from packages.valory.skills.abstract_round_abci.io_.load import CustomLoaderType
+from packages.valory.skills.abstract_round_abci.io_.store import (
+    SupportedFiletype,
+    SupportedObjectType,
+)
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState,
@@ -131,9 +135,44 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         api.reset_retries()
         return None
 
+    def get_from_ipfs(
+        self,
+        ipfs_hash: Optional[str],
+        filetype: Optional[SupportedFiletype] = None,
+        custom_loader: CustomLoaderType = None,
+        timeout: Optional[float] = None,
+    ) -> Generator[None, None, Optional[SupportedObjectType]]:
+        """
+        Gets an object from IPFS.
+
+        If the result is `None`, then an error is logged, sleeps, and returns `None` to be handled for retrying.
+
+        :param ipfs_hash: the ipfs hash of the file/dir to download.
+        :param filetype: the file type of the object being downloaded.
+        :param custom_loader: a custom deserializer for the object received from IPFS.
+        :param timeout: timeout for the request.
+        :yields: None.
+        :returns: the downloaded object, corresponding to ipfs_hash or `None` for retrying.
+        """
+        if ipfs_hash is None:
+            return None
+
+        res = yield from super().get_from_ipfs(
+            ipfs_hash, filetype, custom_loader, timeout
+        )
+        if res is None:
+            sleep_time = self.params.sleep_time
+            self.context.logger.error(
+                f"Could not get any data from IPFS using hash {ipfs_hash!r}!"
+                f"Retrying in {sleep_time}..."
+            )
+            self.sleep(sleep_time)
+
+        return res
+
     def get_process_store_act(
         self,
-        hash_: str,
+        hash_: Optional[str],
         process_fn: Callable[[Any], Generator[None, None, Tuple[Sized, bool]]],
         store_filepath: str,
     ) -> Generator:
@@ -152,19 +191,14 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
             if data is None:
-                self.context.logger.error(
-                    f"Could not get the data from IPFS using hash {hash_!r}!"
-                )
-                self.sleep(self.params.sleep_time)
                 return
 
             incomplete: Optional[bool]
             processed, incomplete = yield from process_fn(data)
-            n_processed: Optional[int] = len(processed)
-            if n_processed == 0:
+            if len(processed) == 0:
                 processed_hash = None
                 if incomplete:
-                    incomplete = n_processed = None
+                    incomplete = None
             else:
                 processed_hash = yield from self.send_to_ipfs(
                     store_filepath,
@@ -173,7 +207,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
                 )
 
             payload = IPFSHashPayload(
-                self.context.agent_address, processed_hash, incomplete, n_processed
+                self.context.agent_address, processed_hash, incomplete
             )
 
         yield from self.finish_behaviour(payload)
