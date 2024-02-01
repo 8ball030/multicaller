@@ -133,7 +133,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
 
     def get_process_store_act(
         self,
-        hash_: str,
+        hash_: Optional[str],
         process_fn: Callable[[Any], Generator[None, None, Tuple[Sized, bool]]],
         store_filepath: str,
     ) -> Generator:
@@ -150,7 +150,11 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         :yield: None
         """
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
+            if hash_ is None:
+                data = None
+            else:
+                data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
+
             if data is None:
                 self.context.logger.error(
                     f"Could not get the data from IPFS using hash {hash_!r}!"
@@ -160,11 +164,10 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
 
             incomplete: Optional[bool]
             processed, incomplete = yield from process_fn(data)
-            n_processed: Optional[int] = len(processed)
-            if n_processed == 0:
+            if len(processed) == 0:
                 processed_hash = None
                 if incomplete:
-                    incomplete = n_processed = None
+                    incomplete = None
             else:
                 processed_hash = yield from self.send_to_ipfs(
                     store_filepath,
@@ -173,7 +176,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
                 )
 
             payload = IPFSHashPayload(
-                self.context.agent_address, processed_hash, incomplete, n_processed
+                self.context.agent_address, processed_hash, incomplete
             )
 
         yield from self.finish_behaviour(payload)

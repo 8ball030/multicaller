@@ -82,9 +82,12 @@ class SynchronizedData(
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def orders_hash(self) -> str:
+    def orders_hash(self) -> Optional[str]:
         """Get the hash of the orders' data."""
-        return str(self.db.get_strict("orders_hash"))
+        hash_ = self.db.get_strict("orders_hash")
+        if hash_ is None:
+            return None
+        return str(hash_)
 
     @property
     def incomplete_exec(self) -> bool:
@@ -97,9 +100,12 @@ class SynchronizedData(
         return str(self.db.get_strict("tx_id"))
 
     @property
-    def instructions_hash(self) -> str:
+    def instructions_hash(self) -> Optional[str]:
         """Get the hash of the instructions' data."""
-        return str(self.db.get_strict("instructions_hash"))
+        hash_ = self.db.get_strict("instructions_hash")
+        if hash_ is None:
+            return None
+        return str(hash_)
 
     @property
     def incomplete_instructions(self) -> bool:

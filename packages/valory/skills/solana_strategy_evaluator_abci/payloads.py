@@ -31,7 +31,6 @@ class IPFSHashPayload(BaseTxPayload):
 
     ipfs_hash: Optional[str]
     incomplete: Optional[bool]
-    n_processed: Optional[int]
 
 
 @dataclass(frozen=True)
