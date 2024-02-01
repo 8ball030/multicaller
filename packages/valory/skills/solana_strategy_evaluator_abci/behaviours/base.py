@@ -142,15 +142,26 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         """
         Gets an object from IPFS.
 
+        If the result is `None`, then an error is logged, sleeps, and returns `None` to be handled for retrying.
+
         :param ipfs_hash: the ipfs hash of the file/dir to download.
         :param filetype: the file type of the object being downloaded.
         :param custom_loader: a custom deserializer for the object received from IPFS.
         :param timeout: timeout for the request.
-        :returns: the downloaded object, corresponding to ipfs_hash.
+        :returns: the downloaded object, corresponding to ipfs_hash or `None` for retrying.
         """
         if ipfs_hash is None:
             return None
+
         res = yield from super().get_from_ipfs(ipfs_hash, filetype, custom_loader, timeout)
+        if res is None:
+            sleep_time = self.params.sleep_time
+            self.context.logger.error(
+                f"Could not get any data from IPFS using hash {ipfs_hash!r}!"
+                f"Retrying in {sleep_time}..."
+            )
+            self.sleep(sleep_time)
+
         return res
 
     def get_process_store_act(
@@ -174,10 +185,6 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
             if data is None:
-                self.context.logger.error(
-                    f"Could not get the data from IPFS using hash {hash_!r}!"
-                )
-                self.sleep(self.params.sleep_time)
                 return
 
             incomplete: Optional[bool]
