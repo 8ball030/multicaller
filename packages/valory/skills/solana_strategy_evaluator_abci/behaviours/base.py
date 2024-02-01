@@ -27,7 +27,10 @@ from typing import Any, Callable, Dict, Generator, Optional, Sized, Tuple, cast
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.behaviour_utils import BaseBehaviour
 from packages.valory.skills.abstract_round_abci.io_.load import CustomLoaderType
-from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype, SupportedObjectType
+from packages.valory.skills.abstract_round_abci.io_.store import (
+    SupportedFiletype,
+    SupportedObjectType,
+)
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState,
@@ -148,12 +151,15 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         :param filetype: the file type of the object being downloaded.
         :param custom_loader: a custom deserializer for the object received from IPFS.
         :param timeout: timeout for the request.
+        :yields: None.
         :returns: the downloaded object, corresponding to ipfs_hash or `None` for retrying.
         """
         if ipfs_hash is None:
             return None
 
-        res = yield from super().get_from_ipfs(ipfs_hash, filetype, custom_loader, timeout)
+        res = yield from super().get_from_ipfs(
+            ipfs_hash, filetype, custom_loader, timeout
+        )
         if res is None:
             sleep_time = self.params.sleep_time
             self.context.logger.error(
