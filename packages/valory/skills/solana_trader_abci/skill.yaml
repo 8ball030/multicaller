@@ -138,8 +138,6 @@ models:
       ipfs_address: https://gateway.autonolas.tech/ipfs/
       selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
-      coingecko_api_key: ''
-      coingecko_market_endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
       trading_strategy: strategy_name
       strategies_kwargs:
       - - extra_1
@@ -150,6 +148,15 @@ models:
       expected_swap_tx_cost: 20000000
       squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
     class_name: Params
+  coingecko:
+    args:
+      endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
+      api_key: null
+      prices_field: prices
+      requests_per_minute: 5
+      credits: 10000
+      rate_limited_code: 429
+    class_name: Coingecko
   randomness_api:
     args:
       api_id: cloudflare

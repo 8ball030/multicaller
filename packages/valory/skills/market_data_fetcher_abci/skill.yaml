@@ -120,9 +120,16 @@ models:
       tx_timeout: 10.0
       validate_timeout: 1205
       token_symbol_whitelist: []
-      coingecko_api_key: ''
-      coingecko_market_endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
     class_name: Params
+  coingecko:
+    args:
+      endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
+      api_key: null
+      prices_field: prices
+      requests_per_minute: 5
+      credits: 10000
+      rate_limited_code: 429
+    class_name: Coingecko
   requests:
     args: {}
     class_name: Requests

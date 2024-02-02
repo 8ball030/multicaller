@@ -22,7 +22,7 @@
 import json
 import os
 from abc import ABC
-from typing import Any, Dict, Generator, Optional, Set, Tuple, Type, cast
+from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
@@ -30,7 +30,7 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     BaseBehaviour,
 )
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
-from packages.valory.skills.market_data_fetcher_abci.models import Params
+from packages.valory.skills.market_data_fetcher_abci.models import Coingecko, Params
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     FetchMarketDataPayload,
     FetchMarketDataRound,
@@ -42,6 +42,9 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
 HTTP_OK = [200, 201]
 MAX_RETRIES = 3
 MARKETS_FILE_NAME = "markets.json"
+TOKEN_ID_FIELD = "coingecko_id"  # nosec: B105:hardcoded_password_string
+TOKEN_ADDRESS_FIELD = "address"  # nosec: B105:hardcoded_password_string
+UTF8 = "utf-8"
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -57,6 +60,11 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         """Return the params."""
         return cast(Params, super().params)
 
+    @property
+    def coingecko(self) -> Coingecko:
+        """Return the Coingecko."""
+        return cast(Coingecko, self.context.coingecko)
+
     def from_data_dir(self, path: str) -> str:
         """Return the given path appended to the data dir."""
         return os.path.join(self.context.data_dir, path)
@@ -64,37 +72,34 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
     def _request_with_retries(
         self,
         endpoint: str,
+        rate_limited_callback: Callable,
         method: str = "GET",
         body: Optional[Any] = None,
         headers: Optional[Dict] = None,
+        rate_limited_code: int = 429,
         max_retries: int = MAX_RETRIES,
         retry_wait: int = 0,
     ) -> Generator[None, None, Tuple[bool, Dict]]:
         """Request wrapped around a retry mechanism"""
 
         self.context.logger.info(f"HTTP {method} call: {endpoint}")
-
-        kwargs = dict(
-            method=method,
-            url=endpoint,
-        )
-
-        if body:
-            kwargs["content"] = json.dumps(body).encode("utf-8")  # type: ignore
-
-        if headers:
-            kwargs["headers"] = headers  # type: ignore
+        content = json.dumps(body).encode(UTF8) if body else None
 
         retries = 0
         while True:
             # Make the request
-            response = yield from self.get_http_response(**kwargs)  # type: ignore
+            response = yield from self.get_http_response(
+                method, endpoint, content, headers
+            )
 
             try:
                 response_json = json.loads(response.body)
             except json.decoder.JSONDecodeError as exc:
                 self.context.logger.error(f"Exception during json loading: {exc}")
                 response_json = {"exception": str(exc)}
+
+            if response.status_code == rate_limited_code:
+                rate_limited_callback()
 
             if response.status_code not in HTTP_OK or "exception" in response_json:
                 self.context.logger.error(
@@ -105,11 +110,11 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
                     break
                 yield from self.sleep(retry_wait)
                 continue
-            else:
-                self.context.logger.info("Request succeeded")
-                return True, response_json
 
-        self.context.logger.error(f"Request failed after {retries} retries")
+            self.context.logger.info("Request succeeded.")
+            return True, response_json
+
+        self.context.logger.error(f"Request failed after {retries} retries.")
         return False, response_json
 
 
@@ -139,45 +144,71 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         headers = {
             "Accept": "application/json",
         }
-        if self.params.coingecko_api_key:
-            headers["x-cg-pro-api-key"] = self.params.coingecko_api_key
+        if self.coingecko.api_key:
+            headers["x-cg-pro-api-key"] = self.coingecko.api_key
 
         # Get the market data for each token
         for token_data in self.params.token_symbol_whitelist:
-            token_id = token_data.get("coingecko_id", None)
+            token_id = token_data.get(TOKEN_ID_FIELD, None)
+            token_address = token_data.get(TOKEN_ADDRESS_FIELD, None)
 
-            if not token_id:
-                self.context.logger.error(
-                    f"No token_id set for Coingecko in {token_data}"
-                )
+            if not token_id or not token_address:
+                err = f"Token id or address missing in whitelist's {token_data=}."
+                self.context.logger.error(err)
+                continue
 
+            warned = False
+            while not self.coingecko.rate_limiter.check_and_burn():
+                if not warned:
+                    self.context.logger.warning(
+                        "Rate limiter activated. "
+                        "To avoid this in the future, you may consider acquiring a Coingecko API key,"
+                        "and updating the `Coingecko` model's overrides.\n"
+                        "Cooling down..."
+                    )
+                warned = True
+                yield from self.sleep(self.params.sleep_time)
+
+            if warned:
+                self.context.logger.info("Cooldown period passed :)")
+
+            remaining_limit = self.coingecko.rate_limiter.remaining_limit
+            remaining_credits = self.coingecko.rate_limiter.remaining_credits
+            self.context.logger.info(
+                "Local rate limiter's check passed. "
+                f"After the call, you will have {remaining_limit=} and {remaining_credits=}."
+            )
             success, response_json = yield from self._request_with_retries(
-                endpoint=self.params.coingecko_market_endpoint.format(
-                    token_id=token_id
-                ),
+                endpoint=self.coingecko.endpoint.format(token_id=token_id),
                 headers=headers,
+                rate_limited_code=self.coingecko.rate_limited_code,
+                rate_limited_callback=self.coingecko.rate_limited_status_callback,
                 retry_wait=self.params.sleep_time,
             )
 
             # Skip failed markets. The strategy will need to verify market availability
             if not success:
-                self.context.logger.error(f"Failed to fetch market for {token_id}")
+                self.context.logger.error(
+                    f"Failed to fetch market data for {token_id}."
+                )
                 continue
 
-            self.context.logger.info(f"Successfully fetched market for {token_id}")
-
-            markets[token_data["address"]] = response_json["prices"]
+            self.context.logger.info(
+                f"Successfully fetched market data for {token_id}."
+            )
+            markets[token_address] = response_json.get(self.coingecko.prices_field, [])
 
         # Send to IPFS
         data_hash = None
-
         if markets:
             data_hash = yield from self.send_to_ipfs(
                 filename=self.from_data_dir(MARKETS_FILE_NAME),
                 obj=markets,
                 filetype=SupportedFiletype.JSON,
             )
-            self.context.logger.info(f"Market file stored in IPFS. Hash is {data_hash}")
+            self.context.logger.info(
+                f"Market file stored in IPFS. Hash is {data_hash}."
+            )
 
         return data_hash
 
