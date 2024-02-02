@@ -39,7 +39,9 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
 
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     StrategyEvaluatorParams as StrategyEvaluatorAbciParams,
+    SwapQuotesSpecs, SwapInstructionsSpecs, TxSettlementProxy, SolanaRPC
 )
+from packages.valory.skills.market_data_fetcher_abci.models import Coingecko
 from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
     Event as StrategyEvaluatorEvent,
 )
@@ -57,28 +59,19 @@ SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
 MarketDataFetcherParams = MarketDataFetcherAbciParams
 StrategyEvaluatorParams = StrategyEvaluatorAbciParams
 
+Coingecko = Coingecko
+
+SwapQuotesSpecs = SwapQuotesSpecs
+SwapInstructionsSpecs = SwapInstructionsSpecs
+TxSettlementProxy = TxSettlementProxy
+SolanaRPC = SolanaRPC
+
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool
 
 
 class RandomnessApi(ApiSpecs):
     """A model for randomness api specifications."""
-
-
-class SwapQuotesSpecs(ApiSpecs):
-    """A model that wraps ApiSpecs for the Jupiter quotes specifications."""
-
-
-class SwapInstructionsSpecs(ApiSpecs):
-    """A model that wraps ApiSpecs for the Jupiter instructions specifications."""
-
-
-class TxSettlementProxy(ApiSpecs):
-    """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
-
-
-class SolanaRPC(ApiSpecs):
-    """A model that wraps ApiSpecs for the Solana tokens' balance check."""
 
 
 MARGIN = 5

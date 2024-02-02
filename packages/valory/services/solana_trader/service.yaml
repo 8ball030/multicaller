@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeiaq67dzextrirlfh3qidqmglzfvnfva4nfwgzvr3lgl3f2wrx7myy
+agent: valory/solana_trader:0.1.0:bafybeiafhqtiixlj7ky7eqst7jv6kqtjgbp4xftxpl47yioxsv6wdy754u
 number_of_agents: 4
 deployment: {}
 ---
@@ -103,8 +103,6 @@ type: skill
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
         selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
-        coingecko_api_key: ${COINGECKO_API_KEY:str:null}
-        coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
@@ -115,6 +113,14 @@ type: skill
     solana_rpc: &id004
       args:
         url: ${SOLANA_RPC:str:replace_with_a_solana_rpc}
+    coingecko: &id005
+      args:
+        endpoint: ${COINGECKO_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
+        api_key: ${COINGECKO_API_KEY:str:null}
+        prices_field: ${COINGECKO_PRICES_FIELD:str:prices}
+        requests_per_minute: ${COINGECKO_REQUESTS_PER_MINUTE:int:5}
+        credits: ${COINGECKO_CREDITS:int:10000}
+        rate_limited_code: ${COINGECKO_RATE_LIMITED_CODE:int:429}
 1:
   models:
     params:
@@ -156,14 +162,13 @@ type: skill
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
         selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
-        coingecko_api_key: ${COINGECKO_API_KEY:str:null}
-        coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
     benchmark_tool: *id003
     solana_rpc: *id004
+    coingecko: *id005
 2:
   models:
     params:
@@ -205,14 +210,13 @@ type: skill
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
         selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
-        coingecko_api_key: ${COINGECKO_API_KEY:str:null}
-        coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
     benchmark_tool: *id003
     solana_rpc: *id004
+    coingecko: *id005
 3:
   models:
     params:
@@ -254,14 +258,13 @@ type: skill
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
         selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
-        coingecko_api_key: ${COINGECKO_API_KEY:str:null}
-        coingecko_market_endpoint: ${COINGECKO_MARKET_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
     benchmark_tool: *id003
     solana_rpc: *id004
+    coingecko: *id005
 ---
 public_id: valory/ledger:0.19.0
 type: connection
