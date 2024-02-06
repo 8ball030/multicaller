@@ -103,9 +103,20 @@ models:
   benchmark_tool:
     args:
       log_dir: ${str:/benchmarks}
-  solana_rpc:
+  get_balance:
     args:
-      api_id: ${str:solana_rpc}
+      api_id: ${str:get_balance}
+      headers:
+        Content-Type: ${str:application/json}
+      method: ${str:POST}
+      parameters: ${dict:{}}
+      response_key: ${str:result:value}
+      response_type: ${str:int}
+      retries: ${int:5}
+      url: ${str:replace_with_a_solana_rpc}
+  token_accounts:
+    args:
+      api_id: ${str:token_accounts}
       headers:
         Content-Type: ${str:application/json}
       method: ${str:POST}

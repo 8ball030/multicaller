@@ -208,9 +208,22 @@ models:
       retries: 5
       url: http://tx_proxy:3000/tx
     class_name: TxSettlementProxy
-  solana_rpc:
+  get_balance:
     args:
-      api_id: solana_rpc
+      api_id: get_balance
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: result:value
+      response_type: int
+      retries: 5
+      url: replace_with_a_solana_rpc
+    class_name:
+      GetBalance
+  token_accounts:
+    args:
+      api_id: token_accounts
       headers:
         Content-Type: application/json
       method: POST
@@ -219,7 +232,7 @@ models:
       response_type: list
       retries: 5
       url: replace_with_a_solana_rpc
-    class_name: SolanaRPC
+    class_name: TokenAccounts
   requests:
     args: {}
     class_name: Requests

@@ -24,35 +24,37 @@ from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
 from packages.valory.skills.abstract_round_abci.models import Requests as BaseRequests
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
-    SharedState as BaseSharedState,
-)
-from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
-
-
+from packages.valory.skills.market_data_fetcher_abci.models import Coingecko
 from packages.valory.skills.market_data_fetcher_abci.models import (
     Params as MarketDataFetcherAbciParams,
 )
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     Event as MarketDataFetcherEvent,
 )
-
+from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
+from packages.valory.skills.solana_strategy_evaluator_abci.models import GetBalance
+from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+    SharedState as BaseSharedState,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     StrategyEvaluatorParams as StrategyEvaluatorAbciParams,
-    SwapQuotesSpecs, SwapInstructionsSpecs, TxSettlementProxy, SolanaRPC
 )
-from packages.valory.skills.market_data_fetcher_abci.models import Coingecko
+from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+    SwapInstructionsSpecs,
+    SwapQuotesSpecs,
+    TokenAccounts,
+    TxSettlementProxy,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
     Event as StrategyEvaluatorEvent,
 )
-
+from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
 from packages.valory.skills.solana_trader_decision_maker_abci.models import (
     Params as SolanaTraderDecisionMakerAbciParams,
 )
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
 )
-from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
 
 
 SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
@@ -64,7 +66,8 @@ Coingecko = Coingecko
 SwapQuotesSpecs = SwapQuotesSpecs
 SwapInstructionsSpecs = SwapInstructionsSpecs
 TxSettlementProxy = TxSettlementProxy
-SolanaRPC = SolanaRPC
+GetBalance = GetBalance
+TokenAccounts = TokenAccounts
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool

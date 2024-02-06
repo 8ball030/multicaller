@@ -135,5 +135,9 @@ class TxSettlementProxy(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
 
 
-class SolanaRPC(ApiSpecs):
+class GetBalance(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana balance check."""
+
+
+class TokenAccounts(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana tokens' balance check."""

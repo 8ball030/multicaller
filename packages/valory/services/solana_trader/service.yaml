@@ -110,9 +110,10 @@ type: skill
     benchmark_tool: &id003
       args:
         log_dir: ${LOG_DIR:str:/benchmarks}
-    solana_rpc: &id004
+    get_balance: &id004
       args:
         url: ${SOLANA_RPC:str:replace_with_a_solana_rpc}
+    token_accounts: *id004
     coingecko: &id005
       args:
         endpoint: ${COINGECKO_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
@@ -167,7 +168,8 @@ type: skill
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
     benchmark_tool: *id003
-    solana_rpc: *id004
+    get_balance: *id004
+    token_accounts: *id004
     coingecko: *id005
 2:
   models:
@@ -215,7 +217,8 @@ type: skill
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
     benchmark_tool: *id003
-    solana_rpc: *id004
+    get_balance: *id004
+    token_accounts: *id004
     coingecko: *id005
 3:
   models:
@@ -263,7 +266,8 @@ type: skill
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
     benchmark_tool: *id003
-    solana_rpc: *id004
+    get_balance: *id004
+    token_accounts: *id004
     coingecko: *id005
 ---
 public_id: valory/ledger:0.19.0
