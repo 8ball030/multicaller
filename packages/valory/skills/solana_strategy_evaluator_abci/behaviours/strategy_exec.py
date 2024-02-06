@@ -301,7 +301,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # holding token, no tx to perform
                 continue
 
-            enough_tokens = yield from self.is_balance_sufficient(token)
+            input_token = quote_data["inputMint"]
+            enough_tokens = yield from self.is_balance_sufficient(input_token)
             if not enough_tokens:
                 incomplete = True
                 continue
