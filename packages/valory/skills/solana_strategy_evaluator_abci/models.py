@@ -19,6 +19,7 @@
 
 """This module contains the models for the skill."""
 
+from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from aea.skills.base import SkillContext
@@ -141,3 +142,13 @@ class GetBalance(ApiSpecs):
 
 class TokenAccounts(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana tokens' balance check."""
+
+
+@dataclass
+class RPCPayload:
+    """An RPC request's payload."""
+
+    method: str
+    params: list
+    id: int = 1
+    jsonrpc: str = "2.0"
