@@ -19,10 +19,12 @@
 
 """This module contains the models for the skill."""
 
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
 from aea.skills.base import SkillContext
 
+from packages.valory.skills.abstract_round_abci.base import AbciApp
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs, BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
@@ -47,7 +49,7 @@ SLIPPAGE_PARAM = "slippageBps"
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
-    abci_app_cls = StrategyEvaluatorAbciApp
+    abci_app_cls: Type[AbciApp] = StrategyEvaluatorAbciApp
 
     def __init__(self, *args: Any, skill_context: SkillContext, **kwargs: Any) -> None:
         """Initialize the state."""
@@ -135,5 +137,19 @@ class TxSettlementProxy(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
 
 
-class SolanaRPC(ApiSpecs):
+class GetBalance(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana balance check."""
+
+
+class TokenAccounts(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana tokens' balance check."""
+
+
+@dataclass
+class RPCPayload:
+    """An RPC request's payload."""
+
+    method: str
+    params: list
+    id: int = 1
+    jsonrpc: str = "2.0"

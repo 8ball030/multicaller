@@ -20,6 +20,7 @@
 """This module contains the behaviour for executing a strategy."""
 
 from copy import deepcopy
+from dataclasses import asdict
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
 import yaml
@@ -27,7 +28,12 @@ import yaml
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import AMOUNT_PARAM
+from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+    AMOUNT_PARAM,
+    GetBalance,
+    RPCPayload,
+    TokenAccounts,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
 )
@@ -47,8 +53,7 @@ DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
 CALLABLE_KEY = "callable"
-JSON_RPC_SPEC = "2.0"
-REQUEST_ID = 1
+BALANCE_METHOD = "getBalance"
 TOKEN_ACCOUNTS_METHOD = "getTokenAccountsByOwner"  # nosec
 TOKEN_ENCODING = "jsonParsed"  # nosec
 TOKEN_AMOUNT_ACCESS_KEYS = (
@@ -80,6 +85,16 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     """A behaviour in which the agents execute the selected strategy and decide on the swap(s)."""
 
     matching_round = StrategyExecRound
+
+    @property
+    def get_balance(self) -> GetBalance:
+        """Get the `GetBalance` instance."""
+        return self.context.get_balance
+
+    @property
+    def token_accounts(self) -> TokenAccounts:
+        """Get the `TokenAccounts` instance."""
+        return self.context.token_accounts
 
     def strategy_exec(self, strategy_name: str) -> Optional[Dict[str, str]]:
         """Get the executable strategy's contents."""
@@ -172,19 +187,25 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             f"Unexpected response format from {TOKEN_ACCOUNTS_METHOD!r}: {res}"
         )
 
-    def get_balance(self, token: str) -> Generator[None, None, Optional[int]]:
+    def get_native_balance(self) -> Generator[None, None, Optional[int]]:
+        """Get the SOL balance of the given address."""
+        payload = RPCPayload(BALANCE_METHOD, [self.params.squad_vault])
+        response = yield from self._get_response(self.get_balance, {}, asdict(payload))
+        return response
+
+    def get_token_balance(self, token: str) -> Generator[None, None, Optional[int]]:
         """Get the balance of the token corresponding to the given address."""
-        payload = {
-            "id": REQUEST_ID,
-            "jsonrpc": JSON_RPC_SPEC,
-            "method": TOKEN_ACCOUNTS_METHOD,
-            "params": [
+        payload = RPCPayload(
+            TOKEN_ACCOUNTS_METHOD,
+            [
                 self.params.squad_vault,
                 {"mint": token},
                 {"encoding": TOKEN_ENCODING},
             ],
-        }
-        response = yield from self._get_response(self.context.solana_rpc, {}, payload)
+        )
+        response = yield from self._get_response(
+            self.token_accounts, {}, asdict(payload)
+        )
         if response is None:
             return None
 
@@ -213,7 +234,11 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         self.context.logger.info(
             f"Checking balance for token with address {token!r}..."
         )
-        balance = yield from self.get_balance(token)
+        if token == SOL:
+            balance = yield from self.get_native_balance()
+        else:
+            balance = yield from self.get_token_balance(token)
+
         if balance is None:
             self.context.logger.error(f"Failed to get balance for {token=}!")
             return None
@@ -301,7 +326,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # holding token, no tx to perform
                 continue
 
-            enough_tokens = yield from self.is_balance_sufficient(token)
+            input_token = quote_data["inputMint"]
+            enough_tokens = yield from self.is_balance_sufficient(input_token)
             if not enough_tokens:
                 incomplete = True
                 continue

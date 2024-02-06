@@ -14,12 +14,12 @@ fingerprint:
   behaviours/prepare_swap_tx.py: bafybeihx7rx4wy5uzx6i2zsbxptn4p5gfedoonqri5q2rz5cjgfmphtu4a
   behaviours/proxy_swap_queue.py: bafybeihib44k3s35qul7fidw4mrahuge7ilg5jry4uul7bp2yvr6nosyxa
   behaviours/round_behaviour.py: bafybeie7eepxnj4tuo6wcmeuywn6qc3f5ihoowiiyqbpydz5dcjjkenora
-  behaviours/strategy_exec.py: bafybeidav2ej5j35ogmp55ek7hf3kvc2yti6nxlawdqete734t76pilxu4
+  behaviours/strategy_exec.py: bafybeigod3ekmoleqd3n4rl5onago5w366akw4dgjsg7q7mkr2egvlrt4u
   behaviours/swap_queue.py: bafybeiew5e5zhdaihaadvfh342kayeolugm2ktvhyv2bb3xbigozjfnzu4
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeibtik7d4paefsc6u5lcph3c54ciokr2ypywqzbofsbzhvbspj7tcu
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
-  models.py: bafybeiao25indfa7fojinxu3wxbps6j26moit5zsjgswbcshltwzcmg4lq
+  models.py: bafybeif7qzhrbjwl4fcjaez3uba6l4xb4rdcpmcf67er53g52tqsnlhpl4
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
   rounds.py: bafybeicx5rkgsbs4vk6apqwhkt6636i2faibffotqxpovgkaw7eyvdbzd4
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
@@ -187,9 +187,21 @@ models:
       retries: 5
       url: http://tx_proxy:3000/tx
     class_name: TxSettlementProxy
-  solana_rpc:
+  get_balance:
     args:
-      api_id: solana_rpc
+      api_id: get_balance
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: result:value
+      response_type: int
+      retries: 5
+      url: replace_with_a_solana_rpc
+    class_name: GetBalance
+  token_accounts:
+    args:
+      api_id: token_accounts
       headers:
         Content-Type: application/json
       method: POST
@@ -198,7 +210,7 @@ models:
       response_type: list
       retries: 5
       url: replace_with_a_solana_rpc
-    class_name: SolanaRPC
+    class_name: TokenAccounts
   requests:
     args: {}
     class_name: Requests
