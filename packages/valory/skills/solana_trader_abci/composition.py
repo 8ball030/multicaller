@@ -19,16 +19,18 @@
 
 """This module contains the solana_trader ABCI application."""
 
+import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
+import packages.valory.skills.registration_abci.rounds as RegistrationAbci
+import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
+import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
+import packages.valory.skills.solana_trader_decision_maker_abci.rounds as SolanaTraderDecisionMakerAbci
 from packages.valory.skills.abstract_round_abci.abci_app_chain import (
     AbciAppTransitionMapping,
     chain,
 )
-import packages.valory.skills.registration_abci.rounds as RegistrationAbci
-import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
-import packages.valory.skills.solana_trader_decision_maker_abci.rounds as SolanaTraderDecisionMakerAbci
-import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
-import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
-# import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci
+
+
+# import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci  noqa: E800
 
 DECISION_MAKING = SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound
 RESET_AND_PAUSE = ResetAndPauseAbci.ResetAndPauseRound

@@ -20,10 +20,11 @@
 """This module contains the models for the skill."""
 
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
 from aea.skills.base import SkillContext
 
+from packages.valory.skills.abstract_round_abci.base import AbciApp
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs, BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
@@ -48,7 +49,7 @@ SLIPPAGE_PARAM = "slippageBps"
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
-    abci_app_cls = StrategyEvaluatorAbciApp
+    abci_app_cls: Type[AbciApp] = StrategyEvaluatorAbciApp
 
     def __init__(self, *args: Any, skill_context: SkillContext, **kwargs: Any) -> None:
         """Initialize the state."""
