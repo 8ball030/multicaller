@@ -8,11 +8,11 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
-  behaviours.py: bafybeigvff7f2k3mdbbipkcuxgr4lj5dferul7wtyccehdpmurxbwutvka
-  composition.py: bafybeighwt5ip2bbqhwzysg3knj4i72famsz6btoyv5qksin6nb5qvpz5q
+  behaviours.py: bafybeighlzuhi2elaaxtpdtnv4mdinf2lvx646ppepgp34ei2cdr3doo2y
+  composition.py: bafybeic22cpqzbsj4r7o3ai5qx6dtfmcsqsb75npe3xa7ug3imy4szdw2q
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
-  handlers.py: bafybeihnjcykaejop45m7cbas4jk3sc7kkjtbzkyl7aere2hqvml3modue
-  models.py: bafybeictz62um4idangwtie5jiz6fiv7wcfageqi3qpsrprffwxz2su36y
+  handlers.py: bafybeiavd6cfuk4apllbh24eied2xhned2dxunod25m33wy7girmirisni
+  models.py: bafybeiduaznuo77jzz5gkyabyu52jsfnfpwseaeibwl66ydghombhvnjle
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -23,7 +23,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeidx5o4ze3no6jhgaubayjjegf5onrmrdcngpchlk4kg4oqlyrfgfa
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeihq6zk2xllufdb36l2ktnuaqtx6npohxx6hkbn4ny4t5g5wcflqc4
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeifnv32g772uoovgdxvqtniio77sry7fncpgw7nlfkt6cquljal3su
 behaviours:
   main:
     args: {}
@@ -219,8 +219,7 @@ models:
       response_type: int
       retries: 5
       url: replace_with_a_solana_rpc
-    class_name:
-      GetBalance
+    class_name: GetBalance
   token_accounts:
     args:
       api_id: token_accounts

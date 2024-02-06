@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeiafhqtiixlj7ky7eqst7jv6kqtjgbp4xftxpl47yioxsv6wdy754u
+agent: valory/solana_trader:0.1.0:bafybeidr5mfgz76mebf3omhvmj57rtyonia7pnf3adsob3lcywxp6tqjg4
 number_of_agents: 4
 deployment: {}
 ---
@@ -48,7 +48,7 @@ type: skill
   models:
     params:
       args:
-        setup: &id001
+        setup: &id002
           all_participants: ${ALL_PARTICIPANTS:list:[]}
           safe_contract_address: ${SAFE_CONTRACT_ADDRESS:str:unknown111111111111111111111111111111111111}
           consensus_threshold: ${CONSENSUS_THRESHOLD:int:null}
@@ -56,7 +56,7 @@ type: skill
         cleanup_history_depth_current: ${CLEANUP_HISTORY_DEPTH_CURRENT:int:null}
         drand_public_key: ${DRAND_PUBLIC_KEY:str:868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31}
         finalize_timeout: ${FINALIZE_TIMEOUT:float:60.0}
-        genesis_config: &id002
+        genesis_config: &id003
           genesis_time: ${GENESIS_TIME:str:'2023-07-12T00:00:00.000000000Z'}
           chain_id: ${GENESIS_CHAIN_ID:str:chain-c4daS1}
           consensus_params:
@@ -107,13 +107,13 @@ type: skill
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
-    benchmark_tool: &id003
+    benchmark_tool: &id004
       args:
         log_dir: ${LOG_DIR:str:/benchmarks}
-    get_balance: &id004
+    get_balance: &id001
       args:
         url: ${SOLANA_RPC:str:replace_with_a_solana_rpc}
-    token_accounts: *id004
+    token_accounts: *id001
     coingecko: &id005
       args:
         endpoint: ${COINGECKO_ENDPOINT:str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
@@ -126,12 +126,12 @@ type: skill
   models:
     params:
       args:
-        setup: *id001
+        setup: *id002
         cleanup_history_depth: ${CLEANUP_HISTORY_DEPTH:int:1}
         cleanup_history_depth_current: ${CLEANUP_HISTORY_DEPTH_CURRENT:int:null}
         drand_public_key: ${DRAND_PUBLIC_KEY:str:868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31}
         finalize_timeout: ${FINALIZE_TIMEOUT:float:60.0}
-        genesis_config: *id002
+        genesis_config: *id003
         init_fallback_gas: ${INIT_FALLBACK_GAS:int:0}
         keeper_allowed_retries: ${KEEPER_ALLOWED_RETRIES:int:3}
         keeper_timeout: ${KEEPER_TIMEOUT:float:30.0}
@@ -167,20 +167,20 @@ type: skill
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
-    benchmark_tool: *id003
-    get_balance: *id004
-    token_accounts: *id004
+    benchmark_tool: *id004
+    get_balance: *id001
+    token_accounts: *id001
     coingecko: *id005
 2:
   models:
     params:
       args:
-        setup: *id001
+        setup: *id002
         cleanup_history_depth: ${CLEANUP_HISTORY_DEPTH:int:1}
         cleanup_history_depth_current: ${CLEANUP_HISTORY_DEPTH_CURRENT:int:null}
         drand_public_key: ${DRAND_PUBLIC_KEY:str:868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31}
         finalize_timeout: ${FINALIZE_TIMEOUT:float:60.0}
-        genesis_config: *id002
+        genesis_config: *id003
         init_fallback_gas: ${INIT_FALLBACK_GAS:int:0}
         keeper_allowed_retries: ${KEEPER_ALLOWED_RETRIES:int:3}
         keeper_timeout: ${KEEPER_TIMEOUT:float:30.0}
@@ -216,20 +216,20 @@ type: skill
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
-    benchmark_tool: *id003
-    get_balance: *id004
-    token_accounts: *id004
+    benchmark_tool: *id004
+    get_balance: *id001
+    token_accounts: *id001
     coingecko: *id005
 3:
   models:
     params:
       args:
-        setup: *id001
+        setup: *id002
         cleanup_history_depth: ${CLEANUP_HISTORY_DEPTH:int:1}
         cleanup_history_depth_current: ${CLEANUP_HISTORY_DEPTH_CURRENT:int:null}
         drand_public_key: ${DRAND_PUBLIC_KEY:str:868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31}
         finalize_timeout: ${FINALIZE_TIMEOUT:float:60.0}
-        genesis_config: *id002
+        genesis_config: *id003
         init_fallback_gas: ${INIT_FALLBACK_GAS:int:0}
         keeper_allowed_retries: ${KEEPER_ALLOWED_RETRIES:int:3}
         keeper_timeout: ${KEEPER_TIMEOUT:float:30.0}
@@ -265,9 +265,9 @@ type: skill
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
-    benchmark_tool: *id003
-    get_balance: *id004
-    token_accounts: *id004
+    benchmark_tool: *id004
+    get_balance: *id001
+    token_accounts: *id001
     coingecko: *id005
 ---
 public_id: valory/ledger:0.19.0
