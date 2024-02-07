@@ -86,6 +86,11 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
     matching_round = StrategyExecRound
 
+    def __init__(self, **kwargs: Any):
+        """Initialize the behaviour."""
+        super().__init__(**kwargs)
+        self.sol_balance: Optional[int] = None
+
     @property
     def get_balance(self) -> GetBalance:
         """Get the `GetBalance` instance."""
@@ -187,11 +192,23 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             f"Unexpected response format from {TOKEN_ACCOUNTS_METHOD!r}: {res}"
         )
 
-    def get_native_balance(self) -> Generator[None, None, Optional[int]]:
+    def get_native_balance(
+        self, required_balance: int
+    ) -> Generator[None, None, Optional[int]]:
         """Get the SOL balance of the given address."""
-        payload = RPCPayload(BALANCE_METHOD, [self.params.squad_vault])
-        response = yield from self._get_response(self.get_balance, {}, asdict(payload))
-        return response
+        if self.sol_balance is None:
+            payload = RPCPayload(BALANCE_METHOD, [self.params.squad_vault])
+            response = yield from self._get_response(
+                self.get_balance, {}, asdict(payload)
+            )
+            self.sol_balance = response
+            return response
+
+        # multiple buy orders might take place, therefore,
+        # we need to adjust the balance for each order to make sure there is enough SOL balance to cover them all
+        balance = self.sol_balance
+        self.sol_balance -= required_balance
+        return balance
 
     def get_token_balance(self, token: str) -> Generator[None, None, Optional[int]]:
         """Get the balance of the token corresponding to the given address."""
@@ -234,8 +251,10 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         self.context.logger.info(
             f"Checking balance for token with address {token!r}..."
         )
+        required_balance = self.get_swap_amount() + self.params.expected_swap_tx_cost
+
         if token == SOL:
-            balance = yield from self.get_native_balance()
+            balance = yield from self.get_native_balance(required_balance)
         else:
             balance = yield from self.get_token_balance(token)
 
@@ -244,7 +263,6 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             return None
 
         self.context.logger.info(f"Balance ({token}): {balance}.")
-        required_balance = self.get_swap_amount() + self.params.expected_swap_tx_cost
         if required_balance > balance:
             self.context.logger.warning(
                 f"There is not enough balance ({balance} < {required_balance}) "
