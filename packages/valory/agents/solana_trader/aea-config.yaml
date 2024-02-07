@@ -137,6 +137,19 @@ models:
       requests_per_minute: ${int:5}
       credits: ${int:10000}
       rate_limited_code: ${int:429}
+  tx_settlement_proxy:
+    args:
+      api_id: ${str:tx_settlement_proxy}
+      headers:
+        Content-Type: ${str:application/json}
+      method: ${str:POST}
+      parameters:
+        amount: ${int:100000000}
+        slippageBps: ${int:1}
+      response_key: ${str:null}
+      response_type: ${str:dict}
+      retries: ${int:5}
+      url: ${str:http://localhost:3000/tx}
   params:
     args:
       setup:
