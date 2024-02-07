@@ -326,12 +326,12 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # holding token, no tx to perform
                 continue
 
+            quote_data[token_swap_position] = token
             input_token = quote_data["inputMint"]
             enough_tokens = yield from self.is_balance_sufficient(input_token)
             if not enough_tokens:
                 incomplete = True
                 continue
-            quote_data[token_swap_position] = token
             orders.append(quote_data)
 
         # we only yield here to convert this method to a generator, so that it can be used by `get_process_store_act`
