@@ -338,6 +338,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 incomplete = True
                 continue
 
+            msg = f"Decided to {decision} token with address {token!r}."
+            self.context.logger.info(msg)
             quote_data = {"inputMint": SOL, "outputMint": SOL}
             token_swap_position = self.get_token_swap_position(decision)
             if token_swap_position is None:
