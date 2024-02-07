@@ -265,8 +265,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         self.context.logger.info(f"Balance ({token}): {balance}.")
         if required_balance > balance:
             self.context.logger.warning(
-                f"There is not enough balance ({balance} < {required_balance}) "
-                f"for token with address {token!r} to perform a swap. Not taking any actions."
+                f"There is not enough balance to cover the swap amount plus the expected swap tx's cost "
+                f"({balance} < {required_balance}) for token with address {token!r}. Not taking any actions."
             )
             return False
         return True
