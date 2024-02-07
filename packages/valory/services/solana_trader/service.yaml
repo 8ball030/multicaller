@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeidr5mfgz76mebf3omhvmj57rtyonia7pnf3adsob3lcywxp6tqjg4
+agent: valory/solana_trader:0.1.0:bafybeidvrujuk4bwhz4o442mizslrnb3urweqe2gryx4ls4gayzuirfqqq
 number_of_agents: 4
 deployment: {}
 ---
@@ -122,6 +122,15 @@ type: skill
         requests_per_minute: ${COINGECKO_REQUESTS_PER_MINUTE:int:5}
         credits: ${COINGECKO_CREDITS:int:10000}
         rate_limited_code: ${COINGECKO_RATE_LIMITED_CODE:int:429}
+    tx_settlement_proxy: &id006
+      args:
+        parameters:
+          amount: ${TX_PROXY_AMOUNT:int:100000000}
+          slippageBps: ${TX_PROXY_SLIPPAGE_BPS:int:1}
+        response_key: ${TX_PROXY_RESPONSE_KEY:str:null}
+        response_type: ${TX_PROXY_RESPONSE_TYPE:str:dict}
+        retries: ${TX_PROXY_RETRIES:int:5}
+        url: ${TX_PROXY_URL:str:http://localhost:3000/tx}
 1:
   models:
     params:
@@ -171,6 +180,7 @@ type: skill
     get_balance: *id001
     token_accounts: *id001
     coingecko: *id005
+    tx_settlement_proxy: *id006
 2:
   models:
     params:
@@ -220,6 +230,7 @@ type: skill
     get_balance: *id001
     token_accounts: *id001
     coingecko: *id005
+    tx_settlement_proxy: *id006
 3:
   models:
     params:
@@ -269,6 +280,7 @@ type: skill
     get_balance: *id001
     token_accounts: *id001
     coingecko: *id005
+    tx_settlement_proxy: *id006
 ---
 public_id: valory/ledger:0.19.0
 type: connection

@@ -92,17 +92,19 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         self,
         api: ApiSpecs,
         res: Optional[dict],
-    ) -> Optional[Any]:
+    ) -> Generator[None, None, Optional[Any]]:
         """Handle the response from an API.
 
         :param api: the `ApiSpecs` instance of the API.
         :param res: the response to handle.
         :return: the response's result, using the given keys. `None` if response is `None` (has failed).
+        :yield: None
         """
         if res is None:
             error = f"Could not get a response from {api.api_id!r} API."
             self.context.logger.error(error)
             api.increment_retries()
+            yield from self.sleep(api.retries_info.suggested_sleep_time)
             return None
 
         self.context.logger.info(
@@ -126,7 +128,7 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         while not api.is_retries_exceeded():
             res_raw = yield from self.get_http_response(**specs)
             res = api.process_response(res_raw)
-            response = self._handle_response(api, res)
+            response = yield from self._handle_response(api, res)
             if response is not None:
                 return response
 
