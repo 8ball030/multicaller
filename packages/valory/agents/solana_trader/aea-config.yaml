@@ -112,6 +112,8 @@ models:
       parameters: ${dict:{}}
       response_key: ${str:result:value}
       response_type: ${str:int}
+      error_key: ${str:error:message}
+      error_type: ${str:str}
       retries: ${int:5}
       url: ${str:replace_with_a_solana_rpc}
   token_accounts:
@@ -123,6 +125,8 @@ models:
       parameters: ${dict:{}}
       response_key: ${str:result:value}
       response_type: ${str:list}
+      error_key: ${str:error:message}
+      error_type: ${str:str}
       retries: ${int:5}
       url: ${str:replace_with_a_solana_rpc}
   coingecko:

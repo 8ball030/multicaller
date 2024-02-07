@@ -196,6 +196,8 @@ models:
       parameters: {}
       response_key: result:value
       response_type: int
+      error_key: error:message
+      error_type: str
       retries: 5
       url: replace_with_a_solana_rpc
     class_name: GetBalance
@@ -208,6 +210,8 @@ models:
       parameters: {}
       response_key: result:value
       response_type: list
+      error_key: error:message
+      error_type: str
       retries: 5
       url: replace_with_a_solana_rpc
     class_name: TokenAccounts
