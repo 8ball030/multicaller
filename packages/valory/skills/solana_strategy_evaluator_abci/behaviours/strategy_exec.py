@@ -64,6 +64,8 @@ TOKEN_AMOUNT_ACCESS_KEYS = (
     "tokenAmount",
     "amount",
 )
+INPUT_MINT = "inputMint"
+OUTPUT_MINT = "outputMint"
 
 
 def safely_get_from_nested_dict(
@@ -312,9 +314,9 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         token_swap_position = None
 
         if decision == BUY_DECISION:
-            token_swap_position = "outputMint"  # nosec hardcoded_password_string
+            token_swap_position = OUTPUT_MINT
         elif decision == SELL_DECISION:
-            token_swap_position = "inputMint"  # nosec hardcoded_password_string
+            token_swap_position = INPUT_MINT
         elif decision != HODL_DECISION:
             self.context.logger.error(
                 f"Unrecognised decision {decision!r} found! Expected one of {AVAILABLE_DECISIONS}."
@@ -340,14 +342,14 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
             msg = f"Decided to {decision} token with address {token!r}."
             self.context.logger.info(msg)
-            quote_data = {"inputMint": SOL, "outputMint": SOL}
+            quote_data = {INPUT_MINT: SOL, OUTPUT_MINT: SOL}
             token_swap_position = self.get_token_swap_position(decision)
             if token_swap_position is None:
                 # holding token, no tx to perform
                 continue
 
             quote_data[token_swap_position] = token
-            input_token = quote_data["inputMint"]
+            input_token = quote_data[INPUT_MINT]
             enough_tokens = yield from self.is_balance_sufficient(input_token)
             if not enough_tokens:
                 incomplete = True
