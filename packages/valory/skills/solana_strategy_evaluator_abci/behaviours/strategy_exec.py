@@ -280,9 +280,9 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         if token == SOL_ADDRESS:
             # do not use the SOL's address to simplify the log messages
             token = SOL
-            self.sol_balance_after_swaps -= swap_amount
             token_balance = yield from self.get_native_balance()
             compared_balance = self.sol_balance_after_swaps
+            self.sol_balance_after_swaps -= swap_amount
         else:
             token_balance = yield from self.get_token_balance(token)
             compared_balance = token_balance
