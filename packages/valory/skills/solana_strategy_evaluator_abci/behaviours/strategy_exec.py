@@ -310,6 +310,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # should be included in the swap amount
                 self.sol_balance_after_swaps += swap_amount
                 swap_amount += swap_cost
+                token_balance -= preceding_swaps_amount
             self.sol_balance_after_swaps += swap_cost
             warning += f"({token_balance} < {swap_amount}) for {token!r}. Not taking any actions."
             self.context.logger.warning(warning)
