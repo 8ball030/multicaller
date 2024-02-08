@@ -21,7 +21,7 @@
 
 from copy import deepcopy
 from dataclasses import asdict
-from typing import Any, Dict, Generator, List, Optional, Tuple
+from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 
 import yaml
 
@@ -48,7 +48,8 @@ HODL_DECISION = "hold"
 AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODL_DECISION)
 NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODL_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
-SOL = "So11111111111111111111111111111111111111112"
+SOL = "SOL"
+SOL_ADDRESS = "So11111111111111111111111111111111111111112"
 DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
@@ -92,6 +93,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         """Initialize the behaviour."""
         super().__init__(**kwargs)
         self.sol_balance: Optional[int] = None
+        self.sol_balance_after_swaps: Optional[int] = None
 
     @property
     def get_balance(self) -> GetBalance:
@@ -194,23 +196,15 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             f"Unexpected response format from {TOKEN_ACCOUNTS_METHOD!r}: {res}"
         )
 
-    def get_native_balance(
-        self, required_balance: int
-    ) -> Generator[None, None, Optional[int]]:
+    def get_native_balance(self) -> Generator[None, None, Optional[int]]:
         """Get the SOL balance of the given address."""
-        if self.sol_balance is None:
-            payload = RPCPayload(BALANCE_METHOD, [self.params.squad_vault])
-            response = yield from self._get_response(
-                self.get_balance, {}, asdict(payload)
-            )
-            self.sol_balance = response
-            return response
+        if self.sol_balance is not None:
+            return self.sol_balance
 
-        # multiple buy orders might take place, therefore,
-        # we need to adjust the balance for each order to make sure there is enough SOL balance to cover them all
-        balance = self.sol_balance
-        self.sol_balance -= required_balance
-        return balance
+        payload = RPCPayload(BALANCE_METHOD, [self.params.squad_vault])
+        response = yield from self._get_response(self.get_balance, {}, asdict(payload))
+        self.sol_balance = self.sol_balance_after_swaps = response
+        return response
 
     def get_token_balance(self, token: str) -> Generator[None, None, Optional[int]]:
         """Get the balance of the token corresponding to the given address."""
@@ -244,33 +238,84 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         amount = safely_get_from_nested_dict(value_content, TOKEN_AMOUNT_ACCESS_KEYS)
         if amount is None:
             self.unexpected_res_format_err(response)
-        return amount
+
+        try:
+            # typing was warning about int(amount), therefore, we first convert to `str` here
+            return int(str(amount))
+        except ValueError:
+            self.unexpected_res_format_err(response)
+            return None
 
     def is_balance_sufficient(
         self, token: str
     ) -> Generator[None, None, Optional[bool]]:
         """Check whether the balance of the given token is enough to perform the swap transaction."""
-        self.context.logger.info(
-            f"Checking balance for token with address {token!r}..."
-        )
-        required_balance = self.get_swap_amount() + self.params.expected_swap_tx_cost
+        if (
+            token == SOL_ADDRESS
+            and self.sol_balance_after_swaps is not None
+            and self.sol_balance_after_swaps <= 0
+        ):
+            warning = "Preceding trades are expected to use up all the SOL. Not taking any action."
+            self.context.logger.warning(warning)
+            return False
 
-        if token == SOL:
-            balance = yield from self.get_native_balance(required_balance)
-        else:
-            balance = yield from self.get_token_balance(token)
-
-        if balance is None:
-            self.context.logger.error(f"Failed to get balance for {token=}!")
+        sol_before_swap = self.sol_balance_after_swaps
+        swap_cost = self.params.expected_swap_tx_cost
+        sol_balance = yield from self.get_native_balance()
+        self.sol_balance_after_swaps = cast(int, self.sol_balance_after_swaps)
+        self.sol_balance_after_swaps -= swap_cost
+        if sol_balance is None:
+            self.context.logger.error("Failed to get balance for SOL!")
             return None
-
-        self.context.logger.info(f"Balance ({token}): {balance}.")
-        if required_balance > balance:
+        if swap_cost > self.sol_balance_after_swaps:
             self.context.logger.warning(
-                f"There is not enough balance to cover the swap amount plus the expected swap tx's cost "
-                f"({balance} < {required_balance}) for token with address {token!r}. Not taking any actions."
+                "There is not enough SOL to cover the expected swap tx's cost "
+                f"SOL balance after preceding swaps ({self.sol_balance_after_swaps}) < swap cost ({swap_cost})]. "
+                f"Not taking any actions."
             )
             return False
+
+        compared_balance: Optional[int]
+        swap_amount = self.get_swap_amount()
+        if token == SOL_ADDRESS:
+            # do not use the SOL's address to simplify the log messages
+            token = SOL
+            self.sol_balance_after_swaps -= swap_amount
+            token_balance = yield from self.get_native_balance()
+            compared_balance = self.sol_balance_after_swaps
+        else:
+            token_balance = yield from self.get_token_balance(token)
+            compared_balance = token_balance
+
+        # the second part of the statement is unnecessary but avoids typing warning
+        if token_balance is None or compared_balance is None:
+            self.context.logger.error(f"Failed to get balance for {token}!")
+            return None
+
+        self.context.logger.info(f"Balance ({token}): {token_balance}.")
+        if swap_amount > compared_balance:
+            warning = (
+                f"There is not enough balance to cover the swap amount ({swap_amount}) "
+            )
+            if token == SOL:
+                preceding_swaps_amount = token_balance - (
+                    sol_before_swap or token_balance
+                )
+
+                warning += (
+                    f"plus the expected swap tx's cost ({swap_cost}) ["
+                    f"also taking into account preceding swaps' amount ({preceding_swaps_amount})] "
+                )
+                # the swap's cost which was subtracted during the first `get_native_balance` call
+                # should be included in the swap amount
+                self.sol_balance_after_swaps += swap_amount
+                swap_amount += swap_cost
+            self.sol_balance_after_swaps += swap_cost
+            warning += f"({token_balance} < {swap_amount}) for {token!r}. Not taking any actions."
+            self.context.logger.warning(warning)
+            return False
+
+        self.context.logger.info("Balance is sufficient.")
         return True
 
     def get_swap_decision(
@@ -332,7 +377,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         orders: List[Dict[str, str]] = []
         incomplete = False
         for token, data in token_data.items():
-            if token == SOL:
+            if token == SOL_ADDRESS:
                 continue
 
             decision = self.get_swap_decision(data)
@@ -342,7 +387,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
             msg = f"Decided to {decision} token with address {token!r}."
             self.context.logger.info(msg)
-            quote_data = {INPUT_MINT: SOL, OUTPUT_MINT: SOL}
+            quote_data = {INPUT_MINT: SOL_ADDRESS, OUTPUT_MINT: SOL_ADDRESS}
             token_swap_position = self.get_token_swap_position(decision)
             if token_swap_position is None:
                 # holding token, no tx to perform
