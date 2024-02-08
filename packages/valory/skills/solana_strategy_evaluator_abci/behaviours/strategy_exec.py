@@ -244,7 +244,12 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         amount = safely_get_from_nested_dict(value_content, TOKEN_AMOUNT_ACCESS_KEYS)
         if amount is None:
             self.unexpected_res_format_err(response)
-        return amount
+
+        try:
+            return int(amount)
+        except ValueError:
+            self.unexpected_res_format_err(response)
+            return None
 
     def is_balance_sufficient(
         self, token: str
