@@ -263,26 +263,26 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         swap_cost = self.params.expected_swap_tx_cost
         sol_balance = yield from self.get_native_balance()
         self.sol_balance_after_swaps = cast(int, self.sol_balance_after_swaps)
-        self.sol_balance_after_swaps -= swap_cost
         if sol_balance is None:
             self.context.logger.error("Failed to get balance for SOL!")
             return None
         if swap_cost > self.sol_balance_after_swaps:
             self.context.logger.warning(
-                "There is not enough SOL to cover the expected swap tx's cost "
-                f"SOL balance after preceding swaps ({self.sol_balance_after_swaps}) < swap cost ({swap_cost})]. "
+                "There is not enough SOL to cover the expected swap tx's cost. "
+                f"SOL balance after preceding swaps ({self.sol_balance_after_swaps}) < swap cost ({swap_cost}). "
                 f"Not taking any actions."
             )
             return False
+        self.sol_balance_after_swaps -= swap_cost
 
         compared_balance: Optional[int]
         swap_amount = self.get_swap_amount()
         if token == SOL_ADDRESS:
             # do not use the SOL's address to simplify the log messages
             token = SOL
-            self.sol_balance_after_swaps -= swap_amount
             token_balance = yield from self.get_native_balance()
             compared_balance = self.sol_balance_after_swaps
+            self.sol_balance_after_swaps -= swap_amount
         else:
             token_balance = yield from self.get_token_balance(token)
             compared_balance = token_balance
@@ -310,6 +310,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # should be included in the swap amount
                 self.sol_balance_after_swaps += swap_amount
                 swap_amount += swap_cost
+                token_balance -= preceding_swaps_amount
             self.sol_balance_after_swaps += swap_cost
             warning += f"({token_balance} < {swap_amount}) for {token!r}. Not taking any actions."
             self.context.logger.warning(warning)
