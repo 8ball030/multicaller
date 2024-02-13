@@ -34,9 +34,7 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     get_name,
 )
-from packages.valory.skills.market_data_fetcher_abci.payloads import (
-    FetchMarketDataPayload,
-)
+from packages.valory.skills.market_data_fetcher_abci.payloads import MarketDataPayload
 
 
 class Event(Enum):
@@ -74,13 +72,17 @@ class SynchronizedData(BaseSynchronizedData):
 class FetchMarketDataRound(CollectSameUntilThresholdRound):
     """FetchMarketDataRound"""
 
-    payload_class = FetchMarketDataPayload
+    payload_class = MarketDataPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     none_event = Event.NONE
     no_majority_event = Event.NO_MAJORITY
     selection_key = get_name(SynchronizedData.data_hash)
     collection_key = get_name(SynchronizedData.participant_to_fetching)
+
+
+class TransformMarketDataRound(FetchMarketDataRound):
+    """Round to transform the fetched signals."""
 
 
 class FinishedMarketFetchRound(DegenerateRound):
@@ -101,11 +103,16 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     Transition states:
         0. FetchMarketDataRound
             - done: 1.
-            - none: 2.
+            - none: 3.
             - no majority: 0.
             - round timeout: 0.
-        1. FinishedMarketFetchRound
-        2. FailedMarketFetchRound
+        1. TransformMarketDataRound
+            - done: 2.
+            - none: 3.
+            - no majority: 1.
+            - round timeout: 1.
+        2. FinishedMarketFetchRound
+        3. FailedMarketFetchRound
 
     Final states: {FailedMarketFetchRound, FinishedMarketFetchRound}
 
@@ -117,10 +124,16 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     initial_states: Set[AppState] = {FetchMarketDataRound}
     transition_function: AbciAppTransitionFunction = {
         FetchMarketDataRound: {
-            Event.DONE: FinishedMarketFetchRound,
+            Event.DONE: TransformMarketDataRound,
             Event.NONE: FailedMarketFetchRound,
             Event.NO_MAJORITY: FetchMarketDataRound,
             Event.ROUND_TIMEOUT: FetchMarketDataRound,
+        },
+        TransformMarketDataRound: {
+            Event.DONE: FinishedMarketFetchRound,
+            Event.NONE: FailedMarketFetchRound,
+            Event.NO_MAJORITY: TransformMarketDataRound,
+            Event.ROUND_TIMEOUT: TransformMarketDataRound,
         },
         FinishedMarketFetchRound: {},
         FailedMarketFetchRound: {},

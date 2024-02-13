@@ -17,9 +17,23 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains a strategy selection skill based on a greedy policy."""
+"""This module contains the backtesting state of the swap(s)."""
 
-from aea.configurations.base import PublicId
+from packages.valory.skills.abstract_round_abci.base import VotingRound, get_name
+from packages.valory.skills.solana_strategy_evaluator_abci.payloads import VotingPayload
+from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+    Event,
+    SynchronizedData,
+)
 
 
-PUBLIC_ID = PublicId.from_str("valory/solana_trader_decision_maker_abci:0.1.0")
+class BacktestRound(VotingRound):
+    """A round in which the agents prepare swap(s) instructions."""
+
+    synchronized_data_class = SynchronizedData
+    payload_class = VotingPayload
+    done_event = Event.BACKTEST_POSITIVE
+    negative_event = Event.BACKTEST_NEGATIVE
+    none_event = Event.BACKTEST_FAILED
+    no_majority_event = Event.NO_MAJORITY
+    collection_key = get_name(SynchronizedData.participant_to_backtesting)

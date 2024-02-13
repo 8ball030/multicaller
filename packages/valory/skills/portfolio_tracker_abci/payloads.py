@@ -17,9 +17,16 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains a strategy selection skill based on a greedy policy."""
+"""This module contains the transaction payloads of the PortfolioTrackerAbciApp."""
 
-from aea.configurations.base import PublicId
+from dataclasses import dataclass
+from typing import Optional
+
+from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
-PUBLIC_ID = PublicId.from_str("valory/solana_trader_decision_maker_abci:0.1.0")
+@dataclass(frozen=True)
+class PortfolioTrackerPayload(BaseTxPayload):
+    """Represent a transaction payload for the portfolio tracker."""
+
+    portfolio_hash: Optional[str]

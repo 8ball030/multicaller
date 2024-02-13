@@ -17,9 +17,9 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains a strategy selection skill based on a greedy policy."""
+"""This module contains an ABCI skill responsible for tracking the portfolio of the service."""
 
 from aea.configurations.base import PublicId
 
 
-PUBLIC_ID = PublicId.from_str("valory/solana_trader_decision_maker_abci:0.1.0")
+PUBLIC_ID = PublicId.from_str("valory/portfolio_tracker_abci:0.1.0")
