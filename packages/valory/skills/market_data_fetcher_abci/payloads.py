@@ -26,7 +26,7 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
 @dataclass(frozen=True)
-class FetchMarketDataPayload(BaseTxPayload):
-    """Represent a transaction payload for the FetchMarketDataRound."""
+class MarketDataPayload(BaseTxPayload):
+    """Represent a transaction payload for the market data."""
 
     data_hash: Optional[str]
