@@ -27,7 +27,9 @@ from packages.valory.skills.abstract_round_abci.base import (
     AppState,
     get_name,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import BacktestRound
+from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import (
+    BacktestRound,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
     SynchronizedData,

@@ -25,7 +25,9 @@ from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base impor
     StrategyEvaluatorBaseBehaviour,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import VotingPayload
-from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import BacktestRound
+from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import (
+    BacktestRound,
+)
 
 
 class BacktestBehaviour(StrategyEvaluatorBaseBehaviour):

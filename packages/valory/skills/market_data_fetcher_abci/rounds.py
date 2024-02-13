@@ -34,9 +34,7 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     get_name,
 )
-from packages.valory.skills.market_data_fetcher_abci.payloads import (
-    MarketDataPayload,
-)
+from packages.valory.skills.market_data_fetcher_abci.payloads import MarketDataPayload
 
 
 class Event(Enum):

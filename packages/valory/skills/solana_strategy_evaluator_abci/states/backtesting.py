@@ -19,8 +19,11 @@
 
 """This module contains the backtesting state of the swap(s)."""
 
-from packages.valory.skills.abstract_round_abci.base import get_name, VotingRound
-from packages.valory.skills.solana_strategy_evaluator_abci.states.base import Event, SynchronizedData
+from packages.valory.skills.abstract_round_abci.base import VotingRound, get_name
+from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+    Event,
+    SynchronizedData,
+)
 
 
 class BacktestRound(VotingRound):

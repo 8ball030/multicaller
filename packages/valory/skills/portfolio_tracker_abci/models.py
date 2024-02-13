@@ -19,11 +19,7 @@
 
 """This module contains the models for the Portfolio Tracker."""
 
-from datetime import datetime
-from time import time
-from typing import Any, Dict, List, Optional
-
-from aea.skills.base import Model
+from typing import Any
 
 from packages.valory.skills.abstract_round_abci.models import BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
@@ -33,11 +29,8 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.abstract_round_abci.models import TypeCheckMixin
-from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    MarketDataFetcherAbciApp,
-)
 from packages.valory.skills.portfolio_tracker_abci.rounds import PortfolioTrackerAbciApp
+
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool
@@ -54,6 +47,10 @@ class Params(BaseParams):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters object."""
-        self.agent_balance_threshold: int = self._ensure("agent_balance_threshold", kwargs, int)
-        self.multisig_balance_threshold: int = self._ensure("multisig_balance_threshold", kwargs, int)
+        self.agent_balance_threshold: int = self._ensure(
+            "agent_balance_threshold", kwargs, int
+        )
+        self.multisig_balance_threshold: int = self._ensure(
+            "multisig_balance_threshold", kwargs, int
+        )
         super().__init__(*args, **kwargs)

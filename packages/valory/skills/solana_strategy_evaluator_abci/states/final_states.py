@@ -49,6 +49,7 @@ class BacktestingNegativeRound(DegenerateRound):
 class BacktestingFailedRound(DegenerateRound):
     """A round representing that the strategy evaluator has failed to execute the strategy."""
 
+
 # TODO use this in portfolio tracker
 # class RefillRequiredRound(DegenerateRound):
 #     """A round representing that a refill is required for swapping."""
