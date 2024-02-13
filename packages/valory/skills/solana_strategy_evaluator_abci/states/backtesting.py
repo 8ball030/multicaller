@@ -17,16 +17,23 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads of the MarketDataFetcherAbciApp."""
+"""This module contains the backtesting state of the swap(s)."""
 
-from dataclasses import dataclass
-from typing import Optional
+from packages.valory.skills.abstract_round_abci.base import VotingRound, get_name
+from packages.valory.skills.solana_strategy_evaluator_abci.payloads import VotingPayload
+from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+    Event,
+    SynchronizedData,
+)
 
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
+class BacktestRound(VotingRound):
+    """A round in which the agents prepare swap(s) instructions."""
 
-@dataclass(frozen=True)
-class MarketDataPayload(BaseTxPayload):
-    """Represent a transaction payload for the market data."""
-
-    data_hash: Optional[str]
+    synchronized_data_class = SynchronizedData
+    payload_class = VotingPayload
+    done_event = Event.BACKTEST_POSITIVE
+    negative_event = Event.BACKTEST_NEGATIVE
+    none_event = Event.BACKTEST_FAILED
+    no_majority_event = Event.NO_MAJORITY
+    collection_key = get_name(SynchronizedData.participant_to_backtesting)

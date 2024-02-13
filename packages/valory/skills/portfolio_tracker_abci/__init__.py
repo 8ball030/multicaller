@@ -17,16 +17,9 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads of the MarketDataFetcherAbciApp."""
+"""This module contains an ABCI skill responsible for tracking the portfolio of the service."""
 
-from dataclasses import dataclass
-from typing import Optional
-
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
+from aea.configurations.base import PublicId
 
 
-@dataclass(frozen=True)
-class MarketDataPayload(BaseTxPayload):
-    """Represent a transaction payload for the market data."""
-
-    data_hash: Optional[str]
+PUBLIC_ID = PublicId.from_str("valory/portfolio_tracker_abci:0.1.0")

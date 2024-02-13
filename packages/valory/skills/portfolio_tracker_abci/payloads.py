@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the strategy evaluator."""
+"""This module contains the transaction payloads of the PortfolioTrackerAbciApp."""
 
 from dataclasses import dataclass
 from typing import Optional
@@ -26,30 +26,7 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
 @dataclass(frozen=True)
-class IPFSHashPayload(BaseTxPayload):
-    """Represents a transaction payload for an IPFS hash."""
+class PortfolioTrackerPayload(BaseTxPayload):
+    """Represent a transaction payload for the portfolio tracker."""
 
-    ipfs_hash: Optional[str]
-    incomplete: Optional[bool]
-
-
-@dataclass(frozen=True)
-class SendSwapProxyPayload(BaseTxPayload):
-    """Represents a transaction payload for attempting a swap transaction via the proxy server."""
-
-    tx_id: Optional[str]
-
-
-@dataclass(frozen=True)
-class SendSwapPayload(BaseTxPayload):
-    """Represents a transaction payload for preparing the instruction for a swap transaction."""
-
-    # `instructions` is a serialized `List[Dict[str, Any]]`
-    instructions: Optional[str]
-
-
-@dataclass(frozen=True)
-class VotingPayload(BaseTxPayload):
-    """Represents a transaction payload for voting."""
-
-    vote: Optional[bool]
+    portfolio_hash: Optional[str]

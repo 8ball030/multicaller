@@ -32,10 +32,11 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.market_data_fetcher_abci.models import Coingecko, Params
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    FetchMarketDataPayload,
     FetchMarketDataRound,
     MarketDataFetcherAbciApp,
+    MarketDataPayload,
     SynchronizedData,
+    TransformMarketDataRound,
 )
 
 
@@ -129,7 +130,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data_hash = yield from self.fetch_markets()
             sender = self.context.agent_address
-            payload = FetchMarketDataPayload(sender=sender, data_hash=data_hash)
+            payload = MarketDataPayload(sender=sender, data_hash=data_hash)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -213,11 +214,33 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         return data_hash
 
 
+class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
+    """Behaviour to transform the fetched signals."""
+
+    matching_round: Type[AbstractRound] = TransformMarketDataRound
+
+    def async_act(self) -> Generator:
+        """Do the act, supporting asynchronous execution."""
+
+        with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            sender = self.context.agent_address
+            # no transformation performed in the current version
+            data_hash = self.synchronized_data.data_hash
+            payload = MarketDataPayload(sender=sender, data_hash=data_hash)
+
+        with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
+            yield from self.send_a2a_transaction(payload)
+            yield from self.wait_until_round_end()
+
+        self.set_done()
+
+
 class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
     """MarketDataFetcherRoundBehaviour"""
 
     initial_behaviour_cls = FetchMarketDataBehaviour
-    abci_app_cls = MarketDataFetcherAbciApp  # type: ignore
-    behaviours: Set[Type[BaseBehaviour]] = [  # type: ignore
-        FetchMarketDataBehaviour,
-    ]
+    abci_app_cls = MarketDataFetcherAbciApp
+    behaviours: Set[Type[BaseBehaviour]] = {
+        FetchMarketDataBehaviour,  # type: ignore
+        TransformMarketDataBehaviour,  # type: ignore
+    }
