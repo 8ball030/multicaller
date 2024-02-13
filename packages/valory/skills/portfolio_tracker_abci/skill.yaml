@@ -6,14 +6,15 @@ description: An ABCI skill responsible for tracking the portfolio of the service
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  behaviours.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  dialogues.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  fsm_specification.yaml: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  handlers.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  models.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  payloads.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-  rounds.py: bafybeiunknownnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+  README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
+  __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
+  behaviours.py: bafybeibhyclntn53gssga2rj4tnc3sujovhcprw4bt3tvuuidstadxodqu
+  dialogues.py: bafybeidr5jmedduri5mbqnyrf43znchsklxv4vvyjvf5wsnsrb3tykwk2u
+  fsm_specification.yaml: bafybeiafiluyz5k6sycqjxtqhrjscyyepl2agzuvtpaibswfpmvalo2qcq
+  handlers.py: bafybeihsjgmfsowj4qcnh6jw3sgqnrrhymuadm7wdx5l4pvrkzj6ylengy
+  models.py: bafybeify4a42ystyj3thjh33m4xvjrjbosgvtronwcg3srmakyayj2mo74
+  payloads.py: bafybeih7tmnc2iqjnopoxmjvvlkfitkwyfa467djfq3plhnncbrqhrmjdy
+  rounds.py: bafybeidov7h5m7mfk6jimngk2jdsnc55d2fczoh7dsegtmhtyxyrpyo3i4
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []

@@ -63,6 +63,9 @@ class Event(Enum):
     TX_PREPARATION_FAILED = "none"
     PROXY_SWAPPED = "proxy_swapped"
     PROXY_SWAP_FAILED = "proxy_swap_failed"
+    BACKTEST_POSITIVE = "backtest_succeeded"
+    BACKTEST_NEGATIVE = "backtest_failed"
+    BACKTEST_FAILED = "backtest_failed"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
 
@@ -127,6 +130,11 @@ class SynchronizedData(
     def participant_to_tx_preparation(self) -> DeserializedCollection:
         """Get the participants to the next swap's tx preparation."""
         return self._get_deserialized("participant_to_tx_preparation")
+
+    @property
+    def participant_to_backtesting(self) -> DeserializedCollection:
+        """Get the participants to the backtesting."""
+        return self._get_deserialized("participant_to_backtesting")
 
 
 class IPFSRound(CollectSameUntilThresholdRound):

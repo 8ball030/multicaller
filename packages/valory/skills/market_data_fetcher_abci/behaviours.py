@@ -32,9 +32,9 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.market_data_fetcher_abci.models import Coingecko, Params
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    MarketDataPayload,
     FetchMarketDataRound,
     MarketDataFetcherAbciApp,
+    MarketDataPayload,
     SynchronizedData,
     TransformMarketDataRound,
 )
@@ -239,8 +239,8 @@ class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
     """MarketDataFetcherRoundBehaviour"""
 
     initial_behaviour_cls = FetchMarketDataBehaviour
-    abci_app_cls = MarketDataFetcherAbciApp  # type: ignore
-    behaviours: Set[Type[BaseBehaviour]] = [  # type: ignore
-        FetchMarketDataBehaviour,
-        TransformMarketDataBehaviour,
-    ]
+    abci_app_cls = MarketDataFetcherAbciApp
+    behaviours: Set[Type[BaseBehaviour]] = {
+        FetchMarketDataBehaviour,  # type: ignore
+        TransformMarketDataBehaviour,  # type: ignore
+    }

@@ -19,7 +19,7 @@
 
 """This package contains round behaviours of `PortfolioTrackerRoundBehaviour`."""
 
-from typing import Generator, Set, Type, cast
+from typing import Generator, Optional, Set, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
@@ -27,8 +27,13 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     BaseBehaviour,
 )
 from packages.valory.skills.portfolio_tracker_abci.models import Params
-from packages.valory.skills.portfolio_tracker_abci.payloads import PortfolioTrackerPayload
-from packages.valory.skills.portfolio_tracker_abci.rounds import PortfolioTrackerAbciApp, PortfolioTrackerRound
+from packages.valory.skills.portfolio_tracker_abci.payloads import (
+    PortfolioTrackerPayload,
+)
+from packages.valory.skills.portfolio_tracker_abci.rounds import (
+    PortfolioTrackerAbciApp,
+    PortfolioTrackerRound,
+)
 
 
 class PortfolioTrackerBehaviour(BaseBehaviour):
@@ -41,8 +46,10 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         """Return the params."""
         return cast(Params, super().params)
 
-    def track_portfolio(self) -> Generator:
+    def track_portfolio(self) -> Generator[None, None, Optional[str]]:
         """Track the portfolio of the service."""
+        yield
+        return ""
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -64,6 +71,6 @@ class PortfolioTrackerRoundBehaviour(AbstractRoundBehaviour):
 
     initial_behaviour_cls = PortfolioTrackerBehaviour
     abci_app_cls = PortfolioTrackerAbciApp
-    behaviours: Set[Type[BaseBehaviour]] = [
-        PortfolioTrackerBehaviour,
-    ]
+    behaviours: Set[Type[BaseBehaviour]] = {
+        PortfolioTrackerBehaviour,  # type: ignore
+    }

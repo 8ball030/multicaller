@@ -50,6 +50,8 @@ abci_app_transition_mapping: AbciAppTransitionMapping = {
     StrategyEvaluatorAbci.StrategyExecutionFailedRound: DECISION_MAKING,
     StrategyEvaluatorAbci.InstructionPreparationFailedRound: DECISION_MAKING,
     StrategyEvaluatorAbci.HodlRound: RESET_AND_PAUSE,
+    StrategyEvaluatorAbci.BacktestingNegativeRound: DECISION_MAKING,
+    StrategyEvaluatorAbci.BacktestingFailedRound: DECISION_MAKING,
     # SolanaTransactionSettlementAbci.FinishedTransactionSubmissionRound: DECISION_MAKING,    # TODO
     # SolanaTransactionSettlementAbci.FailedRound: DECISION_MAKING,    # TODO
     ResetAndPauseAbci.FinishedResetAndPauseRound: DECISION_MAKING,

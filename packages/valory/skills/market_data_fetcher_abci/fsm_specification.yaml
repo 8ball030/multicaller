@@ -14,8 +14,13 @@ states:
 - FailedMarketFetchRound
 - FetchMarketDataRound
 - FinishedMarketFetchRound
+- TransformMarketDataRound
 transition_func:
-    (FetchMarketDataRound, DONE): FinishedMarketFetchRound
+    (FetchMarketDataRound, DONE): TransformMarketDataRound
     (FetchMarketDataRound, NONE): FailedMarketFetchRound
     (FetchMarketDataRound, NO_MAJORITY): FetchMarketDataRound
     (FetchMarketDataRound, ROUND_TIMEOUT): FetchMarketDataRound
+    (TransformMarketDataRound, DONE): FinishedMarketFetchRound
+    (TransformMarketDataRound, NONE): FailedMarketFetchRound
+    (TransformMarketDataRound, NO_MAJORITY): TransformMarketDataRound
+    (TransformMarketDataRound, ROUND_TIMEOUT): TransformMarketDataRound
