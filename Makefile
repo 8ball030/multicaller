@@ -100,6 +100,7 @@ fix-abci-app-specs:
 	autonomy analyse fsm-specs --update --app-class MarketDataFetcherAbciApp --package packages/valory/skills/market_data_fetcher_abci
 	autonomy analyse fsm-specs --update --app-class SolanaTraderDecisionMakerAbciApp --package packages/valory/skills/solana_trader_decision_maker_abci
 	autonomy analyse fsm-specs --update --app-class StrategyEvaluatorAbciApp --package packages/valory/skills/solana_strategy_evaluator_abci
+	autonomy analyse fsm-specs --update --app-class PortfolioTrackerAbciApp --package packages/valory/skills/portfolio_tracker_abci
 	echo "Successfully validated abcis!"
 
 protolint_install:

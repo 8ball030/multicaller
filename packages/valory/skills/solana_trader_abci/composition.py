@@ -20,6 +20,7 @@
 """This module contains the solana_trader ABCI application."""
 
 import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
+import packages.valory.skills.portfolio_tracker_abci.rounds as PortfolioTrackerAbci
 import packages.valory.skills.registration_abci.rounds as RegistrationAbci
 import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
 import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
@@ -40,8 +41,10 @@ abci_app_transition_mapping: AbciAppTransitionMapping = {
     RegistrationAbci.FinishedRegistrationRound: DECISION_MAKING,
     SolanaTraderDecisionMakerAbci.FinishedSolanaTraderDecisionMakerRound: MarketDataFetcherAbci.FetchMarketDataRound,
     SolanaTraderDecisionMakerAbci.FailedSolanaTraderDecisionMakerRound: DECISION_MAKING,
-    MarketDataFetcherAbci.FinishedMarketFetchRound: StrategyEvaluatorAbci.StrategyExecRound,
+    MarketDataFetcherAbci.FinishedMarketFetchRound: PortfolioTrackerAbci.PortfolioTrackerRound,
     MarketDataFetcherAbci.FailedMarketFetchRound: DECISION_MAKING,
+    PortfolioTrackerAbci.FinishedPortfolioTrackerRound: StrategyEvaluatorAbci.StrategyExecRound,
+    PortfolioTrackerAbci.FailedPortfolioTrackerRound: DECISION_MAKING,
     # StrategyEvaluatorAbci.SwapTxPreparedRound: SolanaTransactionSettlementAbci.RandomnessTransactionSubmissionRound,    # TODO
     StrategyEvaluatorAbci.NoMoreSwapsRound: RESET_AND_PAUSE,
     StrategyEvaluatorAbci.StrategyExecutionFailedRound: DECISION_MAKING,
@@ -58,6 +61,7 @@ SolanaTraderAbciApp = chain(
         RegistrationAbci.AgentRegistrationAbciApp,
         SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerAbciApp,
         MarketDataFetcherAbci.MarketDataFetcherAbciApp,
+        PortfolioTrackerAbci.PortfolioTrackerAbciApp,
         StrategyEvaluatorAbci.StrategyEvaluatorAbciApp,
         # SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,  # TODO
         ResetAndPauseAbci.ResetPauseAbciApp,
