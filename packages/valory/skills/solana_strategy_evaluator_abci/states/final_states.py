@@ -42,6 +42,14 @@ class InstructionPreparationFailedRound(DegenerateRound):
     """A round representing that the strategy evaluator has failed to prepare the instructions for the swaps."""
 
 
-# TODO use this
+class BacktestingNegativeRound(DegenerateRound):
+    """A round representing that the backtesting has returned with a negative result."""
+
+
+class BacktestingFailedRound(DegenerateRound):
+    """A round representing that the backtesting has failed to run."""
+
+
+# TODO use this in portfolio tracker
 # class RefillRequiredRound(DegenerateRound):
 #     """A round representing that a refill is required for swapping."""

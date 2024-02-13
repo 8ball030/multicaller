@@ -34,9 +34,7 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     get_name,
 )
-from packages.valory.skills.market_data_fetcher_abci.payloads import (
-    MarketDataPayload,
-)
+from packages.valory.skills.market_data_fetcher_abci.payloads import MarketDataPayload
 
 
 class Event(Enum):
@@ -105,11 +103,16 @@ class MarketDataFetcherAbciApp(AbciApp[Event]):
     Transition states:
         0. FetchMarketDataRound
             - done: 1.
-            - none: 2.
+            - none: 3.
             - no majority: 0.
             - round timeout: 0.
-        1. FinishedMarketFetchRound
-        2. FailedMarketFetchRound
+        1. TransformMarketDataRound
+            - done: 2.
+            - none: 3.
+            - no majority: 1.
+            - round timeout: 1.
+        2. FinishedMarketFetchRound
+        3. FailedMarketFetchRound
 
     Final states: {FailedMarketFetchRound, FinishedMarketFetchRound}
 
