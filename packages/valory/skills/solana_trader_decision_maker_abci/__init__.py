@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the 'solana_trader_decision_maker_abci' skill for an AEA."""
+"""This module contains a strategy selection skill based on a greedy policy."""
 
 from aea.configurations.base import PublicId
 
