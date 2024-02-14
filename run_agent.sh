@@ -8,4 +8,5 @@ autonomy add-key ethereum ethereum_private_key.txt
 cp "$PWD"/../solana_private_key.txt .  # replace with the path to your solana key
 autonomy add-key solana solana_private_key.txt
 autonomy issue-certificates
+aea -s install
 aea -s run

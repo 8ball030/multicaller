@@ -19,6 +19,7 @@
 
 """This package contains round behaviours of MarketDataFetcherAbciApp."""
 
+from collections import OrderedDict
 import json
 import os
 from abc import ABC
@@ -38,6 +39,7 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
     SynchronizedData,
     TransformMarketDataRound,
 )
+import pandas as pd
 
 
 HTTP_OK = [200, 201]
@@ -46,6 +48,8 @@ MARKETS_FILE_NAME = "markets.json"
 TOKEN_ID_FIELD = "coingecko_id"  # nosec: B105:hardcoded_password_string
 TOKEN_ADDRESS_FIELD = "address"  # nosec: B105:hardcoded_password_string
 UTF8 = "utf-8"
+
+DEFAULT_OHLCV_PERIOD = "5Min"
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -223,9 +227,8 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            data_hash = yield from self.transform_data()
             sender = self.context.agent_address
-            # no transformation performed in the current version
-            data_hash = self.synchronized_data.data_hash
             payload = MarketDataPayload(sender=sender, data_hash=data_hash)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
@@ -233,6 +236,27 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             yield from self.wait_until_round_end()
 
         self.set_done()
+
+
+    def transform_data(self,) -> Generator[None, None, Dict[str, str]]:
+        """Transform the data to OHLCV format."""
+        markets_data = yield from self.get_from_ipfs(
+            self.synchronized_data.data_hash, SupportedFiletype.JSON
+        )
+        results = {}
+        for token_address, market_data in markets_data.items():
+            df = pd.DataFrame(market_data, columns=["timestamp", "price"])
+            df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+            df = df.set_index('timestamp')
+            df = df.resample(DEFAULT_OHLCV_PERIOD).ohlc()
+            results[token_address] = df.to_json(orient="index")
+
+        data_hash = yield from self.send_to_ipfs(
+            filename=self.from_data_dir(MARKETS_FILE_NAME),
+            obj=results,
+            filetype=SupportedFiletype.JSON,
+        )
+        return data_hash
 
 
 class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
