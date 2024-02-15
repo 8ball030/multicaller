@@ -11,21 +11,21 @@ fingerprint:
   __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
   behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
   behaviours/backtesting.py: bafybeigzqb4p7iqqyhagbjwsblzsskizen4aeo7zvpbalqhoiqmbbqpesa
-  behaviours/base.py: bafybeihbwjilfqddduxjbz6jpobleydc7u3iqcvuukcdkjlwlr366fjg3y
+  behaviours/base.py: bafybeifsoijydksrzcam2batan7wfpx2obisv7peuphzqgnobp3a4acs3q
   behaviours/prepare_swap_tx.py: bafybeihx7rx4wy5uzx6i2zsbxptn4p5gfedoonqri5q2rz5cjgfmphtu4a
-  behaviours/proxy_swap_queue.py: bafybeihib44k3s35qul7fidw4mrahuge7ilg5jry4uul7bp2yvr6nosyxa
+  behaviours/proxy_swap_queue.py: bafybeiah2qu2wbos43vsf4p7m7ya6aqaaqbsjwhgut53im3ajeojgn4eqi
   behaviours/round_behaviour.py: bafybeieapl334xpmv37acwoz4nstu2qrdknndfvwyfkbrb4ok7wac2nnlq
-  behaviours/strategy_exec.py: bafybeiddligl26gwq4bz5rtckxs2bbfjzxo66yli4fkuv67c5j6wmidjhu
-  behaviours/swap_queue.py: bafybeiew5e5zhdaihaadvfh342kayeolugm2ktvhyv2bb3xbigozjfnzu4
+  behaviours/strategy_exec.py: bafybeiaath37f52baymzaqu5nnqmxmbtgiuvwxoknfkujnmzr4t7atul3q
+  behaviours/swap_queue.py: bafybeihqumnnrauqekptjulpyu7jhjhogwtmo2wiuaguoolvejuyqaiopy
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeiamxwtqgmjml4xh2x4fzeguszdu4f5q6wuc3kwq7274pi5xssxjg4
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
-  models.py: bafybeif7qzhrbjwl4fcjaez3uba6l4xb4rdcpmcf67er53g52tqsnlhpl4
+  models.py: bafybeifmx6y2ppldix43mhebfzxtgh447x4tqcr43tlt45qpo7s6yvtuzm
   payloads.py: bafybeichrf2rcgv42lwyeq3dcjyzk6aqqka42i35nnhdkdlfclbd3eik5u
   rounds.py: bafybeidmzofk6p6hwjt6rovaogf4obkooaums466jrpknhsaxijtetopmq
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
   states/backtesting.py: bafybeicheizz4uygircjojmokgvuntkskimuczwks2xp6kc6snrkwrl3ua
-  states/base.py: bafybeifj23p6jpywk474im4zgdkkkxqhwrphwxfjytkdttjk7svnrvdmse
+  states/base.py: bafybeibg5enacer5ektthgb5g25fmkz6yjuhux5p5ii3bv25vk3hzzvu2y
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
   states/prepare_swap.py: bafybeidideaz3zhr2v3pfpyqiscglppaguh2gk74rdbalwil3ky3jnqgsa
   states/proxy_swap_queue.py: bafybeie77ly44vkaxxwefna5wozdkskj3ov5oyikptorf4uxnho5ctv54a
@@ -39,7 +39,7 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
-- valory/portfolio_tracker_abci:0.1.0:bafybeihvvk77sskm6wpzrbuofr2i7s42mn5qhtyf2hfgb5wb7qy5kvkire
+- valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:
   main:
     args: {}

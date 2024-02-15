@@ -121,7 +121,8 @@ class PortfolioTrackerAbciApp(AbciApp[Event]):
     Transition states:
         0. PortfolioTrackerRound
             - done: 1.
-            - none: 2.
+            - failed: 2.
+            - insufficient balance: 0.
             - no majority: 0.
             - round timeout: 0.
         1. FinishedPortfolioTrackerRound
