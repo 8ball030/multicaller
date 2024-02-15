@@ -31,6 +31,9 @@ from packages.valory.skills.abstract_round_abci.base import (
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     SynchronizedData as MarketFetcherSyncedData,
 )
+from packages.valory.skills.portfolio_tracker_abci.rounds import (
+    SynchronizedData as PortfolioTrackerSyncedData,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
     IPFSHashPayload,
 )
@@ -72,7 +75,8 @@ class Event(Enum):
 
 class SynchronizedData(
     DecisionMakerSyncedData,
-    MarketFetcherSyncedData,  # TODO: TxSettlementSyncedData
+    MarketFetcherSyncedData,
+    PortfolioTrackerSyncedData,  # TODO: TxSettlementSyncedData
 ):
     """Class to represent the synchronized data.
 

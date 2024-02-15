@@ -49,18 +49,19 @@ class SwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
         """Set the instructions to the shared state."""
         self.shared_state.instructions = instructions
 
-    def get_instructions(self) -> Generator[None, None, Optional[List[Dict[str, Any]]]]:
+    def get_instructions(self) -> Generator:
         """Get the instructions from IPFS."""
-        # only fetch once per new queue and store in the shared state for future reference
-        hash_ = self.synchronized_data.instructions_hash
-        instructions = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-        return cast(Optional[List[Dict[str, Any]]], instructions)
+        if self.instructions is None:
+            # only fetch once per new queue and store in the shared state for future reference
+            hash_ = self.synchronized_data.instructions_hash
+            instructions = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
+            self.instructions = cast(Optional[List[Dict[str, Any]]], instructions)
 
     def get_next_instructions(self) -> Optional[str]:
         """Return the next instructions in priority serialized or `None` if there are no instructions left."""
         if self.instructions is None:
-            err = "Instructions were expected to be set. The agent should not have entered this execution path."
-            self.context.logger.critical(err)
+            err = "Instructions were expected to be set."
+            self.context.logger.error(err)
             return None
 
         if len(self.instructions) == 0:
@@ -84,15 +85,9 @@ class SwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
     def async_act(self) -> Generator:
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            if self.instructions is None:
-                instructions = yield from self.get_instructions()
-                if instructions is None:
-                    return
-                self.instructions = instructions
-
-            payload = SendSwapPayload(
-                self.context.agent_address,
-                self.get_next_instructions(),
-            )
+            yield from self.get_instructions()
+            sender = self.context.agent_address
+            serialized_instructions = self.get_next_instructions()
+            payload = SendSwapPayload(sender, serialized_instructions)
 
         yield from self.finish_behaviour(payload)

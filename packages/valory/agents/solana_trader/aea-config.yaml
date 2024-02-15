@@ -211,7 +211,13 @@ models:
       strategies_kwargs: ${list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
       use_proxy_server: ${bool:false}
       expected_swap_tx_cost: ${int:20000000}
+      ipfs_fetch_retries: ${int:5}
       squad_vault: ${str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
+      agent_balance_threshold: ${int:50000000}
+      multisig_balance_threshold: ${int:1000000000}
+      tracked_tokens: ${list:[]}
+      refill_action_timeout: ${int:10}
+      rpc_polling_interval: ${int:5}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

@@ -20,7 +20,7 @@
 """This package contains the rounds of PortfolioTrackerAbciApp."""
 
 from enum import Enum
-from typing import Dict, Set
+from typing import Dict, Optional, Set, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
@@ -43,7 +43,8 @@ class Event(Enum):
     """PortfolioTrackerAbciApp Events"""
 
     DONE = "done"
-    NONE = "none"
+    INSUFFICIENT_BALANCE = "insufficient_balance"
+    FAILED = "failed"
     NO_MAJORITY = "no_majority"
     ROUND_TIMEOUT = "round_timeout"
 
@@ -61,9 +62,14 @@ class SynchronizedData(BaseSynchronizedData):
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def portfolio_hash(self) -> str:
+    def portfolio_hash(self) -> Optional[str]:
         """Get the hash of the portfolio's data."""
-        return str(self.db.get_strict("portfolio_hash"))
+        return self.db.get_strict("portfolio_hash")
+
+    @property
+    def is_balance_sufficient(self) -> Optional[bool]:
+        """Get whether the balance is sufficient."""
+        return self.db.get("is_balance_sufficient", None)
 
     @property
     def participant_to_portfolio(self) -> DeserializedCollection:
@@ -77,10 +83,24 @@ class PortfolioTrackerRound(CollectSameUntilThresholdRound):
     payload_class = PortfolioTrackerPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
-    none_event = Event.NONE
+    none_event = Event.FAILED
     no_majority_event = Event.NO_MAJORITY
-    selection_key = get_name(SynchronizedData.portfolio_hash)
+    selection_key = (
+        get_name(SynchronizedData.portfolio_hash),
+        get_name(SynchronizedData.is_balance_sufficient),
+    )
     collection_key = get_name(SynchronizedData.participant_to_portfolio)
+
+    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
+        """Process the end of the block."""
+        res = super().end_block()
+        if res is None:
+            return None
+
+        synced_data, event = cast(Tuple[SynchronizedData, Enum], res)
+        if event == self.done_event and not synced_data.is_balance_sufficient:
+            return synced_data, Event.INSUFFICIENT_BALANCE
+        return synced_data, event
 
 
 class FinishedPortfolioTrackerRound(DegenerateRound):
@@ -118,7 +138,8 @@ class PortfolioTrackerAbciApp(AbciApp[Event]):
     transition_function: AbciAppTransitionFunction = {
         PortfolioTrackerRound: {
             Event.DONE: FinishedPortfolioTrackerRound,
-            Event.NONE: FailedPortfolioTrackerRound,
+            Event.FAILED: FailedPortfolioTrackerRound,
+            Event.INSUFFICIENT_BALANCE: PortfolioTrackerRound,
             Event.NO_MAJORITY: PortfolioTrackerRound,
             Event.ROUND_TIMEOUT: PortfolioTrackerRound,
         },
@@ -138,6 +159,7 @@ class PortfolioTrackerAbciApp(AbciApp[Event]):
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedPortfolioTrackerRound: {
             get_name(SynchronizedData.portfolio_hash),
+            get_name(SynchronizedData.is_balance_sufficient),
             get_name(SynchronizedData.participant_to_portfolio),
         },
         FailedPortfolioTrackerRound: set(),

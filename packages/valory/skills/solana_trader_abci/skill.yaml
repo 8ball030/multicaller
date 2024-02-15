@@ -147,7 +147,13 @@ models:
         - value
       use_proxy_server: false
       expected_swap_tx_cost: 20000000
+      ipfs_fetch_retries: 5
       squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      agent_balance_threshold: 50000000
+      multisig_balance_threshold: 1000000000
+      tracked_tokens: []
+      refill_action_timeout: 10
+      rpc_polling_interval: 5
     class_name: Params
   coingecko:
     args:

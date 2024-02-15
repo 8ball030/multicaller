@@ -39,6 +39,7 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
+- valory/portfolio_tracker_abci:0.1.0:bafybeihvvk77sskm6wpzrbuofr2i7s42mn5qhtyf2hfgb5wb7qy5kvkire
 behaviours:
   main:
     args: {}
@@ -147,7 +148,7 @@ models:
         - value
       use_proxy_server: false
       expected_swap_tx_cost: 20000000
-      squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      ipfs_fetch_retries: 5
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:

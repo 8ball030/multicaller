@@ -19,9 +19,10 @@
 
 """This module contains the models for the Portfolio Tracker."""
 
-from typing import Any
+from dataclasses import asdict, dataclass
+from typing import Any, Iterable, List, Union
 
-from packages.valory.skills.abstract_round_abci.models import BaseParams
+from packages.valory.skills.abstract_round_abci.models import ApiSpecs, BaseParams
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
@@ -34,6 +35,14 @@ from packages.valory.skills.portfolio_tracker_abci.rounds import PortfolioTracke
 
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool
+
+
+class GetBalance(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana balance check."""
+
+
+class TokenAccounts(ApiSpecs):
+    """A model that wraps ApiSpecs for the Solana tokens' balance check."""
 
 
 class SharedState(BaseSharedState):
@@ -53,4 +62,32 @@ class Params(BaseParams):
         self.multisig_balance_threshold: int = self._ensure(
             "multisig_balance_threshold", kwargs, int
         )
+        self.squad_vault: str = self._ensure("squad_vault", kwargs, str)
+        self.tracked_tokens: List[str] = self._ensure(
+            "tracked_tokens", kwargs, List[str]
+        )
+        self.refill_action_timeout: int = self._ensure(
+            "refill_action_timeout", kwargs, int
+        )
+        self.rpc_polling_interval: int = self._ensure(
+            "rpc_polling_interval", kwargs, int
+        )
         super().__init__(*args, **kwargs)
+
+
+@dataclass
+class RPCPayload:
+    """An RPC request's payload."""
+
+    method: str
+    params: list
+    id: int = 1
+    jsonrpc: str = "2.0"
+
+    def __getitem__(self, attr: str) -> Union[int, str, list]:
+        """Implemented so we can easily unpack using `**`."""
+        return getattr(self, attr)
+
+    def keys(self) -> Iterable[str]:
+        """Implemented so we can easily unpack using `**`."""
+        return asdict(self).keys()
