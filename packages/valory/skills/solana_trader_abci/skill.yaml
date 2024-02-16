@@ -137,7 +137,6 @@ models:
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
       ipfs_address: https://gateway.autonolas.tech/ipfs/
-      selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
       trading_strategy: strategy_name
       strategies_kwargs:
@@ -154,6 +153,7 @@ models:
       tracked_tokens: []
       refill_action_timeout: 10
       rpc_polling_interval: 5
+      epsilon: 0.1
     class_name: Params
   coingecko:
     args:
