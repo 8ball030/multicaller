@@ -30,3 +30,4 @@ class PortfolioTrackerPayload(BaseTxPayload):
     """Represent a transaction payload for the portfolio tracker."""
 
     portfolio_hash: Optional[str]
+    is_balance_sufficient: Optional[bool]

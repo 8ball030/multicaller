@@ -69,12 +69,13 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
         """Set the orders to the shared state."""
         self.shared_state.orders = orders
 
-    def get_orders(self) -> Generator[None, None, OrdersType]:
+    def get_orders(self) -> Generator:
         """Get the orders from IPFS."""
-        # only fetch once per new batch and store in the shared state for future reference
-        hash_ = self.synchronized_data.orders_hash
-        orders = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-        return cast(OrdersType, orders)
+        if self.orders is None:
+            # only fetch once per new batch and store in the shared state for future reference
+            hash_ = self.synchronized_data.orders_hash
+            orders = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
+            self.orders = cast(OrdersType, orders)
 
     def handle_success(self, tx_id: Optional[str], url: Optional[str]) -> None:
         """Handle a successful response."""
@@ -118,8 +119,8 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
     def perform_next_order(self) -> Generator[None, None, Optional[str]]:
         """Perform the next order in priority and return the tx id or `None` if not sent."""
         if self.orders is None:
-            err = "Orders were expected to be set. The agent should not have entered this execution path."
-            self.context.logger.critical(err)
+            err = "Orders were expected to be set."
+            self.context.logger.error(err)
             return None
 
         if len(self.orders) == 0:
@@ -142,16 +143,9 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
     def async_act(self) -> Generator:
         """Do the action."""
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            if self.orders is None:
-                orders = yield from self.get_orders()
-                if orders is None:
-                    return
-                self.orders = orders
-
+            yield from self.get_orders()
+            sender = self.context.agent_address
             tx_id = yield from self.perform_next_order()
-            payload = SendSwapProxyPayload(
-                self.context.agent_address,
-                tx_id,
-            )
+            payload = SendSwapProxyPayload(sender, tx_id)
 
         yield from self.finish_behaviour(payload)
