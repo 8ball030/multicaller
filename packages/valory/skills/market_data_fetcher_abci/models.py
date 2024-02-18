@@ -163,6 +163,7 @@ class Coingecko(Model, TypeCheckMixin):
         self.endpoint: str = self._ensure("endpoint", kwargs, str)
         self.api_key: Optional[str] = self._ensure("api_key", kwargs, Optional[str])
         self.prices_field: str = self._ensure("prices_field", kwargs, str)
+        self.volumes_field: str = self._ensure("volumes_field", kwargs, str)
         self.rate_limited_code: int = self._ensure("rate_limited_code", kwargs, int)
         limit: int = self._ensure("requests_per_minute", kwargs, int)
         credits_: int = self._ensure("credits", kwargs, int)

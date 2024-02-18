@@ -21,9 +21,9 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeif7r3orchpf4eroo7g3ddrots2lycmvaxi4n5uglooj3uessucr2q
+- valory/market_data_fetcher_abci:0.1.0:bafybeihen4vsvan3oa6ojm55ezb26fto3vc76dcwetadk3z4ztvxjbn5q4
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeieparw3r3xhzhdt4xrhp2sq6it6pexieth3x7udhu2tkzsvikqmuq
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeicsccrwmu6qzebpgdwc7nd5gu555ulitfu6fcithg3h4oo4nempym
 - valory/portfolio_tracker_abci:0.1.0:bafybeihvvk77sskm6wpzrbuofr2i7s42mn5qhtyf2hfgb5wb7qy5kvkire
 behaviours:
   main:
@@ -154,6 +154,7 @@ models:
       endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
       api_key: null
       prices_field: prices
+      volumes_field: total_volumes
       requests_per_minute: 5
       credits: 10000
       rate_limited_code: 429

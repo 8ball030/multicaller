@@ -49,7 +49,6 @@ TOKEN_ID_FIELD = "coingecko_id"  # nosec: B105:hardcoded_password_string
 TOKEN_ADDRESS_FIELD = "address"  # nosec: B105:hardcoded_password_string
 UTF8 = "utf-8"
 
-DEFAULT_OHLCV_PERIOD = "5Min"
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -201,7 +200,12 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             self.context.logger.info(
                 f"Successfully fetched market data for {token_id}."
             )
-            markets[token_address] = response_json.get(self.coingecko.prices_field, [])
+            # we collect a tuple of the prices and the volumes
+            
+            prices = response_json.get(self.coingecko.prices_field, [])
+            volumes = response_json.get(self.coingecko.volumes_field, [])
+            prices_volumes = {"prices": prices, "volumes": volumes}
+            markets[token_address] = prices_volumes
 
         # Send to IPFS
         data_hash = None

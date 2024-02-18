@@ -7,11 +7,11 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeih2dsi3e5ax36ooryzjkeoprkeqif3sguc4h63ldx6clkhmdsztka
-  behaviours.py: bafybeia35vu2vwtolplkl4gkb2xma7jpj3wul2u25ftdpztqp74ktjqopa
+  behaviours.py: bafybeictzprgukuaonuuxccajeava3m2mluieelk35hpcu74pexzelanqu
   dialogues.py: bafybeigyppu2yxzqx5gvbmcm4g653wkjjxlsancbio53xmdfu3wizh3fty
   fsm_specification.yaml: bafybeib6ucxlubtfscg7vris2ia2f7iwlpzxte2bhqcvdluoge4xl2paba
   handlers.py: bafybeifkugrofhi6ers2ovvbva6gqnnkrarvuwr5qspun6ndids5vxdzxq
-  models.py: bafybeicikqdmwooggeyvslgy7wrvzt4ai3mzlg3zhjnweqde2t7lefhk44
+  models.py: bafybeidbg3sjyfhwlw5miyr5txtcjha6n3wne6hsxrpccdl7vcjvt6uyzy
   payloads.py: bafybeih7jdj73dkhtjg5k4eyjfu2o4ztabdfufyb7ybgyrhazntyd7vixy
   rounds.py: bafybeidv3kczftdhk57cyi4m6d7bry34tlluioqdheepemdew2ddxrxkzi
 fingerprint_ignore_patterns: []
@@ -126,6 +126,7 @@ models:
       endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
       api_key: null
       prices_field: prices
+      volumes_field: total_volumes
       requests_per_minute: 5
       credits: 10000
       rate_limited_code: 429
