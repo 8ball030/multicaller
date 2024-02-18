@@ -19,7 +19,6 @@
 
 """This package contains round behaviours of MarketDataFetcherAbciApp."""
 
-from collections import OrderedDict
 import json
 import os
 from abc import ABC
