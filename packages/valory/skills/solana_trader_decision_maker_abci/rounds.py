@@ -169,18 +169,22 @@ class FailedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
 class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
     """SolanaTraderDecisionMakerAbciApp
 
-    Initial round: SolanaTraderDecisionMakerRound
+    Initial round: RandomnessRound
 
-    Initial states: {SolanaTraderDecisionMakerRound}
+    Initial states: {RandomnessRound}
 
     Transition states:
-        0. SolanaTraderDecisionMakerRound
+        0. RandomnessRound
             - done: 1.
-            - none: 2.
-            - round timeout: 2.
-            - no majority: 2.
-        1. FinishedSolanaTraderDecisionMakerRound
-        2. FailedSolanaTraderDecisionMakerRound
+            - round timeout: 0.
+            - no majority: 0.
+        1. SolanaTraderDecisionMakerRound
+            - done: 2.
+            - none: 3.
+            - round timeout: 3.
+            - no majority: 3.
+        2. FinishedSolanaTraderDecisionMakerRound
+        3. FailedSolanaTraderDecisionMakerRound
 
     Final states: {FailedSolanaTraderDecisionMakerRound, FinishedSolanaTraderDecisionMakerRound}
 

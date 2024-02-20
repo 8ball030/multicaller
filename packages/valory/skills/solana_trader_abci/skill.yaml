@@ -9,7 +9,7 @@ fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
   behaviours.py: bafybeih22xfmqiyuigzlhj7v47hxnwpfbopoktyjzuizfiskqd4wsvdvce
-  composition.py: bafybeidi5psudatw34cmnz4koeoxmnc3s3ca4tsvogydcdwo3qvtdqq6tm
+  composition.py: bafybeih6c4ka5qfgdla2a7tx4kqkt7n4luhyocqrmjg3mz26qsnlgffxca
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeiavd6cfuk4apllbh24eied2xhned2dxunod25m33wy7girmirisni
   models.py: bafybeihb2pmgwyccjaxrrde5fhtl3qc6eaf5prfy65iagr6wkc3ynzhkd4
@@ -22,8 +22,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
 - valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeic45cgwvboiihecnc7esv3a2njo72ocyfcksw3u3kajhkck534i7e
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeibn2hzjz4a65zkzinfflkncgjwrwytjnjgoivt3hfmgqf4rm73so4
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:
   main:

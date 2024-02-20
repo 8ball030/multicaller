@@ -15,7 +15,7 @@ fingerprint:
   behaviours/prepare_swap_tx.py: bafybeihx7rx4wy5uzx6i2zsbxptn4p5gfedoonqri5q2rz5cjgfmphtu4a
   behaviours/proxy_swap_queue.py: bafybeiah2qu2wbos43vsf4p7m7ya6aqaaqbsjwhgut53im3ajeojgn4eqi
   behaviours/round_behaviour.py: bafybeieapl334xpmv37acwoz4nstu2qrdknndfvwyfkbrb4ok7wac2nnlq
-  behaviours/strategy_exec.py: bafybeiaath37f52baymzaqu5nnqmxmbtgiuvwxoknfkujnmzr4t7atul3q
+  behaviours/strategy_exec.py: bafybeig5huqxgjzvnxr54y4itlhroemjmbbpbxcorqtmm7drtb4pwgpebe
   behaviours/swap_queue.py: bafybeihqumnnrauqekptjulpyu7jhjhogwtmo2wiuaguoolvejuyqaiopy
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeiamxwtqgmjml4xh2x4fzeguszdu4f5q6wuc3kwq7274pi5xssxjg4
@@ -38,7 +38,7 @@ protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:
   main:
