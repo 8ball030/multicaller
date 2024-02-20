@@ -50,5 +50,5 @@ class Params(BaseParams):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the parameters' object."""
-        self.selected_strategy: int = self._ensure("selected_strategy", kwargs, str)
+        self.epsilon: float = self._ensure("epsilon", kwargs, float)
         super().__init__(*args, **kwargs)

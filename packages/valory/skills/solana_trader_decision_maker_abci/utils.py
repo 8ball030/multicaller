@@ -17,26 +17,18 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains general purpose utilities."""
 
-from dataclasses import dataclass
-from typing import Optional
-
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
-
-
-@dataclass(frozen=True)
-class RandomnessPayload(BaseTxPayload):
-    """Represent a transaction payload carrying randomness data."""
-
-    round_id: int
-    randomness: str
+import json
+from dataclasses import asdict, is_dataclass
+from typing import Any
 
 
-@dataclass(frozen=True)
-class SolanaTraderDecisionMakerPayload(BaseTxPayload):
-    """A transaction payload for the SolanaTraderDecisionMakingRound."""
+class DataclassEncoder(json.JSONEncoder):
+    """A custom JSON encoder for dataclasses."""
 
-    policy: Optional[str]
-    positions: Optional[str]
-    selected_strategy: Optional[str]
+    def default(self, o: Any) -> Any:
+        """The default JSON encoder."""
+        if is_dataclass(o):
+            return asdict(o)
+        return super().default(o)

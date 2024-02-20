@@ -32,6 +32,9 @@ from packages.valory.skills.solana_strategy_evaluator_abci.models import AMOUNT_
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
 )
+from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import (
+    DOWNLOADED_PACKAGES_KEY,
+)
 
 
 STRATEGY_KEY = "trading_strategy"
@@ -44,7 +47,6 @@ AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODL_DECISION)
 NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODL_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 SOL = "SOL"
-DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
 CALLABLE_KEY = "callable"
