@@ -211,10 +211,15 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
     event_to_timeout: Dict[Event, float] = {
         Event.ROUND_TIMEOUT: 30.0,
     }
+    cross_period_persisted_keys = frozenset(
+        {get_name(SynchronizedData.policy), get_name(SynchronizedData.positions)}
+    )
     db_pre_conditions: Dict[AppState, Set[str]] = {RandomnessRound: set()}
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedSolanaTraderDecisionMakerRound: {
             get_name(SynchronizedData.selected_strategy),
+            get_name(SynchronizedData.policy),
+            get_name(SynchronizedData.positions),
             get_name(SynchronizedData.most_voted_randomness_round),
             get_name(SynchronizedData.most_voted_randomness),
         },
