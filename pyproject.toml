@@ -51,7 +51,6 @@ pytest = "==7.2.1"
 urllib3 = "==1.26.16"
 jsonschema = "<4.4.0,>=4.3.0"
 pandas = "^2.2.0"
-backtest = "^0.7.8"
 pyalgotrade = "^0.20"
 geckoterminal-py = "^0.1.2"
 

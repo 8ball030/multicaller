@@ -194,12 +194,12 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
 
 
 def transform(
-    price_data: Dict[str, Any],
+    prices: Dict[str, Any],
     default_ohlcv_period: str = "5Min",
 ) -> Dict[str, Any]:
     """Transform the data."""
     results = {}
-    for token_address, market_data in price_data.items():
+    for token_address, market_data in prices.items():
         df = pd.DataFrame(market_data, columns=["timestamp", "price"])
         df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
         df = df.set_index("timestamp")

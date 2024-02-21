@@ -25,20 +25,20 @@ import json
 import pytest
 
 import random
-from strategies.base_strategy import BaseStrategy
 import pandas as pd
 
 
 
 from strategies.sma_strategy import sma_strategy 
 from strategies.rsi_strategy import rsi_strategy
+from strategies.trend_following_strategy import trend_following_strategy
 from strategies.base_strategy import read_coingecko, read_ohlcv
 from unittest import TestCase
 
 DEFAULT_OHLCV_PERIOD = "5Min"
 
 
-strategies = [sma_strategy, rsi_strategy]
+strategies = [sma_strategy, rsi_strategy, trend_following_strategy]
 
 COINGECKO_DATA = "strategies/data/olas_5m.json"
 
@@ -47,9 +47,10 @@ OHLCV_DATA = "strategies/data/olas_5m.csv"
 @pytest.fixture
 def raw_data():
     """Generate raw data for testing."""
-    timestamps, prices, _ = read_ohlcv(OHLCV_DATA)
+    timestamps, prices, volumes = read_ohlcv(OHLCV_DATA)
     TEST_RAW_DATA = {
-        "token_a": [{"timestamp": timestamps[i], "price": prices[i]} for i in range(len(timestamps))]
+        "volumes": [(ts, val) for ts, val in zip(timestamps, volumes)],
+        "prices": [(ts, val) for ts, val in zip(timestamps, prices)]
     }
     return TEST_RAW_DATA
 
@@ -62,14 +63,14 @@ def test_generate_data(func, path):
 @pytest.mark.parametrize("strategy", strategies)
 def test_evaluate(strategy, raw_data):
     """Test the evaluate function."""
-    data = strategy.transform(price_data=raw_data)
-    results = strategy.evaluate(**data, plot=True)
+    data = strategy.transform(**raw_data)
+    results = strategy.evaluate(**data, plot=False)
     assert "sharpe_ratio" in results
 
 @pytest.mark.parametrize("strategy", strategies)
 def test_transform(strategy, raw_data):
     """Test the transform function."""
-    data = strategy.transform(price_data=raw_data)
+    data = strategy.transform(**raw_data)
     assert "transformed_data" in data
 
 
@@ -77,13 +78,13 @@ def test_transform(strategy, raw_data):
 @pytest.mark.parametrize("strategy", strategies)
 def test_complete_strategy(strategy, raw_data):
     """Test the complete strategy."""
-    kwargs = strategy.transform(raw_data)
+    kwargs = strategy.transform(**raw_data)
     result = strategy.run(**kwargs, portfolio_data={"token_a": 1000, "USDT": 1000})
     assert "error" not in result, f"Error in {strategy.__name__} strategy: {result['error']}"
         
 @pytest.mark.parametrize("strategy", strategies)
 def test_optimise(strategy, raw_data):
     """Test the optimise function."""
-    kwargs = strategy.transform(raw_data)
+    kwargs = strategy.transform(**raw_data)
     result = strategy.optimise(**kwargs, portfolio_data={"token_a": 1000, "USDT": 1000})
     assert "error" not in result, f"Error in {strategy.__name__} strategy: {result['error']}"

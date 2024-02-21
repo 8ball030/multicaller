@@ -24,7 +24,7 @@ import os
 from abc import ABC
 from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
 
-import pandas as pd
+import yaml
 
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
@@ -221,10 +221,93 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         return data_hash
 
 
+DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
+COMPONENT_YAML_FILENAME = "component.yaml"
+CALLABLE_KEY = "callable"
+ENTRY_POINT_KEY = "entry_point"
+STRATEGY_KEY = "trading_strategy"
+
+TRANSFORM_DATA_METHOD = "transform"
+
+
 class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
     """Behaviour to transform the fetched signals."""
 
     matching_round: Type[AbstractRound] = TransformMarketDataRound
+
+    def strategy_exec(self, strategy_name: str) -> Optional[Dict[str, str]]:
+        """Get the executable strategy's contents."""
+        return self.context.shared_state.get(DOWNLOADED_PACKAGES_KEY, {}).get(
+            strategy_name, None
+        )
+
+    def load_custom_component(
+        self, serialized_objects: Dict[str, str]
+    ) -> Optional[Tuple[str, str, str]]:
+        """Load a custom component package.
+
+        :param serialized_objects: the serialized objects.
+        :return: the component.yaml, entry_point.py and callable as tuple.
+        """
+        # the package MUST contain a component.yaml file
+        if COMPONENT_YAML_FILENAME not in serialized_objects:
+            self.context.logger.error(
+                "Invalid component package. "
+                f"The package MUST contain a {COMPONENT_YAML_FILENAME}."
+            )
+            return None
+        # load the component.yaml file
+        component_yaml = yaml.safe_load(serialized_objects[COMPONENT_YAML_FILENAME])
+        if ENTRY_POINT_KEY not in component_yaml or CALLABLE_KEY not in component_yaml:
+            self.context.logger.error(
+                "Invalid component package. "
+                f"The {COMPONENT_YAML_FILENAME} file MUST contain the {ENTRY_POINT_KEY} and {CALLABLE_KEY} keys."
+            )
+            return None
+        # the name of the script that needs to be executed
+        entry_point_name = component_yaml[ENTRY_POINT_KEY]
+        # load the script
+        if entry_point_name not in serialized_objects:
+            self.context.logger.error(
+                f"Invalid component package. "
+                f"The entry point {entry_point_name!r} is not present in the component package."
+            )
+            return None
+        entry_point = serialized_objects[entry_point_name]
+        # the method that needs to be called
+        return component_yaml, entry_point, TRANSFORM_DATA_METHOD
+
+    def execute_strategy(self, *args: Any, **kwargs: Any) -> Dict[str, Any] | None:
+        """Execute the strategy and return the results."""
+        trading_strategy = kwargs.pop(STRATEGY_KEY, None)
+        if trading_strategy is None:
+            self.context.logger.error("No `trading_strategy` was given!")
+            return None
+
+        strategy = self.strategy_exec(trading_strategy)
+        if strategy is None:
+            self.context.logger.error(
+                f"No executable was found for {trading_strategy=}!"
+            )
+            return None
+
+        res = self.load_custom_component(strategy)
+        if res is None:
+            return None
+
+        _component_yaml, strategy_exec, callable_method = res
+        if callable_method in globals():
+            del globals()[callable_method]
+
+        exec(strategy_exec, globals())  # pylint: disable=W0122  # nosec
+        method = globals().get(callable_method, None)
+        if method is None:
+            self.context.logger.error(
+                f"No {callable_method!r} method was found in {trading_strategy} strategy's executable:\n"
+                f"{strategy_exec}."
+            )
+            return None
+        return method(*args, **kwargs)
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -248,11 +331,16 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             self.synchronized_data.data_hash, SupportedFiletype.JSON
         )
         results = {}
+
+        strategy = self.synchronized_data.selected_strategy
         for token_address, market_data in markets_data.items():  # type: ignore
-            df = pd.DataFrame(market_data, columns=["timestamp", "price"])
-            df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
-            df = df.set_index("timestamp")
-            results[token_address] = df.to_json(orient="index")
+            result = self.execute_strategy(trading_strategy=strategy, **market_data)  # type: ignore
+            if result is None:
+                self.context.logger.error(
+                    f"Failed to transform market data for {token_address}."
+                )
+                continue
+            results[token_address] = result
 
         data_hash = yield from self.send_to_ipfs(
             filename=self.from_data_dir(MARKETS_FILE_NAME),

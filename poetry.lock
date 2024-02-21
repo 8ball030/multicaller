@@ -268,21 +268,6 @@ tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
 
 [[package]]
-name = "backtest"
-version = "0.7.8"
-description = "Backtest engine for algorithmic trading"
-category = "main"
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "backtest-0.7.8-py3-none-any.whl", hash = "sha256:738ffb215347a378bec43aa5d43e7ff3d6a8ed5f8a3a0c7094529b8eced12022"},
-    {file = "backtest-0.7.8.tar.gz", hash = "sha256:b36da3489fb0b67299cc21584fb5ade706a3c488fb212e527e92c98d608e7fef"},
-]
-
-[package.dependencies]
-numpy = "*"
-
-[[package]]
 name = "base58"
 version = "2.1.1"
 description = "Base58 and Base58Check implementation."
@@ -4919,4 +4904,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "<3.11,>=3.10"
-content-hash = "d5bef16c415d7af563374f5cb303cbbd5fc70924577df318d4ff8657a4937671"
+content-hash = "076d9040a892efb05e8a65beaefd0df60ec3973924b8c2bf9d3341f58e682906"

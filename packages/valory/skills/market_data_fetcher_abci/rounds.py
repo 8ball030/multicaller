@@ -68,6 +68,11 @@ class SynchronizedData(BaseSynchronizedData):
         """Get the participants to market fetching."""
         return self._get_deserialized("participant_to_fetching")
 
+    @property
+    def selected_strategy(self) -> str:
+        """Get the selected strategy."""
+        return self.db.get_strict("selected_strategy")
+
 
 class FetchMarketDataRound(CollectSameUntilThresholdRound):
     """FetchMarketDataRound"""

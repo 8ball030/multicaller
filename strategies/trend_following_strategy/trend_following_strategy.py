@@ -21,6 +21,8 @@
 
 from typing import Any, Dict, List, Tuple, Union
 
+import pandas as pd
+
 
 BUY_SIGNAL = "buy"
 SELL_SIGNAL = "sell"
@@ -105,3 +107,41 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
 
     kwargs = remove_irrelevant_fields(kwargs)
     return trend_following_signal(**kwargs)
+
+
+def transform(
+    prices: List[Tuple[int, float]],
+    volumes: List[Tuple[int, float]],
+    default_ohlcv_period: str = "5Min",
+) -> Dict[str, Any]:
+    """Transform the data into an ohlcv dataframe."""
+    rows = []
+    for values in zip(prices, volumes):
+        row = {
+            "timestamp": values[0][0],
+            "price": values[0][1],
+            "Volume": values[1][1],
+        }
+        rows.append(row)
+    df = pd.DataFrame(
+        rows,
+    )
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    df = df.set_index("timestamp")
+    df = df.resample(default_ohlcv_period).ohlc()
+    df.bfill(inplace=True)
+    df.reset_index(inplace=True)
+    df["timestamp"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
+    df.columns = [
+        "Date Time",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "vol_1",
+        "vol_2",
+        "vol_3",
+    ]
+    df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
+    return {"transformed_data": df.to_json(index=False)}

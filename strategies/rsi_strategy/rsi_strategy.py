@@ -62,29 +62,41 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def transform(
-    price_data: Dict[str, List[Tuple[int, float]]],
+    prices: List[Tuple[int, float]],
+    volumes: List[Tuple[int, float]],
     default_ohlcv_period: str = "5Min",
 ) -> Dict[str, Any]:
-    """Transform the data."""
-    results = {}
-    for token_address, market_data in price_data.items():
-        df = pd.DataFrame(market_data, columns=["timestamp", "price"])
-        df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
-        df = df.set_index("timestamp")
-        df = df.resample(default_ohlcv_period).ohlc()
-        df.bfill(inplace=True)
-        df.reset_index(inplace=True)
-        df["timestamp"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
-        df.columns = [
-            "Date Time",
-            "Open",
-            "High",
-            "Low",
-            "Close",
-        ]
-        df["Volume"] = 10000000
-        results[token_address] = df.to_json(index=False)
-    return {"transformed_data": results}
+    """Transform the data into an ohlcv dataframe."""
+    rows = []
+    for values in zip(prices, volumes):
+        row = {
+            "timestamp": values[0][0],
+            "price": values[0][1],
+            "Volume": values[1][1],
+        }
+        rows.append(row)
+    df = pd.DataFrame(
+        rows,
+    )
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    df = df.set_index("timestamp")
+    df = df.resample(default_ohlcv_period).ohlc()
+    df.bfill(inplace=True)
+    df.reset_index(inplace=True)
+    df["timestamp"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
+    df.columns = [
+        "Date Time",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "vol_1",
+        "vol_2",
+        "vol_3",
+    ]
+    df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
+    return {"transformed_data": df.to_json(index=False)}
 
 
 def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
