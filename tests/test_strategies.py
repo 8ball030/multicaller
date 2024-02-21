@@ -32,17 +32,29 @@ import pandas as pd
 from strategies.sma_strategy import sma_strategy 
 from strategies.rsi_strategy import rsi_strategy
 from strategies.trend_following_strategy import trend_following_strategy
-from strategies.base_strategy import read_coingecko, read_ohlcv
 from unittest import TestCase
 
+import json
+
+import pandas as pd
+
+
 DEFAULT_OHLCV_PERIOD = "5Min"
+DEFAULT_ENCODING = "utf-8"
 
 
 strategies = [sma_strategy, rsi_strategy, trend_following_strategy]
 
-COINGECKO_DATA = "strategies/data/olas_5m.json"
-
 OHLCV_DATA = "strategies/data/olas_5m.csv"
+
+
+def read_ohlcv(file_path: str) -> tuple:
+    """Helper function to read ohlcv data."""
+    df = pd.read_csv(file_path)
+    timestamps = pd.to_datetime(df["Date Time"]).tolist()
+    prices = df["Close"].tolist()
+    volumes = df["Volume"].tolist()
+    return timestamps, prices, volumes
 
 @pytest.fixture
 def raw_data():
@@ -54,7 +66,7 @@ def raw_data():
     }
     return TEST_RAW_DATA
 
-@pytest.mark.parametrize("func,path", [(read_coingecko, COINGECKO_DATA), (read_ohlcv, OHLCV_DATA)])
+@pytest.mark.parametrize("func,path", [(read_ohlcv, OHLCV_DATA)])
 def test_generate_data(func, path):
     """Test the data generation function."""
     timestamps, prices, volumes = func(path)

@@ -20,7 +20,7 @@
 """This module contains the trend_following_strategy."""
 
 import itertools
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Tuple, Union
 
 import pandas as pd
 from pyalgotrade import plotter, strategy
@@ -44,7 +44,7 @@ SELL_SIGNAL = "sell"
 HOLD_SIGNAL = "hold"
 NA_SIGNAL = "insufficient_data"
 
-DEFAULT_MA_PERIOD = 69
+DEFAULT_MA_PERIOD = 10
 DEFAULT_RSI_PERIOD = 14
 DEFAULT_RSI_OVERBOUGHT_THRESHOLD = 70
 DEFAULT_RSI_OVERSOLD_THRESHOLD = 30
@@ -69,21 +69,57 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
     """Remove the irrelevant fields from the given kwargs."""
     return {key: value for key, value in kwargs.items() if key in ALL_FIELDS}
 
+def transform(
+    prices: List[Tuple[int, float]],
+    volumes: List[Tuple[int, float]],
+    default_ohlcv_period: str = "5Min",
+) -> Dict[str, Any]:
+    """Transform the data into an ohlcv dataframe."""
+    rows = []
+    for values in zip(prices, volumes):
+        row = {
+            "timestamp": values[0][0],
+            "price": values[0][1],
+            "Volume": values[1][1],
+        }
+        rows.append(row)
+    df = pd.DataFrame(
+        rows,
+    )
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    df = df.set_index("timestamp")
+    df = df.resample(default_ohlcv_period).ohlc()
+    df.bfill(inplace=True)
+    df.reset_index(inplace=True)
+    df["timestamp"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
+    df.columns = [
+        "Date Time",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "vol_1",
+        "vol_2",
+        "vol_3",
+    ]
+    df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
+    return {"transformed_data": df.to_json(index=False)}
 
 class Strategy(
     strategy.BacktestingStrategy
 ):  # pylint: disable=too-many-instance-attributes
     """A simple moving average crossover strategy."""
 
-    def __init__(self, feed: GenericBarFeed, instrument: str, smaPeriod: int) -> None:
+    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int) -> None:
         """Initialize the strategy."""
         super().__init__(feed)
         self.__instrument = instrument
         self.__position: Position = None
         # We'll use adjusted close values instead of regular close values.
         self.__prices = feed[instrument].getPriceDataSeries()
-        self.__sma = ma.SMA(self.__prices, smaPeriod)
-        self.__lma = ma.SMA(self.__prices, smaPeriod * 2)
+        self.__sma = ma.SMA(self.__prices, ma_period)
+        self.__lma = ma.SMA(self.__prices, ma_period * 2)
         self.__stoch = stoch.StochasticOscillator(feed[instrument], 100)
 
     @property
@@ -192,62 +228,6 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
         results[token] = signal
     return {"signals": results}
 
-
-def transform(
-    prices: Dict[str, Any],
-    default_ohlcv_period: str = "5Min",
-) -> Dict[str, Any]:
-    """Transform the data."""
-    results = {}
-    for token_address, market_data in prices.items():
-        df = pd.DataFrame(market_data, columns=["timestamp", "price"])
-        df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
-        df = df.set_index("timestamp")
-        df = df.resample(default_ohlcv_period).ohlc()
-        df.bfill(inplace=True)
-        df.reset_index(inplace=True)
-        df["timestamp"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
-        df.columns = [
-            "Date Time",
-            "Open",
-            "High",
-            "Low",
-            "Close",
-        ]
-        df["Volume"] = 10000000
-        results[token_address] = df.to_json(index=False)
-    return {"transformed_data": results}
-
-
-def evaluate(
-    transformed_data: Dict[str, Any],
-    ma_period: int = DEFAULT_MA_PERIOD,
-    plot: bool = False,
-) -> Dict[str, Any]:
-    """Evaluate the strategy."""
-    results = {}
-    for token, data in transformed_data.items():
-        feed = prepare_feed(token, data)
-        strat = prepare_strategy(feed, token, ma_period=ma_period)
-        if plot:
-            plt = plotter.StrategyPlotter(strat, True, True, True)
-            plt.getInstrumentSubplot(token).addDataSeries("sma", strat.getSMA())
-            plt.getInstrumentSubplot(token).addDataSeries("lma", strat.getLMA())
-            plt.getOrCreateSubplot("Stoch").addDataSeries("stoch", strat.getStoch())
-        strat.run()
-        if plot:
-            plt.plot()
-        token_strategy_sharpe = strat.sharpe_analyser.getSharpeRatio(
-            DEFAULKT_RISK_FREE_RATE
-        )
-        results[token] = {"sharpe_ratio": token_strategy_sharpe}
-    average_sharpe = sum([result["sharpe_ratio"] for result in results.values()]) / len(
-        results
-    )
-    print(f"Average Sharpe Ratio: {average_sharpe}")
-    return {"sharpe_ratio": average_sharpe}
-
-
 def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     """Prepare the data for the strategy."""
     dataset: pd.DataFrame = pd.read_json(
@@ -257,7 +237,6 @@ def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     feed = GenericBarFeed(Frequency.MINUTE)
     feed.addBarsFromCSV(token, DEFAULT_CSV_FILE)
     return feed
-
 
 def prepare_strategy(feed: GenericBarFeed, token: str, **kwargs) -> Strategy:  # type: ignore
     """Prepare the strategy."""
@@ -269,6 +248,34 @@ def prepare_strategy(feed: GenericBarFeed, token: str, **kwargs) -> Strategy:  #
     broker = strat.getBroker()
     broker.setCommission(commission)
     return strat
+
+
+def evaluate(
+    transformed_data: Dict[str, Any],
+    ma_period: int = DEFAULT_MA_PERIOD,
+    plot: bool = False,
+    token: str = "token_a",
+
+) -> Dict[str, Any]:
+    """Evaluate the strategy."""
+    feed = prepare_feed(token, transformed_data)
+    strat = prepare_strategy(feed, token, ma_period=ma_period)
+    broker = strat.getBroker()
+    broker.setCash(1000)
+    if plot:
+        plt = plotter.StrategyPlotter(strat, True, True, True)
+        plt.getInstrumentSubplot(token).addDataSeries("sma", strat.getSMA())
+        plt.getInstrumentSubplot(token).addDataSeries("lma", strat.getLMA())
+        plt.getOrCreateSubplot("Stoch").addDataSeries("stoch", strat.getStoch())
+    strat.run()
+    if plot:
+        plt.plot()
+    token_strategy_sharpe = strat.sharpe_analyser.getSharpeRatio(
+        DEFAULKT_RISK_FREE_RATE
+    )
+    return {"sharpe_ratio": token_strategy_sharpe}
+
+
 
 
 def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
@@ -283,18 +290,19 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
 
 def parameters_generator() -> itertools.product:
     """Genethe parameters."""
-    return itertools.product(range(10, 100, 10), range(10, 100, 10))
+    return itertools.product(["token_a"], range(10, 100, 10))
 
 
 def optimise(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     """Optimise the strategy."""
-    fn = "strategies/data/olas_5m.csv"
+    token = kwargs.get("token", "token_a")
+    fn = kwargs.get("fn", DEFAULT_CSV_FILE)
     feed = GenericBarFeed(Frequency.MINUTE)
     feed.addBarsFromCSV(
-        "AAPL",
+        token,
         fn,
     )
     print("Optimising...")
     print(kwargs)
     results = local.run(Strategy, feed, parameters_generator())
-    return results
+    return {"results": results}

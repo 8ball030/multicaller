@@ -145,3 +145,11 @@ def transform(
     ]
     df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
     return {"transformed_data": df.to_json(index=False)}
+
+def optimise(*args, **kwargs):
+    """Optimise the strategy."""
+    return {"results": {}}
+
+def evaluate(*args, **kwargs):
+    """Evaluate the strategy."""
+    return {"sharpe_ratio": -10}

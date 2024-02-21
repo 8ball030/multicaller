@@ -34,6 +34,7 @@ from pyalgotrade.broker.backtesting import TradePercentage
 from pyalgotrade.stratanalyzer import sharpe
 from pyalgotrade.strategy.position import Position
 from pyalgotrade.technical import cross, ma, rsi
+from pyalgotrade.optimizer import local
 
 
 DEFAULT_CSV_FILE = "data.csv"
@@ -140,33 +141,29 @@ def prepare_strategy(  # pylint: disable=too-many-arguments
 
 def evaluate(
     transformed_data: Dict[str, Any],
-    ma_period: int = DEFAULT_MA_PERIOD,
+    token: str = "token_a",
     plot: bool = False,
+    **kwargs: Any,
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
-    results = {}
-    for token, data in transformed_data.items():
-        feed = prepare_feed(token, data)
-        strat = prepare_strategy(feed, token, ma_period)
-        if plot:
-            plt = plotter.StrategyPlotter(strat, True, True, True)
-            plt.getInstrumentSubplot(token).addDataSeries(
-                "Entry MA", strat.getEntrySMA()
-            )
-            plt.getInstrumentSubplot(token).addDataSeries("Exit MA", strat.getExitSMA())
-            plt.getOrCreateSubplot("Rsi").addDataSeries("RSI", strat.getRSI())
-        strat.run()
-        if plot:
-            plt.plot()
-        token_strategy_sharpe = strat.sharpe_analyser.getSharpeRatio(
-            DEFAULKT_RISK_FREE_RATE
+    feed = prepare_feed(token, transformed_data)
+    strat = prepare_strategy(feed, token, **kwargs)
+    broker = strat.getBroker()
+    broker.setCash(1000)
+    if plot:
+        plt = plotter.StrategyPlotter(strat, True, True, True)
+        plt.getInstrumentSubplot(token).addDataSeries(
+            "Entry MA", strat.getEntrySMA()
         )
-        results[token] = {"sharpe_ratio": token_strategy_sharpe}
-    average_sharpe = sum([result["sharpe_ratio"] for result in results.values()]) / len(
-        results
+        plt.getInstrumentSubplot(token).addDataSeries("Exit MA", strat.getExitSMA())
+        plt.getOrCreateSubplot("Rsi").addDataSeries("RSI", strat.getRSI())
+    strat.run()
+    if plot:
+        plt.plot()
+    token_strategy_sharpe = strat.sharpe_analyser.getSharpeRatio(
+        DEFAULKT_RISK_FREE_RATE
     )
-    print(f"Average Sharpe Ratio: {average_sharpe}")
-    return {"sharpe_ratio": average_sharpe}
+    return {"sharpe_ratio": token_strategy_sharpe}
 
 
 def signal(
@@ -209,8 +206,15 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
 
 def optimise(*args, **kwargs) -> Dict[str, Union[str, List[str]]]:  # type: ignore
     """Optimise the strategy."""
-    del args, kwargs
-    return {"error": "Not implemented"}
+    fn = kwargs.get("fn", DEFAULT_CSV_FILE)
+    feed = GenericBarFeed(Frequency.MINUTE)
+    feed.addBarsFromCSV(
+        "token_a",
+        fn,
+    )
+    print("Optimising...")
+    results = local.run(Strategy, feed, parameters_generator())
+    return {"result": results}
 
 
 class Strategy(
@@ -341,11 +345,11 @@ class Strategy(
 def parameters_generator() -> List[Tuple[str, int, int, int, int, int]]:
     """Generate the parameters"""
     instrument = ["token_a"]
-    entrySMA = range(5, 8)
-    exitSMA = range(5, 8)
-    rsiPeriod = range(9, 10)
-    overBoughtThreshold = range(90, 92)
-    overSoldThreshold = range(15, 17)
+    entrySMA = range(200, 201)
+    exitSMA = range(79, 80)
+    rsiPeriod = range(29, 30)
+    overBoughtThreshold = range(59, 60)
+    overSoldThreshold = range(29, 30)
     results = list(
         itertools.product(
             instrument,
@@ -356,5 +360,5 @@ def parameters_generator() -> List[Tuple[str, int, int, int, int, int]]:
             overSoldThreshold,
         )
     )
-    print(f"Length of results: {len(results)}")
+    print(f"Total amount of parameters: {len(results)}")
     return results
