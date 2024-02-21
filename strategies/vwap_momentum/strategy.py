@@ -4,8 +4,6 @@ Volume weighted average price (VWAP) strategy.
 This strategy is based on the VWAP indicator and it's designed to trade a single instrument.
 
 """
-from __future__ import print_function
-
 import itertools
 
 from pyalgotrade import plotter, strategy
