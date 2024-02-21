@@ -69,6 +69,7 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
     """Remove the irrelevant fields from the given kwargs."""
     return {key: value for key, value in kwargs.items() if key in ALL_FIELDS}
 
+
 def transform(
     prices: List[Tuple[int, float]],
     volumes: List[Tuple[int, float]],
@@ -105,6 +106,7 @@ def transform(
     ]
     df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
     return {"transformed_data": df.to_json(index=False)}
+
 
 class Strategy(
     strategy.BacktestingStrategy
@@ -228,6 +230,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
         results[token] = signal
     return {"signals": results}
 
+
 def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     """Prepare the data for the strategy."""
     dataset: pd.DataFrame = pd.read_json(
@@ -237,6 +240,7 @@ def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     feed = GenericBarFeed(Frequency.MINUTE)
     feed.addBarsFromCSV(token, DEFAULT_CSV_FILE)
     return feed
+
 
 def prepare_strategy(feed: GenericBarFeed, token: str, **kwargs) -> Strategy:  # type: ignore
     """Prepare the strategy."""
@@ -254,18 +258,17 @@ def evaluate(
     transformed_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
     plot: bool = False,
-    token: str = "token_a",
-
+    asset: str = "olas",
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
-    feed = prepare_feed(token, transformed_data)
-    strat = prepare_strategy(feed, token, ma_period=ma_period)
+    feed = prepare_feed(asset, transformed_data)
+    strat = prepare_strategy(feed, asset, ma_period=ma_period)
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:
         plt = plotter.StrategyPlotter(strat, True, True, True)
-        plt.getInstrumentSubplot(token).addDataSeries("sma", strat.getSMA())
-        plt.getInstrumentSubplot(token).addDataSeries("lma", strat.getLMA())
+        plt.getInstrumentSubplot(asset).addDataSeries("sma", strat.getSMA())
+        plt.getInstrumentSubplot(asset).addDataSeries("lma", strat.getLMA())
         plt.getOrCreateSubplot("Stoch").addDataSeries("stoch", strat.getStoch())
     strat.run()
     if plot:
@@ -274,8 +277,6 @@ def evaluate(
         DEFAULKT_RISK_FREE_RATE
     )
     return {"sharpe_ratio": token_strategy_sharpe}
-
-
 
 
 def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:

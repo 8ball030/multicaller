@@ -31,10 +31,10 @@ from pyalgotrade.bar import Bar, Bars
 from pyalgotrade.barfeed import Frequency
 from pyalgotrade.barfeed.csvfeed import GenericBarFeed
 from pyalgotrade.broker.backtesting import TradePercentage
+from pyalgotrade.optimizer import local
 from pyalgotrade.stratanalyzer import sharpe
 from pyalgotrade.strategy.position import Position
 from pyalgotrade.technical import cross, ma, rsi
-from pyalgotrade.optimizer import local
 
 
 DEFAULT_CSV_FILE = "data.csv"
@@ -141,21 +141,19 @@ def prepare_strategy(  # pylint: disable=too-many-arguments
 
 def evaluate(
     transformed_data: Dict[str, Any],
-    token: str = "token_a",
+    asset: str = "olas",  # noqa: B107
     plot: bool = False,
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
-    feed = prepare_feed(token, transformed_data)
-    strat = prepare_strategy(feed, token, **kwargs)
+    feed = prepare_feed(asset, transformed_data)
+    strat = prepare_strategy(feed, asset, **kwargs)
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:
         plt = plotter.StrategyPlotter(strat, True, True, True)
-        plt.getInstrumentSubplot(token).addDataSeries(
-            "Entry MA", strat.getEntrySMA()
-        )
-        plt.getInstrumentSubplot(token).addDataSeries("Exit MA", strat.getExitSMA())
+        plt.getInstrumentSubplot(asset).addDataSeries("Entry MA", strat.getEntrySMA())
+        plt.getInstrumentSubplot(asset).addDataSeries("Exit MA", strat.getExitSMA())
         plt.getOrCreateSubplot("Rsi").addDataSeries("RSI", strat.getRSI())
     strat.run()
     if plot:
@@ -204,7 +202,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     return signal(**kwargs)
 
 
-def optimise(*args, **kwargs) -> Dict[str, Union[str, List[str]]]:  # type: ignore
+def optimise(**kwargs) -> Dict[str, Union[str, List[str]]]:  # type: ignore
     """Optimise the strategy."""
     fn = kwargs.get("fn", DEFAULT_CSV_FILE)
     feed = GenericBarFeed(Frequency.MINUTE)
