@@ -33,34 +33,34 @@ SLEEP_PERIOD = 5
 POOL_ID = "0x09d1d767edf8fa23a64c51fa559e0688e526812f"
 
 
-def get_actual_high(row):
+def get_actual_high(row: pd.Series) -> float:
     """Give a row, return the actual high value."""
     a, b, c, d = row["Open"], row["Close"], row["High"], row["Low"]
     return max(a, b, c, d)
 
 
-def get_actual_low(row):
+def get_actual_low(row: pd.Series) -> float:
     """Give a row, return the actual low value."""
     a, b, c, d = row["Open"], row["Close"], row["High"], row["Low"]
     return min(a, b, c, d)
 
 
 def collect_data(
-    pool_id,
-    since="2024-01-01 00:00:00Z",
-    until="2024-02-28 00:00:00Z",
-    limit=1000,
-    frequency="5m",
-):
+    pool_id: str,
+    since: str = "2024-01-01 00:00:00Z",
+    until: str = "2024-02-28 00:00:00Z",
+    limit: int = 1000,
+    frequency: str = "5m",
+) -> pd.DataFrame:
     """
     Collects data for a specified pool within a given date range and frequency.
 
     :param pool_id: The pool id to collect data for.
     :type pool_id: str
     :param since: The start date for data collection.
-    :type since: str or datetime
+    :type since: str
     :param until: The end date for data collection.
-    :type until: str or datetime
+    :type until: str
     :param limit: The maximum number of rows to collect.
     :type limit: int
     :param frequency: The frequency of the data collection. Options include
