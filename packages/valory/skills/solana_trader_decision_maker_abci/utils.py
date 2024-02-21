@@ -17,17 +17,18 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads of the PortfolioTrackerAbciApp."""
+"""This module contains general purpose utilities."""
 
-from dataclasses import dataclass
-from typing import Optional
+import json
+from dataclasses import asdict, is_dataclass
+from typing import Any
 
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
+class DataclassEncoder(json.JSONEncoder):
+    """A custom JSON encoder for dataclasses."""
 
-@dataclass(frozen=True)
-class PortfolioTrackerPayload(BaseTxPayload):
-    """Represent a transaction payload for the portfolio tracker."""
-
-    portfolio_hash: Optional[str]
-    is_balance_sufficient: Optional[bool]
+    def default(self, o: Any) -> Any:
+        """The default JSON encoder."""
+        if is_dataclass(o):
+            return asdict(o)
+        return super().default(o)

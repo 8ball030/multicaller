@@ -8,13 +8,13 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
-  behaviours.py: bafybeibhyclntn53gssga2rj4tnc3sujovhcprw4bt3tvuuidstadxodqu
+  behaviours.py: bafybeigk5nut7m6ezn25ybw6uu72xfodqs5m25ykdpq44aqrtzyqzawqmi
   dialogues.py: bafybeidr5jmedduri5mbqnyrf43znchsklxv4vvyjvf5wsnsrb3tykwk2u
-  fsm_specification.yaml: bafybeiafiluyz5k6sycqjxtqhrjscyyepl2agzuvtpaibswfpmvalo2qcq
+  fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
   handlers.py: bafybeihsjgmfsowj4qcnh6jw3sgqnrrhymuadm7wdx5l4pvrkzj6ylengy
-  models.py: bafybeify4a42ystyj3thjh33m4xvjrjbosgvtronwcg3srmakyayj2mo74
-  payloads.py: bafybeih7tmnc2iqjnopoxmjvvlkfitkwyfa467djfq3plhnncbrqhrmjdy
-  rounds.py: bafybeidov7h5m7mfk6jimngk2jdsnc55d2fczoh7dsegtmhtyxyrpyo3i4
+  models.py: bafybeicdtmjc6ddji542ldwlrhp45chvszymj6a2bwqdntz6hjhnm4ogdu
+  payloads.py: bafybeid3sue7scr5dama3krank3gkmsucy6xasvds6jvebkptbpqziurlm
+  rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -120,8 +120,12 @@ models:
       tendermint_url: http://localhost:26657
       tx_timeout: 10.0
       validate_timeout: 1205
-      agent_balance_threshold: []
-      multisig_balance_threshold: []
+      squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      agent_balance_threshold: 50000000
+      multisig_balance_threshold: 1000000000
+      tracked_tokens: []
+      refill_action_timeout: 10
+      rpc_polling_interval: 5
     class_name: Params
   requests:
     args: {}

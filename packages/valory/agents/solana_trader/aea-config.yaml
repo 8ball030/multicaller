@@ -33,12 +33,12 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeihen4vsvan3oa6ojm55ezb26fto3vc76dcwetadk3z4ztvxjbn5q4
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeicsccrwmu6qzebpgdwc7nd5gu555ulitfu6fcithg3h4oo4nempym
-- valory/solana_trader_abci:0.1.0:bafybeibur367dhvbd4syby6wj2nxwnccfkwxj5vvgttdrtubreqpau75z4
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
+- valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeibn2hzjz4a65zkzinfflkncgjwrwytjnjgoivt3hfmgqf4rm73so4
+- valory/solana_trader_abci:0.1.0:bafybeiayycwyvcpp4epk6yfpifdiw3ql53fqmcqihctxk32fskhwk572gu
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
 - valory/ipfs_package_downloader:0.1.0:bafybeihwfxguhso57xly6nb7tckgcnijs7bumjf2i2u4oqn2cn7soi4pdy
-- valory/portfolio_tracker_abci:0.1.0:bafybeihvvk77sskm6wpzrbuofr2i7s42mn5qhtyf2hfgb5wb7qy5kvkire
+- valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -206,12 +206,18 @@ models:
       termination_sleep: ${int:900}
       use_termination: ${bool:false}
       on_chain_service_id: ${int:null}
-      selected_strategy: ${str:follow_trend_strategy}
       token_symbol_whitelist: ${list:["coingecko_id=weth&address=7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs"]}
       strategies_kwargs: ${list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
       use_proxy_server: ${bool:false}
       expected_swap_tx_cost: ${int:20000000}
+      ipfs_fetch_retries: ${int:5}
       squad_vault: ${str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
+      agent_balance_threshold: ${int:50000000}
+      multisig_balance_threshold: ${int:1000000000}
+      tracked_tokens: ${list:[]}
+      refill_action_timeout: ${int:10}
+      rpc_polling_interval: ${int:5}
+      epsilon: ${float:0.1}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

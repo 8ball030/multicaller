@@ -1,13 +1,14 @@
 {
     "dev": {
-        "agent/valory/solana_trader/0.1.0": "bafybeibspsdzexlirohd5fh4rqant4wdv7bjxms4vhxrhqu6gtkjyattw4",
-        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja",
-        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeicsccrwmu6qzebpgdwc7nd5gu555ulitfu6fcithg3h4oo4nempym",
-        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeihen4vsvan3oa6ojm55ezb26fto3vc76dcwetadk3z4ztvxjbn5q4",
-        "skill/valory/solana_trader_abci/0.1.0": "bafybeibur367dhvbd4syby6wj2nxwnccfkwxj5vvgttdrtubreqpau75z4",
+        "agent/valory/solana_trader/0.1.0": "bafybeidio5urijvvmjgbau2rdaoyzaeruxmtkjayq3aqcxodlkqxc2afxa",
+        "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4",
+        "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeibn2hzjz4a65zkzinfflkncgjwrwytjnjgoivt3hfmgqf4rm73so4",
+        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le",
+        "skill/valory/solana_trader_abci/0.1.0": "bafybeiayycwyvcpp4epk6yfpifdiw3ql53fqmcqihctxk32fskhwk572gu",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeihwfxguhso57xly6nb7tckgcnijs7bumjf2i2u4oqn2cn7soi4pdy",
-        "service/valory/solana_trader/0.1.0": "bafybeifl5kckh3vp3k32upmxsmt3j3kbwefw5wtapzykgooyvw6ofb5ame",
-        "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeihvvk77sskm6wpzrbuofr2i7s42mn5qhtyf2hfgb5wb7qy5kvkire"
+        "service/valory/solana_trader/0.1.0": "bafybeicq3qziqvgc7qqjrnqxf4umdfzagbfae5xyougisausudsygwubri",
+        "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca"
+
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",

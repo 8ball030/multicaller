@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeibspsdzexlirohd5fh4rqant4wdv7bjxms4vhxrhqu6gtkjyattw4
+agent: valory/solana_trader:0.1.0:bafybeidio5urijvvmjgbau2rdaoyzaeruxmtkjayq3aqcxodlkqxc2afxa
 number_of_agents: 4
 deployment: {}
 ---
@@ -101,12 +101,18 @@ type: skill
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: ${VALIDATE_TIMEOUT:int:1205}
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
-        selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
+        ipfs_fetch_retries: ${IPFS_FETCH_RETRIES:int:5}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
+        agent_balance_threshold: ${AGENT_BALANCE_THRESHOLD:int:50000000}
+        multisig_balance_threshold: ${MULTISIG_BALANCE_THRESHOLD:int:1000000000}
+        tracked_tokens: ${TRACKED_TOKENS:list:[]}
+        refill_action_timeout: ${REFILL_ACTION_TIMEOUT:int:10}
+        rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
+        epsilon: ${EPSILON:float:0.1}
     benchmark_tool: &id004
       args:
         log_dir: ${LOG_DIR:str:/benchmarks}
@@ -170,12 +176,18 @@ type: skill
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: ${VALIDATE_TIMEOUT:int:1205}
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
-        selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
+        ipfs_fetch_retries: ${IPFS_FETCH_RETRIES:int:5}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
+        agent_balance_threshold: ${AGENT_BALANCE_THRESHOLD:int:50000000}
+        multisig_balance_threshold: ${MULTISIG_BALANCE_THRESHOLD:int:1000000000}
+        tracked_tokens: ${TRACKED_TOKENS:list:[]}
+        refill_action_timeout: ${REFILL_ACTION_TIMEOUT:int:10}
+        rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
+        epsilon: ${EPSILON:float:0.1}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -220,12 +232,18 @@ type: skill
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: ${VALIDATE_TIMEOUT:int:1205}
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
-        selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
+        ipfs_fetch_retries: ${IPFS_FETCH_RETRIES:int:5}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
+        agent_balance_threshold: ${AGENT_BALANCE_THRESHOLD:int:50000000}
+        multisig_balance_threshold: ${MULTISIG_BALANCE_THRESHOLD:int:1000000000}
+        tracked_tokens: ${TRACKED_TOKENS:list:[]}
+        refill_action_timeout: ${REFILL_ACTION_TIMEOUT:int:10}
+        rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
+        epsilon: ${EPSILON:float:0.1}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -270,12 +288,18 @@ type: skill
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: ${VALIDATE_TIMEOUT:int:1205}
         history_check_timeout: ${HISTORY_CHECK_TIMEOUT:int:1205}
-        selected_strategy: ${SELECTED_STRATEGY:str:follow_trend_strategy}
         token_symbol_whitelist: ${TOKEN_SYMBOL_WHITELIST:list:["coingecko_id=solana&address=So11111111111111111111111111111111111111112"]}
         strategies_kwargs: ${STRATEGIES_KWARGS:list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
         use_proxy_server: ${USE_PROXY_SERVER:bool:false}
         expected_swap_tx_cost: ${EXPECTED_SWAP_TX_COST:int:20000000}
+        ipfs_fetch_retries: ${IPFS_FETCH_RETRIES:int:5}
         squad_vault: ${SQUAD_VAULT:str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
+        agent_balance_threshold: ${AGENT_BALANCE_THRESHOLD:int:50000000}
+        multisig_balance_threshold: ${MULTISIG_BALANCE_THRESHOLD:int:1000000000}
+        tracked_tokens: ${TRACKED_TOKENS:list:[]}
+        refill_action_timeout: ${REFILL_ACTION_TIMEOUT:int:10}
+        rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
+        epsilon: ${EPSILON:float:0.1}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001

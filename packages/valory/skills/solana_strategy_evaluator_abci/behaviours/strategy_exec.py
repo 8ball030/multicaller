@@ -19,23 +19,21 @@
 
 """This module contains the behaviour for executing a strategy."""
 
-from copy import deepcopy
-from dataclasses import asdict
 from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 
 import yaml
 
+from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
+from packages.valory.skills.portfolio_tracker_abci.behaviours import SOL_ADDRESS
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
-    AMOUNT_PARAM,
-    GetBalance,
-    RPCPayload,
-    TokenAccounts,
-)
+from packages.valory.skills.solana_strategy_evaluator_abci.models import AMOUNT_PARAM
 from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
+)
+from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import (
+    DOWNLOADED_PACKAGES_KEY,
 )
 
 
@@ -49,39 +47,11 @@ AVAILABLE_DECISIONS = (BUY_DECISION, SELL_DECISION, HODL_DECISION)
 NO_SWAP_DECISION = {SWAP_DECISION_FIELD: HODL_DECISION}
 SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 SOL = "SOL"
-SOL_ADDRESS = "So11111111111111111111111111111111111111112"
-DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
 CALLABLE_KEY = "callable"
-BALANCE_METHOD = "getBalance"
-TOKEN_ACCOUNTS_METHOD = "getTokenAccountsByOwner"  # nosec
-TOKEN_ENCODING = "jsonParsed"  # nosec
-TOKEN_AMOUNT_ACCESS_KEYS = (
-    "account",
-    "data",
-    "parsed",
-    "info",
-    "tokenAmount",
-    "amount",
-)
 INPUT_MINT = "inputMint"
 OUTPUT_MINT = "outputMint"
-
-
-def safely_get_from_nested_dict(
-    nested_dict: Dict[str, Any], keys: Tuple[str, ...]
-) -> Optional[Any]:
-    """Get a value safely from a nested dictionary."""
-    res = deepcopy(nested_dict)
-    for key in keys[:-1]:
-        res = res.get(key, {})
-        if not isinstance(res, dict):
-            return None
-
-    if keys[-1] not in res:
-        return None
-    return res[keys[-1]]
 
 
 class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
@@ -92,18 +62,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def __init__(self, **kwargs: Any):
         """Initialize the behaviour."""
         super().__init__(**kwargs)
-        self.sol_balance: Optional[int] = None
-        self.sol_balance_after_swaps: Optional[int] = None
-
-    @property
-    def get_balance(self) -> GetBalance:
-        """Get the `GetBalance` instance."""
-        return self.context.get_balance
-
-    @property
-    def token_accounts(self) -> TokenAccounts:
-        """Get the `TokenAccounts` instance."""
-        return self.context.token_accounts
+        self.sol_balance: int = 0
+        self.sol_balance_after_swaps: int = 0
 
     def strategy_exec(self, strategy_name: str) -> Optional[Dict[str, str]]:
         """Get the executable strategy's contents."""
@@ -190,82 +150,24 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
         return api.parameters.get(AMOUNT_PARAM, 0)
 
-    def unexpected_res_format_err(self, res: Any) -> None:
-        """Error log in case of an unexpected format error."""
-        self.context.logger.error(
-            f"Unexpected response format from {TOKEN_ACCOUNTS_METHOD!r}: {res}"
-        )
-
-    def get_native_balance(self) -> Generator[None, None, Optional[int]]:
-        """Get the SOL balance of the given address."""
-        if self.sol_balance is not None:
-            return self.sol_balance
-
-        payload = RPCPayload(BALANCE_METHOD, [self.params.squad_vault])
-        response = yield from self._get_response(self.get_balance, {}, asdict(payload))
-        self.sol_balance = self.sol_balance_after_swaps = response
-        return response
-
-    def get_token_balance(self, token: str) -> Generator[None, None, Optional[int]]:
-        """Get the balance of the token corresponding to the given address."""
-        payload = RPCPayload(
-            TOKEN_ACCOUNTS_METHOD,
-            [
-                self.params.squad_vault,
-                {"mint": token},
-                {"encoding": TOKEN_ENCODING},
-            ],
-        )
-        response = yield from self._get_response(
-            self.token_accounts, {}, asdict(payload)
-        )
-        if response is None:
-            return None
-
-        if not isinstance(response, list):
-            self.unexpected_res_format_err(response)
-            return None
-
-        if len(response) == 0:
-            return 0
-
-        value_content = response.pop(0)
-
-        if not isinstance(value_content, dict):
-            self.unexpected_res_format_err(response)
-            return None
-
-        amount = safely_get_from_nested_dict(value_content, TOKEN_AMOUNT_ACCESS_KEYS)
-        if amount is None:
-            self.unexpected_res_format_err(response)
-
-        try:
-            # typing was warning about int(amount), therefore, we first convert to `str` here
-            return int(str(amount))
-        except ValueError:
-            self.unexpected_res_format_err(response)
-            return None
-
     def is_balance_sufficient(
-        self, token: str
-    ) -> Generator[None, None, Optional[bool]]:
+        self,
+        token: str,
+        token_balance: int,
+    ) -> Optional[bool]:
         """Check whether the balance of the given token is enough to perform the swap transaction."""
-        if (
-            token == SOL_ADDRESS
-            and self.sol_balance_after_swaps is not None
-            and self.sol_balance_after_swaps <= 0
-        ):
+        if token == SOL_ADDRESS and self.sol_balance_after_swaps <= 0:
             warning = "Preceding trades are expected to use up all the SOL. Not taking any action."
             self.context.logger.warning(warning)
             return False
 
-        sol_before_swap = self.sol_balance_after_swaps
         swap_cost = self.params.expected_swap_tx_cost
-        sol_balance = yield from self.get_native_balance()
-        self.sol_balance_after_swaps = cast(int, self.sol_balance_after_swaps)
-        if sol_balance is None:
-            self.context.logger.error("Failed to get balance for SOL!")
-            return None
+        # we set it to `None` if no swaps have been prepared yet
+        sol_before_swap = (
+            None
+            if self.sol_balance_after_swaps == self.sol_balance
+            else self.sol_balance_after_swaps
+        )
         if swap_cost > self.sol_balance_after_swaps:
             self.context.logger.warning(
                 "There is not enough SOL to cover the expected swap tx's cost. "
@@ -275,22 +177,14 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             return False
         self.sol_balance_after_swaps -= swap_cost
 
-        compared_balance: Optional[int]
         swap_amount = self.get_swap_amount()
         if token == SOL_ADDRESS:
             # do not use the SOL's address to simplify the log messages
             token = SOL
-            token_balance = yield from self.get_native_balance()
             compared_balance = self.sol_balance_after_swaps
             self.sol_balance_after_swaps -= swap_amount
         else:
-            token_balance = yield from self.get_token_balance(token)
             compared_balance = token_balance
-
-        # the second part of the statement is unnecessary but avoids typing warning
-        if token_balance is None or compared_balance is None:
-            self.context.logger.error(f"Failed to get balance for {token}!")
-            return None
 
         self.context.logger.info(f"Balance ({token}): {token_balance}.")
         if swap_amount > compared_balance:
@@ -298,6 +192,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 f"There is not enough balance to cover the swap amount ({swap_amount}) "
             )
             if token == SOL:
+                # subtract the SOL we'd have before this swap or the token's balance if there are no preceding swaps
                 preceding_swaps_amount = token_balance - (
                     sol_before_swap or token_balance
                 )
@@ -374,13 +269,30 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         self, token_data: Dict[str, Any]
     ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
-        # TODO this method is blocking, needs to be run from an aea skill.
+        portfolio = yield from self.get_from_ipfs(
+            self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
+        )
+        portfolio = cast(Optional[Dict[str, int]], portfolio)
+        if portfolio is None:
+            self.context.logger.error("Could not get the portfolio from IPFS.")
+            # return empty orders and incomplete status, because the portfolio is necessary for all the swaps
+            return [], True
+
+        sol_balance = portfolio.get(SOL_ADDRESS, None)
+        if sol_balance is None:
+            err = "The portfolio data do not contain any information for SOL."
+            self.context.logger.error(err)
+            # return empty orders and incomplete status, because SOL are necessary for all the swaps
+            return [], True
+        self.sol_balance = self.sol_balance_after_swaps = sol_balance
+
         orders: List[Dict[str, str]] = []
         incomplete = False
         for token, data in token_data.items():
             if token == SOL_ADDRESS:
                 continue
 
+            # TODO this method is blocking, needs to be run from an aea skill or a task.
             decision = self.get_swap_decision(data)
             if decision is None:
                 incomplete = True
@@ -396,7 +308,17 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
             quote_data[token_swap_position] = token
             input_token = quote_data[INPUT_MINT]
-            enough_tokens = yield from self.is_balance_sufficient(input_token)
+            if input_token is not SOL:
+                token_balance = portfolio.get(input_token, None)
+                if token_balance is None:
+                    err = f"The portfolio data do not contain any information for {token!r}."
+                    self.context.logger.error(err)
+                    # return, because a swap for another token might be performed
+                    continue
+            else:
+                token_balance = self.sol_balance
+
+            enough_tokens = self.is_balance_sufficient(input_token, token_balance)
             if not enough_tokens:
                 incomplete = True
                 continue

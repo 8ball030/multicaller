@@ -9,10 +9,10 @@ fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
   behaviours.py: bafybeih22xfmqiyuigzlhj7v47hxnwpfbopoktyjzuizfiskqd4wsvdvce
-  composition.py: bafybeidi5psudatw34cmnz4koeoxmnc3s3ca4tsvogydcdwo3qvtdqq6tm
+  composition.py: bafybeih6c4ka5qfgdla2a7tx4kqkt7n4luhyocqrmjg3mz26qsnlgffxca
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeiavd6cfuk4apllbh24eied2xhned2dxunod25m33wy7girmirisni
-  models.py: bafybeiduaznuo77jzz5gkyabyu52jsfnfpwseaeibwl66ydghombhvnjle
+  models.py: bafybeihb2pmgwyccjaxrrde5fhtl3qc6eaf5prfy65iagr6wkc3ynzhkd4
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -21,10 +21,10 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeihen4vsvan3oa6ojm55ezb26fto3vc76dcwetadk3z4ztvxjbn5q4
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiezmtcs76pod4xjpwcxp64y4dgv3wnkt2pz4uojnzgmyfpfkkxyja
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeicsccrwmu6qzebpgdwc7nd5gu555ulitfu6fcithg3h4oo4nempym
-- valory/portfolio_tracker_abci:0.1.0:bafybeihvvk77sskm6wpzrbuofr2i7s42mn5qhtyf2hfgb5wb7qy5kvkire
+- valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeibn2hzjz4a65zkzinfflkncgjwrwytjnjgoivt3hfmgqf4rm73so4
+- valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:
   main:
     args: {}
@@ -137,7 +137,6 @@ models:
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
       ipfs_address: https://gateway.autonolas.tech/ipfs/
-      selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
       trading_strategy: strategy_name
       strategies_kwargs:
@@ -147,7 +146,14 @@ models:
         - value
       use_proxy_server: false
       expected_swap_tx_cost: 20000000
+      ipfs_fetch_retries: 5
       squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      agent_balance_threshold: 50000000
+      multisig_balance_threshold: 1000000000
+      tracked_tokens: []
+      refill_action_timeout: 10
+      rpc_polling_interval: 5
+      epsilon: 0.1
     class_name: Params
   coingecko:
     args:

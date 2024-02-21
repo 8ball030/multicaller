@@ -33,7 +33,7 @@ from packages.valory.skills.abstract_round_abci.abci_app_chain import (
 
 # import packages.valory.skills.solana_transaction_settlement_abci.rounds as SolanaTransactionSettlementAbci  noqa: E800
 
-DECISION_MAKING = SolanaTraderDecisionMakerAbci.SolanaTraderDecisionMakerRound
+DECISION_MAKING = SolanaTraderDecisionMakerAbci.RandomnessRound
 RESET_AND_PAUSE = ResetAndPauseAbci.ResetAndPauseRound
 
 

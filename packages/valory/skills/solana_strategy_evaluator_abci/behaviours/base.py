@@ -147,30 +147,59 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         """
         Gets an object from IPFS.
 
-        If the result is `None`, then an error is logged, sleeps, and returns `None` to be handled for retrying.
+        If the result is `None`, then an error is logged, sleeps, and retries.
 
         :param ipfs_hash: the ipfs hash of the file/dir to download.
         :param filetype: the file type of the object being downloaded.
         :param custom_loader: a custom deserializer for the object received from IPFS.
         :param timeout: timeout for the request.
         :yields: None.
-        :returns: the downloaded object, corresponding to ipfs_hash or `None` for retrying.
+        :returns: the downloaded object, corresponding to ipfs_hash or `None` if retries were exceeded.
         """
         if ipfs_hash is None:
             return None
 
-        res = yield from super().get_from_ipfs(
-            ipfs_hash, filetype, custom_loader, timeout
-        )
-        if res is None:
+        n_retries = 0
+        while n_retries < self.params.ipfs_fetch_retries:
+            res = yield from super().get_from_ipfs(
+                ipfs_hash, filetype, custom_loader, timeout
+            )
+            if res is not None:
+                return res
+
+            n_retries += 1
             sleep_time = self.params.sleep_time
             self.context.logger.error(
                 f"Could not get any data from IPFS using hash {ipfs_hash!r}!"
                 f"Retrying in {sleep_time}..."
             )
-            self.sleep(sleep_time)
+            yield from self.sleep(sleep_time)
 
-        return res
+        return None
+
+    def get_ipfs_hash_payload_content(
+        self,
+        data: Any,
+        process_fn: Callable[[Any], Generator[None, None, Tuple[Sized, bool]]],
+        store_filepath: str,
+    ) -> Generator[None, None, Tuple[Optional[str], Optional[bool]]]:
+        """Get the ipfs hash payload's content."""
+        if data is None:
+            return None, None
+
+        incomplete: Optional[bool]
+        processed, incomplete = yield from process_fn(data)
+        if len(processed) == 0:
+            processed_hash = None
+            if incomplete:
+                incomplete = None
+        else:
+            processed_hash = yield from self.send_to_ipfs(
+                store_filepath,
+                processed,
+                filetype=SupportedFiletype.JSON,
+            )
+        return processed_hash, incomplete
 
     def get_process_store_act(
         self,
@@ -187,30 +216,15 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         :param hash_: the hash of the data to process.
         :param process_fn: the function to process the data.
         :param store_filepath: path to the file to store the processed data.
-        :return: None
         :yield: None
         """
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-            if data is None:
-                return
-
-            incomplete: Optional[bool]
-            processed, incomplete = yield from process_fn(data)
-            if len(processed) == 0:
-                processed_hash = None
-                if incomplete:
-                    incomplete = None
-            else:
-                processed_hash = yield from self.send_to_ipfs(
-                    store_filepath,
-                    processed,
-                    filetype=SupportedFiletype.JSON,
-                )
-
-            payload = IPFSHashPayload(
-                self.context.agent_address, processed_hash, incomplete
+            sender = self.context.agent_address
+            payload_data = yield from self.get_ipfs_hash_payload_content(
+                data, process_fn, store_filepath
             )
+            payload = IPFSHashPayload(sender, *payload_data)
 
         yield from self.finish_behaviour(payload)
 
