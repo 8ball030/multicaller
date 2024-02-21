@@ -24,6 +24,8 @@ import os
 from abc import ABC
 from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
 
+import pandas as pd
+
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -38,7 +40,6 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
     SynchronizedData,
     TransformMarketDataRound,
 )
-import pandas as pd
 
 
 HTTP_OK = [200, 201]
@@ -47,7 +48,6 @@ MARKETS_FILE_NAME = "markets.json"
 TOKEN_ID_FIELD = "coingecko_id"  # nosec: B105:hardcoded_password_string
 TOKEN_ADDRESS_FIELD = "address"  # nosec: B105:hardcoded_password_string
 UTF8 = "utf-8"
-
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -200,7 +200,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                 f"Successfully fetched market data for {token_id}."
             )
             # we collect a tuple of the prices and the volumes
-            
+
             prices = response_json.get(self.coingecko.prices_field, [])
             volumes = response_json.get(self.coingecko.volumes_field, [])
             prices_volumes = {"prices": prices, "volumes": volumes}
@@ -240,18 +240,18 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         self.set_done()
 
-
-    def transform_data(self,) -> Generator[None, None, Dict[str, str]]:
+    def transform_data(
+        self,
+    ) -> Generator[None, None, Optional[str]]:
         """Transform the data to OHLCV format."""
         markets_data = yield from self.get_from_ipfs(
             self.synchronized_data.data_hash, SupportedFiletype.JSON
         )
         results = {}
-        for token_address, market_data in markets_data.items():
+        for token_address, market_data in markets_data.items():  # type: ignore
             df = pd.DataFrame(market_data, columns=["timestamp", "price"])
             df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
-            df = df.set_index('timestamp')
-            df = df.resample(DEFAULT_OHLCV_PERIOD).ohlc()
+            df = df.set_index("timestamp")
             results[token_address] = df.to_json(orient="index")
 
         data_hash = yield from self.send_to_ipfs(
