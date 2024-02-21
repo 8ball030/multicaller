@@ -105,3 +105,6 @@ fix-abci-app-specs:
 
 protolint_install:
 	GO111MODULE=on GOPATH=~/go go get -u -v github.com/yoheimuta/protolint/cmd/protolint@v0.27.0
+
+strat-hashes:
+	cd strategies && aea ipfs add trend_following_strategy
