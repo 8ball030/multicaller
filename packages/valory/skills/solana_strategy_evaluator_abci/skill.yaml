@@ -37,7 +37,7 @@ contracts: []
 protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
-- valory/market_data_fetcher_abci:0.1.0:bafybeifqtwqjixxukh5fvhxb7zexocwhwepm4tu42mryzfpiyjb2so7phy
+- valory/market_data_fetcher_abci:0.1.0:bafybeib5lhwb5u2fvwvpltwjawnqgqpmfsmxt6rlhol4sdimxojzjvjcx4
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:

@@ -21,9 +21,9 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeifqtwqjixxukh5fvhxb7zexocwhwepm4tu42mryzfpiyjb2so7phy
+- valory/market_data_fetcher_abci:0.1.0:bafybeib5lhwb5u2fvwvpltwjawnqgqpmfsmxt6rlhol4sdimxojzjvjcx4
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeig6iiioxw2isa3bvjntliygicyq7s2mlerlcx72ewyoy2azu6vz6u
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeiaqgh3c7xn5so7c6bbcss6bbpa2c4kcg5khaa2vfjvqyczfk3gila
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:
   main:

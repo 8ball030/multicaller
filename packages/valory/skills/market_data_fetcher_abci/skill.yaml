@@ -7,13 +7,13 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeih2dsi3e5ax36ooryzjkeoprkeqif3sguc4h63ldx6clkhmdsztka
-  behaviours.py: bafybeicj2awc5g5o5vziuwkh65hm4mkljk24bymmhsqoaenefij2ddixhe
+  behaviours.py: bafybeiacmnxmwzxwy2s4r7qsxo437oukm5wfia6fi2r5nyc6slqekk7id4
   dialogues.py: bafybeigyppu2yxzqx5gvbmcm4g653wkjjxlsancbio53xmdfu3wizh3fty
   fsm_specification.yaml: bafybeib6ucxlubtfscg7vris2ia2f7iwlpzxte2bhqcvdluoge4xl2paba
   handlers.py: bafybeifkugrofhi6ers2ovvbva6gqnnkrarvuwr5qspun6ndids5vxdzxq
   models.py: bafybeidbg3sjyfhwlw5miyr5txtcjha6n3wne6hsxrpccdl7vcjvt6uyzy
   payloads.py: bafybeih7jdj73dkhtjg5k4eyjfu2o4ztabdfufyb7ybgyrhazntyd7vixy
-  rounds.py: bafybeigsnr3mfjb2od664gtzok3bhojucdsrbp3y472t57wqmzbuoyuamu
+  rounds.py: bafybeiglmxsdqyisgjijawlwyunceyb74oyqhqobdnqrfv6vawfe54hd4u
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -146,4 +146,6 @@ models:
 dependencies:
   pandas:
     version: '>=1.3.0'
+  PyYAML:
+    version: '>=5.4.1'
 is_abstract: true
