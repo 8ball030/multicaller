@@ -55,10 +55,23 @@ def collect_data(
     frequency="5m",
 ):
     """
-    Collect OLAS 5m data
+    Collects data for a specified pool within a given date range and frequency.
 
-    we will have to chunk the data into 1000 rows
-
+    :param pool_id: The pool id to collect data for.
+    :type pool_id: str
+    :param since: The start date for data collection.
+    :type since: str or datetime
+    :param until: The end date for data collection.
+    :type until: str or datetime
+    :param limit: The maximum number of rows to collect.
+    :type limit: int
+    :param frequency: The frequency of the data collection. Options include
+                      '1m' (minute), '5m' (5 minutes), '15m' (15 minutes),
+                      '1h' (hour), '4h' (4 hours), '1d' (day), '1w' (week),
+                      and '1mo' (month).
+    :type frequency: str
+    :returns: A DataFrame containing the collected data.
+    :rtype: pd.DataFrame
     """
 
     gt = GeckoTerminalClient()
