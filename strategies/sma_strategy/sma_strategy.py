@@ -44,10 +44,8 @@ SELL_SIGNAL = "sell"
 HOLD_SIGNAL = "hold"
 NA_SIGNAL = "insufficient_data"
 
-DEFAULT_MA_PERIOD = 10
-DEFAULT_RSI_PERIOD = 14
-DEFAULT_RSI_OVERBOUGHT_THRESHOLD = 70
-DEFAULT_RSI_OVERSOLD_THRESHOLD = 30
+DEFAULT_MA_PERIOD = 35
+DEFAULT_STOCH_PERIOD = 130
 
 REQUIRED_FIELDS = frozenset({"transformed_data", "portfolio_data"})
 OPTIONAL_FIELDS = frozenset(
@@ -113,7 +111,7 @@ class Strategy(
 ):  # pylint: disable=too-many-instance-attributes
     """A simple moving average crossover strategy."""
 
-    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int) -> None:
+    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int) -> None:
         """Initialize the strategy."""
         super().__init__(feed)
         self.__instrument = instrument
@@ -122,7 +120,7 @@ class Strategy(
         self.__prices = feed[instrument].getPriceDataSeries()
         self.__sma = ma.SMA(self.__prices, ma_period)
         self.__lma = ma.SMA(self.__prices, ma_period * 2)
-        self.__stoch = stoch.StochasticOscillator(feed[instrument], 100)
+        self.__stoch = stoch.StochasticOscillator(feed[instrument], stoch_period)
 
     @property
     def sharpe_analyser(self) -> sharpe.SharpeRatio:
@@ -161,10 +159,8 @@ class Strategy(
 
     def onBars(self, bars: Bars) -> Dict[str, str]:
         """Handle the bars."""
-        close = bars[self.__instrument].getClose()
         prices = self.__prices
         lma, sma, stoc = self.__lma, self.__sma, self.__stoch
-        print(f"Close: {close}, LMA: {lma[-1]}, SMA: {sma[-1]}, Stoch: {stoc[-1]}")
         if not lma[-1] or not sma[-1] or not prices[-1] or not stoc[-1]:
             return {"signal": HOLD_SIGNAL}
 
@@ -197,9 +193,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     transformed_data: Dict[str, Any],
     portfolio_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
-    rsi_period: int = DEFAULT_RSI_PERIOD,
-    rsi_overbought_threshold: int = DEFAULT_RSI_OVERBOUGHT_THRESHOLD,
-    rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
+    stoch_period: int = DEFAULT_STOCH_PERIOD,
 ) -> Dict[str, Any]:
     """Compute the trend following signal"""
     results = {}
@@ -212,9 +206,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
             feed,
             token,
             ma_period=ma_period,
-            rsi_period=rsi_period,
-            overbought_threshold=rsi_overbought_threshold,
-            oversold_threshold=rsi_oversold_threshold,
+            stoch_period=stoch_period,
         )
 
         broker = strat.getBroker()
@@ -242,9 +234,9 @@ def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     return feed
 
 
-def prepare_strategy(feed: GenericBarFeed, token: str, **kwargs) -> Strategy:  # type: ignore
+def prepare_strategy(feed: GenericBarFeed, asset: str, **kwargs) -> Strategy:  # type: ignore
     """Prepare the strategy."""
-    strat = Strategy(feed, token, **kwargs)
+    strat = Strategy(feed, asset, **kwargs)
     sharpe_analyser = sharpe.SharpeRatio()
     strat.attachAnalyzer(sharpe_analyser)
     strat.sharpe_analyser = sharpe_analyser
@@ -257,12 +249,13 @@ def prepare_strategy(feed: GenericBarFeed, token: str, **kwargs) -> Strategy:  #
 def evaluate(
     transformed_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
+    stoch_period: int = DEFAULT_STOCH_PERIOD,
     plot: bool = False,
     asset: str = "olas",
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
     feed = prepare_feed(asset, transformed_data)
-    strat = prepare_strategy(feed, asset, ma_period=ma_period)
+    strat = prepare_strategy(feed, asset, ma_period=ma_period, stoch_period=stoch_period)
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:
@@ -291,7 +284,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
 
 def parameters_generator() -> itertools.product:
     """Genethe parameters."""
-    return itertools.product(["token_a"], range(10, 100, 10))
+    return itertools.product(["token_a"], range(30, 50, 5), range(100, 130, 5))
 
 
 def optimise(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
