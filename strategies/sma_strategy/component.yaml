@@ -9,6 +9,8 @@ fingerprint:
   __init__.py: bafybeidey4syohls5hxmso6qsp5p4uhtzle5txv2mlbym6ktjzknich6oa
   sma_strategy.py: bafybeibqwl52cnz64cysjd2jnjijuakdvyrffapxq65cdzx6g65gu42deq
 fingerprint_ignore_patterns: []
-entry_point: trend_following_strategy.py
-callable: run
+entry_point: sma_strategy.py
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
 dependencies: {}

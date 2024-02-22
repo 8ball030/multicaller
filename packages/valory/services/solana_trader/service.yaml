@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeid5nq5464gatyco6g2q5bcxbccq4w4ad7yg5lf7h72gcttnttmgke
+agent: valory/solana_trader:0.1.0:bafybeihuoucozwb7uxvh476xn7m77hxlpa7antxrlvubz57phuwea2orai
 number_of_agents: 4
 deployment: {}
 ---
@@ -19,28 +19,28 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m",["follow_trend_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
 1:
   models:
     params:
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m",["follow_trend_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
 2:
   models:
     params:
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m",["follow_trend_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
 3:
   models:
     params:
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m",["follow_trend_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill

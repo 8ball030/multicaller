@@ -10,5 +10,7 @@ fingerprint:
   trend_following_strategy.py: bafybeibqwl52cnz64cysjd2jnjijuakdvyrffapxq65cdzx6g65gu42deq
 fingerprint_ignore_patterns: []
 entry_point: trend_following_strategy.py
-callable: run
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
 dependencies: {}
