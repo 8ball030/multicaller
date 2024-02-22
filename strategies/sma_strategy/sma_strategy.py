@@ -109,7 +109,9 @@ class Strategy(
 ):  # pylint: disable=too-many-instance-attributes
     """A simple moving average crossover strategy."""
 
-    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int) -> None:
+    def __init__(
+        self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int
+    ) -> None:
         """Initialize the strategy."""
         super().__init__(feed)
         self.__instrument = instrument
@@ -253,7 +255,9 @@ def evaluate(
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
     feed = prepare_feed(asset, transformed_data)
-    strat = prepare_strategy(feed, asset, ma_period=ma_period, stoch_period=stoch_period)
+    strat = prepare_strategy(
+        feed, asset, ma_period=ma_period, stoch_period=stoch_period
+    )
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:
