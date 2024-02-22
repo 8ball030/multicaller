@@ -330,15 +330,13 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         markets_data = yield from self.get_from_ipfs(
             self.synchronized_data.data_hash, SupportedFiletype.JSON
         )
+        markets_data = cast(Dict[str, Dict[str, Any]], markets_data)
         results = {}
 
         strategy = self.synchronized_data.selected_strategy
-        for token_address, market_data in markets_data.items():  # type: ignore
-            kwargs = {
-                STRATEGY_KEY: strategy,
-                **market_data
-            }
-            result = self.execute_strategy(**kwargs)  # type: ignore
+        for token_address, market_data in markets_data.items():
+            kwargs = {STRATEGY_KEY: strategy, **market_data}
+            result = self.execute_strategy(**kwargs)
             if result is None:
                 self.context.logger.error(
                     f"Failed to transform market data for {token_address}."
