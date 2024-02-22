@@ -116,7 +116,7 @@ models:
       error_key: ${str:error:message}
       error_type: ${str:str}
       retries: ${int:5}
-      url: ${str:https://stylish-radial-uranium.solana-mainnet.quiknode.pro/1a3f50a366060ff50cd38e73a92723878a3c98ee/}
+      url: ${str:https://api.mainnet-beta.solana.com}
   token_accounts:
     args:
       api_id: ${str:token_accounts}
@@ -129,7 +129,7 @@ models:
       error_key: ${str:error:message}
       error_type: ${str:str}
       retries: ${int:5}
-      url: ${str:https://stylish-radial-uranium.solana-mainnet.quiknode.pro/1a3f50a366060ff50cd38e73a92723878a3c98ee/}
+      url: ${str:https://api.mainnet-beta.solana.com}
   coingecko:
     args:
       endpoint: ${str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
@@ -213,8 +213,8 @@ models:
       expected_swap_tx_cost: ${int:20000000}
       ipfs_fetch_retries: ${int:5}
       squad_vault: ${str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
-      agent_balance_threshold: ${int:50000}
-      multisig_balance_threshold: ${int:0}
+      agent_balance_threshold: ${int:50000000}
+      multisig_balance_threshold: ${int:1000000000}
       refill_action_timeout: ${int:10}
       rpc_polling_interval: ${int:5}
       epsilon: ${float:0.1}

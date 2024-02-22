@@ -1,12 +1,12 @@
 {
     "dev": {
-        "agent/valory/solana_trader/0.1.0": "bafybeibgec6bm4yka2nvsnkq4ftddif7omhzc3efo4st4vwpwb73z6rnaa",
+        "agent/valory/solana_trader/0.1.0": "bafybeid5nq5464gatyco6g2q5bcxbccq4w4ad7yg5lf7h72gcttnttmgke",
         "skill/valory/solana_trader_decision_maker_abci/0.1.0": "bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4",
         "skill/valory/solana_strategy_evaluator_abci/0.1.0": "bafybeiaqgh3c7xn5so7c6bbcss6bbpa2c4kcg5khaa2vfjvqyczfk3gila",
         "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeib5lhwb5u2fvwvpltwjawnqgqpmfsmxt6rlhol4sdimxojzjvjcx4",
         "skill/valory/solana_trader_abci/0.1.0": "bafybeietjobez7clejkz7tqry7y764fghx2kkyvwdcihdi3pzkd5wwwx4i",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeihwfxguhso57xly6nb7tckgcnijs7bumjf2i2u4oqn2cn7soi4pdy",
-        "service/valory/solana_trader/0.1.0": "bafybeigivl2swrgcxn7yn4sjqjcighvl3c2b5dfztcrl35ovywbk7jqbgy",
+        "service/valory/solana_trader/0.1.0": "bafybeievxgatag5irthc4hqaptxfe5oau3uppfpafbgl454yezifwjvoxi",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca"
     },
     "third_party": {
