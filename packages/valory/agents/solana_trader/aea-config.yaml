@@ -96,7 +96,7 @@ models:
     args:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
-      file_hash_to_id: ${list:[["bafybeifbgqku4itl3knhgv3vxjk3vphyjl47rcwknvwdcjqro4bdouwgda",["follow_trend_strategy"]]]}
+      file_hash_to_id: ${list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
