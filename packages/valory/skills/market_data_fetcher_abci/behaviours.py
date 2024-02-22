@@ -223,7 +223,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
 DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 COMPONENT_YAML_FILENAME = "component.yaml"
-CALLABLE_KEY = "callable"
+CALLABLE_KEY = "transform_callable"
 ENTRY_POINT_KEY = "entry_point"
 STRATEGY_KEY = "trading_strategy"
 
@@ -281,7 +281,7 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         """Execute the strategy and return the results."""
         trading_strategy = kwargs.pop(STRATEGY_KEY, None)
         if trading_strategy is None:
-            self.context.logger.error("No `trading_strategy` was given!")
+            self.context.logger.error(f"No {STRATEGY_KEY!r} was given!")
             return None
 
         strategy = self.strategy_exec(trading_strategy)
@@ -334,7 +334,11 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         strategy = self.synchronized_data.selected_strategy
         for token_address, market_data in markets_data.items():  # type: ignore
-            result = self.execute_strategy(trading_strategy=strategy, **market_data)  # type: ignore
+            kwargs = {
+                STRATEGY_KEY: strategy,
+                **market_data
+            }
+            result = self.execute_strategy(**kwargs)  # type: ignore
             if result is None:
                 self.context.logger.error(
                     f"Failed to transform market data for {token_address}."

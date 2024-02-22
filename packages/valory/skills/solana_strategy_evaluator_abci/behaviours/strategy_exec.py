@@ -38,7 +38,8 @@ from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import 
 
 
 STRATEGY_KEY = "trading_strategy"
-PRICE_DATA_KEY = "price_data"
+PRICE_DATA_KEY = "transformed_data"
+PORTFOLIO_DATA_KEY = "portfolio_data"
 SWAP_DECISION_FIELD = "signal"
 BUY_DECISION = "buy"
 SELL_DECISION = "sell"
@@ -49,7 +50,7 @@ SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 SOL = "SOL"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
-CALLABLE_KEY = "callable"
+CALLABLE_KEY = "run_callable"
 INPUT_MINT = "inputMint"
 OUTPUT_MINT = "outputMint"
 
@@ -217,6 +218,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def get_swap_decision(
         self,
         token_data: Any,
+        portfolio_data: Any,
     ) -> Optional[str]:
         """Get the swap decision given a token's data."""
         strategy = self.synchronized_data.selected_strategy
@@ -227,6 +229,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             {
                 STRATEGY_KEY: strategy,
                 PRICE_DATA_KEY: token_data,
+                PORTFOLIO_DATA_KEY: portfolio_data,
             }
         )
         results = self.execute_strategy(**kwargs)
@@ -293,7 +296,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 continue
 
             # TODO this method is blocking, needs to be run from an aea skill or a task.
-            decision = self.get_swap_decision(data)
+            decision = self.get_swap_decision(data, portfolio)
             if decision is None:
                 incomplete = True
                 continue
