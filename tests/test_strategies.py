@@ -29,7 +29,7 @@ import pandas as pd
 
 
 
-from strategies.sma_strategy import sma_strategy 
+from strategies.sma_strategy import strategy as sma_strategy
 from strategies.rsi_strategy import rsi_strategy
 from strategies.trend_following_strategy import trend_following_strategy
 from unittest import TestCase
@@ -86,9 +86,8 @@ def test_transform(strategy, raw_data):
     assert "transformed_data" in data
 
 
-@pytest.mark.skip()
 @pytest.mark.parametrize("strategy", strategies)
-def test_complete_strategy(strategy, raw_data):
+def test_run(strategy, raw_data):
     """Test the complete strategy."""
     kwargs = strategy.transform(**raw_data)
     result = strategy.run(**kwargs, portfolio_data={"token_a": 1000, "USDT": 1000})

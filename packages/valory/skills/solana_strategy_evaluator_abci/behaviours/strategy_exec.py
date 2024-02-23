@@ -39,6 +39,8 @@ from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import 
 
 STRATEGY_KEY = "trading_strategy"
 PRICE_DATA_KEY = "price_data"
+TRANSFORMED_PRICE_DATA_KEY = "transformed_data"
+PORTFOLIO_DATA_KEY = "portfolio_data"
 SWAP_DECISION_FIELD = "signal"
 BUY_DECISION = "buy"
 SELL_DECISION = "sell"
@@ -217,16 +219,18 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def get_swap_decision(
         self,
         token_data: Any,
+        portfolio_data: Dict[str, int],
     ) -> Optional[str]:
         """Get the swap decision given a token's data."""
         strategy = self.synchronized_data.selected_strategy
         self.context.logger.info(f"Using trading strategy {strategy!r}.")
         # the following are always passed to a strategy script, which may choose to ignore any
-        kwargs: Dict[str, Any] = self.params.strategies_kwargs
+        kwargs: Dict[str, Any] = {}
         kwargs.update(
             {
                 STRATEGY_KEY: strategy,
-                PRICE_DATA_KEY: token_data,
+                TRANSFORMED_PRICE_DATA_KEY: token_data,
+                PORTFOLIO_DATA_KEY: portfolio_data,
             }
         )
         results = self.execute_strategy(**kwargs)
@@ -293,7 +297,8 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 continue
 
             # TODO this method is blocking, needs to be run from an aea skill or a task.
-            decision = self.get_swap_decision(data)
+            breakpoint()
+            decision = self.get_swap_decision(data, portfolio)
             if decision is None:
                 incomplete = True
                 continue
@@ -331,7 +336,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def async_act(self) -> Generator:
         """Do the action."""
         yield from self.get_process_store_act(
-            self.synchronized_data.data_hash,
+            self.synchronized_data.transformed_data_hash,
             self.get_orders,
             str(self.swap_decision_filepath),
         )
