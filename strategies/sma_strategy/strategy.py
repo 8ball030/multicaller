@@ -121,6 +121,7 @@ class Strategy(
         self.__sma = ma.SMA(self.__prices, ma_period)
         self.__lma = ma.SMA(self.__prices, ma_period * 2)
         self.__stoch = stoch.StochasticOscillator(feed[instrument], stoch_period)
+        self.__loaded = True
 
     @property
     def sharpe_analyser(self) -> sharpe.SharpeRatio:
@@ -131,6 +132,16 @@ class Strategy(
     def sharpe_analyser(self, value: sharpe.SharpeRatio) -> None:
         """Set the sharpe analyser."""
         self.__sharpe_analyser = value
+
+    @property
+    def loaded(self) -> bool:
+        """Check if the strategy is loaded."""
+        return self.__loaded
+    
+    @loaded.setter
+    def loaded(self, value: bool) -> None:
+        """Set the loaded value."""
+        self.__loaded = value
 
     def getSMA(self) -> ma.SMA:
         """Get the simple moving average."""
@@ -159,6 +170,9 @@ class Strategy(
 
     def onBars(self, bars: Bars) -> Dict[str, str]:
         """Handle the bars."""
+        if not self.loaded:
+            return {"signal": NA_SIGNAL}
+
         prices = self.__prices
         lma, sma, stoc = self.__lma, self.__sma, self.__stoch
         if not lma[-1] or not sma[-1] or not prices[-1] or not stoc[-1]:
@@ -194,32 +208,42 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     portfolio_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
     stoch_period: int = DEFAULT_STOCH_PERIOD,
+    token: str = "token_a",
 ) -> Dict[str, Any]:
     """Compute the trend following signal"""
     results = {}
     cash = portfolio_data.get(DEFAULT_BASE_CURRENCY, 0)
-    for token, data in transformed_data.items():
-        print(f"Processing signal for {token}")
-        feed = prepare_feed(token, data)
-        balance = portfolio_data.get(token, 10)
-        strat = prepare_strategy(
-            feed,
-            token,
-            ma_period=ma_period,
-            stoch_period=stoch_period,
-        )
+    breakpoint()
+    print(f"Processing signal for {token}")
+    feed = prepare_feed(token, transformed_data)
+    balance = portfolio_data.get(token, 10)
+    strat = prepare_strategy(
+        feed,
+        token,
+        ma_period=ma_period,
+        stoch_period=stoch_period,
+    )
+    broker = strat.getBroker()
+    broker.setCash(cash)
+    bars = feed.getNextBars()
+    close = bars.getBar(token).getClose()
+    feed.reset()
+    broker.setShares(token, balance, close)
 
-        broker = strat.getBroker()
-        broker.setCash(cash)
-        bars = feed.getNextBars()
-        close = bars.getBar(token).getClose()
-        feed.reset()
-        broker.setShares(token, balance, close)
-        strat.run()
-        signal = strat.onBars(
-            bars,
-        )
-        results[token] = signal
+    existing_position = Position(
+        token,
+        close,
+        balance,
+    )
+    strat.__position = existing_position
+
+    strat.loaded = False
+    strat.run()
+    strat.loaded = True
+    signal = strat.onBars(
+        bars,
+    )
+    results[token] = signal
     return {"signals": results}
 
 
@@ -279,7 +303,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     missing = check_missing_fields(kwargs)
     if len(missing) > 0:
         return {"error": f"Required kwargs {missing} were not provided."}
-
+    
     kwargs = remove_irrelevant_fields(kwargs)
     return trend_following_signal(**kwargs)
 

@@ -30,3 +30,10 @@ class MarketDataPayload(BaseTxPayload):
     """Represent a transaction payload for the market data."""
 
     data_hash: Optional[str]
+
+@dataclass(frozen=True)
+class TransformedMarketDataPayload(BaseTxPayload):
+    """Represent a transaction payload for the market data."""
+
+    transformed_data_hash: Optional[str]
+
