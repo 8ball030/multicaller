@@ -51,7 +51,7 @@ SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 SOL = "SOL"
 COMPONENT_YAML_FILENAME = "component.yaml"
 ENTRY_POINT_KEY = "entry_point"
-CALLABLE_KEY = "callable"
+CALLABLE_KEY = "run_callable"
 INPUT_MINT = "inputMint"
 OUTPUT_MINT = "outputMint"
 

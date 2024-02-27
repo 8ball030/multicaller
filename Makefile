@@ -111,4 +111,3 @@ strat-hashes:
 		aea ipfs add trend_following_strategy && \
 		aea ipfs add rsi_strategy && \
 		aea ipfs add sma_strategy
-

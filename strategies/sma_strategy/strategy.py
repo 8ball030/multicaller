@@ -48,9 +48,7 @@ DEFAULT_MA_PERIOD = 35
 DEFAULT_STOCH_PERIOD = 130
 
 REQUIRED_FIELDS = frozenset({"transformed_data", "portfolio_data"})
-OPTIONAL_FIELDS = frozenset(
-    {"ma_period", "rsi_period", "rsi_overbought_threshold", "rsi_oversold_threshold"}
-)
+OPTIONAL_FIELDS = frozenset({"ma_period"})
 ALL_FIELDS = REQUIRED_FIELDS.union(OPTIONAL_FIELDS)
 
 
@@ -111,7 +109,9 @@ class Strategy(
 ):  # pylint: disable=too-many-instance-attributes
     """A simple moving average crossover strategy."""
 
-    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int) -> None:
+    def __init__(
+        self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int
+    ) -> None:
         """Initialize the strategy."""
         super().__init__(feed)
         self.__instrument = instrument
@@ -279,7 +279,9 @@ def evaluate(
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
     feed = prepare_feed(asset, transformed_data)
-    strat = prepare_strategy(feed, asset, ma_period=ma_period, stoch_period=stoch_period)
+    strat = prepare_strategy(
+        feed, asset, ma_period=ma_period, stoch_period=stoch_period
+    )
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:

@@ -34,7 +34,7 @@ DEFAULT_RSI_PERIOD = 14
 DEFAULT_RSI_OVERBOUGHT_THRESHOLD = 70
 DEFAULT_RSI_OVERSOLD_THRESHOLD = 30
 
-REQUIRED_FIELDS = frozenset({"price_data"})
+REQUIRED_FIELDS = frozenset({"transformed_data"})
 OPTIONAL_FIELDS = frozenset(
     {"ma_period", "rsi_period", "rsi_overbought_threshold", "rsi_oversold_threshold"}
 )
@@ -56,14 +56,14 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def trend_following_signal(
-    price_data: List[Tuple[int, float]],
+    transformed_data: List[Tuple[int, float]],
     ma_period: int = DEFAULT_MA_PERIOD,
     rsi_period: int = DEFAULT_RSI_PERIOD,
     rsi_overbought_threshold: int = DEFAULT_RSI_OVERBOUGHT_THRESHOLD,
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
 ) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
-    prices = [price for _timestamp, price in price_data]
+    prices = [price for _timestamp, price in transformed_data]
 
     if len(prices) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
