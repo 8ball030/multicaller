@@ -33,7 +33,9 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 )
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.market_data_fetcher_abci.models import Coingecko, Params
-from packages.valory.skills.market_data_fetcher_abci.payloads import TransformedMarketDataPayload
+from packages.valory.skills.market_data_fetcher_abci.payloads import (
+    TransformedMarketDataPayload,
+)
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     FetchMarketDataRound,
     MarketDataFetcherAbciApp,
@@ -316,7 +318,9 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data_hash = yield from self.transform_data()
             sender = self.context.agent_address
-            payload = TransformedMarketDataPayload(sender=sender, transformed_data_hash=data_hash)
+            payload = TransformedMarketDataPayload(
+                sender=sender, transformed_data_hash=data_hash
+            )
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)

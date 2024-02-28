@@ -136,7 +136,7 @@ class Strategy(
     def loaded(self) -> bool:
         """Check if the strategy is loaded."""
         return self.__loaded
-    
+
     @loaded.setter
     def loaded(self, value: bool) -> None:
         """Set the loaded value."""
@@ -301,7 +301,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     missing = check_missing_fields(kwargs)
     if len(missing) > 0:
         return {"error": f"Required kwargs {missing} were not provided."}
-    
+
     kwargs = remove_irrelevant_fields(kwargs)
     return trend_following_signal(**kwargs)
 

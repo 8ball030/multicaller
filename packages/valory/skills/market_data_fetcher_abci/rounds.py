@@ -34,7 +34,10 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     get_name,
 )
-from packages.valory.skills.market_data_fetcher_abci.payloads import MarketDataPayload, TransformedMarketDataPayload
+from packages.valory.skills.market_data_fetcher_abci.payloads import (
+    MarketDataPayload,
+    TransformedMarketDataPayload,
+)
 
 
 class Event(Enum):
@@ -93,6 +96,7 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
 
 class TransformMarketDataRound(FetchMarketDataRound):
     """Round to transform the fetched signals."""
+
     payload_class = TransformedMarketDataPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
