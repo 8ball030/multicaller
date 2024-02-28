@@ -212,7 +212,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     """Compute the trend following signal"""
     results = {}
     cash = portfolio_data.get(DEFAULT_BASE_CURRENCY, 0)
-    print(f"Processing signal for {token}")
+    print(f"Processing signal for {token_id}")
     feed = prepare_feed(token_id, transformed_data)
     balance = portfolio_data.get(token_id, 10)
     strat = prepare_strategy(
@@ -224,9 +224,9 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     broker = strat.getBroker()
     broker.setCash(cash)
     bars = feed.getNextBars()
-    close = bars.getBar(token).getClose()
+    close = bars.getBar(token_id).getClose()
     feed.reset()
-    broker.setShares(token, balance, close)
+    broker.setShares(token_id, balance, close)
 
     existing_position = Position(
         token_id,

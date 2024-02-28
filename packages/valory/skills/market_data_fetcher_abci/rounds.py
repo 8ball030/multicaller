@@ -97,7 +97,7 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
 class TransformMarketDataRound(FetchMarketDataRound):
     """Round to transform the fetched signals."""
 
-    payload_class = TransformedMarketDataPayload
+    payload_class = TransformedMarketDataPayload  # type: ignore
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     none_event = Event.NONE
