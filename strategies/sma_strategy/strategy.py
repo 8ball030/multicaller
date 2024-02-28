@@ -213,7 +213,6 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     """Compute the trend following signal"""
     results = {}
     cash = portfolio_data.get(DEFAULT_BASE_CURRENCY, 0)
-    breakpoint()
     print(f"Processing signal for {token}")
     feed = prepare_feed(token, transformed_data)
     balance = portfolio_data.get(token, 10)
