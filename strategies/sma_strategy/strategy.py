@@ -38,7 +38,6 @@ DEFAULKT_RISK_FREE_RATE = 0.04  # ether risk free rate
 DEFAULT_BASE_CURRENCY = "USDT"
 DEFAULT_CSV_FILE = "data.csv"
 
-
 BUY_SIGNAL = "buy"
 SELL_SIGNAL = "sell"
 HOLD_SIGNAL = "hold"
@@ -203,22 +202,22 @@ class Strategy(
         return {"signal": HOLD_SIGNAL}
 
 
-def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-locals
+def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-locals # nosec
     transformed_data: Dict[str, Any],
     portfolio_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
     stoch_period: int = DEFAULT_STOCH_PERIOD,
-    token: str = "token_a",
+    token_id: str = "token_a",
 ) -> Dict[str, Any]:
     """Compute the trend following signal"""
     results = {}
     cash = portfolio_data.get(DEFAULT_BASE_CURRENCY, 0)
     print(f"Processing signal for {token}")
-    feed = prepare_feed(token, transformed_data)
-    balance = portfolio_data.get(token, 10)
+    feed = prepare_feed(token_id, transformed_data)
+    balance = portfolio_data.get(token_id, 10)
     strat = prepare_strategy(
         feed,
-        token,
+        token_id,
         ma_period=ma_period,
         stoch_period=stoch_period,
     )
@@ -230,7 +229,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     broker.setShares(token, balance, close)
 
     existing_position = Position(
-        token,
+        token_id,
         close,
         balance,
     )
@@ -242,7 +241,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     signal = strat.onBars(
         bars,
     )
-    results[token] = signal
+    results[token_id] = signal
     return {"signals": results}
 
 
