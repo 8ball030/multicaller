@@ -232,8 +232,9 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
         token_id,
         close,
         balance,
+        allOrNone=True,
     )
-    strat.__position = existing_position
+    strat.__position = existing_position  # pylint: disable=protected-access
 
     strat.loaded = False
     strat.run()
