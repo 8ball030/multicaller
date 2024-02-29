@@ -46,7 +46,7 @@ NA_SIGNAL = "insufficient_data"
 DEFAULT_MA_PERIOD = 35
 DEFAULT_STOCH_PERIOD = 130
 
-REQUIRED_FIELDS = frozenset({"transformed_data", "portfolio_data"})
+REQUIRED_FIELDS = frozenset({"transformed_data", "portfolio_data", "token_id"})
 OPTIONAL_FIELDS = frozenset({"ma_period"})
 ALL_FIELDS = REQUIRED_FIELDS.union(OPTIONAL_FIELDS)
 
@@ -203,11 +203,11 @@ class Strategy(
 
 
 def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-locals # nosec
+    token_id: str,
     transformed_data: Dict[str, Any],
     portfolio_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
     stoch_period: int = DEFAULT_STOCH_PERIOD,
-    token_id: str = "token_a",
 ) -> Dict[str, Any]:
     """Compute the trend following signal"""
     results = {}

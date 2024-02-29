@@ -40,6 +40,7 @@ from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import 
 STRATEGY_KEY = "trading_strategy"
 PRICE_DATA_KEY = "price_data"
 TRANSFORMED_PRICE_DATA_KEY = "transformed_data"
+TOKEN_ID_KEY = "token_id"
 PORTFOLIO_DATA_KEY = "portfolio_data"
 SWAP_DECISION_FIELD = "signal"
 BUY_DECISION = "buy"
@@ -220,6 +221,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         self,
         token_data: Any,
         portfolio_data: Dict[str, int],
+        token: str,
     ) -> Optional[str]:
         """Get the swap decision given a token's data."""
         strategy = self.synchronized_data.selected_strategy
@@ -231,6 +233,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 STRATEGY_KEY: strategy,
                 TRANSFORMED_PRICE_DATA_KEY: token_data,
                 PORTFOLIO_DATA_KEY: portfolio_data,
+                TOKEN_ID_KEY: token,
             }
         )
         results = self.execute_strategy(**kwargs)
@@ -297,8 +300,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 continue
 
             # TODO this method is blocking, needs to be run from an aea skill or a task.
-            breakpoint()
-            decision = self.get_swap_decision(data, portfolio)
+            decision = self.get_swap_decision(data, portfolio, token)
             if decision is None:
                 incomplete = True
                 continue
