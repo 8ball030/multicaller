@@ -227,7 +227,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         strategy = self.synchronized_data.selected_strategy
         self.context.logger.info(f"Using trading strategy {strategy!r}.")
         # the following are always passed to a strategy script, which may choose to ignore any
-        kwargs: Dict[str, Any] = {}
+        kwargs: Dict[str, Any] = self.params.strategies_kwargs
         kwargs.update(
             {
                 STRATEGY_KEY: strategy,
