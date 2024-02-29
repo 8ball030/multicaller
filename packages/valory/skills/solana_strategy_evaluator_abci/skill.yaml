@@ -25,7 +25,7 @@ fingerprint:
   rounds.py: bafybeidmzofk6p6hwjt6rovaogf4obkooaums466jrpknhsaxijtetopmq
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
   states/backtesting.py: bafybeicheizz4uygircjojmokgvuntkskimuczwks2xp6kc6snrkwrl3ua
-  states/base.py: bafybeibg5enacer5ektthgb5g25fmkz6yjuhux5p5ii3bv25vk3hzzvu2y
+  states/base.py: bafybeif6dajb4rgxauehf7g2fe46w36qzd5ylerjxgb4jifclft7ixsdna
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
   states/prepare_swap.py: bafybeidideaz3zhr2v3pfpyqiscglppaguh2gk74rdbalwil3ky3jnqgsa
   states/proxy_swap_queue.py: bafybeie77ly44vkaxxwefna5wozdkskj3ov5oyikptorf4uxnho5ctv54a

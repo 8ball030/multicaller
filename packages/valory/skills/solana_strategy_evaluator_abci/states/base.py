@@ -67,7 +67,7 @@ class Event(Enum):
     PROXY_SWAPPED = "proxy_swapped"
     PROXY_SWAP_FAILED = "proxy_swap_failed"
     BACKTEST_POSITIVE = "backtest_succeeded"
-    BACKTEST_NEGATIVE = "backtest_failed"
+    BACKTEST_NEGATIVE = "backtest_negative"
     BACKTEST_FAILED = "backtest_failed"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
