@@ -248,9 +248,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
 
 def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     """Prepare the data for the strategy."""
-    dataset: pd.DataFrame = pd.read_json(
-        data,
-    )
+    dataset = pd.DataFrame(data)
     dataset.to_csv(DEFAULT_CSV_FILE, index=False)  # pylint: disable=no-member
     feed = GenericBarFeed(Frequency.MINUTE)
     feed.addBarsFromCSV(token, DEFAULT_CSV_FILE)

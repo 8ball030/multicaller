@@ -29,7 +29,7 @@ import pandas as pd
 
 
 
-from strategies.sma_strategy import strategy as sma_strategy
+from strategies.sma_strategy import sma_strategy as sma_strategy
 from strategies.rsi_strategy import rsi_strategy
 from strategies.trend_following_strategy import trend_following_strategy
 from unittest import TestCase
