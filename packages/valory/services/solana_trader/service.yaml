@@ -19,28 +19,28 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeidfn5cdkqmwil52nyc74mgmshdajyaexkmwxbpan57z6fr47r6r3y",["sma_strategy"]]]}
 1:
   models:
     params:
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeidfn5cdkqmwil52nyc74mgmshdajyaexkmwxbpan57z6fr47r6r3y",["sma_strategy"]]]}
 2:
   models:
     params:
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeidfn5cdkqmwil52nyc74mgmshdajyaexkmwxbpan57z6fr47r6r3y",["sma_strategy"]]]}
 3:
   models:
     params:
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifcouebelctelg45h6y6w3f7yixrynrysh5u2wn4mor7na7vtwgia",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeidfn5cdkqmwil52nyc74mgmshdajyaexkmwxbpan57z6fr47r6r3y",["sma_strategy"]]]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
