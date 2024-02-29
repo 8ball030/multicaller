@@ -20,13 +20,14 @@
 """This package contains the rounds of MarketDataFetcherAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Set
+from typing import Dict, FrozenSet, Set, Type
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
     AbciAppTransitionFunction,
     AppState,
     BaseSynchronizedData,
+    BaseTxPayload,
     CollectSameUntilThresholdRound,
     CollectionRound,
     DegenerateRound,
@@ -77,6 +78,11 @@ class SynchronizedData(BaseSynchronizedData):
         return self._get_deserialized("participant_to_fetching")
 
     @property
+    def participant_to_transforming(self) -> DeserializedCollection:
+        """Get the participants to market data transformation."""
+        return self._get_deserialized("participant_to_transforming")
+
+    @property
     def selected_strategy(self) -> str:
         """Get the selected strategy."""
         return self.db.get_strict("selected_strategy")
@@ -85,7 +91,7 @@ class SynchronizedData(BaseSynchronizedData):
 class FetchMarketDataRound(CollectSameUntilThresholdRound):
     """FetchMarketDataRound"""
 
-    payload_class = MarketDataPayload
+    payload_class: Type[BaseTxPayload] = MarketDataPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     none_event = Event.NONE
@@ -97,13 +103,9 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
 class TransformMarketDataRound(FetchMarketDataRound):
     """Round to transform the fetched signals."""
 
-    payload_class = TransformedMarketDataPayload  # type: ignore
-    synchronized_data_class = SynchronizedData
-    done_event = Event.DONE
-    none_event = Event.NONE
-    no_majority_event = Event.NO_MAJORITY
+    payload_class = TransformedMarketDataPayload
     selection_key = get_name(SynchronizedData.transformed_data_hash)
-    collection_key = get_name(SynchronizedData.participant_to_fetching)
+    collection_key = get_name(SynchronizedData.participant_to_transforming)
 
 
 class FinishedMarketFetchRound(DegenerateRound):
