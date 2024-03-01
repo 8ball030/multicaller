@@ -154,6 +154,7 @@ models:
       refill_action_timeout: 10
       rpc_polling_interval: 5
       epsilon: 0.1
+      sharpe_threshold: 1.0
     class_name: Params
   coingecko:
     args:

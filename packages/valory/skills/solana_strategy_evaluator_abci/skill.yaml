@@ -149,6 +149,7 @@ models:
       use_proxy_server: false
       expected_swap_tx_cost: 20000000
       ipfs_fetch_retries: 5
+      sharpe_threshold: 1.0
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:

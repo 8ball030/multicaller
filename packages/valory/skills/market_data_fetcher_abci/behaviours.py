@@ -24,8 +24,6 @@ import os
 from abc import ABC
 from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
 
-import yaml
-
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -51,6 +49,9 @@ MARKETS_FILE_NAME = "markets.json"
 TOKEN_ID_FIELD = "coingecko_id"  # nosec: B105:hardcoded_password_string
 TOKEN_ADDRESS_FIELD = "address"  # nosec: B105:hardcoded_password_string
 UTF8 = "utf-8"
+STRATEGY_KEY = "trading_strategy"
+ENTRY_POINT_STORE_KEY = "entry_point"
+TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -224,81 +225,40 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         return data_hash
 
 
-DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
-COMPONENT_YAML_FILENAME = "component.yaml"
-CALLABLE_KEY = "transform_callable"
-ENTRY_POINT_KEY = "entry_point"
-STRATEGY_KEY = "trading_strategy"
-
-TRANSFORM_DATA_METHOD = "transform"
-
-
 class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
     """Behaviour to transform the fetched signals."""
 
     matching_round: Type[AbstractRound] = TransformMarketDataRound
 
-    def strategy_exec(self, strategy_name: str) -> Optional[Dict[str, str]]:
-        """Get the executable strategy's contents."""
-        return self.context.shared_state.get(DOWNLOADED_PACKAGES_KEY, {}).get(
-            strategy_name, None
-        )
+    def strategy_store(self, strategy_name: str) -> Dict[str, str]:
+        """Get the stored strategy's files."""
+        return self.context.shared_state.get(strategy_name, {})
 
-    def load_custom_component(
-        self, serialized_objects: Dict[str, str]
-    ) -> Optional[Tuple[str, str, str]]:
-        """Load a custom component package.
-
-        :param serialized_objects: the serialized objects.
-        :return: the component.yaml, entry_point.py and callable as tuple.
-        """
-        # the package MUST contain a component.yaml file
-        if COMPONENT_YAML_FILENAME not in serialized_objects:
-            self.context.logger.error(
-                "Invalid component package. "
-                f"The package MUST contain a {COMPONENT_YAML_FILENAME}."
-            )
-            return None
-        # load the component.yaml file
-        component_yaml = yaml.safe_load(serialized_objects[COMPONENT_YAML_FILENAME])
-        if ENTRY_POINT_KEY not in component_yaml or CALLABLE_KEY not in component_yaml:
-            self.context.logger.error(
-                "Invalid component package. "
-                f"The {COMPONENT_YAML_FILENAME} file MUST contain the {ENTRY_POINT_KEY} and {CALLABLE_KEY} keys."
-            )
-            return None
-        # the name of the script that needs to be executed
-        entry_point_name = component_yaml[ENTRY_POINT_KEY]
-        # load the script
-        if entry_point_name not in serialized_objects:
-            self.context.logger.error(
-                f"Invalid component package. "
-                f"The entry point {entry_point_name!r} is not present in the component package."
-            )
-            return None
-        entry_point = serialized_objects[entry_point_name]
-        # the method that needs to be called
-        return component_yaml, entry_point, TRANSFORM_DATA_METHOD
-
-    def execute_strategy(self, *args: Any, **kwargs: Any) -> Dict[str, Any] | None:
-        """Execute the strategy and return the results."""
+    def execute_strategy_transformation(
+        self, *args: Any, **kwargs: Any
+    ) -> Dict[str, Any] | None:
+        """Execute the strategy's transform method and return the results."""
         trading_strategy = kwargs.pop(STRATEGY_KEY, None)
         if trading_strategy is None:
             self.context.logger.error(f"No {STRATEGY_KEY!r} was given!")
             return None
 
-        strategy = self.strategy_exec(trading_strategy)
-        if strategy is None:
+        store = self.strategy_store(trading_strategy)
+        strategy_exec = store.get(ENTRY_POINT_STORE_KEY, None)
+        if strategy_exec is None:
             self.context.logger.error(
-                f"No executable was found for {trading_strategy=}!"
+                f"No executable was found for {trading_strategy=}! Did the IPFS package downloader load it correctly?"
             )
             return None
 
-        res = self.load_custom_component(strategy)
-        if res is None:
+        callable_method = store.get(TRANSFORM_CALLABLE_STORE_KEY, None)
+        if callable_method is None:
+            self.context.logger.error(
+                "No transform callable was found in the loaded component! "
+                "Did the IPFS package downloader load it correctly?"
+            )
             return None
 
-        _component_yaml, strategy_exec, callable_method = res
         if callable_method in globals():
             del globals()[callable_method]
 
@@ -341,7 +301,7 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         strategy = self.synchronized_data.selected_strategy
         for token_address, market_data in markets_data.items():
             kwargs = {STRATEGY_KEY: strategy, **market_data}
-            result = self.execute_strategy(**kwargs)
+            result = self.execute_strategy_transformation(**kwargs)
             if result is None:
                 self.context.logger.error(
                     f"Failed to transform market data for {token_address}."

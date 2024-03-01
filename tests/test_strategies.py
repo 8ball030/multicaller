@@ -76,7 +76,7 @@ def test_generate_data(func, path):
 def test_evaluate(strategy, raw_data):
     """Test the evaluate function."""
     data = strategy.transform(**raw_data)
-    results = strategy.evaluate(**data, plot=False)
+    results = strategy.evaluate(**data, plot=False, asset="olas")
     assert "sharpe_ratio" in results
 
 @pytest.mark.parametrize("strategy", strategies)

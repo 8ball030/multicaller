@@ -147,6 +147,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.BACKTEST_POSITIVE: PrepareSwapRound,
             Event.BACKTEST_NEGATIVE: BacktestingNegativeRound,
             Event.BACKTEST_FAILED: BacktestingFailedRound,
+            Event.ERROR_BACKTESTING: BacktestingFailedRound,
             Event.NO_MAJORITY: BacktestRound,
             Event.ROUND_TIMEOUT: BacktestRound,
         },

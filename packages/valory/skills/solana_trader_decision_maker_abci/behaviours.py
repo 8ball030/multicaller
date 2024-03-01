@@ -64,7 +64,6 @@ DeserializedType = TypeVar("DeserializedType")
 POLICY_STORE = "policy_store.json"
 POSITIONS_STORE = "positions.json"
 STRATEGIES_STORE = "strategies.json"
-DOWNLOADED_PACKAGES_KEY = "downloaded_ipfs_packages"
 
 
 class RandomnessBehaviour(RandomnessBehaviourBase):
@@ -86,9 +85,7 @@ class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
         self.policy_path = base_dir / POLICY_STORE
         self.positions_path = base_dir / POSITIONS_STORE
         self.strategies_path = base_dir / STRATEGIES_STORE
-        self.strategies: Tuple[str, ...] = tuple(
-            self.context.shared_state.get(DOWNLOADED_PACKAGES_KEY, {}).keys()
-        )
+        self.strategies: Tuple[str, ...] = tuple(self.context.shared_state.keys())
 
     @property
     def params(self) -> Params:

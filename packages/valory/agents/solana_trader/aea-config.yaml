@@ -96,7 +96,12 @@ models:
     args:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
-      file_hash_to_id: ${list:[["bafybeidfn5cdkqmwil52nyc74mgmshdajyaexkmwxbpan57z6fr47r6r3y",["sma_strategy"]]]}
+      file_hash_to_id: ${list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
+      component_yaml_filename: ${str:component.yaml}
+      entry_point_key: ${str:entry_point}
+      run_callable_key: ${str:run_callable}
+      transform_callable_key: ${str:transform_callable}
+      evaluate_callable_key: ${str:evaluate_callable}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
@@ -218,6 +223,7 @@ models:
       refill_action_timeout: ${int:10}
       rpc_polling_interval: ${int:5}
       epsilon: ${float:0.1}
+      sharpe_threshold: ${float:1.0}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

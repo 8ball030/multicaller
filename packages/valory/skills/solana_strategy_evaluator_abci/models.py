@@ -121,6 +121,7 @@ class StrategyEvaluatorParams(BaseParams):
             "expected_swap_tx_cost", kwargs, int
         )
         self.ipfs_fetch_retries: int = self._ensure("ipfs_fetch_retries", kwargs, int)
+        self.sharpe_threshold: float = self._ensure("sharpe_threshold", kwargs, float)
         super().__init__(*args, **kwargs)
 
 

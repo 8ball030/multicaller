@@ -19,21 +19,23 @@
 
 """This module contains the backtesting state of the swap(s)."""
 
-from packages.valory.skills.abstract_round_abci.base import VotingRound, get_name
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import VotingPayload
+from packages.valory.skills.abstract_round_abci.base import get_name
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
+    IPFSRound,
     SynchronizedData,
 )
 
 
-class BacktestRound(VotingRound):
+class BacktestRound(IPFSRound):
     """A round in which the agents prepare swap(s) instructions."""
 
-    synchronized_data_class = SynchronizedData
-    payload_class = VotingPayload
     done_event = Event.BACKTEST_POSITIVE
-    negative_event = Event.BACKTEST_NEGATIVE
-    none_event = Event.BACKTEST_FAILED
-    no_majority_event = Event.NO_MAJORITY
+    incomplete_event = Event.BACKTEST_FAILED
+    no_hash_event = Event.ERROR_BACKTESTING
+    none_event = Event.BACKTEST_NEGATIVE
+    selection_key = (
+        get_name(SynchronizedData.backtested_orders_hash),
+        get_name(SynchronizedData.incomplete_exec),
+    )
     collection_key = get_name(SynchronizedData.participant_to_backtesting)

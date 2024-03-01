@@ -31,7 +31,7 @@ from packages.valory.skills.market_data_fetcher_abci.behaviours import (
 )
 from packages.valory.skills.market_data_fetcher_abci.models import Coingecko
 from packages.valory.skills.market_data_fetcher_abci.models import (
-    Params as MarketDataFetcherAbciParams,
+    Params as MarketDataFetcherParams,
 )
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     Event as MarketDataFetcherEvent,
@@ -46,7 +46,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState as BaseSharedState,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
-    StrategyEvaluatorParams as StrategyEvaluatorAbciParams,
+    StrategyEvaluatorParams as StrategyEvaluatorParams,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SwapInstructionsSpecs,
@@ -58,16 +58,12 @@ from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
 )
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
 from packages.valory.skills.solana_trader_decision_maker_abci.models import (
-    Params as SolanaTraderDecisionMakerAbciParams,
+    Params as SolanaTraderDecisionMakerParams,
 )
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
 )
 
-
-SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
-MarketDataFetcherParams = MarketDataFetcherAbciParams
-StrategyEvaluatorParams = StrategyEvaluatorAbciParams
 
 Coingecko = Coingecko
 

@@ -42,7 +42,26 @@ class Params(Model):
         self.request_count: int = 0
         self.cleanup_freq = kwargs.get("cleanup_freq", 50)
         self.timeout_limit = kwargs.get("timeout_limit", None)
-        enforce(self.timeout_limit is not None, "timeout_limit must be set!")
+        self.component_yaml_filename = kwargs.get("component_yaml_filename", None)
+        self.entry_point_key = kwargs.get("entry_point_key", None)
+        self.run_callable_key = kwargs.get("run_callable_key", None)
+        self.transform_callable_key = kwargs.get("transform_callable_key", None)
+        self.evaluate_callable_key = kwargs.get("evaluate_callable_key", None)
+        enforce(self.timeout_limit is not None, "'timeout_limit' must be set!")
+        enforce(
+            self.component_yaml_filename is not None,
+            "'component_yaml_filename' must be set!",
+        )
+        enforce(self.entry_point_key is not None, "'entry_point_key' must be set!")
+        enforce(self.run_callable_key is not None, "'run_callable_key' must be set!")
+        enforce(
+            self.transform_callable_key is not None,
+            "'transform_callable_key' must be set!",
+        )
+        enforce(
+            self.evaluate_callable_key is not None,
+            "'evaluate_callable_key' must be set!",
+        )
         # maps the request id to the number of times it has timed out
         self.request_id_to_num_timeouts: Dict[int, int] = defaultdict(lambda: 0)
         super().__init__(*args, **kwargs)
