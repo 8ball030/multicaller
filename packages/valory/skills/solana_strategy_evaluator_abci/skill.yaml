@@ -15,7 +15,7 @@ fingerprint:
   behaviours/prepare_swap_tx.py: bafybeihzmqdclrvscmgvsxu4zokzs2xcb5q53vuqyas3pxrls772mhr2x4
   behaviours/proxy_swap_queue.py: bafybeigr5rhbf5l625khbjcmhilxit5gml2bsluafejivp5gydrijfudkq
   behaviours/round_behaviour.py: bafybeieapl334xpmv37acwoz4nstu2qrdknndfvwyfkbrb4ok7wac2nnlq
-  behaviours/strategy_exec.py: bafybeidci3bsho2sfxpdrmlyhpxhdtm4kvja7b5pfutsf3xj4prizd7uum
+  behaviours/strategy_exec.py: bafybeier7nx6pauugeom7eco2qjpjjwaayw7jzxb46oo2ncgpxgdl5g3fa
   behaviours/swap_queue.py: bafybeihqumnnrauqekptjulpyu7jhjhogwtmo2wiuaguoolvejuyqaiopy
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeiamxwtqgmjml4xh2x4fzeguszdu4f5q6wuc3kwq7274pi5xssxjg4
