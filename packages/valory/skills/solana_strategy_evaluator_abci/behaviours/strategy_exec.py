@@ -36,7 +36,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec 
 STRATEGY_KEY = "trading_strategy"
 PRICE_DATA_KEY = "price_data"
 TRANSFORMED_PRICE_DATA_KEY = "transformed_data"
-TOKEN_ID_KEY = "token_id"
+TOKEN_ID_KEY = "token_id"  # nosec B105:hardcoded_password_string
 PORTFOLIO_DATA_KEY = "portfolio_data"
 SWAP_DECISION_FIELD = "signal"
 BUY_DECISION = "buy"
