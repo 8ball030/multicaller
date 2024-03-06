@@ -22,9 +22,7 @@ type: skill
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
-        run_callable_key: ${RUN_CALLABLE_KEY:str:run_callable}
-        transform_callable_key: ${TRANSFORM_CALLABLE_KEY:str:transform_callable}
-        evaluate_callable_key: ${EVALUATE_CALLABLE_KEY:str:evaluate_callable}
+        callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
 1:
   models:
     params:
@@ -34,9 +32,7 @@ type: skill
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
-        run_callable_key: ${RUN_CALLABLE_KEY:str:run_callable}
-        transform_callable_key: ${TRANSFORM_CALLABLE_KEY:str:transform_callable}
-        evaluate_callable_key: ${EVALUATE_CALLABLE_KEY:str:evaluate_callable}
+        callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
 2:
   models:
     params:
@@ -46,9 +42,7 @@ type: skill
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
-        run_callable_key: ${RUN_CALLABLE_KEY:str:run_callable}
-        transform_callable_key: ${TRANSFORM_CALLABLE_KEY:str:transform_callable}
-        evaluate_callable_key: ${EVALUATE_CALLABLE_KEY:str:evaluate_callable}
+        callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
 3:
   models:
     params:
@@ -58,9 +52,7 @@ type: skill
         file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
-        run_callable_key: ${RUN_CALLABLE_KEY:str:run_callable}
-        transform_callable_key: ${TRANSFORM_CALLABLE_KEY:str:transform_callable}
-        evaluate_callable_key: ${EVALUATE_CALLABLE_KEY:str:evaluate_callable}
+        callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill

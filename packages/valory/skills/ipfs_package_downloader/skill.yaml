@@ -42,9 +42,10 @@ models:
         - - follow_trend_strategy
       component_yaml_filename: component.yaml
       entry_point_key: entry_point
-      run_callable_key: run_callable
-      transform_callable_key: transform_callable
-      evaluate_callable_key: evaluate_callable
+      callable_keys:
+        - run_callable
+        - transform_callable
+        - evaluate_callable
     class_name: Params
 dependencies:
   py-multibase:

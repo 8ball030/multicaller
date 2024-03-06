@@ -130,17 +130,12 @@ class IpfsPackageDownloader(SimpleBehaviour):
         component_yaml = yaml.safe_load(
             serialized_objects[self.params.component_yaml_filename]
         )
-        callable_keys = (
-            self.params.run_callable_key,
-            self.params.evaluate_callable_key,
-            self.params.transform_callable_key,
-        )
         if self.params.entry_point_key not in component_yaml or not all(
-            callable_key in component_yaml for callable_key in callable_keys
+            callable_key in component_yaml for callable_key in self.params.callable_keys
         ):
             self.context.logger.error(
-                "Invalid component package. "
-                f"The {self.params.component_yaml_filename} file MUST contain the {self.params.entry_point_key} and {callable_keys} keys."
+                f"Invalid component package. The {self.params.component_yaml_filename} file MUST contain the "
+                f"{self.params.entry_point_key} and {self.params.callable_keys} keys."
             )
             return {}
         # the name of the script that needs to be executed
@@ -155,7 +150,8 @@ class IpfsPackageDownloader(SimpleBehaviour):
         entry_point = serialized_objects[entry_point_name]
         # initialize with the methods that need to be called
         component = {
-            callable_key: component_yaml[callable_key] for callable_key in callable_keys
+            callable_key: component_yaml[callable_key]
+            for callable_key in self.params.callable_keys
         }
         component.update(
             {

@@ -99,9 +99,7 @@ models:
       file_hash_to_id: ${list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
       component_yaml_filename: ${str:component.yaml}
       entry_point_key: ${str:entry_point}
-      run_callable_key: ${str:run_callable}
-      transform_callable_key: ${str:transform_callable}
-      evaluate_callable_key: ${str:evaluate_callable}
+      callable_keys: ${list:["run_callable","transform_callable","evaluate_callable"]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
