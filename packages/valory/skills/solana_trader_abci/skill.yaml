@@ -12,7 +12,7 @@ fingerprint:
   composition.py: bafybeih6c4ka5qfgdla2a7tx4kqkt7n4luhyocqrmjg3mz26qsnlgffxca
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeiavd6cfuk4apllbh24eied2xhned2dxunod25m33wy7girmirisni
-  models.py: bafybeihb2pmgwyccjaxrrde5fhtl3qc6eaf5prfy65iagr6wkc3ynzhkd4
+  models.py: bafybeicu7lq3dn7geon5wycn4hk6nuua3l4lx23rtc6y4u6a5wnyjhxi4i
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -21,9 +21,9 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeiaaepsalcvw2bb2d5jourflrphybtsdkifsbmpspgv7snkbhmgtte
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeialpyhqynfclrsyxs62uexeyarpyl45xwfamoq74im4rmncyc2aae
+- valory/market_data_fetcher_abci:0.1.0:bafybeidj4lrrcgfabe6wqo5gn5g3ruf4ticulihp2s5xrnkdltjvqbm2gq
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifgswhaxkgxucgivc752cyuquawqgrpkzvoxvr3czld4zylvfiqau
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeia2dkvrot5mpcmcidbiyk2rbdwduzvzu25de2plxx2i7comibtzam
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 behaviours:
   main:
@@ -154,6 +154,7 @@ models:
       refill_action_timeout: 10
       rpc_polling_interval: 5
       epsilon: 0.1
+      sharpe_threshold: 1.0
     class_name: Params
   coingecko:
     args:

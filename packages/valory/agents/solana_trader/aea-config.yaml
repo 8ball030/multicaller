@@ -33,11 +33,11 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeiaaepsalcvw2bb2d5jourflrphybtsdkifsbmpspgv7snkbhmgtte
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeialpyhqynfclrsyxs62uexeyarpyl45xwfamoq74im4rmncyc2aae
-- valory/solana_trader_abci:0.1.0:bafybeiaagblmniludlboscoxmcnxwcdwlgilrnykpgnup2nkxggbm4mqa4
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
-- valory/ipfs_package_downloader:0.1.0:bafybeihwfxguhso57xly6nb7tckgcnijs7bumjf2i2u4oqn2cn7soi4pdy
+- valory/market_data_fetcher_abci:0.1.0:bafybeidj4lrrcgfabe6wqo5gn5g3ruf4ticulihp2s5xrnkdltjvqbm2gq
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeia2dkvrot5mpcmcidbiyk2rbdwduzvzu25de2plxx2i7comibtzam
+- valory/solana_trader_abci:0.1.0:bafybeibr6sozrgxtxp2aveau67jnt6usrtdtuqxrlffbhz3gnos6pqtvnq
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifgswhaxkgxucgivc752cyuquawqgrpkzvoxvr3czld4zylvfiqau
+- valory/ipfs_package_downloader:0.1.0:bafybeibnvsfftmsaz53kvaavocw4blb2xcdkvh4sg2gd6znvnn2yrpiv24
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 default_ledger: ethereum
 required_ledgers:
@@ -96,7 +96,10 @@ models:
     args:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
-      file_hash_to_id: ${list:[["bafybeidfn5cdkqmwil52nyc74mgmshdajyaexkmwxbpan57z6fr47r6r3y",["sma_strategy"]]]}
+      file_hash_to_id: ${list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
+      component_yaml_filename: ${str:component.yaml}
+      entry_point_key: ${str:entry_point}
+      callable_keys: ${list:["run_callable","transform_callable","evaluate_callable"]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
@@ -218,6 +221,7 @@ models:
       refill_action_timeout: ${int:10}
       rpc_polling_interval: ${int:5}
       epsilon: ${float:0.1}
+      sharpe_threshold: ${float:1.0}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

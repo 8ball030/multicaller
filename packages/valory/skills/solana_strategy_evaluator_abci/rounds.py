@@ -76,7 +76,9 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             - round timeout: 0.
         1. BacktestRound
             - backtest succeeded: 2.
+            - backtest negative: 8.
             - backtest failed: 9.
+            - error backtesting: 9.
             - no majority: 1.
             - round timeout: 1.
         2. PrepareSwapRound
@@ -147,6 +149,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.BACKTEST_POSITIVE: PrepareSwapRound,
             Event.BACKTEST_NEGATIVE: BacktestingNegativeRound,
             Event.BACKTEST_FAILED: BacktestingFailedRound,
+            Event.ERROR_BACKTESTING: BacktestingFailedRound,
             Event.NO_MAJORITY: BacktestRound,
             Event.ROUND_TIMEOUT: BacktestRound,
         },

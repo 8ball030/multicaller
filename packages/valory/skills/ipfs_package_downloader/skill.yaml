@@ -7,10 +7,10 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiaqd27il3osn4novyzipdtql4p36mnrskk2dqdsqthgjnb4gqixii
-  behaviours.py: bafybeib2lpyeaxs6kkfmdp7ltdwp5odh2por2qcxr26bdbfzwz73mwfo7u
+  behaviours.py: bafybeig3lvx2viwoqynctj4wfusgx6h2qd7xchp6bfbfgnxq7xolm3mdhe
   dialogues.py: bafybeibdxvhpzzqn4qa7us6cpkmtliwl7qziodt2srnicrdamfcev2mumi
-  handlers.py: bafybeibfvjuuauygzqhaut7dn2dr3maeatjok2jcuztksxjwbqusx65jlq
-  models.py: bafybeia6vmborqt5i3tzhvjb4um2c7w2fltt3rjhe4b6wddkmcyvbhw3fa
+  handlers.py: bafybeieuf3jxlnzfs4yifwuvklzc2c7ps7kf4bmnzbd54ofz3q7jhpfgqy
+  models.py: bafybeibqo32ohd6o6au5lspvbnvkyptctegq6gto5jgz4mk6rj673fghf4
   utils/__init__.py: bafybeige5xuo32v4dykt6shggs452eliha5e5qzci5dwr6uowash3fq23q
   utils/ipfs.py: bafybeihjb237abhcjupmmyswvfk7xmzgx3d4iufixes7v3yjmlycnca4xm
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
@@ -40,6 +40,12 @@ models:
       file_hash_to_id:
       - - bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m
         - - follow_trend_strategy
+      component_yaml_filename: component.yaml
+      entry_point_key: entry_point
+      callable_keys:
+      - run_callable
+      - transform_callable
+      - evaluate_callable
     class_name: Params
 dependencies:
   py-multibase:

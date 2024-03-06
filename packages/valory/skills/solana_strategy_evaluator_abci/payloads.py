@@ -46,10 +46,3 @@ class SendSwapPayload(BaseTxPayload):
 
     # `instructions` is a serialized `List[Dict[str, Any]]`
     instructions: Optional[str]
-
-
-@dataclass(frozen=True)
-class VotingPayload(BaseTxPayload):
-    """Represents a transaction payload for voting."""
-
-    vote: Optional[bool]
