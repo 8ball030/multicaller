@@ -214,7 +214,6 @@ def get_signal(  # pylint: disable=too-many-arguments, too-many-locals
     token_id: str = "token_a",
 ) -> Dict[str, Any]:
     """Compute the trend following signal"""
-    results = {}
     cash = portfolio_data.get(DEFAULT_BASE_CURRENCY, 0)
     print(f"Processing signal for {token_id}")
     print(f"Cash: {cash}")
@@ -238,8 +237,7 @@ def get_signal(  # pylint: disable=too-many-arguments, too-many-locals
     signal = strat.onBars(
         bars,
     )
-    results[token_id] = signal
-    return {"signals": results}
+    return {"signal": signal}
 
 
 def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
