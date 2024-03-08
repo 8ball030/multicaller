@@ -67,15 +67,14 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     Transition states:
         0. StrategyExecRound
             - prepare swap: 1.
-            - prepare swap proxy server: 4.
             - prepare incomplete swap: 1.
-            - prepare incomplete swap proxy server: 4.
             - no orders: 11.
             - error preparing swaps: 7.
             - no majority: 0.
             - round timeout: 0.
         1. BacktestRound
             - backtest succeeded: 2.
+            - prepare swap proxy server: 4.
             - backtest negative: 8.
             - backtest failed: 9.
             - error backtesting: 9.
