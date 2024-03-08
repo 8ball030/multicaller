@@ -33,11 +33,11 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
 - valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
 - valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeidrvo3gtgmew54hn2iryashnbc4qq4poejv64vtzoybdiqsfzl4le
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeiglgu2fab2pyh3ytkxvweqvhh7ve2ukt2tpvnnpfuagk46h6x6fwy
-- valory/solana_trader_abci:0.1.0:bafybeialpj2ogyrg2rrgley625x5w2zac7pj25obid5uf35cmlfojheuza
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeiehkzhcri3ksnr4scfpwefvcejujazsx4kpnoee42gxusy5qjlmf4
-- valory/ipfs_package_downloader:0.1.0:bafybeihwfxguhso57xly6nb7tckgcnijs7bumjf2i2u4oqn2cn7soi4pdy
+- valory/market_data_fetcher_abci:0.1.0:bafybeifgov544su2vjcdeafliwdbd7ikj4neuet76a7adwa6v24actj2wu
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeidffkjgnsivejdps2mivv7ydqn3jiawvs624ligjofouih4pltht4
+- valory/solana_trader_abci:0.1.0:bafybeiduczv3gbpxjwp7l2hqxpoevvgbxa7bryrgk5axz72yy5yapopzbq
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifgswhaxkgxucgivc752cyuquawqgrpkzvoxvr3czld4zylvfiqau
+- valory/ipfs_package_downloader:0.1.0:bafybeibnvsfftmsaz53kvaavocw4blb2xcdkvh4sg2gd6znvnn2yrpiv24
 - valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
 default_ledger: ethereum
 required_ledgers:
@@ -96,7 +96,10 @@ models:
     args:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
-      file_hash_to_id: ${list:[["bafybeiabkbfjjakf7gvewxk5gvyybqvecy3k2tipvntjcovng2sbt3dq5m",["follow_trend_strategy"]]]}
+      file_hash_to_id: ${list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
+      component_yaml_filename: ${str:component.yaml}
+      entry_point_key: ${str:entry_point}
+      callable_keys: ${list:["run_callable","transform_callable","evaluate_callable"]}
 ---
 public_id: valory/solana_trader_abci:0.1.0
 type: skill
@@ -116,7 +119,7 @@ models:
       error_key: ${str:error:message}
       error_type: ${str:str}
       retries: ${int:5}
-      url: ${str:replace_with_a_solana_rpc}
+      url: ${str:https://api.mainnet-beta.solana.com}
   token_accounts:
     args:
       api_id: ${str:token_accounts}
@@ -129,7 +132,7 @@ models:
       error_key: ${str:error:message}
       error_type: ${str:str}
       retries: ${int:5}
-      url: ${str:replace_with_a_solana_rpc}
+      url: ${str:https://api.mainnet-beta.solana.com}
   coingecko:
     args:
       endpoint: ${str:https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1}
@@ -207,17 +210,18 @@ models:
       use_termination: ${bool:false}
       on_chain_service_id: ${int:null}
       token_symbol_whitelist: ${list:["coingecko_id=weth&address=7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs"]}
-      strategies_kwargs: ${list:[["ma_period",20],["rsi_period",14],["rsi_overbought_threshold",70],["rsi_oversold_threshold",30]]}
+      tracked_tokens: ${list:["7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs"]}
+      strategies_kwargs: ${list:[["ma_period",35]]}
       use_proxy_server: ${bool:false}
       expected_swap_tx_cost: ${int:20000000}
       ipfs_fetch_retries: ${int:5}
-      squad_vault: ${str:39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E}
-      agent_balance_threshold: ${int:50000000}
-      multisig_balance_threshold: ${int:1000000000}
-      tracked_tokens: ${list:[]}
+      squad_vault: ${str:GFWUcLp1equf4QtrRMj5RZasm8yshs4MZa2pR5Ghz54u}
+      agent_balance_threshold: ${int:0}
+      multisig_balance_threshold: ${int:0}
       refill_action_timeout: ${int:10}
       rpc_polling_interval: ${int:5}
       epsilon: ${float:0.1}
+      sharpe_threshold: ${float:1.0}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection

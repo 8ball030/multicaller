@@ -2,6 +2,7 @@
 # ------------------------------------------------------------------------------
 #
 #   Copyright 2024 Valory AG
+#   Copyright 2024 8baller
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,23 +18,4 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads of the MarketDataFetcherAbciApp."""
-
-from dataclasses import dataclass
-from typing import Optional
-
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
-
-
-@dataclass(frozen=True)
-class MarketDataPayload(BaseTxPayload):
-    """Represent a transaction payload for the market data."""
-
-    data_hash: Optional[str]
-
-
-@dataclass(frozen=True)
-class TransformedMarketDataPayload(BaseTxPayload):
-    """Represent a transaction payload for the market data."""
-
-    transformed_data_hash: Optional[str]
+"""This module contains the trend_following_strategy."""

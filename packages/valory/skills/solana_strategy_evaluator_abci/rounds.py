@@ -67,17 +67,17 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     Transition states:
         0. StrategyExecRound
             - prepare swap: 1.
-            - prepare swap proxy server: 4.
             - prepare incomplete swap: 1.
-            - prepare incomplete swap proxy server: 4.
             - no orders: 11.
             - error preparing swaps: 7.
             - no majority: 0.
             - round timeout: 0.
         1. BacktestRound
             - backtest succeeded: 2.
+            - prepare swap proxy server: 4.
             - backtest negative: 8.
             - backtest failed: 9.
+            - error backtesting: 9.
             - no majority: 1.
             - round timeout: 1.
         2. PrepareSwapRound
@@ -136,9 +136,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     transition_function: AbciAppTransitionFunction = {
         StrategyExecRound: {
             Event.PREPARE_SWAP: BacktestRound,
-            Event.PREPARE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
             Event.PREPARE_INCOMPLETE_SWAP: BacktestRound,
-            Event.PREPARE_INCOMPLETE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
             Event.NO_ORDERS: HodlRound,
             Event.ERROR_PREPARING_SWAPS: StrategyExecutionFailedRound,
             Event.NO_MAJORITY: StrategyExecRound,
@@ -146,8 +144,10 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         },
         BacktestRound: {
             Event.BACKTEST_POSITIVE: PrepareSwapRound,
+            Event.BACKTEST_POSITIVE_PROXY_SERVER: ProxySwapQueueRound,
             Event.BACKTEST_NEGATIVE: BacktestingNegativeRound,
             Event.BACKTEST_FAILED: BacktestingFailedRound,
+            Event.ERROR_BACKTESTING: BacktestingFailedRound,
             Event.NO_MAJORITY: BacktestRound,
             Event.ROUND_TIMEOUT: BacktestRound,
         },

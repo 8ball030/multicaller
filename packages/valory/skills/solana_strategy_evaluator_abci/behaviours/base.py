@@ -46,6 +46,10 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
 
 SWAP_DECISION_FILENAME = "swap_decision.json"
 SWAP_INSTRUCTIONS_FILENAME = "swap_instructions.json"
+STRATEGY_KEY = "trading_strategy"
+CALLABLE_KEY = "callable"
+ENTRY_POINT_STORE_KEY = "entry_point"
+SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 
 
 def wei_to_native(wei: int) -> float:
@@ -87,6 +91,62 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     def synchronized_data(self) -> SynchronizedData:
         """Return the synchronized data."""
         return SynchronizedData(super().synchronized_data.db)
+
+    def strategy_store(self, strategy_name: str) -> Dict[str, str]:
+        """Get the stored strategy's files."""
+        return self.context.shared_state.get(strategy_name, {})
+
+    def execute_strategy_callable(
+        self, *args: Any, **kwargs: Any
+    ) -> Dict[str, Any] | None:
+        """Execute a strategy's method and return the results."""
+        trading_strategy: Optional[str] = kwargs.pop(STRATEGY_KEY, None)
+        if trading_strategy is None:
+            self.context.logger.error(f"No {STRATEGY_KEY!r} was given!")
+            return None
+
+        callable_key: Optional[str] = kwargs.pop(CALLABLE_KEY, None)
+        if callable_key is None:
+            self.context.logger.error(f"No {CALLABLE_KEY!r} was given!")
+            return None
+
+        store = self.strategy_store(trading_strategy)
+        strategy_exec = store.get(ENTRY_POINT_STORE_KEY, None)
+        if strategy_exec is None:
+            self.context.logger.error(
+                f"No executable was found for {trading_strategy=}! Did the IPFS package downloader load it correctly?"
+            )
+            return None
+
+        callable_method = store.get(callable_key, None)
+        if callable_method is None:
+            self.context.logger.error(
+                f"No {callable_method=} was found in the loaded component! "
+                "Did the IPFS package downloader load it correctly?"
+            )
+            return None
+
+        if callable_method in globals():
+            del globals()[callable_method]
+
+        exec(strategy_exec, globals())  # pylint: disable=W0122  # nosec
+        method: Optional[Callable] = globals().get(callable_method, None)
+        if method is None:
+            self.context.logger.error(
+                f"No {callable_method!r} method was found in {trading_strategy} strategy's executable:\n"
+                f"{strategy_exec}."
+            )
+            return None
+        # TODO this method is blocking, needs to be run from an aea skill or a task.
+        return method(*args, **kwargs)
+
+    def log_from_strategy_results(self, results: Dict[str, Any]) -> None:
+        """Log any messages from a strategy's results."""
+        for level in SUPPORTED_STRATEGY_LOG_LEVELS:
+            logger = getattr(self.context.logger, level, None)
+            if logger is not None:
+                for log in results.get(level, []):
+                    logger(log)
 
     def _handle_response(
         self,

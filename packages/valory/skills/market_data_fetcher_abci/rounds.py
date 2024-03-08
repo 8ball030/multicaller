@@ -20,13 +20,14 @@
 """This package contains the rounds of MarketDataFetcherAbciApp."""
 
 from enum import Enum
-from typing import Dict, FrozenSet, Set
+from typing import Dict, FrozenSet, Set, Type
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
     AbciAppTransitionFunction,
     AppState,
     BaseSynchronizedData,
+    BaseTxPayload,
     CollectSameUntilThresholdRound,
     CollectionRound,
     DegenerateRound,
@@ -34,7 +35,10 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     get_name,
 )
-from packages.valory.skills.market_data_fetcher_abci.payloads import MarketDataPayload
+from packages.valory.skills.market_data_fetcher_abci.payloads import (
+    MarketDataPayload,
+    TransformedMarketDataPayload,
+)
 
 
 class Event(Enum):
@@ -64,15 +68,30 @@ class SynchronizedData(BaseSynchronizedData):
         return str(self.db.get_strict("data_hash"))
 
     @property
+    def transformed_data_hash(self) -> str:
+        """Get the hash of the tokens' data."""
+        return str(self.db.get_strict("transformed_data_hash"))
+
+    @property
     def participant_to_fetching(self) -> DeserializedCollection:
         """Get the participants to market fetching."""
         return self._get_deserialized("participant_to_fetching")
+
+    @property
+    def participant_to_transforming(self) -> DeserializedCollection:
+        """Get the participants to market data transformation."""
+        return self._get_deserialized("participant_to_transforming")
+
+    @property
+    def selected_strategy(self) -> str:
+        """Get the selected strategy."""
+        return self.db.get_strict("selected_strategy")
 
 
 class FetchMarketDataRound(CollectSameUntilThresholdRound):
     """FetchMarketDataRound"""
 
-    payload_class = MarketDataPayload
+    payload_class: Type[BaseTxPayload] = MarketDataPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     none_event = Event.NONE
@@ -83,6 +102,10 @@ class FetchMarketDataRound(CollectSameUntilThresholdRound):
 
 class TransformMarketDataRound(FetchMarketDataRound):
     """Round to transform the fetched signals."""
+
+    payload_class = TransformedMarketDataPayload
+    selection_key = get_name(SynchronizedData.transformed_data_hash)
+    collection_key = get_name(SynchronizedData.participant_to_transforming)
 
 
 class FinishedMarketFetchRound(DegenerateRound):

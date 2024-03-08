@@ -53,9 +53,8 @@ class Event(Enum):
 
     NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
-    PREPARE_SWAP_PROXY_SERVER = "prepare_swap_proxy_server"
+    BACKTEST_POSITIVE_PROXY_SERVER = "prepare_swap_proxy_server"
     PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
-    PREPARE_INCOMPLETE_SWAP_PROXY_SERVER = "prepare_incomplete_swap_proxy_server"
     ERROR_PREPARING_SWAPS = "error_preparing_swaps"
     NO_INSTRUCTIONS = "no_instructions"
     INSTRUCTIONS_PREPARED = "instructions_prepared"
@@ -69,6 +68,7 @@ class Event(Enum):
     BACKTEST_POSITIVE = "backtest_succeeded"
     BACKTEST_NEGATIVE = "backtest_negative"
     BACKTEST_FAILED = "backtest_failed"
+    ERROR_BACKTESTING = "error_backtesting"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
 
@@ -99,6 +99,11 @@ class SynchronizedData(
     def orders_hash(self) -> Optional[str]:
         """Get the hash of the orders' data."""
         return self._optional_str("orders_hash")
+
+    @property
+    def backtested_orders_hash(self) -> Optional[str]:
+        """Get the hash of the backtested orders' data."""
+        return self._optional_str("backtested_orders_hash")
 
     @property
     def incomplete_exec(self) -> bool:

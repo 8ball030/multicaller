@@ -2,6 +2,8 @@ alphabet_in:
 - BACKTEST_FAILED
 - BACKTEST_NEGATIVE
 - BACKTEST_POSITIVE
+- BACKTEST_POSITIVE_PROXY_SERVER
+- ERROR_BACKTESTING
 - ERROR_PREPARING_INSTRUCTIONS
 - ERROR_PREPARING_SWAPS
 - INCOMPLETE_INSTRUCTIONS_PREPARED
@@ -10,9 +12,7 @@ alphabet_in:
 - NO_MAJORITY
 - NO_ORDERS
 - PREPARE_INCOMPLETE_SWAP
-- PREPARE_INCOMPLETE_SWAP_PROXY_SERVER
 - PREPARE_SWAP
-- PREPARE_SWAP_PROXY_SERVER
 - PROXY_SWAPPED
 - PROXY_SWAP_FAILED
 - ROUND_TIMEOUT
@@ -48,6 +48,8 @@ transition_func:
     (BacktestRound, BACKTEST_FAILED): BacktestingFailedRound
     (BacktestRound, BACKTEST_NEGATIVE): BacktestingNegativeRound
     (BacktestRound, BACKTEST_POSITIVE): PrepareSwapRound
+    (BacktestRound, BACKTEST_POSITIVE_PROXY_SERVER): ProxySwapQueueRound
+    (BacktestRound, ERROR_BACKTESTING): BacktestingFailedRound
     (BacktestRound, NO_MAJORITY): BacktestRound
     (BacktestRound, ROUND_TIMEOUT): BacktestRound
     (PrepareSwapRound, ERROR_PREPARING_INSTRUCTIONS): InstructionPreparationFailedRound
@@ -65,9 +67,7 @@ transition_func:
     (StrategyExecRound, NO_MAJORITY): StrategyExecRound
     (StrategyExecRound, NO_ORDERS): HodlRound
     (StrategyExecRound, PREPARE_INCOMPLETE_SWAP): BacktestRound
-    (StrategyExecRound, PREPARE_INCOMPLETE_SWAP_PROXY_SERVER): ProxySwapQueueRound
     (StrategyExecRound, PREPARE_SWAP): BacktestRound
-    (StrategyExecRound, PREPARE_SWAP_PROXY_SERVER): ProxySwapQueueRound
     (StrategyExecRound, ROUND_TIMEOUT): StrategyExecRound
     (SwapQueueRound, NO_MAJORITY): SwapQueueRound
     (SwapQueueRound, ROUND_TIMEOUT): SwapQueueRound

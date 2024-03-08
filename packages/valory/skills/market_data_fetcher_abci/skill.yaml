@@ -7,13 +7,13 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeih2dsi3e5ax36ooryzjkeoprkeqif3sguc4h63ldx6clkhmdsztka
-  behaviours.py: bafybeih6ndxxupyyotppfyscpuihgu5c3qnyn6dlmu7xxkruhjobrwr5fq
+  behaviours.py: bafybeibtgyk5kvpg2kya6azcxlwafuwyhtevdw6k5he4gcqb5edt3tu7au
   dialogues.py: bafybeigyppu2yxzqx5gvbmcm4g653wkjjxlsancbio53xmdfu3wizh3fty
   fsm_specification.yaml: bafybeib6ucxlubtfscg7vris2ia2f7iwlpzxte2bhqcvdluoge4xl2paba
   handlers.py: bafybeifkugrofhi6ers2ovvbva6gqnnkrarvuwr5qspun6ndids5vxdzxq
-  models.py: bafybeicikqdmwooggeyvslgy7wrvzt4ai3mzlg3zhjnweqde2t7lefhk44
-  payloads.py: bafybeih7jdj73dkhtjg5k4eyjfu2o4ztabdfufyb7ybgyrhazntyd7vixy
-  rounds.py: bafybeidv3kczftdhk57cyi4m6d7bry34tlluioqdheepemdew2ddxrxkzi
+  models.py: bafybeidbg3sjyfhwlw5miyr5txtcjha6n3wne6hsxrpccdl7vcjvt6uyzy
+  payloads.py: bafybeiaq5cqqinf34cxfn6lgefspbyhd3bcfcphqx6q2czpkall55db3vu
+  rounds.py: bafybeibf2cwrf6phrdnwlrfezy2erl4ux56uumc25jarqpwzhtyemtlhuu
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -126,6 +126,7 @@ models:
       endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
       api_key: null
       prices_field: prices
+      volumes_field: total_volumes
       requests_per_minute: 5
       credits: 10000
       rate_limited_code: 429
@@ -142,5 +143,9 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
-dependencies: {}
+dependencies:
+  pandas:
+    version: '>=1.3.0'
+  PyYAML:
+    version: '>=5.4.1'
 is_abstract: true
