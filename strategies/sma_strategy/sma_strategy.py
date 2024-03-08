@@ -260,14 +260,14 @@ def prepare_strategy(feed: GenericBarFeed, asset: str, **kwargs) -> Strategy:  #
     return strat
 
 
-def evaluate(
-    transformed_data: Dict[str, Any],
-    ma_period: int = DEFAULT_MA_PERIOD,
-    stoch_period: int = DEFAULT_STOCH_PERIOD,
-    plot: bool = False,
-    asset: str = "olas",
-) -> Dict[str, Any]:
+def evaluate(**kwargs: Any) -> Dict[str, float]:
     """Evaluate the strategy."""
+    transformed_data: dict[str, Any] = kwargs["transformed_data"]
+    asset: str = kwargs["asset"]
+    ma_period: int = kwargs.pop("ma_period", DEFAULT_MA_PERIOD)
+    stoch_period: int = kwargs.pop("stoch_period", DEFAULT_STOCH_PERIOD)
+    plot: bool = kwargs.pop("plot", False)
+
     feed = prepare_feed(asset, transformed_data)
     strat = prepare_strategy(
         feed, asset, ma_period=ma_period, stoch_period=stoch_period

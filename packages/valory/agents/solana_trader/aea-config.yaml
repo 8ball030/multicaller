@@ -96,7 +96,7 @@ models:
     args:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
-      file_hash_to_id: ${list:[["bafybeibjyp7jgvbanusfrxcbckqwxoakkaasnfanjifvgxmlrgbms7nize",["sma_strategy"]]]}
+      file_hash_to_id: ${list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
       component_yaml_filename: ${str:component.yaml}
       entry_point_key: ${str:entry_point}
       callable_keys: ${list:["run_callable","transform_callable","evaluate_callable"]}

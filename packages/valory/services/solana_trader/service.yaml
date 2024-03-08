@@ -19,7 +19,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
@@ -29,7 +29,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
@@ -39,7 +39,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
@@ -49,7 +49,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifkgo6wmjjku4h65sdqnaby7tczp3cropted5vtdxryevawdqnb4i",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
