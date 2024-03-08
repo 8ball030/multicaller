@@ -27,8 +27,7 @@ from pyalgotrade import plotter, strategy
 from pyalgotrade.bar import Bars
 from pyalgotrade.barfeed import Frequency
 from pyalgotrade.barfeed.csvfeed import GenericBarFeed
-from pyalgotrade.broker.backtesting import TradePercentage, MarketOrder
-from pyalgotrade.broker import InstrumentTraits
+from pyalgotrade.broker.backtesting import TradePercentage
 from pyalgotrade.optimizer import local
 from pyalgotrade.stratanalyzer import sharpe
 from pyalgotrade.strategy.position import Position
@@ -74,9 +73,7 @@ def transform(
     volumes: List[Tuple[int, float]],
     default_ohlcv_period: str = "5Min",
 ) -> Dict[str, Any]:
-    """
-    Transform the data from a single price series into an ohlcv dataframe.
-    """
+    """Transform the data from a single price series into an ohlcv dataframe."""
     rows = []
     for values in zip(prices, volumes):
         row = {
@@ -114,7 +111,9 @@ class Strategy(
 ):  # pylint: disable=too-many-instance-attributes
     """A simple moving average crossover strategy."""
 
-    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int) -> None:
+    def __init__(
+        self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int
+    ) -> None:
         """Initialize the strategy."""
         super().__init__(feed)
         self.__instrument = instrument
@@ -140,7 +139,7 @@ class Strategy(
     def loaded(self) -> bool:
         """Check if the strategy is loaded."""
         return self.__loaded
-    
+
     @loaded.setter
     def loaded(self, value: bool) -> None:
         """Set the loaded value."""
@@ -171,7 +170,7 @@ class Strategy(
         # If the exit was canceled, re-submit it.
         self.__position.exitMarket()
 
-    def onBars(self, bars: Bars) -> Dict[str, str]:
+    def onBars(self, bars: Bars) -> str:
         """Handle the bars."""
         if not self.loaded:
             return NA_SIGNAL
@@ -272,7 +271,9 @@ def evaluate(
 ) -> Dict[str, Any]:
     """Evaluate the strategy."""
     feed = prepare_feed(asset, transformed_data)
-    strat = prepare_strategy(feed, asset, ma_period=ma_period, stoch_period=stoch_period)
+    strat = prepare_strategy(
+        feed, asset, ma_period=ma_period, stoch_period=stoch_period
+    )
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:
@@ -294,7 +295,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     missing = check_missing_fields(kwargs)
     if len(missing) > 0:
         return {"error": f"Required kwargs {missing} were not provided."}
-    
+
     kwargs = remove_irrelevant_fields(kwargs)
     return get_signal(**kwargs)
 

@@ -307,7 +307,7 @@ class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                     f"Failed to transform market data for {token_address}."
                 )
                 continue
-            results[token_address] = result['transformed_data']
+            results[token_address] = result["transformed_data"]
 
         data_hash = yield from self.send_to_ipfs(
             filename=self.from_data_dir(MARKETS_FILE_NAME),
