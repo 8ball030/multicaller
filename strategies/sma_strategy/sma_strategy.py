@@ -206,7 +206,7 @@ class Strategy(
         return HOLD_SIGNAL
 
 
-def get_signal(  # pylint: disable=too-many-arguments, too-many-locals
+def get_signal(  # pylint: disable=too-many-arguments, too-many-locals  # nosec
     transformed_data: Dict[str, Any],
     portfolio_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
