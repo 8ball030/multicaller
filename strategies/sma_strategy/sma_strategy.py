@@ -27,7 +27,8 @@ from pyalgotrade import plotter, strategy
 from pyalgotrade.bar import Bars
 from pyalgotrade.barfeed import Frequency
 from pyalgotrade.barfeed.csvfeed import GenericBarFeed
-from pyalgotrade.broker.backtesting import TradePercentage
+from pyalgotrade.broker.backtesting import TradePercentage, MarketOrder
+from pyalgotrade.broker import InstrumentTraits
 from pyalgotrade.optimizer import local
 from pyalgotrade.stratanalyzer import sharpe
 from pyalgotrade.strategy.position import Position
@@ -35,8 +36,9 @@ from pyalgotrade.technical import ma, stoch
 
 
 DEFAULKT_RISK_FREE_RATE = 0.04  # ether risk free rate
-DEFAULT_BASE_CURRENCY = "USDT"
+DEFAULT_BASE_CURRENCY = "So11111111111111111111111111111111111111112"
 DEFAULT_CSV_FILE = "data.csv"
+
 
 BUY_SIGNAL = "buy"
 SELL_SIGNAL = "sell"
@@ -47,7 +49,9 @@ DEFAULT_MA_PERIOD = 35
 DEFAULT_STOCH_PERIOD = 130
 
 REQUIRED_FIELDS = frozenset({"transformed_data", "portfolio_data", "token_id"})
-OPTIONAL_FIELDS = frozenset({"ma_period"})
+OPTIONAL_FIELDS = frozenset(
+    {"ma_period", "rsi_period", "rsi_overbought_threshold", "rsi_oversold_threshold"}
+)
 ALL_FIELDS = REQUIRED_FIELDS.union(OPTIONAL_FIELDS)
 
 
@@ -70,7 +74,9 @@ def transform(
     volumes: List[Tuple[int, float]],
     default_ohlcv_period: str = "5Min",
 ) -> Dict[str, Any]:
-    """Transform the data into an ohlcv dataframe."""
+    """
+    Transform the data from a single price series into an ohlcv dataframe.
+    """
     rows = []
     for values in zip(prices, volumes):
         row = {
@@ -108,9 +114,7 @@ class Strategy(
 ):  # pylint: disable=too-many-instance-attributes
     """A simple moving average crossover strategy."""
 
-    def __init__(
-        self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int
-    ) -> None:
+    def __init__(self, feed: GenericBarFeed, instrument: str, ma_period: int, stoch_period: int) -> None:
         """Initialize the strategy."""
         super().__init__(feed)
         self.__instrument = instrument
@@ -136,7 +140,7 @@ class Strategy(
     def loaded(self) -> bool:
         """Check if the strategy is loaded."""
         return self.__loaded
-
+    
     @loaded.setter
     def loaded(self, value: bool) -> None:
         """Set the loaded value."""
@@ -170,12 +174,12 @@ class Strategy(
     def onBars(self, bars: Bars) -> Dict[str, str]:
         """Handle the bars."""
         if not self.loaded:
-            return {"signal": NA_SIGNAL}
+            return NA_SIGNAL
 
         prices = self.__prices
         lma, sma, stoc = self.__lma, self.__sma, self.__stoch
         if not lma[-1] or not sma[-1] or not prices[-1] or not stoc[-1]:
-            return {"signal": HOLD_SIGNAL}
+            return NA_SIGNAL
 
         if self.__position is None:
             if all(
@@ -185,36 +189,37 @@ class Strategy(
                     stoc[-1] > 60,
                 ]
             ):
-                shares = int(
+                shares = float(
                     self.getBroker().getCash()
                     * 0.95
                     / bars[self.__instrument].getPrice()
                 )
                 # Enter a buy market order. The order is good till canceled.
                 self.__position = self.enterLong(self.__instrument, shares, True)
-                return {"signal": BUY_SIGNAL}
+                return BUY_SIGNAL
         # Check if we have to exit the position.
         elif not self.__position.exitActive() and all(
             [prices[-1] < sma[-1], stoc[-1] < 50]
         ):
             self.__position.exitMarket()
-            return {"signal": SELL_SIGNAL}
-        return {"signal": HOLD_SIGNAL}
+            return SELL_SIGNAL
+        return HOLD_SIGNAL
 
 
-def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-locals # nosec
-    token_id: str,
+def get_signal(  # pylint: disable=too-many-arguments, too-many-locals
     transformed_data: Dict[str, Any],
     portfolio_data: Dict[str, Any],
     ma_period: int = DEFAULT_MA_PERIOD,
     stoch_period: int = DEFAULT_STOCH_PERIOD,
+    token_id: str = "token_a",
 ) -> Dict[str, Any]:
     """Compute the trend following signal"""
     results = {}
     cash = portfolio_data.get(DEFAULT_BASE_CURRENCY, 0)
     print(f"Processing signal for {token_id}")
+    print(f"Cash: {cash}")
     feed = prepare_feed(token_id, transformed_data)
-    balance = portfolio_data.get(token_id, 10)
+    balance = portfolio_data.get(token_id, 0)
     strat = prepare_strategy(
         feed,
         token_id,
@@ -225,16 +230,7 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
     broker.setCash(cash)
     bars = feed.getNextBars()
     close = bars.getBar(token_id).getClose()
-    feed.reset()
     broker.setShares(token_id, balance, close)
-
-    existing_position = Position(
-        token_id,
-        close,
-        balance,
-        allOrNone=True,
-    )
-    strat.__position = existing_position  # pylint: disable=protected-access
 
     strat.loaded = False
     strat.run()
@@ -248,7 +244,9 @@ def trend_following_signal(  # pylint: disable=too-many-arguments, too-many-loca
 
 def prepare_feed(token: str, data: Dict[str, Any]) -> GenericBarFeed:
     """Prepare the data for the strategy."""
-    dataset = pd.DataFrame(data)
+    dataset: pd.DataFrame = pd.read_json(
+        data,
+    )
     dataset.to_csv(DEFAULT_CSV_FILE, index=False)  # pylint: disable=no-member
     feed = GenericBarFeed(Frequency.MINUTE)
     feed.addBarsFromCSV(token, DEFAULT_CSV_FILE)
@@ -267,18 +265,16 @@ def prepare_strategy(feed: GenericBarFeed, asset: str, **kwargs) -> Strategy:  #
     return strat
 
 
-def evaluate(**kwargs: Any) -> Dict[str, float]:
+def evaluate(
+    transformed_data: Dict[str, Any],
+    ma_period: int = DEFAULT_MA_PERIOD,
+    stoch_period: int = DEFAULT_STOCH_PERIOD,
+    plot: bool = False,
+    asset: str = "olas",
+) -> Dict[str, Any]:
     """Evaluate the strategy."""
-    transformed_data: dict[str, Any] = kwargs["transformed_data"]
-    asset: str = kwargs["asset"]
-    ma_period: int = kwargs.pop("ma_period", DEFAULT_MA_PERIOD)
-    stoch_period: int = kwargs.pop("stoch_period", DEFAULT_STOCH_PERIOD)
-    plot: bool = kwargs.pop("plot", False)
-
     feed = prepare_feed(asset, transformed_data)
-    strat = prepare_strategy(
-        feed, asset, ma_period=ma_period, stoch_period=stoch_period
-    )
+    strat = prepare_strategy(feed, asset, ma_period=ma_period, stoch_period=stoch_period)
     broker = strat.getBroker()
     broker.setCash(1000)
     if plot:
@@ -300,9 +296,9 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     missing = check_missing_fields(kwargs)
     if len(missing) > 0:
         return {"error": f"Required kwargs {missing} were not provided."}
-
+    
     kwargs = remove_irrelevant_fields(kwargs)
-    return trend_following_signal(**kwargs)
+    return get_signal(**kwargs)
 
 
 def parameters_generator() -> itertools.product:
