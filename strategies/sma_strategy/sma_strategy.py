@@ -48,9 +48,7 @@ DEFAULT_MA_PERIOD = 35
 DEFAULT_STOCH_PERIOD = 130
 
 REQUIRED_FIELDS = frozenset({"transformed_data", "portfolio_data", "token_id"})
-OPTIONAL_FIELDS = frozenset(
-    {"ma_period", "rsi_period", "rsi_overbought_threshold", "rsi_oversold_threshold"}
-)
+OPTIONAL_FIELDS = frozenset({"ma_period"})
 ALL_FIELDS = REQUIRED_FIELDS.union(OPTIONAL_FIELDS)
 
 
