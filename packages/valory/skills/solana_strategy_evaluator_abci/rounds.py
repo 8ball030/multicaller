@@ -137,9 +137,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     transition_function: AbciAppTransitionFunction = {
         StrategyExecRound: {
             Event.PREPARE_SWAP: BacktestRound,
-            Event.PREPARE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
             Event.PREPARE_INCOMPLETE_SWAP: BacktestRound,
-            Event.PREPARE_INCOMPLETE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
             Event.NO_ORDERS: HodlRound,
             Event.ERROR_PREPARING_SWAPS: StrategyExecutionFailedRound,
             Event.NO_MAJORITY: StrategyExecRound,
@@ -147,6 +145,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         },
         BacktestRound: {
             Event.BACKTEST_POSITIVE: PrepareSwapRound,
+            Event.BACKTEST_POSITIVE_PROXY_SERVER: ProxySwapQueueRound,
             Event.BACKTEST_NEGATIVE: BacktestingNegativeRound,
             Event.BACKTEST_FAILED: BacktestingFailedRound,
             Event.ERROR_BACKTESTING: BacktestingFailedRound,
