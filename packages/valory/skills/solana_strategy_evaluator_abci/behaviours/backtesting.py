@@ -52,6 +52,7 @@ class BacktestBehaviour(StrategyEvaluatorBaseBehaviour):
             self.context.logger.error(
                 f"No data were found in the fetched transformed data for token {output_mint!r}."
             )
+            return False
 
         # the following are always passed to a strategy script, which may choose to ignore any
         kwargs: Dict[str, Any] = self.params.strategies_kwargs
