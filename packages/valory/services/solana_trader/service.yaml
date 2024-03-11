@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeifphoiaqwbozcjomsjfykig5txb4bqml3y7jeubakcu3tlyy4zyca
+agent: valory/solana_trader:0.1.0:bafybeih52lbraiicqfy6c4yxjpda5uf7uwte56kmgplsougppux27fn4ee
 number_of_agents: 4
 deployment: {}
 ---
@@ -19,7 +19,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifpqcxwjjlenpa7n3nnx5ornrg7uz5d7h76ugzhiwk45bx3sx3cta",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
@@ -29,7 +29,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifpqcxwjjlenpa7n3nnx5ornrg7uz5d7h76ugzhiwk45bx3sx3cta",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
@@ -39,7 +39,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifpqcxwjjlenpa7n3nnx5ornrg7uz5d7h76ugzhiwk45bx3sx3cta",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
@@ -49,7 +49,7 @@ type: skill
       args:
         cleanup_freq: ${CLEANUP_FREQ:int:50}
         timeout_limit: ${TIMEOUT_LIMIT:int:3}
-        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeicagt2e27arlzu2l4zrwc6tlqw73ngszv4ufubixnssl7ik7y4o7y",["sma_strategy"]]]}
+        file_hash_to_id: ${FILE_HASH_TO_ID:list:[["bafybeifpqcxwjjlenpa7n3nnx5ornrg7uz5d7h76ugzhiwk45bx3sx3cta",["sma_strategy"]]]}
         component_yaml_filename: ${COMPONENT_YAML_FILENAME:str:component.yaml}
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}

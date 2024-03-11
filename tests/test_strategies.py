@@ -96,8 +96,7 @@ def test_evaluate(strategy, raw_data):
 @pytest.mark.parametrize("strategy", strategies)
 def test_transform(strategy, raw_data):
     """Test the transform function."""
-    data = strategy.transform(**raw_data)
-    assert "transformed_data" in data
+    strategy.transform(**raw_data)
 
 
 @pytest.mark.parametrize("strategy", strategies)

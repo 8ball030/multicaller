@@ -28,6 +28,7 @@ from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base impor
     StrategyEvaluatorBaseBehaviour,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import (
+    OUTPUT_MINT,
     TRANSFORMED_PRICE_DATA_KEY,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import (
@@ -52,6 +53,7 @@ class BacktestBehaviour(StrategyEvaluatorBaseBehaviour):
             self.context.logger.error(
                 f"No data were found in the fetched transformed data for token {output_mint!r}."
             )
+            return False
 
         # the following are always passed to a strategy script, which may choose to ignore any
         kwargs: Dict[str, Any] = self.params.strategies_kwargs
@@ -97,13 +99,28 @@ class BacktestBehaviour(StrategyEvaluatorBaseBehaviour):
         self.context.logger.info(
             f"Using trading strategy {self.synchronized_data.selected_strategy!r} for backtesting..."
         )
-        success_orders = [
-            order
-            for order in orders
-            for _input_mint, output_mint in order.items()
-            if self.backtest(transformed_data, output_mint)
-        ]
-        return success_orders, False
+
+        success_orders = []
+        incomplete = False
+        for order in orders:
+            token = order.get(OUTPUT_MINT, None)
+            if token is None:
+                err = f"{OUTPUT_MINT!r} key was not found in {order=}."
+                self.context.logger.error(err)
+                incomplete = True
+                continue
+
+            backtest_passed = self.backtest(transformed_data, token)
+            if backtest_passed:
+                success_orders.append(order)
+                continue
+
+            incomplete = True
+
+        if len(success_orders) == 0:
+            incomplete = True
+
+        return success_orders, incomplete
 
     def async_act(self) -> Generator:
         """Do the action."""
