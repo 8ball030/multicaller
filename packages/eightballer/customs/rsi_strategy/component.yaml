@@ -1,13 +1,13 @@
 name: rsi_strategy
-author: 8baller
+author: eightballer
 version: 0.1.0
 type: custom
 description: TODO
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeidey4syohls5hxmso6qsp5p4uhtzle5txv2mlbym6ktjzknich6ob
-  sma_strategy.py: bafybeibqwl52cnz64cysjd2jnjijuakdvyrffapxq65cdzx6g65gu42deq
+  __init__.py: bafybeiema62zh7cdsq46z3pfgzpsahzuxn7otn65mozzimnworeellic4i
+  rsi_strategy.py: bafybeibh4x4yyqs2oqdxkj7wrjod4k2j5wlr6zfu3vl5p6nn3tlpfmpkui
 fingerprint_ignore_patterns: []
 entry_point: rsi_strategy.py
 run_callable: run

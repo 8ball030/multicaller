@@ -1,13 +1,13 @@
 name: vwap_momentum
-author: 8baller
+author: eightballer
 version: 0.1.0
 type: custom
 description: TODO
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeidey4syohls5hxmso6qsp5p4uhtzle5txv2mlbym6ktjzknich6ob
-  sma_strategy.py: bafybeibqwl52cnz64cysjd2jnjijuakdvyrffapxq65cdzx6g65gu42deq
+  __init__.py: bafybeif47kuzirq4nw5pigw5dvxhywbt4uqb4vhn2ayvnwlz6qviv4ptf4
+  strategy.py: bafybeibyd2zwff67dkvi36dmv347knqg5cb3y57amgz46zkfx6wujsn4dy
 fingerprint_ignore_patterns: []
 entry_point: strategy.py
 run_callable: run
