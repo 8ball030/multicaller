@@ -13,4 +13,6 @@ entry_point: strategy.py
 run_callable: run
 transform_callable: transform
 evaluate_callable: evaluate
-dependencies: {}
+dependencies:
+  pyalgotrade:
+    version: "==0.20"
