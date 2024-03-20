@@ -36,10 +36,10 @@ connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
-- valory/market_data_fetcher_abci:0.1.0:bafybeidj4lrrcgfabe6wqo5gn5g3ruf4ticulihp2s5xrnkdltjvqbm2gq
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifgswhaxkgxucgivc752cyuquawqgrpkzvoxvr3czld4zylvfiqau
-- valory/portfolio_tracker_abci:0.1.0:bafybeif73actgg5qhbrddppgalbeowenb5u22sttixcl5mwdiv7x5b22ca
+- valory/abstract_round_abci:0.1.0:bafybeic2emnylfmdtidobgdsxa4tgdelreeimtglqzrmic6cumhpsbfzhe
+- valory/market_data_fetcher_abci:0.1.0:bafybeiall6kd77aojmeeqnovfnvfkrvn4mowtoiepvbjn4k2hli32oye24
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeib5byud63jgurg4gad7f5maoccjebilwc3qacy3iege4yr42nitpi
+- valory/portfolio_tracker_abci:0.1.0:bafybeigbzjnn5mxr4l6434xsoi5y57i5solhtohs7s446pf57y3qmup4hy
 behaviours:
   main:
     args: {}

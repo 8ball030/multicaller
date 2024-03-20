@@ -1,0 +1,18 @@
+name: vwap_momentum
+author: eightballer
+version: 0.1.0
+type: custom
+description: TODO
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeif47kuzirq4nw5pigw5dvxhywbt4uqb4vhn2ayvnwlz6qviv4ptf4
+  strategy.py: bafybeibyd2zwff67dkvi36dmv347knqg5cb3y57amgz46zkfx6wujsn4dy
+fingerprint_ignore_patterns: []
+entry_point: strategy.py
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
+dependencies:
+  pyalgotrade:
+    version: ==0.20

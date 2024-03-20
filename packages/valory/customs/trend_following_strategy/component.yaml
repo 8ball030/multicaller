@@ -1,0 +1,18 @@
+name: trend_following_strategy
+author: valory
+version: 0.1.0
+type: custom
+description: A simple trading strategy according to which one should buy an asset
+  when its price trend goes up, and sell when its trend goes down, expecting price
+  movements to continue.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeie2levqwqkcjxg4moucgjjv2gvt4dwrdek5imyzg7pzpi74wde3hi
+  trend_following_strategy.py: bafybeifcc4gbgnz2vbbnfssfkamchqhwuthhqqhmmjheq47qcdnhuezarm
+fingerprint_ignore_patterns: []
+entry_point: trend_following_strategy.py
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
+dependencies: {}

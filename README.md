@@ -99,7 +99,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
     return {"signal": "hold"}
 ```
 
-You can take a look at the [trend following strategy](./strategies/trend_following_strategy/trend_following_strategy.py) as an example.
+You can take a look at the [trend following strategy](packages/valory/customs/trend_following_strategy/trend_following_strategy.py) as an example.
 
 In order to use your strategy, you must:
 

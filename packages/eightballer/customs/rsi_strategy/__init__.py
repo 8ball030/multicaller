@@ -18,4 +18,4 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the trend_following_strategy."""
+"""This module contains the rsi strategy."""
