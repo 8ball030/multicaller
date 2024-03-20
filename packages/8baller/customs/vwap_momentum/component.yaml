@@ -1,15 +1,15 @@
-name: sma_strategy
+name: vwap_momentum
 author: 8baller
 version: 0.1.0
 type: custom
-description: A simple trading strategy according to use the cross overs of the short and long moving averages to make trading decisions.
+description: TODO
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeidey4syohls5hxmso6qsp5p4uhtzle5txv2mlbym6ktjzknich6ob
   sma_strategy.py: bafybeibqwl52cnz64cysjd2jnjijuakdvyrffapxq65cdzx6g65gu42deq
 fingerprint_ignore_patterns: []
-entry_point: sma_strategy.py
+entry_point: strategy.py
 run_callable: run
 transform_callable: transform
 evaluate_callable: evaluate
