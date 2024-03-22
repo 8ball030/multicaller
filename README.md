@@ -110,3 +110,13 @@ In order to use your strategy, you must:
     Alternatively, you can also modify the parameter `file_hash_to_id` in the file `[`service.yaml`](./packages/valory/services/solana_trader/service.yaml).
 
 3. Run your service.
+
+
+## Included strategies
+
+| Strategies                                       |
+|--------------------------------------------------|
+| packages/eightballer/customs/rsi_strategy        |
+| packages/eightballer/customs/sma_strategy        |
+| packages/eightballer/customs/vwap_momentum       |
+| packages/valory/customs/trend_following_strategy |
