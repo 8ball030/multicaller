@@ -161,17 +161,19 @@ app.post('/tx', async (req: any, res: any) => {
         addressLookupTableAccounts.push(
             ...(await getAddressLookupTableAccounts(addressLookupTableAddresses))
         );
-
+        const priorityFeeInstruction = ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee});
         const [instructions2, pda] = await txBuilder.withInstructions([
-            ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
             ...setupInstructions.map(deserializeInstruction),
         ]).getInstructions()
-        await sendTXWithRetry(connection, instructions2, addressLookupTableAccounts, maxRetries)
+
+        await sendTXWithRetry(connection, [priorityFeeInstruction, ...instructions2], addressLookupTableAccounts, maxRetries)
         console.log("Created squad transaction")
 
-        const addInstruction = await squads.buildAddInstruction(multisigAddress, pda, deserializeInstruction(swapInstructionPayload), 0)
+        const transaction = await squads.getTransaction(pda);
+        const addInstruction = await squads.buildAddInstruction(multisigAddress, pda, deserializeInstruction(swapInstructionPayload), transaction.instructionIndex + 1)
         await sendTXWithRetry(
             connection, [
+                priorityFeeInstruction,
                 addInstruction,
             ],
             addressLookupTableAccounts,
@@ -184,7 +186,7 @@ app.post('/tx', async (req: any, res: any) => {
         const execute = await squads.buildExecuteInstruction(multisigAddress, pda)
 
         await sendTXWithRetry(connection, [
-            ComputeBudgetProgram.setComputeUnitPrice({microLamports: priorityFee}),
+            priorityFeeInstruction,
             deserializeInstruction(cleanupInstruction),
             activate,
             approve,
