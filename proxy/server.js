@@ -63,7 +63,7 @@ const squadVault = new web3_js_1.PublicKey(vaultEnv);
  */
 const getTransactionIndex = async (connection) => {
     const multisigAccount = await multisig.accounts.Multisig.fromAccountAddress(connection, multisigAddress);
-    return multisig.utils.toBigInt(multisigAccount.transactionIndex);
+    return multisig.utils.toBigInt(multisigAccount.transactionIndex) + 1n;
 };
 app.post('/tx', async (req, res) => {
     try {
@@ -154,19 +154,14 @@ app.post('/tx', async (req, res) => {
         const swapMessage = new web3_js_1.TransactionMessage({
             payerKey: squadVault,
             recentBlockhash: blockhash.blockhash,
-            instructions: [priorityFeeInstruction, ...swapInstructions],
+            instructions: swapInstructions,
         });
         // get the multisig's PDA
-        const createKey = web3_js_1.Keypair.generate();
-        const multisigPda = multisig.getMultisigPda({
-            createKey: createKey.publicKey,
-        })[0];
+        const multisigPda = multisigAddress;
         // get the transaction's index
         let transactionIndex = await getTransactionIndex(connection);
         // create a vault transaction for the swap
-        const txSignature = await multisig.rpc.vaultTransactionCreate({
-            connection,
-            feePayer,
+        const createInstructions = multisig.instructions.vaultTransactionCreate({
             multisigPda,
             transactionIndex,
             creator: feePayer.publicKey,
@@ -174,11 +169,27 @@ app.post('/tx', async (req, res) => {
             ephemeralSigners,
             transactionMessage: swapMessage,
             addressLookupTableAccounts,
-            sendOptions: { maxRetries: maxRetries },
         });
-        console.log("Created squad transaction.");
+        const messageV0 = new web3_js_1.TransactionMessage({
+            payerKey: feePayer.publicKey,
+            recentBlockhash: blockhash.blockhash,
+            instructions: [
+                priorityFeeInstruction,
+                createInstructions,
+            ],
+        }).compileToV0Message();
+        const tx = new web3_js_1.VersionedTransaction(messageV0);
+        tx.sign([feePayer, ...[]]);
+        let txSignature;
+        try {
+            txSignature = await connection.sendTransaction(tx);
+            await connection.confirmTransaction(txSignature);
+            console.log("Created squad transaction.");
+        }
+        catch (err) {
+            console.log(err);
+        }
         // propose the transaction for approval/rejection
-        transactionIndex = await getTransactionIndex(connection);
         await multisig.rpc.proposalCreate({
             connection,
             feePayer,
@@ -187,9 +198,9 @@ app.post('/tx', async (req, res) => {
             transactionIndex,
             sendOptions: { maxRetries: maxRetries },
         });
+        await connection.confirmTransaction(txSignature);
         console.log("Created proposal for the transaction.");
         // approve the proposal
-        transactionIndex = await getTransactionIndex(connection);
         await multisig.rpc.proposalApprove({
             connection,
             feePayer,
@@ -198,9 +209,9 @@ app.post('/tx', async (req, res) => {
             transactionIndex,
             sendOptions: { maxRetries: maxRetries },
         });
+        await connection.confirmTransaction(txSignature);
         console.log("Approved proposal.");
         // execute the transaction
-        transactionIndex = await getTransactionIndex(connection);
         await multisig.rpc.vaultTransactionExecute({
             connection,
             feePayer,
@@ -209,6 +220,7 @@ app.post('/tx', async (req, res) => {
             transactionIndex,
             sendOptions: { maxRetries: maxRetries },
         });
+        await connection.confirmTransaction(txSignature);
         console.log("Transaction executed.");
         res.json({ "status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}` });
     }

@@ -6,7 +6,8 @@ import {
     PublicKey,
     TransactionMessage,
     AddressLookupTableAccount,
-    TransactionInstruction
+    TransactionInstruction,
+    VersionedTransaction,
 } from '@solana/web3.js';
 import bs58 from "bs58";
 import fetch from "cross-fetch";
@@ -52,7 +53,7 @@ const getTransactionIndex = async (
         connection,
         multisigAddress,
     );
-    return multisig.utils.toBigInt(multisigAccount.transactionIndex)
+    return multisig.utils.toBigInt(multisigAccount.transactionIndex) + 1n;
 }
 
 app.post('/tx', async (req: any, res: any) => {
@@ -162,19 +163,14 @@ app.post('/tx', async (req: any, res: any) => {
         const swapMessage = new TransactionMessage({
             payerKey: squadVault,
             recentBlockhash: blockhash.blockhash,
-            instructions: [priorityFeeInstruction, ...swapInstructions],
+            instructions: swapInstructions,
         });
         // get the multisig's PDA
-        const createKey = Keypair.generate();
-        const multisigPda = multisig.getMultisigPda({
-            createKey: createKey.publicKey,
-        })[0];
+        const multisigPda = multisigAddress;
         // get the transaction's index
         let transactionIndex = await getTransactionIndex(connection)
         // create a vault transaction for the swap
-        const txSignature = await multisig.rpc.vaultTransactionCreate({
-            connection,
-            feePayer,
+        const createInstructions = multisig.instructions.vaultTransactionCreate({
             multisigPda,
             transactionIndex,
             creator: feePayer.publicKey,
@@ -182,12 +178,29 @@ app.post('/tx', async (req: any, res: any) => {
             ephemeralSigners,
             transactionMessage: swapMessage,
             addressLookupTableAccounts,
-            sendOptions: {maxRetries: maxRetries},
         });
-        console.log("Created squad transaction.")
+        const messageV0 = new TransactionMessage({
+            payerKey: feePayer.publicKey,
+            recentBlockhash: blockhash.blockhash,
+            instructions: [
+                priorityFeeInstruction,
+                createInstructions,
+            ],
+        }).compileToV0Message();
+        
+        const tx = new VersionedTransaction(messageV0);
+        tx.sign([feePayer, ...[]]);
+        let txSignature: any;
+        try {
+            txSignature = await connection.sendTransaction(tx);
+            await connection.confirmTransaction(txSignature);
+            console.log("Created squad transaction.")
+        } catch (err) {
+            console.log(err);
+        }
+
 
         // propose the transaction for approval/rejection
-        transactionIndex = await getTransactionIndex(connection)
         await multisig.rpc.proposalCreate({
             connection,
             feePayer,
@@ -196,10 +209,10 @@ app.post('/tx', async (req: any, res: any) => {
             transactionIndex,
             sendOptions: {maxRetries: maxRetries},
         });
+        await connection.confirmTransaction(txSignature);
         console.log("Created proposal for the transaction.")
 
         // approve the proposal
-        transactionIndex = await getTransactionIndex(connection)
         await multisig.rpc.proposalApprove({
             connection,
             feePayer,
@@ -208,10 +221,10 @@ app.post('/tx', async (req: any, res: any) => {
             transactionIndex,
             sendOptions: {maxRetries: maxRetries},
         });
+        await connection.confirmTransaction(txSignature);
         console.log("Approved proposal.")
 
         // execute the transaction
-        transactionIndex = await getTransactionIndex(connection)
         await multisig.rpc.vaultTransactionExecute({
             connection,
             feePayer,
@@ -220,6 +233,7 @@ app.post('/tx', async (req: any, res: any) => {
             transactionIndex,
             sendOptions: {maxRetries: maxRetries},
         });
+        await connection.confirmTransaction(txSignature);
         console.log("Transaction executed.")
 
         res.json({"status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}`})
