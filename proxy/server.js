@@ -65,14 +65,51 @@ const getTransactionIndex = async (connection) => {
     const multisigAccount = await multisig.accounts.Multisig.fromAccountAddress(connection, multisigAddress);
     return multisig.utils.toBigInt(multisigAccount.transactionIndex) + 1n;
 };
+/**
+ * Send transactions with retry.
+ */
+const sendTx = async (connection, instructions, resendAmount, lookupTableAccounts = []) => {
+    const blockhash = await connection.getLatestBlockhash();
+    const messageV0 = new web3_js_1.TransactionMessage({
+        payerKey: feePayer.publicKey,
+        recentBlockhash: blockhash.blockhash,
+        instructions,
+    }).compileToV0Message(lookupTableAccounts);
+    const tx = new web3_js_1.VersionedTransaction(messageV0);
+    tx.sign([feePayer, ...[]]);
+    let txSignature;
+    for (let i = 0; i < resendAmount; i++) {
+        try {
+            txSignature = await connection.sendTransaction(tx);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    return txSignature;
+};
+/**
+ * Send and confirm transactions with retry.
+ */
+const sendTxAndConfirm = async (connection, instructions, resendAmount, lookupTableAccounts = [], commitment = 'finalized') => {
+    const txSignature = await sendTx(connection, instructions, resendAmount, lookupTableAccounts);
+    await connection.confirmTransaction(txSignature, commitment);
+    return txSignature;
+};
 app.post('/tx', async (req, res) => {
     try {
-        let { inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs, maxRetries } = req.body;
+        let { inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs, computeUnitLimit, maxRetries, resendAmount } = req.body;
         if (timeoutInMs === undefined) {
             timeoutInMs = 60000;
         }
         if (maxRetries === undefined) {
             maxRetries = 5;
+        }
+        if (computeUnitLimit === undefined) {
+            computeUnitLimit = 1000000;
+        }
+        if (resendAmount === undefined) {
+            resendAmount = 100;
         }
         const config = {
             confirmTransactionInitialTimeout: timeoutInMs,
@@ -170,57 +207,39 @@ app.post('/tx', async (req, res) => {
             transactionMessage: swapMessage,
             addressLookupTableAccounts,
         });
-        const messageV0 = new web3_js_1.TransactionMessage({
-            payerKey: feePayer.publicKey,
-            recentBlockhash: blockhash.blockhash,
-            instructions: [
-                priorityFeeInstruction,
-                createInstructions,
-            ],
-        }).compileToV0Message();
-        const tx = new web3_js_1.VersionedTransaction(messageV0);
-        tx.sign([feePayer, ...[]]);
-        let txSignature;
-        try {
-            txSignature = await connection.sendTransaction(tx);
-            await connection.confirmTransaction(txSignature);
-            console.log("Created squad transaction.");
-        }
-        catch (err) {
-            console.log(err);
-        }
+        // TX #1 Create the multisig transaction
+        await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        console.log("Created squad transaction.");
         // propose the transaction for approval/rejection
-        await multisig.rpc.proposalCreate({
-            connection,
-            feePayer,
-            creator: feePayer,
+        const proposalInstructions = multisig.instructions.proposalCreate({
+            creator: feePayer.publicKey,
             multisigPda,
             transactionIndex,
-            sendOptions: { maxRetries: maxRetries },
         });
-        await connection.confirmTransaction(txSignature);
+        // TX #2 Create the proposal for the multisig tx
+        await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
         console.log("Created proposal for the transaction.");
         // approve the proposal
-        await multisig.rpc.proposalApprove({
-            connection,
-            feePayer,
-            member: feePayer,
-            multisigPda,
-            transactionIndex,
-            sendOptions: { maxRetries: maxRetries },
-        });
-        await connection.confirmTransaction(txSignature);
-        console.log("Approved proposal.");
-        // execute the transaction
-        await multisig.rpc.vaultTransactionExecute({
-            connection,
-            feePayer,
+        const approvalInstructions = multisig.instructions.proposalApprove({
             member: feePayer.publicKey,
             multisigPda,
             transactionIndex,
-            sendOptions: { maxRetries: maxRetries },
         });
-        await connection.confirmTransaction(txSignature);
+        // TX #3 Approve the proposal (multisig transaction)
+        await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        console.log("Approved proposal.");
+        // execute the transaction
+        const { instruction, lookupTableAccounts } = await multisig.instructions.vaultTransactionExecute({
+            connection,
+            member: feePayer.publicKey,
+            multisigPda,
+            transactionIndex,
+        });
+        const computeLimitInstruction = web3_js_1.ComputeBudgetProgram.setComputeUnitLimit({
+            units: computeUnitLimit,
+        });
+        // TX #4 Execute the multisig transaction
+        const txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
         console.log("Transaction executed.");
         res.json({ "status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}` });
     }
@@ -233,3 +252,6 @@ app.use(express_1.default.json());
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+function async(arg0) {
+    throw new Error("Function not implemented.");
+}
