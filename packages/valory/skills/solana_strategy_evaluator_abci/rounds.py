@@ -27,11 +27,16 @@ from packages.valory.skills.abstract_round_abci.base import (
     AppState,
     get_name,
 )
+from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import (
+    BacktestRound,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
     Event,
     SynchronizedData,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states import (
+    BacktestingFailedRound,
+    BacktestingNegativeRound,
     HodlRound,
     InstructionPreparationFailedRound,
     NoMoreSwapsRound,
@@ -62,39 +67,47 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     Transition states:
         0. StrategyExecRound
             - prepare swap: 1.
-            - prepare swap proxy server: 3.
             - prepare incomplete swap: 1.
-            - prepare incomplete swap proxy server: 3.
-            - no orders: 8.
-            - error preparing swaps: 6.
+            - no orders: 11.
+            - error preparing swaps: 7.
             - no majority: 0.
             - round timeout: 0.
-        1. PrepareSwapRound
-            - instructions prepared: 2.
-            - incomplete instructions prepared: 2.
-            - no instructions: 8.
-            - error preparing instructions: 7.
+        1. BacktestRound
+            - backtest succeeded: 2.
+            - prepare swap proxy server: 4.
+            - backtest negative: 8.
+            - backtest failed: 9.
+            - error backtesting: 9.
             - no majority: 1.
             - round timeout: 1.
-        2. SwapQueueRound
-            - swap tx prepared: 4.
-            - swaps queue empty: 5.
-            - none: 2.
+        2. PrepareSwapRound
+            - instructions prepared: 3.
+            - incomplete instructions prepared: 3.
+            - no instructions: 11.
+            - error preparing instructions: 10.
             - no majority: 2.
             - round timeout: 2.
-        3. ProxySwapQueueRound
-            - proxy swapped: 3.
-            - swaps queue empty: 5.
-            - proxy swap failed: 3.
+        3. SwapQueueRound
+            - swap tx prepared: 5.
+            - swaps queue empty: 6.
+            - none: 3.
             - no majority: 3.
             - round timeout: 3.
-        4. SwapTxPreparedRound
-        5. NoMoreSwapsRound
-        6. StrategyExecutionFailedRound
-        7. InstructionPreparationFailedRound
-        8. HodlRound
+        4. ProxySwapQueueRound
+            - proxy swapped: 4.
+            - swaps queue empty: 6.
+            - proxy swap failed: 4.
+            - no majority: 4.
+            - round timeout: 4.
+        5. SwapTxPreparedRound
+        6. NoMoreSwapsRound
+        7. StrategyExecutionFailedRound
+        8. BacktestingNegativeRound
+        9. BacktestingFailedRound
+        10. InstructionPreparationFailedRound
+        11. HodlRound
 
-    Final states: {HodlRound, InstructionPreparationFailedRound, NoMoreSwapsRound, StrategyExecutionFailedRound, SwapTxPreparedRound}
+    Final states: {BacktestingFailedRound, BacktestingNegativeRound, HodlRound, InstructionPreparationFailedRound, NoMoreSwapsRound, StrategyExecutionFailedRound, SwapTxPreparedRound}
 
     Timeouts:
         round timeout: 30.0
@@ -102,16 +115,41 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
 
     initial_round_cls: AppState = StrategyExecRound
     initial_states: Set[AppState] = {StrategyExecRound}
+    final_states: Set[AppState] = {
+        SwapTxPreparedRound,
+        NoMoreSwapsRound,
+        StrategyExecutionFailedRound,
+        InstructionPreparationFailedRound,
+        HodlRound,
+        BacktestingNegativeRound,
+        BacktestingFailedRound,
+    }
+    event_to_timeout: Dict[Event, float] = {
+        Event.ROUND_TIMEOUT: 30.0,
+    }
+    db_pre_conditions: Dict[AppState, Set[str]] = {
+        StrategyExecRound: {
+            get_name(SynchronizedData.selected_strategy),
+            get_name(SynchronizedData.data_hash),
+        },
+    }
     transition_function: AbciAppTransitionFunction = {
         StrategyExecRound: {
-            Event.PREPARE_SWAP: PrepareSwapRound,
-            Event.PREPARE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
-            Event.PREPARE_INCOMPLETE_SWAP: PrepareSwapRound,
-            Event.PREPARE_INCOMPLETE_SWAP_PROXY_SERVER: ProxySwapQueueRound,
+            Event.PREPARE_SWAP: BacktestRound,
+            Event.PREPARE_INCOMPLETE_SWAP: BacktestRound,
             Event.NO_ORDERS: HodlRound,
             Event.ERROR_PREPARING_SWAPS: StrategyExecutionFailedRound,
             Event.NO_MAJORITY: StrategyExecRound,
             Event.ROUND_TIMEOUT: StrategyExecRound,
+        },
+        BacktestRound: {
+            Event.BACKTEST_POSITIVE: PrepareSwapRound,
+            Event.BACKTEST_POSITIVE_PROXY_SERVER: ProxySwapQueueRound,
+            Event.BACKTEST_NEGATIVE: BacktestingNegativeRound,
+            Event.BACKTEST_FAILED: BacktestingFailedRound,
+            Event.ERROR_BACKTESTING: BacktestingFailedRound,
+            Event.NO_MAJORITY: BacktestRound,
+            Event.ROUND_TIMEOUT: BacktestRound,
         },
         PrepareSwapRound: {
             Event.INSTRUCTIONS_PREPARED: SwapQueueRound,
@@ -138,29 +176,17 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         SwapTxPreparedRound: {},
         NoMoreSwapsRound: {},
         StrategyExecutionFailedRound: {},
+        BacktestingNegativeRound: {},
+        BacktestingFailedRound: {},
         InstructionPreparationFailedRound: {},
         HodlRound: {},
-    }
-    final_states: Set[AppState] = {
-        SwapTxPreparedRound,
-        NoMoreSwapsRound,
-        StrategyExecutionFailedRound,
-        InstructionPreparationFailedRound,
-        HodlRound,
-    }
-    event_to_timeout: Dict[Event, float] = {
-        Event.ROUND_TIMEOUT: 30.0,
-    }
-    db_pre_conditions: Dict[AppState, Set[str]] = {
-        StrategyExecRound: {
-            get_name(SynchronizedData.selected_strategy),
-            get_name(SynchronizedData.data_hash),
-        },
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
         SwapTxPreparedRound: set(),  # TODO: {get_name(SynchronizedData.most_voted_instruction_set)},
         NoMoreSwapsRound: set(),
         StrategyExecutionFailedRound: set(),
+        BacktestingNegativeRound: set(),
+        BacktestingFailedRound: set(),
         InstructionPreparationFailedRound: set(),
         HodlRound: set(),
     }

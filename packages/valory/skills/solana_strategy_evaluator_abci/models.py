@@ -19,7 +19,6 @@
 
 """This module contains the models for the skill."""
 
-from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
 from aea.skills.base import SkillContext
@@ -121,7 +120,8 @@ class StrategyEvaluatorParams(BaseParams):
         self.expected_swap_tx_cost: int = self._ensure(
             "expected_swap_tx_cost", kwargs, int
         )
-        self.squad_vault: str = self._ensure("squad_vault", kwargs, str)
+        self.ipfs_fetch_retries: int = self._ensure("ipfs_fetch_retries", kwargs, int)
+        self.sharpe_threshold: float = self._ensure("sharpe_threshold", kwargs, float)
         super().__init__(*args, **kwargs)
 
 
@@ -135,21 +135,3 @@ class SwapInstructionsSpecs(ApiSpecs):
 
 class TxSettlementProxy(ApiSpecs):
     """A model that wraps ApiSpecs for the Solana transaction settlement proxy server."""
-
-
-class GetBalance(ApiSpecs):
-    """A model that wraps ApiSpecs for the Solana balance check."""
-
-
-class TokenAccounts(ApiSpecs):
-    """A model that wraps ApiSpecs for the Solana tokens' balance check."""
-
-
-@dataclass
-class RPCPayload:
-    """An RPC request's payload."""
-
-    method: str
-    params: list
-    id: int = 1
-    jsonrpc: str = "2.0"

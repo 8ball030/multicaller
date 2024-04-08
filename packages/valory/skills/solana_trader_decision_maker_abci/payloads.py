@@ -26,8 +26,17 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
 @dataclass(frozen=True)
+class RandomnessPayload(BaseTxPayload):
+    """Represent a transaction payload carrying randomness data."""
+
+    round_id: int
+    randomness: str
+
+
+@dataclass(frozen=True)
 class SolanaTraderDecisionMakerPayload(BaseTxPayload):
     """A transaction payload for the SolanaTraderDecisionMakingRound."""
 
-    contents: Optional[str]
+    policy: Optional[str]
+    positions: Optional[str]
     selected_strategy: Optional[str]

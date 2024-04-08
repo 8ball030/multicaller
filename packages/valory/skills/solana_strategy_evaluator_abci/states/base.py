@@ -31,6 +31,9 @@ from packages.valory.skills.abstract_round_abci.base import (
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     SynchronizedData as MarketFetcherSyncedData,
 )
+from packages.valory.skills.portfolio_tracker_abci.rounds import (
+    SynchronizedData as PortfolioTrackerSyncedData,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
     IPFSHashPayload,
 )
@@ -50,9 +53,8 @@ class Event(Enum):
 
     NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
-    PREPARE_SWAP_PROXY_SERVER = "prepare_swap_proxy_server"
+    BACKTEST_POSITIVE_PROXY_SERVER = "prepare_swap_proxy_server"
     PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
-    PREPARE_INCOMPLETE_SWAP_PROXY_SERVER = "prepare_incomplete_swap_proxy_server"
     ERROR_PREPARING_SWAPS = "error_preparing_swaps"
     NO_INSTRUCTIONS = "no_instructions"
     INSTRUCTIONS_PREPARED = "instructions_prepared"
@@ -63,13 +65,18 @@ class Event(Enum):
     TX_PREPARATION_FAILED = "none"
     PROXY_SWAPPED = "proxy_swapped"
     PROXY_SWAP_FAILED = "proxy_swap_failed"
+    BACKTEST_POSITIVE = "backtest_succeeded"
+    BACKTEST_NEGATIVE = "backtest_negative"
+    BACKTEST_FAILED = "backtest_failed"
+    ERROR_BACKTESTING = "error_backtesting"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
 
 
 class SynchronizedData(
     DecisionMakerSyncedData,
-    MarketFetcherSyncedData,  # TODO: TxSettlementSyncedData
+    MarketFetcherSyncedData,
+    PortfolioTrackerSyncedData,  # TODO: TxSettlementSyncedData
 ):
     """Class to represent the synchronized data.
 
@@ -92,6 +99,11 @@ class SynchronizedData(
     def orders_hash(self) -> Optional[str]:
         """Get the hash of the orders' data."""
         return self._optional_str("orders_hash")
+
+    @property
+    def backtested_orders_hash(self) -> Optional[str]:
+        """Get the hash of the backtested orders' data."""
+        return self._optional_str("backtested_orders_hash")
 
     @property
     def incomplete_exec(self) -> bool:
@@ -127,6 +139,11 @@ class SynchronizedData(
     def participant_to_tx_preparation(self) -> DeserializedCollection:
         """Get the participants to the next swap's tx preparation."""
         return self._get_deserialized("participant_to_tx_preparation")
+
+    @property
+    def participant_to_backtesting(self) -> DeserializedCollection:
+        """Get the participants to the backtesting."""
+        return self._get_deserialized("participant_to_backtesting")
 
 
 class IPFSRound(CollectSameUntilThresholdRound):

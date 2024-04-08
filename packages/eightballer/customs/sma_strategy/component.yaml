@@ -1,0 +1,21 @@
+name: sma_strategy
+author: eightballer
+version: 0.1.0
+type: custom
+description: A simple trading strategy according to use the cross overs of the short
+  and long moving averages to make trading decisions.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeicuma36ji7ltv2yx4puedfhnetue5lsg5r2qg2gfbdluyrij6jtzq
+  sma_strategy.py: bafybeihbgecajtmhuvop267wavpbcnyocjgqj5beosg4gea2tikew5pj4i
+fingerprint_ignore_patterns: []
+entry_point: sma_strategy.py
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
+dependencies:
+  pandas:
+    version: '>=1.3.0'
+  pyalgotrade:
+    version: ==0.20

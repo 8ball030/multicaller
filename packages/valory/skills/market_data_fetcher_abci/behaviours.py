@@ -31,11 +31,15 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 )
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.market_data_fetcher_abci.models import Coingecko, Params
+from packages.valory.skills.market_data_fetcher_abci.payloads import (
+    TransformedMarketDataPayload,
+)
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
-    FetchMarketDataPayload,
     FetchMarketDataRound,
     MarketDataFetcherAbciApp,
+    MarketDataPayload,
     SynchronizedData,
+    TransformMarketDataRound,
 )
 
 
@@ -45,6 +49,9 @@ MARKETS_FILE_NAME = "markets.json"
 TOKEN_ID_FIELD = "coingecko_id"  # nosec: B105:hardcoded_password_string
 TOKEN_ADDRESS_FIELD = "address"  # nosec: B105:hardcoded_password_string
 UTF8 = "utf-8"
+STRATEGY_KEY = "trading_strategy"
+ENTRY_POINT_STORE_KEY = "entry_point"
+TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -129,7 +136,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data_hash = yield from self.fetch_markets()
             sender = self.context.agent_address
-            payload = FetchMarketDataPayload(sender=sender, data_hash=data_hash)
+            payload = MarketDataPayload(sender=sender, data_hash=data_hash)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -196,7 +203,12 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             self.context.logger.info(
                 f"Successfully fetched market data for {token_id}."
             )
-            markets[token_address] = response_json.get(self.coingecko.prices_field, [])
+            # we collect a tuple of the prices and the volumes
+
+            prices = response_json.get(self.coingecko.prices_field, [])
+            volumes = response_json.get(self.coingecko.volumes_field, [])
+            prices_volumes = {"prices": prices, "volumes": volumes}
+            markets[token_address] = prices_volumes
 
         # Send to IPFS
         data_hash = None
@@ -213,11 +225,104 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         return data_hash
 
 
+class TransformMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
+    """Behaviour to transform the fetched signals."""
+
+    matching_round: Type[AbstractRound] = TransformMarketDataRound
+
+    def strategy_store(self, strategy_name: str) -> Dict[str, str]:
+        """Get the stored strategy's files."""
+        return self.context.shared_state.get(strategy_name, {})
+
+    def execute_strategy_transformation(
+        self, *args: Any, **kwargs: Any
+    ) -> Dict[str, Any] | None:
+        """Execute the strategy's transform method and return the results."""
+        trading_strategy = kwargs.pop(STRATEGY_KEY, None)
+        if trading_strategy is None:
+            self.context.logger.error(f"No {STRATEGY_KEY!r} was given!")
+            return None
+
+        store = self.strategy_store(trading_strategy)
+        strategy_exec = store.get(ENTRY_POINT_STORE_KEY, None)
+        if strategy_exec is None:
+            self.context.logger.error(
+                f"No executable was found for {trading_strategy=}! Did the IPFS package downloader load it correctly?"
+            )
+            return None
+
+        callable_method = store.get(TRANSFORM_CALLABLE_STORE_KEY, None)
+        if callable_method is None:
+            self.context.logger.error(
+                "No transform callable was found in the loaded component! "
+                "Did the IPFS package downloader load it correctly?"
+            )
+            return None
+
+        if callable_method in globals():
+            del globals()[callable_method]
+
+        exec(strategy_exec, globals())  # pylint: disable=W0122  # nosec
+        method = globals().get(callable_method, None)
+        if method is None:
+            self.context.logger.error(
+                f"No {callable_method!r} method was found in {trading_strategy} strategy's executable:\n"
+                f"{strategy_exec}."
+            )
+            return None
+        return method(*args, **kwargs)
+
+    def async_act(self) -> Generator:
+        """Do the act, supporting asynchronous execution."""
+
+        with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            data_hash = yield from self.transform_data()
+            sender = self.context.agent_address
+            payload = TransformedMarketDataPayload(
+                sender=sender, transformed_data_hash=data_hash
+            )
+
+        with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
+            yield from self.send_a2a_transaction(payload)
+            yield from self.wait_until_round_end()
+
+        self.set_done()
+
+    def transform_data(
+        self,
+    ) -> Generator[None, None, Optional[str]]:
+        """Transform the data to OHLCV format."""
+        markets_data = yield from self.get_from_ipfs(
+            self.synchronized_data.data_hash, SupportedFiletype.JSON
+        )
+        markets_data = cast(Dict[str, Dict[str, Any]], markets_data)
+        results = {}
+
+        strategy = self.synchronized_data.selected_strategy
+        for token_address, market_data in markets_data.items():
+            kwargs = {STRATEGY_KEY: strategy, **market_data}
+            result = self.execute_strategy_transformation(**kwargs)
+            if result is None:
+                self.context.logger.error(
+                    f"Failed to transform market data for {token_address}."
+                )
+                continue
+            results[token_address] = result
+
+        data_hash = yield from self.send_to_ipfs(
+            filename=self.from_data_dir(MARKETS_FILE_NAME),
+            obj=results,
+            filetype=SupportedFiletype.JSON,
+        )
+        return data_hash
+
+
 class MarketDataFetcherRoundBehaviour(AbstractRoundBehaviour):
     """MarketDataFetcherRoundBehaviour"""
 
     initial_behaviour_cls = FetchMarketDataBehaviour
-    abci_app_cls = MarketDataFetcherAbciApp  # type: ignore
-    behaviours: Set[Type[BaseBehaviour]] = [  # type: ignore
-        FetchMarketDataBehaviour,
-    ]
+    abci_app_cls = MarketDataFetcherAbciApp
+    behaviours: Set[Type[BaseBehaviour]] = {
+        FetchMarketDataBehaviour,  # type: ignore
+        TransformMarketDataBehaviour,  # type: ignore
+    }

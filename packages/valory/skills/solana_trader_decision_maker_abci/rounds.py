@@ -19,9 +19,11 @@
 
 """This module contains the rounds for the 'solana_trader_decision_maker_abci' skill."""
 
+import json
 from abc import ABC
+from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, Set, Tuple, Type, cast
+from typing import Dict, List, Set, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
@@ -36,7 +38,11 @@ from packages.valory.skills.abstract_round_abci.base import (
     get_name,
 )
 from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
+    RandomnessPayload,
     SolanaTraderDecisionMakerPayload,
+)
+from packages.valory.skills.solana_trader_decision_maker_abci.policy import (
+    EGreedyPolicy,
 )
 
 
@@ -47,6 +53,20 @@ class Event(Enum):
     NONE = "none"
     NO_MAJORITY = "no_majority"
     ROUND_TIMEOUT = "round_timeout"
+
+
+@dataclass
+class Position:
+    """A swap position."""
+
+    from_token: str
+    to_token: str
+    amount: int
+
+    @classmethod
+    def from_json(cls, positions: List[Dict]) -> List["Position"]:
+        """Return a list of positions from a JSON representation."""
+        return [cls(**position) for position in positions]
 
 
 class SynchronizedData(BaseSynchronizedData):
@@ -61,19 +81,32 @@ class SynchronizedData(BaseSynchronizedData):
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def decision(self) -> str:
-        """Get the most voted decision."""
-        return str(self.db.get_strict("decision"))
-
-    @property
     def participant_to_decision(self) -> DeserializedCollection:
         """Get the participants to decision."""
         return self._get_deserialized("participant_to_decision")
 
     @property
+    def most_voted_randomness_round(self) -> int:
+        """Get the most voted randomness round."""
+        round_ = self.db.get_strict("most_voted_randomness_round")
+        return int(round_)
+
+    @property
     def selected_strategy(self) -> str:
-        """Get the most voted bets' hash."""
+        """Get the selected strategy."""
         return str(self.db.get_strict("selected_strategy"))
+
+    @property
+    def policy(self) -> EGreedyPolicy:
+        """Get the policy."""
+        policy = self.db.get_strict("policy")
+        return EGreedyPolicy(**json.loads(policy))
+
+    @property
+    def positions(self) -> List[Position]:
+        """Get the swap positions."""
+        positions = json.loads(self.db.get_strict("positions"))
+        return Position.from_json(positions)
 
 
 class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
@@ -93,6 +126,20 @@ class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
         return self.synchronized_data, Event.NO_MAJORITY
 
 
+class RandomnessRound(CollectSameUntilThresholdRound):
+    """A round for generating randomness."""
+
+    payload_class = RandomnessPayload
+    synchronized_data_class = SynchronizedData
+    done_event = Event.DONE
+    no_majority_event = Event.NO_MAJORITY
+    collection_key = get_name(SynchronizedData.participant_to_randomness)
+    selection_key = (
+        get_name(SynchronizedData.most_voted_randomness_round),
+        get_name(SynchronizedData.most_voted_randomness),
+    )
+
+
 class SolanaTraderDecisionMakerRound(
     CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound
 ):
@@ -103,7 +150,8 @@ class SolanaTraderDecisionMakerRound(
     none_event: Enum = Event.NONE
     no_majority_event: Enum = Event.NO_MAJORITY
     selection_key = (
-        get_name(SynchronizedData.decision),
+        get_name(SynchronizedData.policy),
+        get_name(SynchronizedData.positions),
         get_name(SynchronizedData.selected_strategy),
     )
     collection_key = get_name(SynchronizedData.participant_to_decision)
@@ -121,18 +169,22 @@ class FailedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
 class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
     """SolanaTraderDecisionMakerAbciApp
 
-    Initial round: SolanaTraderDecisionMakerRound
+    Initial round: RandomnessRound
 
-    Initial states: {SolanaTraderDecisionMakerRound}
+    Initial states: {RandomnessRound}
 
     Transition states:
-        0. SolanaTraderDecisionMakerRound
+        0. RandomnessRound
             - done: 1.
-            - none: 2.
-            - round timeout: 2.
-            - no majority: 2.
-        1. FinishedSolanaTraderDecisionMakerRound
-        2. FailedSolanaTraderDecisionMakerRound
+            - round timeout: 0.
+            - no majority: 0.
+        1. SolanaTraderDecisionMakerRound
+            - done: 2.
+            - none: 3.
+            - round timeout: 3.
+            - no majority: 3.
+        2. FinishedSolanaTraderDecisionMakerRound
+        3. FailedSolanaTraderDecisionMakerRound
 
     Final states: {FailedSolanaTraderDecisionMakerRound, FinishedSolanaTraderDecisionMakerRound}
 
@@ -140,8 +192,13 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
         round timeout: 30.0
     """
 
-    initial_round_cls: Type[AbstractRound] = SolanaTraderDecisionMakerRound
+    initial_round_cls: Type[AbstractRound] = RandomnessRound
     transition_function: AbciAppTransitionFunction = {
+        RandomnessRound: {
+            Event.DONE: SolanaTraderDecisionMakerRound,
+            Event.ROUND_TIMEOUT: RandomnessRound,
+            Event.NO_MAJORITY: RandomnessRound,
+        },
         SolanaTraderDecisionMakerRound: {
             Event.DONE: FinishedSolanaTraderDecisionMakerRound,
             Event.NONE: FailedSolanaTraderDecisionMakerRound,
@@ -158,12 +215,20 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
     event_to_timeout: Dict[Event, float] = {
         Event.ROUND_TIMEOUT: 30.0,
     }
-    db_pre_conditions: Dict[AppState, Set[str]] = {
-        SolanaTraderDecisionMakerRound: set()
-    }
+    cross_period_persisted_keys = frozenset(
+        {get_name(SynchronizedData.policy), get_name(SynchronizedData.positions)}
+    )
+    db_pre_conditions: Dict[AppState, Set[str]] = {RandomnessRound: set()}
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedSolanaTraderDecisionMakerRound: {
-            get_name(SynchronizedData.selected_strategy)
+            get_name(SynchronizedData.selected_strategy),
+            get_name(SynchronizedData.policy),
+            get_name(SynchronizedData.positions),
+            get_name(SynchronizedData.most_voted_randomness_round),
+            get_name(SynchronizedData.most_voted_randomness),
         },
-        FailedSolanaTraderDecisionMakerRound: set(),
+        FailedSolanaTraderDecisionMakerRound: {
+            get_name(SynchronizedData.most_voted_randomness_round),
+            get_name(SynchronizedData.most_voted_randomness),
+        },
     }

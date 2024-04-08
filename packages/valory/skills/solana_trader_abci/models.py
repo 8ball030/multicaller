@@ -19,30 +19,38 @@
 
 """Custom objects for the 'solana_trader_abci' application."""
 
+from typing import Any
+
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
 from packages.valory.skills.abstract_round_abci.models import Requests as BaseRequests
+from packages.valory.skills.market_data_fetcher_abci.behaviours import (
+    TOKEN_ADDRESS_FIELD,
+)
 from packages.valory.skills.market_data_fetcher_abci.models import Coingecko
 from packages.valory.skills.market_data_fetcher_abci.models import (
-    Params as MarketDataFetcherAbciParams,
+    Params as MarketDataFetcherParams,
 )
 from packages.valory.skills.market_data_fetcher_abci.rounds import (
     Event as MarketDataFetcherEvent,
 )
+from packages.valory.skills.portfolio_tracker_abci.models import GetBalance
+from packages.valory.skills.portfolio_tracker_abci.models import (
+    Params as PortfolioTrackerParams,
+)
+from packages.valory.skills.portfolio_tracker_abci.models import TokenAccounts
 from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
-from packages.valory.skills.solana_strategy_evaluator_abci.models import GetBalance
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SharedState as BaseSharedState,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
-    StrategyEvaluatorParams as StrategyEvaluatorAbciParams,
+    StrategyEvaluatorParams as StrategyEvaluatorParams,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.models import (
     SwapInstructionsSpecs,
     SwapQuotesSpecs,
-    TokenAccounts,
     TxSettlementProxy,
 )
 from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
@@ -50,16 +58,12 @@ from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
 )
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
 from packages.valory.skills.solana_trader_decision_maker_abci.models import (
-    Params as SolanaTraderDecisionMakerAbciParams,
+    Params as SolanaTraderDecisionMakerParams,
 )
 from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
 )
 
-
-SolanaTraderDecisionMakerParams = SolanaTraderDecisionMakerAbciParams
-MarketDataFetcherParams = MarketDataFetcherAbciParams
-StrategyEvaluatorParams = StrategyEvaluatorAbciParams
 
 Coingecko = Coingecko
 
@@ -109,5 +113,23 @@ class Params(
     SolanaTraderDecisionMakerParams,
     MarketDataFetcherParams,
     StrategyEvaluatorParams,
+    PortfolioTrackerParams,
 ):
     """A model to represent params for multiple abci apps."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize the parameters' object."""
+        super().__init__(*args, **kwargs)
+        whitelisted_tokens = set(
+            token_data.get(TOKEN_ADDRESS_FIELD, None)
+            for token_data in self.token_symbol_whitelist
+        )
+        if None in whitelisted_tokens:
+            raise ValueError(
+                f"Invalid {self.token_symbol_whitelist=}! Is some {TOKEN_ADDRESS_FIELD!r} missing?"
+            )
+        if whitelisted_tokens != set(self.tracked_tokens):
+            raise ValueError(
+                f"The whitelisted tokens {whitelisted_tokens} "
+                f"and the portfolio's tracked tokens {self.tracked_tokens} do not match!"
+            )

@@ -4,5 +4,5 @@ d4df7c45e9f1f739db653f5d859db8e44ccc8c62:packages/valory/skills/solana_trader_ab
 5d84095c2d82088dbaab526905f1342ef56b184c:packages/valory/skills/solana_trader_decision_maker_abci/skill.yaml:generic-api-key:17
 5d84095c2d82088dbaab526905f1342ef56b184c:packages/valory/skills/solana_trader_decision_maker_abci/skill.yaml:generic-api-key:84
 6a70be2e3d272a730fb8788de7f29809be145639:packages/valory/skills/market_data_fetcher_abci/skill.yaml:generic-api-key:80
-e079a27b11eb30aca5ac0945d6163f5995096fb7:tests/test_strategies.py:generic-api-key:57
 a95fe91272dc9ba5ca9e3509903a9b5bbd386b0a:packages/valory/skills/portfolio_tracker_abci/skill.yaml:generic-api-key:73
+e079a27b11eb30aca5ac0945d6163f5995096fb7:tests/test_strategies.py:generic-api-key:57

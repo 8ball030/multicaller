@@ -32,6 +32,9 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 from packages.valory.skills.market_data_fetcher_abci.behaviours import (
     MarketDataFetcherRoundBehaviour,
 )
+from packages.valory.skills.portfolio_tracker_abci.behaviours import (
+    PortfolioTrackerRoundBehaviour,
+)
 from packages.valory.skills.registration_abci.behaviours import (
     AgentRegistrationRoundBehaviour,
     RegistrationStartupBehaviour,
@@ -58,6 +61,7 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
         *AgentRegistrationRoundBehaviour.behaviours,
         *SolanaTraderDecisionMakerRoundBehaviour.behaviours,
         *MarketDataFetcherRoundBehaviour.behaviours,
+        *PortfolioTrackerRoundBehaviour.behaviours,
         *AgentStrategyEvaluatorRoundBehaviour.behaviours,
         # *SolanaTransactionSettlementRoundBehaviour.behaviours,  # TODO
         *ResetPauseABCIConsensusBehaviour.behaviours,

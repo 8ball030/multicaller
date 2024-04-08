@@ -25,6 +25,9 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
+from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.backtesting import (
+    BacktestBehaviour,
+)
 from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.prepare_swap_tx import (
     PrepareSwapBehaviour,
 )
@@ -52,4 +55,5 @@ class AgentStrategyEvaluatorRoundBehaviour(AbstractRoundBehaviour):
         PrepareSwapBehaviour,  # type: ignore
         SwapQueueBehaviour,  # type: ignore
         ProxySwapQueueBehaviour,  # type: ignore
+        BacktestBehaviour,  # type: ignore
     }

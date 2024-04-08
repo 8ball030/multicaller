@@ -46,6 +46,10 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
 
 SWAP_DECISION_FILENAME = "swap_decision.json"
 SWAP_INSTRUCTIONS_FILENAME = "swap_instructions.json"
+STRATEGY_KEY = "trading_strategy"
+CALLABLE_KEY = "callable"
+ENTRY_POINT_STORE_KEY = "entry_point"
+SUPPORTED_STRATEGY_LOG_LEVELS = ("info", "warning", "error")
 
 
 def wei_to_native(wei: int) -> float:
@@ -87,6 +91,62 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
     def synchronized_data(self) -> SynchronizedData:
         """Return the synchronized data."""
         return SynchronizedData(super().synchronized_data.db)
+
+    def strategy_store(self, strategy_name: str) -> Dict[str, str]:
+        """Get the stored strategy's files."""
+        return self.context.shared_state.get(strategy_name, {})
+
+    def execute_strategy_callable(
+        self, *args: Any, **kwargs: Any
+    ) -> Dict[str, Any] | None:
+        """Execute a strategy's method and return the results."""
+        trading_strategy: Optional[str] = kwargs.pop(STRATEGY_KEY, None)
+        if trading_strategy is None:
+            self.context.logger.error(f"No {STRATEGY_KEY!r} was given!")
+            return None
+
+        callable_key: Optional[str] = kwargs.pop(CALLABLE_KEY, None)
+        if callable_key is None:
+            self.context.logger.error(f"No {CALLABLE_KEY!r} was given!")
+            return None
+
+        store = self.strategy_store(trading_strategy)
+        strategy_exec = store.get(ENTRY_POINT_STORE_KEY, None)
+        if strategy_exec is None:
+            self.context.logger.error(
+                f"No executable was found for {trading_strategy=}! Did the IPFS package downloader load it correctly?"
+            )
+            return None
+
+        callable_method = store.get(callable_key, None)
+        if callable_method is None:
+            self.context.logger.error(
+                f"No {callable_method=} was found in the loaded component! "
+                "Did the IPFS package downloader load it correctly?"
+            )
+            return None
+
+        if callable_method in globals():
+            del globals()[callable_method]
+
+        exec(strategy_exec, globals())  # pylint: disable=W0122  # nosec
+        method: Optional[Callable] = globals().get(callable_method, None)
+        if method is None:
+            self.context.logger.error(
+                f"No {callable_method!r} method was found in {trading_strategy} strategy's executable:\n"
+                f"{strategy_exec}."
+            )
+            return None
+        # TODO this method is blocking, needs to be run from an aea skill or a task.
+        return method(*args, **kwargs)
+
+    def log_from_strategy_results(self, results: Dict[str, Any]) -> None:
+        """Log any messages from a strategy's results."""
+        for level in SUPPORTED_STRATEGY_LOG_LEVELS:
+            logger = getattr(self.context.logger, level, None)
+            if logger is not None:
+                for log in results.get(level, []):
+                    logger(log)
 
     def _handle_response(
         self,
@@ -147,30 +207,59 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         """
         Gets an object from IPFS.
 
-        If the result is `None`, then an error is logged, sleeps, and returns `None` to be handled for retrying.
+        If the result is `None`, then an error is logged, sleeps, and retries.
 
         :param ipfs_hash: the ipfs hash of the file/dir to download.
         :param filetype: the file type of the object being downloaded.
         :param custom_loader: a custom deserializer for the object received from IPFS.
         :param timeout: timeout for the request.
         :yields: None.
-        :returns: the downloaded object, corresponding to ipfs_hash or `None` for retrying.
+        :returns: the downloaded object, corresponding to ipfs_hash or `None` if retries were exceeded.
         """
         if ipfs_hash is None:
             return None
 
-        res = yield from super().get_from_ipfs(
-            ipfs_hash, filetype, custom_loader, timeout
-        )
-        if res is None:
+        n_retries = 0
+        while n_retries < self.params.ipfs_fetch_retries:
+            res = yield from super().get_from_ipfs(
+                ipfs_hash, filetype, custom_loader, timeout
+            )
+            if res is not None:
+                return res
+
+            n_retries += 1
             sleep_time = self.params.sleep_time
             self.context.logger.error(
                 f"Could not get any data from IPFS using hash {ipfs_hash!r}!"
                 f"Retrying in {sleep_time}..."
             )
-            self.sleep(sleep_time)
+            yield from self.sleep(sleep_time)
 
-        return res
+        return None
+
+    def get_ipfs_hash_payload_content(
+        self,
+        data: Any,
+        process_fn: Callable[[Any], Generator[None, None, Tuple[Sized, bool]]],
+        store_filepath: str,
+    ) -> Generator[None, None, Tuple[Optional[str], Optional[bool]]]:
+        """Get the ipfs hash payload's content."""
+        if data is None:
+            return None, None
+
+        incomplete: Optional[bool]
+        processed, incomplete = yield from process_fn(data)
+        if len(processed) == 0:
+            processed_hash = None
+            if incomplete:
+                incomplete = None
+        else:
+            processed_hash = yield from self.send_to_ipfs(
+                store_filepath,
+                processed,
+                filetype=SupportedFiletype.JSON,
+            )
+        return processed_hash, incomplete
 
     def get_process_store_act(
         self,
@@ -187,30 +276,15 @@ class StrategyEvaluatorBaseBehaviour(BaseBehaviour, ABC):
         :param hash_: the hash of the data to process.
         :param process_fn: the function to process the data.
         :param store_filepath: path to the file to store the processed data.
-        :return: None
         :yield: None
         """
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
-            if data is None:
-                return
-
-            incomplete: Optional[bool]
-            processed, incomplete = yield from process_fn(data)
-            if len(processed) == 0:
-                processed_hash = None
-                if incomplete:
-                    incomplete = None
-            else:
-                processed_hash = yield from self.send_to_ipfs(
-                    store_filepath,
-                    processed,
-                    filetype=SupportedFiletype.JSON,
-                )
-
-            payload = IPFSHashPayload(
-                self.context.agent_address, processed_hash, incomplete
+            sender = self.context.agent_address
+            payload_data = yield from self.get_ipfs_hash_payload_content(
+                data, process_fn, store_filepath
             )
+            payload = IPFSHashPayload(sender, *payload_data)
 
         yield from self.finish_behaviour(payload)
 

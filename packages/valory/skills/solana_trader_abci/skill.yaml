@@ -8,22 +8,23 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeicfgns6mequgoxwfonrtmuqetauurruhpbl6y6645poddujjvto4u
   __init__.py: bafybeigrof4r7gtevgqcmyaakvakfs6ameczpmwmq5eroet3ol5x2rdtha
-  behaviours.py: bafybeighlzuhi2elaaxtpdtnv4mdinf2lvx646ppepgp34ei2cdr3doo2y
-  composition.py: bafybeic22cpqzbsj4r7o3ai5qx6dtfmcsqsb75npe3xa7ug3imy4szdw2q
+  behaviours.py: bafybeih22xfmqiyuigzlhj7v47hxnwpfbopoktyjzuizfiskqd4wsvdvce
+  composition.py: bafybeih6c4ka5qfgdla2a7tx4kqkt7n4luhyocqrmjg3mz26qsnlgffxca
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeiavd6cfuk4apllbh24eied2xhned2dxunod25m33wy7girmirisni
-  models.py: bafybeiduaznuo77jzz5gkyabyu52jsfnfpwseaeibwl66ydghombhvnjle
+  models.py: bafybeicu7lq3dn7geon5wycn4hk6nuua3l4lx23rtc6y4u6a5wnyjhxi4i
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
-- valory/registration_abci:0.1.0:bafybeiet4l2ayrzwqj6gphgpw4pgzkx653eli3lec7rl2a2rmzf6gegjcy
-- valory/reset_pause_abci:0.1.0:bafybeigs6acxu65c7psilzlh6estqcc23w4eyjsh7eo2y55uwnwrpb4keu
-- valory/market_data_fetcher_abci:0.1.0:bafybeidx5o4ze3no6jhgaubayjjegf5onrmrdcngpchlk4kg4oqlyrfgfa
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeia4w47xnjdoafpbjh4ixwqvchjgkdxgpdkeyvxczrccvgeik7osle
+- valory/abstract_round_abci:0.1.0:bafybeic2emnylfmdtidobgdsxa4tgdelreeimtglqzrmic6cumhpsbfzhe
+- valory/registration_abci:0.1.0:bafybeibzduasg5pahk2d2glc36wlopg54ybwcdmjqbzozt2lmkp4reqsdu
+- valory/reset_pause_abci:0.1.0:bafybeib3geaw3o35aigmb4dhplxrjlsef7hbdwrozu4akiunlgyiegshj4
+- valory/market_data_fetcher_abci:0.1.0:bafybeiall6kd77aojmeeqnovfnvfkrvn4mowtoiepvbjn4k2hli32oye24
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeib5byud63jgurg4gad7f5maoccjebilwc3qacy3iege4yr42nitpi
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeia7in4343l6amhuuf6selwxztvpsh56eqhhwa5kjsc5romigkxzp4
+- valory/portfolio_tracker_abci:0.1.0:bafybeigbzjnn5mxr4l6434xsoi5y57i5solhtohs7s446pf57y3qmup4hy
 behaviours:
   main:
     args: {}
@@ -136,7 +137,6 @@ models:
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
       ipfs_address: https://gateway.autonolas.tech/ipfs/
-      selected_strategy: follow_trend_strategy
       token_symbol_whitelist: []
       trading_strategy: strategy_name
       strategies_kwargs:
@@ -146,13 +146,22 @@ models:
         - value
       use_proxy_server: false
       expected_swap_tx_cost: 20000000
+      ipfs_fetch_retries: 5
       squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      agent_balance_threshold: 50000000
+      multisig_balance_threshold: 1000000000
+      tracked_tokens: []
+      refill_action_timeout: 10
+      rpc_polling_interval: 5
+      epsilon: 0.1
+      sharpe_threshold: 1.0
     class_name: Params
   coingecko:
     args:
       endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
       api_key: null
       prices_field: prices
+      volumes_field: total_volumes
       requests_per_minute: 5
       credits: 10000
       rate_limited_code: 429
@@ -250,5 +259,5 @@ models:
     class_name: TendermintDialogues
 dependencies:
   open-aea-cli-ipfs:
-    version: ==1.44.0
+    version: ==1.49.0
 is_abstract: false

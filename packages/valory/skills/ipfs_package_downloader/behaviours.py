@@ -17,11 +17,13 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains the implementation of ."""
+"""This package contains the implementation of a custom component's management."""
+
 import time
 from asyncio import Future
 from typing import Any, Callable, Dict, Optional, Tuple, cast
 
+import yaml
 from aea.protocols.base import Message
 from aea.protocols.dialogue.base import Dialogue
 from aea.skills.behaviours import SimpleBehaviour
@@ -33,12 +35,18 @@ from packages.valory.protocols.ipfs.dialogues import IpfsDialogue
 from packages.valory.skills.ipfs_package_downloader.models import Params
 
 
+COMPONENT_YAML_STORE_KEY = "component_yaml"
+ENTRY_POINT_STORE_KEY = "entry_point"
+CALLABLES_STORE_KEY = "callables"
+
+
 class IpfsPackageDownloader(SimpleBehaviour):
     """A class to download packages from IPFS."""
 
     def __init__(self, **kwargs: Any):
         """Initialise the agent."""
         super().__init__(**kwargs)
+        self._executing_task: Optional[Dict[str, Optional[float]]] = None
         self._packages_to_file_hash: Dict[str, str] = {}
         self._all_packages: Dict[str, Dict[str, str]] = {}
         self._inflight_package_req: Optional[str] = None
@@ -103,16 +111,63 @@ class IpfsPackageDownloader(SimpleBehaviour):
             self.send_message(ipfs_msg, message, self._handle_get_package)
             return
 
-    def _handle_get_package(self, message: IpfsMessage, dialogue: Dialogue) -> None:
+    def load_custom_component(
+        self, serialized_objects: Dict[str, str]
+    ) -> Dict[str, Any]:
+        """Load a custom component package.
+
+        :param serialized_objects: the serialized objects.
+        :return: the component.yaml, entry_point.py and callable as tuple.
+        """
+        # the package MUST contain a component.yaml file
+        if self.params.component_yaml_filename not in serialized_objects:
+            self.context.logger.error(
+                "Invalid component package. "
+                f"The package MUST contain a {self.params.component_yaml_filename}."
+            )
+            return {}
+        # load the component.yaml file
+        component_yaml = yaml.safe_load(
+            serialized_objects[self.params.component_yaml_filename]
+        )
+        if self.params.entry_point_key not in component_yaml or not all(
+            callable_key in component_yaml for callable_key in self.params.callable_keys
+        ):
+            self.context.logger.error(
+                f"Invalid component package. The {self.params.component_yaml_filename} file MUST contain the "
+                f"{self.params.entry_point_key} and {self.params.callable_keys} keys."
+            )
+            return {}
+        # the name of the script that needs to be executed
+        entry_point_name = component_yaml[self.params.entry_point_key]
+        # load the script
+        if entry_point_name not in serialized_objects:
+            self.context.logger.error(
+                f"Invalid component package. "
+                f"The entry point {entry_point_name!r} is not present in the component package."
+            )
+            return {}
+        entry_point = serialized_objects[entry_point_name]
+        # initialize with the methods that need to be called
+        component = {
+            callable_key: component_yaml[callable_key]
+            for callable_key in self.params.callable_keys
+        }
+        component.update(
+            {
+                COMPONENT_YAML_STORE_KEY: component_yaml,
+                ENTRY_POINT_STORE_KEY: entry_point,
+            }
+        )
+        return component
+
+    def _handle_get_package(self, message: IpfsMessage, _dialogue: Dialogue) -> None:
         """Handle get package response"""
         package_req = cast(str, self._inflight_package_req)
         self._all_packages[package_req] = message.files
-
-        # TODO check if package is well-formed.
-
-        self.context.shared_state["downloaded_ipfs_packages"][
-            package_req
-        ] = message.files
+        self.context.shared_state[package_req] = self.load_custom_component(
+            message.files
+        )
         self._inflight_package_req = None
 
     def send_message(

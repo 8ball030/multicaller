@@ -10,33 +10,36 @@ fingerprint:
   README.md: bafybeicuikjki6yvgwmv6sxudjagjb3bhfsnypna36eceza2mzmqnthuiy
   __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
   behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
-  behaviours/base.py: bafybeihbwjilfqddduxjbz6jpobleydc7u3iqcvuukcdkjlwlr366fjg3y
-  behaviours/prepare_swap_tx.py: bafybeihx7rx4wy5uzx6i2zsbxptn4p5gfedoonqri5q2rz5cjgfmphtu4a
-  behaviours/proxy_swap_queue.py: bafybeihib44k3s35qul7fidw4mrahuge7ilg5jry4uul7bp2yvr6nosyxa
-  behaviours/round_behaviour.py: bafybeie7eepxnj4tuo6wcmeuywn6qc3f5ihoowiiyqbpydz5dcjjkenora
-  behaviours/strategy_exec.py: bafybeigwpd6kavyhtt65x3mjvfdxs6dl4oh54ayidb2rjni6by6ifx6cri
-  behaviours/swap_queue.py: bafybeiew5e5zhdaihaadvfh342kayeolugm2ktvhyv2bb3xbigozjfnzu4
+  behaviours/backtesting.py: bafybeiawpescoqennk5q5wwdhbamfunbw3qo3p5pw3ncl5dsu64mioeyoe
+  behaviours/base.py: bafybeiawzfw5ujb3asu262j77di63lmqb2q5zfhxle7zg2cyw2kmia35rq
+  behaviours/prepare_swap_tx.py: bafybeihzmqdclrvscmgvsxu4zokzs2xcb5q53vuqyas3pxrls772mhr2x4
+  behaviours/proxy_swap_queue.py: bafybeigr5rhbf5l625khbjcmhilxit5gml2bsluafejivp5gydrijfudkq
+  behaviours/round_behaviour.py: bafybeieapl334xpmv37acwoz4nstu2qrdknndfvwyfkbrb4ok7wac2nnlq
+  behaviours/strategy_exec.py: bafybeier7nx6pauugeom7eco2qjpjjwaayw7jzxb46oo2ncgpxgdl5g3fa
+  behaviours/swap_queue.py: bafybeihqumnnrauqekptjulpyu7jhjhogwtmo2wiuaguoolvejuyqaiopy
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
-  fsm_specification.yaml: bafybeibtik7d4paefsc6u5lcph3c54ciokr2ypywqzbofsbzhvbspj7tcu
+  fsm_specification.yaml: bafybeigcbcejmsk3vowy4ltcbeoygvgi6zvoj4vll4vy5a2lvt7l2nxt44
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
-  models.py: bafybeif7qzhrbjwl4fcjaez3uba6l4xb4rdcpmcf67er53g52tqsnlhpl4
+  models.py: bafybeidahepmauv6zjgdqep6hamks7tabkxwp5zlrrm75gendlozqjxamm
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
-  rounds.py: bafybeicx5rkgsbs4vk6apqwhkt6636i2faibffotqxpovgkaw7eyvdbzd4
+  rounds.py: bafybeibyqr6ylx4btvuicwrjbhdlvtfz2c3p3o2aeve34jh26pslbnxeoi
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
-  states/base.py: bafybeiafm3fym4wu64ofrbsmxru22oxzl2ihvcoefv2deeab3kp3m4wosi
-  states/final_states.py: bafybeiey7vklhra3vbg7gjpvqdkft4xozuojbhqvrykylrvqtt6ctc7a6e
+  states/backtesting.py: bafybeidlh7h3v3sfhyy7hugrld7o77hcmd67re3cyhnusw6oyqtysxqk6a
+  states/base.py: bafybeibtbxvutxchdmjcjgybbudmrxqy2tz4vku5helfiomhgooeik5434
+  states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
   states/prepare_swap.py: bafybeidideaz3zhr2v3pfpyqiscglppaguh2gk74rdbalwil3ky3jnqgsa
   states/proxy_swap_queue.py: bafybeie77ly44vkaxxwefna5wozdkskj3ov5oyikptorf4uxnho5ctv54a
-  states/strategy_exec.py: bafybeiffaiwoblsppeh7d5jnonwobogoqm7j4efv2eklu4x2nv7xemurga
+  states/strategy_exec.py: bafybeifkkj35m7ogeiq4whhte4ayubcoh3l266rmwloxlhpc6hb3qeww24
   states/swap_queue.py: bafybeigfkbv7s2f3ja7tgcjfx4czx3trajcgvexlb4ztyyywjgbmuhacha
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeid47s4ojmbxscc2oxfkwt4hkpdgv5qivo5x5dfe2uxqv6ybvprxlm
-- valory/market_data_fetcher_abci:0.1.0:bafybeidx5o4ze3no6jhgaubayjjegf5onrmrdcngpchlk4kg4oqlyrfgfa
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeifuzfeogo6vd4wrs5uts56hi3xb2ycwqzyi7qv6r5crbdhezpqity
+- valory/abstract_round_abci:0.1.0:bafybeic2emnylfmdtidobgdsxa4tgdelreeimtglqzrmic6cumhpsbfzhe
+- valory/market_data_fetcher_abci:0.1.0:bafybeiall6kd77aojmeeqnovfnvfkrvn4mowtoiepvbjn4k2hli32oye24
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeib5byud63jgurg4gad7f5maoccjebilwc3qacy3iege4yr42nitpi
+- valory/portfolio_tracker_abci:0.1.0:bafybeigbzjnn5mxr4l6434xsoi5y57i5solhtohs7s446pf57y3qmup4hy
 behaviours:
   main:
     args: {}
@@ -145,7 +148,8 @@ models:
         - value
       use_proxy_server: false
       expected_swap_tx_cost: 20000000
-      squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      ipfs_fetch_retries: 5
+      sharpe_threshold: 1.0
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:

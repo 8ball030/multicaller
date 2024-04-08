@@ -91,7 +91,7 @@ class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
     def async_act(self) -> Generator:
         """Do the action."""
         yield from self.get_process_store_act(
-            self.synchronized_data.orders_hash,
+            self.synchronized_data.backtested_orders_hash,
             self.prepare_instructions,
             str(self.swap_instructions_filepath),
         )

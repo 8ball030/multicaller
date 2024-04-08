@@ -21,6 +21,8 @@
 
 from typing import Any, Dict, List, Tuple, Union
 
+import pandas as pd
+
 
 BUY_SIGNAL = "buy"
 SELL_SIGNAL = "sell"
@@ -32,7 +34,7 @@ DEFAULT_RSI_PERIOD = 14
 DEFAULT_RSI_OVERBOUGHT_THRESHOLD = 70
 DEFAULT_RSI_OVERSOLD_THRESHOLD = 30
 
-REQUIRED_FIELDS = frozenset({"price_data"})
+REQUIRED_FIELDS = frozenset({"transformed_data"})
 OPTIONAL_FIELDS = frozenset(
     {"ma_period", "rsi_period", "rsi_overbought_threshold", "rsi_oversold_threshold"}
 )
@@ -54,14 +56,14 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def trend_following_signal(
-    price_data: List[Tuple[int, float]],
+    transformed_data: List[Tuple[int, float]],
     ma_period: int = DEFAULT_MA_PERIOD,
     rsi_period: int = DEFAULT_RSI_PERIOD,
     rsi_overbought_threshold: int = DEFAULT_RSI_OVERBOUGHT_THRESHOLD,
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
 ) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
-    prices = [price for _timestamp, price in price_data]
+    prices = [price for _timestamp, price in transformed_data]
 
     if len(prices) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
@@ -105,3 +107,53 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
 
     kwargs = remove_irrelevant_fields(kwargs)
     return trend_following_signal(**kwargs)
+
+
+def transform(
+    prices: List[Tuple[int, float]],
+    volumes: List[Tuple[int, float]],
+    default_ohlcv_period: str = "5Min",
+) -> Dict[str, Any]:
+    """Transform the data into an ohlcv dataframe."""
+    rows = []
+    for values in zip(prices, volumes):
+        row = {
+            "timestamp": values[0][0],
+            "price": values[0][1],
+            "Volume": values[1][1],
+        }
+        rows.append(row)
+    df = pd.DataFrame(
+        rows,
+    )
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    df = df.set_index("timestamp")
+    df = df.resample(default_ohlcv_period).ohlc()
+    df.bfill(inplace=True)
+    df.reset_index(inplace=True)
+    df["timestamp"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
+    df.columns = [
+        "Date Time",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "vol_1",
+        "vol_2",
+        "vol_3",
+    ]
+    df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
+    return df.to_json(index=False)
+
+
+def optimise(*args, **kwargs):  # type: ignore
+    """Optimise the strategy."""
+    del args, kwargs
+    return {"results": {}}
+
+
+def evaluate(*args, **kwargs):  # type: ignore
+    """Evaluate the strategy."""
+    del args, kwargs
+    return {"sharpe_ratio": -10}

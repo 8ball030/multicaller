@@ -78,35 +78,23 @@ bash run_service.sh
 
 ## Build a custom strategy
 
-Trading strategies are located on the `./strategies` folder within the repository. Each strategy is defined as a package containing a `component.yaml` configuration file and a number of additional python files which encode the business logic of the strategy. The `component.yaml` configuration file must define:
+Trading strategies are defined as custom components under the corresponding authors' packages. 
+Each strategy is defined as a package containing a `component.yaml` configuration file 
+and a number of additional python files which encode the business logic of the strategy. 
+The `component.yaml` configuration file must define:
 
 1. `entry_point`: The name of the file which contains the main entry point of the strategy.
-2. `callable`: Name of the entry point method (typically `run`).
+2. The callables, i.e., `transform_callable`, `run_callable`, `evaluate_callable`: Names of the methods for 
+transforming data in the format that the strategy expects them, running and evaluating the strategy.
 
-The outline of the main entry point method of a strategy is as follows:
-
-```python
-def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
-    # Read and process the required arguments for this strategy, e.g.,
-    result = _process(price_data array, ...)
-
-    # Return the strategy output as a JSON object, e.g.,
-    if result > 0:
-        return {"signal": "buy"}
-    elif result < 0:
-        return {"signal": "sell"}
-    
-    return {"signal": "hold"}
-```
-
-You can take a look at the [trend following strategy](./strategies/trend_following_strategy/trend_following_strategy.py) as an example.
+You can take a look at the [trend following strategy](packages/valory/customs/trend_following_strategy/trend_following_strategy.py) as an example.
 
 In order to use your strategy, you must:
 
 1. Push the package to the IPFS
 
     ```bash
-    cd strategies/your_strategy
+    cd your_strategy
     autonomy ipfs add
 
     > Processing package: /.../solana-trader/strategies/your_strategy
@@ -122,3 +110,13 @@ In order to use your strategy, you must:
     Alternatively, you can also modify the parameter `file_hash_to_id` in the file `[`service.yaml`](./packages/valory/services/solana_trader/service.yaml).
 
 3. Run your service.
+
+
+## Included strategies
+
+| Strategies                                       |
+|--------------------------------------------------|
+| packages/eightballer/customs/rsi_strategy        |
+| packages/eightballer/customs/sma_strategy        |
+| packages/eightballer/customs/vwap_momentum       |
+| packages/valory/customs/trend_following_strategy |
