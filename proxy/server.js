@@ -32,7 +32,14 @@ const bs58_1 = __importDefault(require("bs58"));
 const cross_fetch_1 = __importDefault(require("cross-fetch"));
 const anchor_1 = require("@project-serum/anchor");
 const multisig = __importStar(require("@sqds/multisig"));
-const rpc = 'https://api.mainnet-beta.solana.com';
+let rpc = "https://api.mainnet-beta.solana.com";
+const rpcEnv = process.env.RPC;
+if (rpcEnv !== undefined) {
+    rpc = rpcEnv.trim();
+}
+else {
+    console.log(`The "RPC" environment variable was not set. Using the default, public, RPC: ${rpc}`);
+}
 const pkeyEnv = process.env.SOLANA_PRIVATE_KEY;
 if (pkeyEnv === undefined) {
     throw new Error("Environment variable `SOLANA_PRIVATE_KEY` not set.");
