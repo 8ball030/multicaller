@@ -149,7 +149,17 @@ const sendTxAndConfirm = async (
 
 app.post('/tx', async (req: any, res: any) => {
     try {
-        let {inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs, computeUnitLimit, maxRetries, resendAmount} = req.body
+        let {
+            inputMint,
+            outputMint,
+            amount,
+            slippageBps,
+            priorityFee,
+            timeoutInMs,
+            computeUnitLimit,
+            maxRetries,
+            resendAmount
+        } = req.body
         if (timeoutInMs === undefined) {
             timeoutInMs = 60_000
         }
@@ -278,18 +288,23 @@ app.post('/tx', async (req: any, res: any) => {
         });
 
         // TX #1 Create the multisig transaction
-        await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        let txSignature = NaN
+        do {
+            txSignature = await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        } while (txSignature !== txSignature)
         console.log("Created squad transaction.")
 
         // propose the transaction for approval/rejection
-         const proposalInstructions = multisig.instructions.proposalCreate({
+        const proposalInstructions = multisig.instructions.proposalCreate({
             creator: feePayer.publicKey,
             multisigPda,
             transactionIndex,
         });
 
         // TX #2 Create the proposal for the multisig tx
-        await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
+        } while (txSignature !== txSignature)
         console.log("Created proposal for the transaction.")
 
         // approve the proposal
@@ -298,9 +313,11 @@ app.post('/tx', async (req: any, res: any) => {
             multisigPda,
             transactionIndex,
         });
-        
+
         // TX #3 Approve the proposal (multisig transaction)
-        await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        } while (txSignature !== txSignature)
         console.log("Approved proposal.")
 
         // execute the transaction
@@ -313,9 +330,11 @@ app.post('/tx', async (req: any, res: any) => {
         const computeLimitInstruction = ComputeBudgetProgram.setComputeUnitLimit({
             units: computeUnitLimit,
         })
-        
+
         // TX #4 Execute the multisig transaction
-        const txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
+        } while (txSignature !== txSignature)
         console.log("Transaction executed.")
 
         res.json({"status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}`})
@@ -330,7 +349,7 @@ app.use(express.json());
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
 function async(arg0: Express) {
     throw new Error("Function not implemented.");
 }
-
