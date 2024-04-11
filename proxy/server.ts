@@ -6,6 +6,7 @@ import {
     PublicKey,
     TransactionMessage,
     AddressLookupTableAccount,
+    TransactionExpiredTimeoutError,
     TransactionInstruction,
     VersionedTransaction,
 } from '@solana/web3.js';
@@ -120,15 +121,29 @@ const sendTx = async (
 /**
  * Send and confirm transactions with retry.
  */
-const sendTxAndConfirm = async(
-    connection: any,
+const sendTxAndConfirm = async (
+    connection: Connection,
     instructions: any,
     resendAmount: number,
     lookupTableAccounts: any = [],
     commitment: any = 'finalized',
 ) => {
     const txSignature = await sendTx(connection, instructions, resendAmount, lookupTableAccounts);
-    await connection.confirmTransaction(txSignature, commitment);
+    if (txSignature === undefined) {
+        console.log("Simulation keeps failing. Please check if the fee-payer has sufficient funds.")
+        return NaN
+    }
+
+    try {
+        await connection.confirmTransaction(txSignature, commitment);
+    } catch (e) {
+        if (e instanceof TransactionExpiredTimeoutError) {
+            return NaN
+        } else {
+            throw e
+        }
+    }
+
     return txSignature;
 };
 
