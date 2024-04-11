@@ -13,14 +13,13 @@ import bs58 from "bs58";
 import fetch from "cross-fetch";
 import {Wallet} from "@project-serum/anchor";
 import * as multisig from "@sqds/multisig";
-import { Express } from "express-serve-static-core";
+import {Express} from "express-serve-static-core";
 
 let rpc = "https://api.mainnet-beta.solana.com";
 const rpcEnv = process.env.RPC
 if (rpcEnv !== undefined) {
     rpc = rpcEnv.trim()
-}
-else {
+} else {
     console.log(`The "RPC" environment variable was not set. Using the default, public, RPC: ${rpc}`);
 }
 const pkeyEnv = process.env.SOLANA_PRIVATE_KEY
@@ -75,13 +74,13 @@ const getTransactionIndex = async (
 /**
  * Send transactions with retry.
  */
-
 const sendTx = async (
-    connection: any,
+    connection: Connection,
     instructions: any,
     resendAmount: number,
     lookupTableAccounts: any = [],
     ping_interval: number = 100,
+    skipPreflight: boolean = false
 ) => {
     const blockhash = await connection.getLatestBlockhash();
     const messageV0 = new TransactionMessage({
@@ -94,8 +93,23 @@ const sendTx = async (
     let txSignature: any;
     for (let i = 0; i < resendAmount; i++) {
         try {
-            txSignature = await connection.sendTransaction(tx);
-        } catch (err) {
+            txSignature = await connection.sendTransaction(tx, {
+                skipPreflight,
+            });
+        } catch (err: any) {
+            if (
+                err instanceof Error &&
+                (
+                    err.message.includes("Blockhash not found") ||
+                    err.message.includes("This transaction has already been processed")
+                )
+            ) {
+                await sleep(ping_interval)
+                continue
+            }
+            if (err instanceof Error && err.message.includes("SlippageToleranceExceeded")) {
+                throw new Error("The slippage tolerance was exceeded!")
+            }
             console.log(err);
         }
         await sleep(ping_interval)
