@@ -18,13 +18,13 @@ connections: []
 contracts: []
 protocols: []
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeic2emnylfmdtidobgdsxa4tgdelreeimtglqzrmic6cumhpsbfzhe
-- valory/registration_abci:0.1.0:bafybeibzduasg5pahk2d2glc36wlopg54ybwcdmjqbzozt2lmkp4reqsdu
-- valory/reset_pause_abci:0.1.0:bafybeib3geaw3o35aigmb4dhplxrjlsef7hbdwrozu4akiunlgyiegshj4
-- valory/market_data_fetcher_abci:0.1.0:bafybeiall6kd77aojmeeqnovfnvfkrvn4mowtoiepvbjn4k2hli32oye24
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeib5byud63jgurg4gad7f5maoccjebilwc3qacy3iege4yr42nitpi
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeidkkq2wjovtlorgycr3lcuh525pkcb62qoybganhijyfeg5kxtbde
-- valory/portfolio_tracker_abci:0.1.0:bafybeigbzjnn5mxr4l6434xsoi5y57i5solhtohs7s446pf57y3qmup4hy
+- valory/abstract_round_abci:0.1.0:bafybeih3enhagoql7kzpeyzzu2scpkif6y3ubakpralfnwxcvxexdyvy5i
+- valory/registration_abci:0.1.0:bafybeiek7zcsxbucjwzgqfftafhfrocvc7q4yxllh2q44jeemsjxg3rcfm
+- valory/reset_pause_abci:0.1.0:bafybeidw4mbx3os3hmv7ley7b3g3gja7ydpitr7mxbjpwzxin2mzyt5yam
+- valory/market_data_fetcher_abci:0.1.0:bafybeiaklavrfu5bmswnrmc3lyzarkrkkaht3arsw53b6iym4xsto3pucq
+- valory/solana_trader_decision_maker_abci:0.1.0:bafybeidndwpxd6ewv4hpo3wo6k2yybosfakcan346dbkqo7siozdwsk3bq
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeigjompkxrgi7co2fozzeupsi5gy4idhx3rumtdw5f6mkepioeujfq
+- valory/portfolio_tracker_abci:0.1.0:bafybeihiitwjagovdy6efmu5kxjxxjwybb44gs3xevty6t362esqvvxosa
 behaviours:
   main:
     args: {}
@@ -263,5 +263,5 @@ models:
     class_name: TendermintDialogues
 dependencies:
   open-aea-cli-ipfs:
-    version: ==1.49.0
+    version: ==1.50.0
 is_abstract: false
