@@ -251,3 +251,10 @@ config:
       chain_id: ${int:1337}
       default_gas_price_strategy: ${str:eip1559}
       poa_chain: ${bool:false}
+---
+public_id: valory/http_client:0.23.0
+type: connection
+config:
+  host: ${str:127.0.0.1}
+  port: ${int:8000}
+  timeout: ${int:1200}
