@@ -52,6 +52,14 @@ if (vaultEnv === undefined) {
 const squadVault = new PublicKey(vaultEnv);
 
 /**
+ * Sleep for a given time.
+ * @param ms time to sleep in ms.
+ */
+const sleep = async (ms: number) => {
+    return new Promise(r => setTimeout(r, ms));
+};
+
+/**
  * Get the multisig's index for the next transaction.
  */
 const getTransactionIndex = async (
@@ -73,6 +81,7 @@ const sendTx = async (
     instructions: any,
     resendAmount: number,
     lookupTableAccounts: any = [],
+    ping_interval: number = 100,
 ) => {
     const blockhash = await connection.getLatestBlockhash();
     const messageV0 = new TransactionMessage({
@@ -89,6 +98,7 @@ const sendTx = async (
         } catch (err) {
             console.log(err);
         }
+        await sleep(ping_interval)
     }
     return txSignature;
 }
