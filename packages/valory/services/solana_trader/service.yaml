@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeicgt7zpijkqtl52vgold5j654adsrg2kzlcdjsbe63shz6riwqsde
+agent: valory/solana_trader:0.1.0:bafybeiezofhetco7qpzbqf5agr7uojpexn4u3yigl2a4ryiooaz6ad2e7y
 number_of_agents: 4
 deployment: {}
 ---
@@ -98,6 +98,7 @@ type: skill
         request_retry_delay: ${REQUEST_RETRY_DELAY:float:1.0}
         request_timeout: ${REQUEST_TIMEOUT:float:10.0}
         round_timeout_seconds: ${ROUND_TIMEOUT:float:350.0}
+        proxy_round_timeout_seconds: ${PROXY_ROUND_TIMEOUT:float:1200.0}
         service_id: ${SERVICE_ID:str:solana_trader}
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
         agent_registry_address: ${AGENT_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
@@ -144,8 +145,11 @@ type: skill
     tx_settlement_proxy: &id006
       args:
         parameters:
-          amount: ${TX_PROXY_AMOUNT:int:100000000}
-          slippageBps: ${TX_PROXY_SLIPPAGE_BPS:int:1}
+          amount: ${TX_PROXY_SWAP_AMOUNT:int:100000000}
+          slippageBps: ${TX_PROXY_SLIPPAGE_BPS:int:5}
+          resendAmount: ${TX_PROXY_SPAM_AMOUNT:int:200}
+          timeoutInMs: ${TX_PROXY_VERIFICATION_TIMEOUT_MS:int:120000}
+          priorityFee: ${TX_PROXY_PRIORITY_FEE:int:5000000}
         response_key: ${TX_PROXY_RESPONSE_KEY:str:null}
         response_type: ${TX_PROXY_RESPONSE_TYPE:str:dict}
         retries: ${TX_PROXY_RETRIES:int:5}
@@ -174,6 +178,7 @@ type: skill
         request_retry_delay: ${REQUEST_RETRY_DELAY:float:1.0}
         request_timeout: ${REQUEST_TIMEOUT:float:10.0}
         round_timeout_seconds: ${ROUND_TIMEOUT:float:350.0}
+        proxy_round_timeout_seconds: ${PROXY_ROUND_TIMEOUT:float:1200.0}
         service_id: ${SERVICE_ID:str:solana_trader}
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
         agent_registry_address: ${AGENT_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
@@ -231,6 +236,7 @@ type: skill
         request_retry_delay: ${REQUEST_RETRY_DELAY:float:1.0}
         request_timeout: ${REQUEST_TIMEOUT:float:10.0}
         round_timeout_seconds: ${ROUND_TIMEOUT:float:350.0}
+        proxy_round_timeout_seconds: ${PROXY_ROUND_TIMEOUT:float:1200.0}
         service_id: ${SERVICE_ID:str:solana_trader}
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
         agent_registry_address: ${AGENT_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
@@ -288,6 +294,7 @@ type: skill
         request_retry_delay: ${REQUEST_RETRY_DELAY:float:1.0}
         request_timeout: ${REQUEST_TIMEOUT:float:10.0}
         round_timeout_seconds: ${ROUND_TIMEOUT:float:350.0}
+        proxy_round_timeout_seconds: ${PROXY_ROUND_TIMEOUT:float:1200.0}
         service_id: ${SERVICE_ID:str:solana_trader}
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
         agent_registry_address: ${AGENT_REGISTRY_ADDRESS:str:unknown111111111111111111111111111111111111}
@@ -371,4 +378,10 @@ cert_requests:
   not_before: '2022-01-01'
   public_key: ${ACN_NODE_PUBLIC_KEY:str:02d3a830c9d6ea1ae91936951430dee11f4662f33118b02190693be835359a9d77}
   save_path: .certs/acn_cosmos_11000.txt
-is_abstract: false
+---
+public_id: valory/http_client:0.23.0
+type: connection
+config:
+  host: ${HTTP_CLIENT_HOST:str:127.0.0.1}
+  port: ${HTTP_CLIENT_PORT:int:8000}
+  timeout: ${HTTP_CLIENT_TIMEOUT:int:1200}

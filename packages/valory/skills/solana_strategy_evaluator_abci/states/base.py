@@ -70,6 +70,7 @@ class Event(Enum):
     BACKTEST_FAILED = "backtest_failed"
     ERROR_BACKTESTING = "error_backtesting"
     ROUND_TIMEOUT = "round_timeout"
+    PROXY_SWAP_TIMEOUT = "proxy_swap_timeout"
     NO_MAJORITY = "no_majority"
 
 

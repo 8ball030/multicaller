@@ -6,6 +6,7 @@ import {
     PublicKey,
     TransactionMessage,
     AddressLookupTableAccount,
+    TransactionExpiredTimeoutError,
     TransactionInstruction,
     VersionedTransaction,
 } from '@solana/web3.js';
@@ -13,14 +14,13 @@ import bs58 from "bs58";
 import fetch from "cross-fetch";
 import {Wallet} from "@project-serum/anchor";
 import * as multisig from "@sqds/multisig";
-import { Express } from "express-serve-static-core";
+import {Express} from "express-serve-static-core";
 
 let rpc = "https://api.mainnet-beta.solana.com";
 const rpcEnv = process.env.RPC
 if (rpcEnv !== undefined) {
     rpc = rpcEnv.trim()
-}
-else {
+} else {
     console.log(`The "RPC" environment variable was not set. Using the default, public, RPC: ${rpc}`);
 }
 const pkeyEnv = process.env.SOLANA_PRIVATE_KEY
@@ -52,6 +52,14 @@ if (vaultEnv === undefined) {
 const squadVault = new PublicKey(vaultEnv);
 
 /**
+ * Sleep for a given time.
+ * @param ms time to sleep in ms.
+ */
+const sleep = async (ms: number) => {
+    return new Promise(r => setTimeout(r, ms));
+};
+
+/**
  * Get the multisig's index for the next transaction.
  */
 const getTransactionIndex = async (
@@ -67,12 +75,13 @@ const getTransactionIndex = async (
 /**
  * Send transactions with retry.
  */
-
 const sendTx = async (
-    connection: any,
+    connection: Connection,
     instructions: any,
     resendAmount: number,
     lookupTableAccounts: any = [],
+    ping_interval: number = 100,
+    skipPreflight: boolean = false
 ) => {
     const blockhash = await connection.getLatestBlockhash();
     const messageV0 = new TransactionMessage({
@@ -85,10 +94,26 @@ const sendTx = async (
     let txSignature: any;
     for (let i = 0; i < resendAmount; i++) {
         try {
-            txSignature = await connection.sendTransaction(tx);
-        } catch (err) {
+            txSignature = await connection.sendTransaction(tx, {
+                skipPreflight,
+            });
+        } catch (err: any) {
+            if (
+                err instanceof Error &&
+                (
+                    err.message.includes("Blockhash not found") ||
+                    err.message.includes("This transaction has already been processed")
+                )
+            ) {
+                await sleep(ping_interval)
+                continue
+            }
+            if (err instanceof Error && err.message.includes("SlippageToleranceExceeded")) {
+                throw new Error("The slippage tolerance was exceeded!")
+            }
             console.log(err);
         }
+        await sleep(ping_interval)
     }
     return txSignature;
 }
@@ -96,21 +121,45 @@ const sendTx = async (
 /**
  * Send and confirm transactions with retry.
  */
-const sendTxAndConfirm = async(
-    connection: any,
+const sendTxAndConfirm = async (
+    connection: Connection,
     instructions: any,
     resendAmount: number,
     lookupTableAccounts: any = [],
     commitment: any = 'finalized',
 ) => {
     const txSignature = await sendTx(connection, instructions, resendAmount, lookupTableAccounts);
-    await connection.confirmTransaction(txSignature, commitment);
+    if (txSignature === undefined) {
+        console.log("Simulation keeps failing. Please check if the fee-payer has sufficient funds.")
+        return NaN
+    }
+
+    try {
+        await connection.confirmTransaction(txSignature, commitment);
+    } catch (e) {
+        if (e instanceof TransactionExpiredTimeoutError) {
+            return NaN
+        } else {
+            throw e
+        }
+    }
+
     return txSignature;
 };
 
 app.post('/tx', async (req: any, res: any) => {
     try {
-        let {inputMint, outputMint, amount, slippageBps, priorityFee, timeoutInMs, computeUnitLimit, maxRetries, resendAmount} = req.body
+        let {
+            inputMint,
+            outputMint,
+            amount,
+            slippageBps,
+            priorityFee,
+            timeoutInMs,
+            computeUnitLimit,
+            maxRetries,
+            resendAmount
+        } = req.body
         if (timeoutInMs === undefined) {
             timeoutInMs = 60_000
         }
@@ -239,18 +288,23 @@ app.post('/tx', async (req: any, res: any) => {
         });
 
         // TX #1 Create the multisig transaction
-        await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        let txSignature = NaN
+        do {
+            txSignature = await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        } while (txSignature !== txSignature)
         console.log("Created squad transaction.")
 
         // propose the transaction for approval/rejection
-         const proposalInstructions = multisig.instructions.proposalCreate({
+        const proposalInstructions = multisig.instructions.proposalCreate({
             creator: feePayer.publicKey,
             multisigPda,
             transactionIndex,
         });
 
         // TX #2 Create the proposal for the multisig tx
-        await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
+        } while (txSignature !== txSignature)
         console.log("Created proposal for the transaction.")
 
         // approve the proposal
@@ -259,9 +313,11 @@ app.post('/tx', async (req: any, res: any) => {
             multisigPda,
             transactionIndex,
         });
-        
+
         // TX #3 Approve the proposal (multisig transaction)
-        await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        } while (txSignature !== txSignature)
         console.log("Approved proposal.")
 
         // execute the transaction
@@ -274,15 +330,17 @@ app.post('/tx', async (req: any, res: any) => {
         const computeLimitInstruction = ComputeBudgetProgram.setComputeUnitLimit({
             units: computeUnitLimit,
         })
-        
+
         // TX #4 Execute the multisig transaction
-        const txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
+        } while (txSignature !== txSignature)
         console.log("Transaction executed.")
 
         res.json({"status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}`})
     } catch (e: any) {
         console.log(e)
-        res.status(internalServerErrorCode).json({"status": "error", "message": e.message})
+        res.status(internalServerErrorCode).json({"status": "error", "message": e.message, "stack": e.stack})
     }
 
 });
@@ -291,7 +349,7 @@ app.use(express.json());
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
 function async(arg0: Express) {
     throw new Error("Function not implemented.");
 }
-

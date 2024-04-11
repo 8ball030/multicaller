@@ -66,6 +66,13 @@ if (vaultEnv === undefined) {
 }
 const squadVault = new web3_js_1.PublicKey(vaultEnv);
 /**
+ * Sleep for a given time.
+ * @param ms time to sleep in ms.
+ */
+const sleep = async (ms) => {
+    return new Promise(r => setTimeout(r, ms));
+};
+/**
  * Get the multisig's index for the next transaction.
  */
 const getTransactionIndex = async (connection) => {
@@ -75,7 +82,7 @@ const getTransactionIndex = async (connection) => {
 /**
  * Send transactions with retry.
  */
-const sendTx = async (connection, instructions, resendAmount, lookupTableAccounts = []) => {
+const sendTx = async (connection, instructions, resendAmount, lookupTableAccounts = [], ping_interval = 100, skipPreflight = false) => {
     const blockhash = await connection.getLatestBlockhash();
     const messageV0 = new web3_js_1.TransactionMessage({
         payerKey: feePayer.publicKey,
@@ -87,11 +94,23 @@ const sendTx = async (connection, instructions, resendAmount, lookupTableAccount
     let txSignature;
     for (let i = 0; i < resendAmount; i++) {
         try {
-            txSignature = await connection.sendTransaction(tx);
+            txSignature = await connection.sendTransaction(tx, {
+                skipPreflight,
+            });
         }
         catch (err) {
+            if (err instanceof Error &&
+                (err.message.includes("Blockhash not found") ||
+                    err.message.includes("This transaction has already been processed"))) {
+                await sleep(ping_interval);
+                continue;
+            }
+            if (err instanceof Error && err.message.includes("SlippageToleranceExceeded")) {
+                throw new Error("The slippage tolerance was exceeded!");
+            }
             console.log(err);
         }
+        await sleep(ping_interval);
     }
     return txSignature;
 };
@@ -100,7 +119,21 @@ const sendTx = async (connection, instructions, resendAmount, lookupTableAccount
  */
 const sendTxAndConfirm = async (connection, instructions, resendAmount, lookupTableAccounts = [], commitment = 'finalized') => {
     const txSignature = await sendTx(connection, instructions, resendAmount, lookupTableAccounts);
-    await connection.confirmTransaction(txSignature, commitment);
+    if (txSignature === undefined) {
+        console.log("Simulation keeps failing. Please check if the fee-payer has sufficient funds.");
+        return NaN;
+    }
+    try {
+        await connection.confirmTransaction(txSignature, commitment);
+    }
+    catch (e) {
+        if (e instanceof web3_js_1.TransactionExpiredTimeoutError) {
+            return NaN;
+        }
+        else {
+            throw e;
+        }
+    }
     return txSignature;
 };
 app.post('/tx', async (req, res) => {
@@ -215,7 +248,10 @@ app.post('/tx', async (req, res) => {
             addressLookupTableAccounts,
         });
         // TX #1 Create the multisig transaction
-        await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        let txSignature = NaN;
+        do {
+            txSignature = await sendTxAndConfirm(connection, [priorityFeeInstruction, createInstructions], resendAmount);
+        } while (txSignature !== txSignature);
         console.log("Created squad transaction.");
         // propose the transaction for approval/rejection
         const proposalInstructions = multisig.instructions.proposalCreate({
@@ -224,7 +260,9 @@ app.post('/tx', async (req, res) => {
             transactionIndex,
         });
         // TX #2 Create the proposal for the multisig tx
-        await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [proposalInstructions], resendAmount);
+        } while (txSignature !== txSignature);
         console.log("Created proposal for the transaction.");
         // approve the proposal
         const approvalInstructions = multisig.instructions.proposalApprove({
@@ -233,7 +271,9 @@ app.post('/tx', async (req, res) => {
             transactionIndex,
         });
         // TX #3 Approve the proposal (multisig transaction)
-        await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [approvalInstructions], resendAmount);
+        } while (txSignature !== txSignature);
         console.log("Approved proposal.");
         // execute the transaction
         const { instruction, lookupTableAccounts } = await multisig.instructions.vaultTransactionExecute({
@@ -246,13 +286,15 @@ app.post('/tx', async (req, res) => {
             units: computeUnitLimit,
         });
         // TX #4 Execute the multisig transaction
-        const txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
+        do {
+            txSignature = await sendTxAndConfirm(connection, [computeLimitInstruction, instruction], resendAmount, lookupTableAccounts);
+        } while (txSignature !== txSignature);
         console.log("Transaction executed.");
         res.json({ "status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}` });
     }
     catch (e) {
         console.log(e);
-        res.status(internalServerErrorCode).json({ "status": "error", "message": e.message });
+        res.status(internalServerErrorCode).json({ "status": "error", "message": e.message, "stack": e.stack });
     }
 });
 app.use(express_1.default.json());

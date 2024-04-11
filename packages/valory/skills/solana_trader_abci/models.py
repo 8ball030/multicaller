@@ -102,6 +102,9 @@ class SharedState(BaseSharedState):
             StrategyEvaluatorEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
         SolanaTraderAbciApp.event_to_timeout[
+            StrategyEvaluatorEvent.PROXY_SWAP_TIMEOUT
+        ] = self.context.params.proxy_round_timeout_seconds
+        SolanaTraderAbciApp.event_to_timeout[
             ResetPauseEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
         SolanaTraderAbciApp.event_to_timeout[

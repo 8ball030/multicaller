@@ -12,7 +12,7 @@ fingerprint:
   composition.py: bafybeih6c4ka5qfgdla2a7tx4kqkt7n4luhyocqrmjg3mz26qsnlgffxca
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
   handlers.py: bafybeiavd6cfuk4apllbh24eied2xhned2dxunod25m33wy7girmirisni
-  models.py: bafybeicu7lq3dn7geon5wycn4hk6nuua3l4lx23rtc6y4u6a5wnyjhxi4i
+  models.py: bafybeifi7vujf2js2skt2neyewjtxqzao32ufwhjaojxwlogbbvoq5ysaa
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -23,7 +23,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeidw4mbx3os3hmv7ley7b3g3gja7ydpitr7mxbjpwzxin2mzyt5yam
 - valory/market_data_fetcher_abci:0.1.0:bafybeiaklavrfu5bmswnrmc3lyzarkrkkaht3arsw53b6iym4xsto3pucq
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeidndwpxd6ewv4hpo3wo6k2yybosfakcan346dbkqo7siozdwsk3bq
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeieo2xdqp3lasqlizq7ds7c2jv6mai7ntatv3x3p3ph3me3vkxam7y
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeigjompkxrgi7co2fozzeupsi5gy4idhx3rumtdw5f6mkepioeujfq
 - valory/portfolio_tracker_abci:0.1.0:bafybeihiitwjagovdy6efmu5kxjxxjwybb44gs3xevty6t362esqvvxosa
 behaviours:
   main:
@@ -111,7 +111,8 @@ models:
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3
-      round_timeout_seconds: 30.0
+      round_timeout_seconds: 350.0
+      proxy_round_timeout_seconds: 1200.0
       service_id: impact_evaluator
       service_registry_address: null
       agent_registry_address: null
@@ -185,7 +186,7 @@ models:
       method: GET
       parameters:
         amount: 100000000
-        slippageBps: 1
+        slippageBps: 5
       response_key: null
       response_type: dict
       retries: 5
@@ -211,7 +212,10 @@ models:
       method: POST
       parameters:
         amount: 100000000
-        slippageBps: 1
+        slippageBps: 5
+        resendAmount: 200
+        timeoutInMs: 120000
+        priorityFee: 5000000
       response_key: null
       response_type: dict
       retries: 5

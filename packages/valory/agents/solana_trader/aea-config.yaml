@@ -34,8 +34,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiek7zcsxbucjwzgqfftafhfrocvc7q4yxllh2q44jeemsjxg3rcfm
 - valory/reset_pause_abci:0.1.0:bafybeidw4mbx3os3hmv7ley7b3g3gja7ydpitr7mxbjpwzxin2mzyt5yam
 - valory/market_data_fetcher_abci:0.1.0:bafybeiaklavrfu5bmswnrmc3lyzarkrkkaht3arsw53b6iym4xsto3pucq
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeieo2xdqp3lasqlizq7ds7c2jv6mai7ntatv3x3p3ph3me3vkxam7y
-- valory/solana_trader_abci:0.1.0:bafybeiglpl2wxuscyhf3g2fbuinkebggzw5cwuovwcfwm63o2u3d2cd6cm
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeigjompkxrgi7co2fozzeupsi5gy4idhx3rumtdw5f6mkepioeujfq
+- valory/solana_trader_abci:0.1.0:bafybeibuey3632m3gs2l3qbs64orhvaxbmxm3cwvglx46knryqp46jrwgu
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeidndwpxd6ewv4hpo3wo6k2yybosfakcan346dbkqo7siozdwsk3bq
 - valory/ipfs_package_downloader:0.1.0:bafybeig4tmmfbvomqjghmklremfrzdsmgrd5dlnph2lx6z7d5elj7o5gmi
 - valory/portfolio_tracker_abci:0.1.0:bafybeihiitwjagovdy6efmu5kxjxxjwybb44gs3xevty6t362esqvvxosa
@@ -149,7 +149,10 @@ models:
       method: ${str:POST}
       parameters:
         amount: ${int:100000000}
-        slippageBps: ${int:1}
+        slippageBps: ${int:5}
+        resendAmount: ${int:200}
+        timeoutInMs: ${int:120000}
+        priorityFee: ${int:5000000}
       response_key: ${str:null}
       response_type: ${str:dict}
       retries: ${int:5}
@@ -195,6 +198,7 @@ models:
       tendermint_max_retries: ${int:5}
       tx_timeout: ${float:10.0}
       round_timeout_seconds: ${float:350.0}
+      proxy_round_timeout_seconds: ${float:1200.0}
       validate_timeout: ${int:1205}
       history_check_timeout: ${int:1205}
       reset_pause_duration: ${int:30}
@@ -247,3 +251,10 @@ config:
       chain_id: ${int:1337}
       default_gas_price_strategy: ${str:eip1559}
       poa_chain: ${bool:false}
+---
+public_id: valory/http_client:0.23.0
+type: connection
+config:
+  host: ${str:127.0.0.1}
+  port: ${int:8000}
+  timeout: ${int:1200}

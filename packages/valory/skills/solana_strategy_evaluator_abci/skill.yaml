@@ -18,14 +18,14 @@ fingerprint:
   behaviours/strategy_exec.py: bafybeier7nx6pauugeom7eco2qjpjjwaayw7jzxb46oo2ncgpxgdl5g3fa
   behaviours/swap_queue.py: bafybeihqumnnrauqekptjulpyu7jhjhogwtmo2wiuaguoolvejuyqaiopy
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
-  fsm_specification.yaml: bafybeigcbcejmsk3vowy4ltcbeoygvgi6zvoj4vll4vy5a2lvt7l2nxt44
+  fsm_specification.yaml: bafybeidytd63a4rp4eqglrql2qi4izdg2ahb3cirp6dxzwhneasd3o5q7m
   handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
-  models.py: bafybeidahepmauv6zjgdqep6hamks7tabkxwp5zlrrm75gendlozqjxamm
+  models.py: bafybeiejmsmvqaix6pa2irzoezpz56ud6zvba7r4uehcxk42rh5r5g6h3e
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
-  rounds.py: bafybeibyqr6ylx4btvuicwrjbhdlvtfz2c3p3o2aeve34jh26pslbnxeoi
+  rounds.py: bafybeiakrnzlgmf3h6lcic2ijmdwwlhcgeqjwmimgoblzc32xb4ztnjnmq
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
   states/backtesting.py: bafybeidlh7h3v3sfhyy7hugrld7o77hcmd67re3cyhnusw6oyqtysxqk6a
-  states/base.py: bafybeibtbxvutxchdmjcjgybbudmrxqy2tz4vku5helfiomhgooeik5434
+  states/base.py: bafybeih7dwpffrkwujrcp6dcwbnqi27zoaqpl7b7ik4nxe3xlq5sbh2i2e
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
   states/prepare_swap.py: bafybeidideaz3zhr2v3pfpyqiscglppaguh2gk74rdbalwil3ky3jnqgsa
   states/proxy_swap_queue.py: bafybeie77ly44vkaxxwefna5wozdkskj3ov5oyikptorf4uxnho5ctv54a
@@ -119,6 +119,7 @@ models:
       retry_attempts: 400
       retry_timeout: 3
       round_timeout_seconds: 350.0
+      proxy_round_timeout_seconds: 1200.0
       service_id: decision_maker
       service_registry_address: null
       agent_registry_address: null
@@ -159,7 +160,7 @@ models:
       method: GET
       parameters:
         amount: 100000000
-        slippageBps: 1
+        slippageBps: 5
       response_key: null
       response_type: dict
       retries: 5
@@ -185,7 +186,10 @@ models:
       method: POST
       parameters:
         amount: 100000000
-        slippageBps: 1
+        slippageBps: 5
+        resendAmount: 200
+        timeoutInMs: 120000
+        priorityFee: 5000000
       response_key: null
       response_type: dict
       retries: 5
