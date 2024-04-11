@@ -34,8 +34,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeibzduasg5pahk2d2glc36wlopg54ybwcdmjqbzozt2lmkp4reqsdu
 - valory/reset_pause_abci:0.1.0:bafybeib3geaw3o35aigmb4dhplxrjlsef7hbdwrozu4akiunlgyiegshj4
 - valory/market_data_fetcher_abci:0.1.0:bafybeiall6kd77aojmeeqnovfnvfkrvn4mowtoiepvbjn4k2hli32oye24
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeia7in4343l6amhuuf6selwxztvpsh56eqhhwa5kjsc5romigkxzp4
-- valory/solana_trader_abci:0.1.0:bafybeid554i2phxpocvszoflcxwjrndnr6mkpds3ktk7nimcjpbz4o6tuu
+- valory/solana_strategy_evaluator_abci:0.1.0:bafybeidkkq2wjovtlorgycr3lcuh525pkcb62qoybganhijyfeg5kxtbde
+- valory/solana_trader_abci:0.1.0:bafybeia723mpp4wdgscn5nyrv2o2rovavcehg5vqvbaswcvisfph34j7pi
 - valory/solana_trader_decision_maker_abci:0.1.0:bafybeib5byud63jgurg4gad7f5maoccjebilwc3qacy3iege4yr42nitpi
 - valory/ipfs_package_downloader:0.1.0:bafybeiax5tmxmtr7752kbb7anujwdkrpqgy74p3py5lmtls5dvir2bs4rq
 - valory/portfolio_tracker_abci:0.1.0:bafybeigbzjnn5mxr4l6434xsoi5y57i5solhtohs7s446pf57y3qmup4hy

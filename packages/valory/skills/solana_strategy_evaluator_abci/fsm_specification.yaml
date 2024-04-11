@@ -15,6 +15,7 @@ alphabet_in:
 - PREPARE_SWAP
 - PROXY_SWAPPED
 - PROXY_SWAP_FAILED
+- PROXY_SWAP_TIMEOUT
 - ROUND_TIMEOUT
 - SWAPS_QUEUE_EMPTY
 - SWAP_TX_PREPARED
@@ -61,7 +62,7 @@ transition_func:
     (ProxySwapQueueRound, NO_MAJORITY): ProxySwapQueueRound
     (ProxySwapQueueRound, PROXY_SWAPPED): ProxySwapQueueRound
     (ProxySwapQueueRound, PROXY_SWAP_FAILED): ProxySwapQueueRound
-    (ProxySwapQueueRound, ROUND_TIMEOUT): ProxySwapQueueRound
+    (ProxySwapQueueRound, PROXY_SWAP_TIMEOUT): ProxySwapQueueRound
     (ProxySwapQueueRound, SWAPS_QUEUE_EMPTY): NoMoreSwapsRound
     (StrategyExecRound, ERROR_PREPARING_SWAPS): StrategyExecutionFailedRound
     (StrategyExecRound, NO_MAJORITY): StrategyExecRound

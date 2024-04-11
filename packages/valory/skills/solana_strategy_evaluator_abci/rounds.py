@@ -98,7 +98,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             - swaps queue empty: 6.
             - proxy swap failed: 4.
             - no majority: 4.
-            - round timeout: 4.
+            - proxy swap timeout: 4.
         5. SwapTxPreparedRound
         6. NoMoreSwapsRound
         7. StrategyExecutionFailedRound
@@ -111,6 +111,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
 
     Timeouts:
         round timeout: 30.0
+        proxy swap timeout: 1200.0
     """
 
     initial_round_cls: AppState = StrategyExecRound
