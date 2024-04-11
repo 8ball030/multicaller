@@ -111,7 +111,8 @@ models:
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3
-      round_timeout_seconds: 30.0
+      round_timeout_seconds: 350.0
+      proxy_round_timeout_seconds: 1200.0
       service_id: impact_evaluator
       service_registry_address: null
       agent_registry_address: null

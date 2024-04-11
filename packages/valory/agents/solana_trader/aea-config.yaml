@@ -198,6 +198,7 @@ models:
       tendermint_max_retries: ${int:5}
       tx_timeout: ${float:10.0}
       round_timeout_seconds: ${float:350.0}
+      proxy_round_timeout_seconds: ${float:1200.0}
       validate_timeout: ${int:1205}
       history_check_timeout: ${int:1205}
       reset_pause_duration: ${int:30}

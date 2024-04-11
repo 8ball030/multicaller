@@ -119,6 +119,7 @@ models:
       retry_attempts: 400
       retry_timeout: 3
       round_timeout_seconds: 350.0
+      proxy_round_timeout_seconds: 1200.0
       service_id: decision_maker
       service_registry_address: null
       agent_registry_address: null

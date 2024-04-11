@@ -117,6 +117,9 @@ class StrategyEvaluatorParams(BaseParams):
             kwargs, "strategies_kwargs"
         )
         self.use_proxy_server: bool = self._ensure("use_proxy_server", kwargs, bool)
+        self.proxy_round_timeout_seconds: float = self._ensure(
+            "proxy_round_timeout_seconds", kwargs, float
+        )
         self.expected_swap_tx_cost: int = self._ensure(
             "expected_swap_tx_cost", kwargs, int
         )

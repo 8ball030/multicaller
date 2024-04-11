@@ -126,6 +126,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
     }
     event_to_timeout: Dict[Event, float] = {
         Event.ROUND_TIMEOUT: 30.0,
+        Event.PROXY_SWAP_TIMEOUT: 1200.0,
     }
     db_pre_conditions: Dict[AppState, Set[str]] = {
         StrategyExecRound: {
@@ -171,7 +172,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.SWAPS_QUEUE_EMPTY: NoMoreSwapsRound,
             Event.PROXY_SWAP_FAILED: ProxySwapQueueRound,
             Event.NO_MAJORITY: ProxySwapQueueRound,
-            Event.ROUND_TIMEOUT: ProxySwapQueueRound,
+            Event.PROXY_SWAP_TIMEOUT: ProxySwapQueueRound,
         },
         SwapTxPreparedRound: {},
         NoMoreSwapsRound: {},
