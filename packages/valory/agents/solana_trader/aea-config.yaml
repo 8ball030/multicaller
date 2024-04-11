@@ -149,7 +149,10 @@ models:
       method: ${str:POST}
       parameters:
         amount: ${int:100000000}
-        slippageBps: ${int:1}
+        slippageBps: ${int:5}
+        resendAmount: ${int:200}
+        timeoutInMs: ${int:120000}
+        priorityFee: ${int:5000000}
       response_key: ${str:null}
       response_type: ${str:dict}
       retries: ${int:5}

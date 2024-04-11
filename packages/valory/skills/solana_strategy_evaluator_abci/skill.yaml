@@ -185,7 +185,10 @@ models:
       method: POST
       parameters:
         amount: 100000000
-        slippageBps: 1
+        slippageBps: 5
+        resendAmount: 200
+        timeoutInMs: 120000
+        priorityFee: 5000000
       response_key: null
       response_type: dict
       retries: 5
