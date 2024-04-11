@@ -185,7 +185,7 @@ models:
       method: GET
       parameters:
         amount: 100000000
-        slippageBps: 1
+        slippageBps: 5
       response_key: null
       response_type: dict
       retries: 5
