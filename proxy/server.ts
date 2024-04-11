@@ -340,7 +340,7 @@ app.post('/tx', async (req: any, res: any) => {
         res.json({"status": "ok", "txId": txSignature, "url": `https://solscan.io/tx/${txSignature}`})
     } catch (e: any) {
         console.log(e)
-        res.status(internalServerErrorCode).json({"status": "error", "message": e.message})
+        res.status(internalServerErrorCode).json({"status": "error", "message": e.message, "stack": e.stack})
     }
 
 });
