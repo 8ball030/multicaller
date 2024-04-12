@@ -16,7 +16,7 @@ fingerprint:
   utils/task.py: bafybeiggyjn23wtzahdvq447jjwzmwn3hs2bc4sxkiy3wuzkugp35uoysq
 fingerprint_ignore_patterns: []
 connections:
-- valory/ipfs:0.1.0:bafybeihndk6hohj3yncgrye5pw7b7w2kztj3avby5u5mfk2fpjh7hqphii
+- valory/ipfs:0.1.0:bafybeifqca6e232lbvwrjhd7ioh43bo3evxfkpumdvcr6re2sdwjuntgna
 contracts: []
 protocols:
 - valory/ipfs:0.1.0:bafybeiftxi2qhreewgsc5wevogi7yc5g6hbcbo4uiuaibauhv3nhfcdtvm
