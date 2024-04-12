@@ -10,8 +10,8 @@
         "skill/valory/solana_trader_abci/0.1.0": "bafybeicyqr2ry76jkinb5moab3dyzshzl7v6cmzixhmwgmmpuokmqgex5e",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeibltlghspeug66v5cbvqu5rjrwxrwyc5m5tlycitynzpaq5ksodo4",
-        "agent/valory/solana_trader/0.1.0": "bafybeict6x5t3exjjnbbcfvxxuoqoaorqbten7dzowwkyueyv42urrlgay",
-        "service/valory/solana_trader/0.1.0": "bafybeicszjlo5vepl6wol7yosequrqm5qd2gjxo3nsu75tspwxkmkfpyze"
+        "agent/valory/solana_trader/0.1.0": "bafybeibm3dtvd57n4lctzqyvoe2itp2vur2gtqh2nj6x3aahhpurlzxoye",
+        "service/valory/solana_trader/0.1.0": "bafybeifaiz6xcvwji2r7qhqe4xe2cxmztv42wx5psnix5rne37oojfyd4y"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
