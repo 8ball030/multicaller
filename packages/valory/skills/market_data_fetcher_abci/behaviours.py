@@ -107,6 +107,7 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
 
             if response.status_code == rate_limited_code:
                 rate_limited_callback()
+                return False, response_json
 
             if response.status_code not in HTTP_OK or "exception" in response_json:
                 self.context.logger.error(
