@@ -262,7 +262,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         self.context.logger.info("Tracking the portfolio of the service...")
         should_wait = False
         for token in self.params.tracked_tokens:
-            self.context.logger.error(f"Tracking {token=}...")
+            self.context.logger.info(f"Tracking {token=}...")
 
             if token == SOL_ADDRESS:
                 # SOL will be populated using a different RPC method, in the `check_balance` method
