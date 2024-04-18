@@ -81,6 +81,7 @@ class BacktestBehaviour(StrategyEvaluatorBaseBehaviour):
             )
             return False
 
+        self.context.logger.info(f"{sharpe=}.")
         return sharpe >= self.params.sharpe_threshold
 
     def filter_orders(
