@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the behaviours for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains the behaviours for the 'trader_decision_maker_abci' skill."""
 
 import json
 from abc import ABC
@@ -41,19 +41,19 @@ from packages.valory.skills.abstract_round_abci.behaviours import AbstractRoundB
 from packages.valory.skills.abstract_round_abci.common import (
     RandomnessBehaviour as RandomnessBehaviourBase,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.models import Params
-from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
+from packages.valory.skills.trader_decision_maker_abci.models import Params
+from packages.valory.skills.trader_decision_maker_abci.payloads import (
     RandomnessPayload,
-    SolanaTraderDecisionMakerPayload,
+    TraderDecisionMakerPayload,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.policy import (
+from packages.valory.skills.trader_decision_maker_abci.policy import (
     EGreedyPolicy,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+from packages.valory.skills.trader_decision_maker_abci.rounds import (
     Position,
     RandomnessRound,
-    SolanaTraderDecisionMakerAbciApp,
-    SolanaTraderDecisionMakerRound,
+    TraderDecisionMakerAbciApp,
+    TraderDecisionMakerRound,
     SynchronizedData,
 )
 
@@ -73,10 +73,10 @@ class RandomnessBehaviour(RandomnessBehaviourBase):
     payload_class = RandomnessPayload
 
 
-class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
+class TraderDecisionMakerBehaviour(BaseBehaviour, ABC):
     """A behaviour in which the agents select a trading strategy."""
 
-    matching_round: Type[AbstractRound] = SolanaTraderDecisionMakerRound
+    matching_round: Type[AbstractRound] = TraderDecisionMakerRound
 
     def __init__(self, **kwargs: Any) -> None:
         """Initialize Behaviour."""
@@ -212,7 +212,7 @@ class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
                 self._store_policy()
                 self._store_available_strategies()
 
-            payload = SolanaTraderDecisionMakerPayload(
+            payload = TraderDecisionMakerPayload(
                 self.context.agent_address,
                 policy,
                 positions,
@@ -225,12 +225,12 @@ class SolanaTraderDecisionMakerBehaviour(BaseBehaviour, ABC):
             self.set_done()
 
 
-class SolanaTraderDecisionMakerRoundBehaviour(AbstractRoundBehaviour):
-    """This behaviour manages the consensus stages for the SolanaTraderDecisionMakerBehaviour."""
+class TraderDecisionMakerRoundBehaviour(AbstractRoundBehaviour):
+    """This behaviour manages the consensus stages for the TraderDecisionMakerBehaviour."""
 
     initial_behaviour_cls = RandomnessBehaviour
-    abci_app_cls = SolanaTraderDecisionMakerAbciApp
+    abci_app_cls = TraderDecisionMakerAbciApp
     behaviours: Set[Type[BaseBehaviour]] = {
         RandomnessBehaviour,  # type: ignore
-        SolanaTraderDecisionMakerBehaviour,  # type: ignore
+        TraderDecisionMakerBehaviour,  # type: ignore
     }

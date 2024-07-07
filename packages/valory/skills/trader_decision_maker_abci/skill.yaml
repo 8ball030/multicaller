@@ -1,8 +1,8 @@
-name: solana_trader_decision_maker_abci
+name: trader_decision_maker_abci
 author: valory
 version: 0.1.0
 type: skill
-description: This skill implements the SolanaTraderDecisionMakerAbci for an AEA.
+description: This skill implements the TraderDecisionMakerAbci for an AEA.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
@@ -26,11 +26,11 @@ skills:
 behaviours:
   main:
     args: {}
-    class_name: SolanaTraderDecisionMakerBehaviour
+    class_name: TraderDecisionMakerBehaviour
 handlers:
   abci:
     args: {}
-    class_name: ABCISolanaTraderDecisionMakerHandler
+    class_name: ABCITraderDecisionMakerHandler
   contract_api:
     args: {}
     class_name: ContractApiHandler
@@ -126,7 +126,7 @@ models:
       light_slash_unit_amount: 5000000000000000
       serious_slash_unit_amount: 8000000000000000
       epsilon: 0.1
-    class_name: SolanaTraderDecisionMakerParams
+    class_name: TraderDecisionMakerParams
   requests:
     args: {}
     class_name: Requests

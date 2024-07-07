@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the transaction payloads for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains the transaction payloads for the 'trader_decision_maker_abci' skill."""
 
 from dataclasses import dataclass
 from typing import Optional
@@ -34,8 +34,8 @@ class RandomnessPayload(BaseTxPayload):
 
 
 @dataclass(frozen=True)
-class SolanaTraderDecisionMakerPayload(BaseTxPayload):
-    """A transaction payload for the SolanaTraderDecisionMakingRound."""
+class TraderDecisionMakerPayload(BaseTxPayload):
+    """A transaction payload for the TraderDecisionMakingRound."""
 
     policy: Optional[str]
     positions: Optional[str]

@@ -18,7 +18,7 @@
 # ------------------------------------------------------------------------------
 
 
-"""Custom objects for the 'solana_trader_decision_maker_abci' skill."""
+"""Custom objects for the 'trader_decision_maker_abci' skill."""
 
 from typing import Any
 
@@ -30,8 +30,8 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
-    SolanaTraderDecisionMakerAbciApp,
+from packages.valory.skills.trader_decision_maker_abci.rounds import (
+    TraderDecisionMakerAbciApp,
 )
 
 
@@ -42,7 +42,7 @@ BenchmarkTool = BaseBenchmarkTool
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
-    abci_app_cls = SolanaTraderDecisionMakerAbciApp
+    abci_app_cls = TraderDecisionMakerAbciApp
 
 
 class Params(BaseParams):

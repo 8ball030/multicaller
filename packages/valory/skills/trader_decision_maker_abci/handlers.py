@@ -18,7 +18,7 @@
 # ------------------------------------------------------------------------------
 
 
-"""This module contains the handlers for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains the handlers for the 'trader_decision_maker_abci' skill."""
 
 from packages.valory.skills.abstract_round_abci.handlers import ABCIRoundHandler
 from packages.valory.skills.abstract_round_abci.handlers import (
@@ -41,7 +41,7 @@ from packages.valory.skills.abstract_round_abci.handlers import (
 )
 
 
-ABCISolanaTraderDecisionMakerHandler = ABCIRoundHandler
+ABCITraderDecisionMakerHandler = ABCIRoundHandler
 HttpHandler = BaseHttpHandler
 SigningHandler = BaseSigningHandler
 LedgerApiHandler = BaseLedgerApiHandler

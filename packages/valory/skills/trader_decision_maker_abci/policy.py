@@ -24,7 +24,7 @@ import random
 from dataclasses import dataclass
 from typing import List, Optional, Union
 
-from packages.valory.skills.solana_trader_decision_maker_abci.utils import (
+from packages.valory.skills.trader_decision_maker_abci.utils import (
     DataclassEncoder,
 )
 

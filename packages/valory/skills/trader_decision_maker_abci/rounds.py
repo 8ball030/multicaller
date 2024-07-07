@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the rounds for the 'solana_trader_decision_maker_abci' skill."""
+"""This module contains the rounds for the 'trader_decision_maker_abci' skill."""
 
 import json
 from abc import ABC
@@ -37,17 +37,17 @@ from packages.valory.skills.abstract_round_abci.base import (
     DeserializedCollection,
     get_name,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.payloads import (
+from packages.valory.skills.trader_decision_maker_abci.payloads import (
     RandomnessPayload,
-    SolanaTraderDecisionMakerPayload,
+    TraderDecisionMakerPayload,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.policy import (
+from packages.valory.skills.trader_decision_maker_abci.policy import (
     EGreedyPolicy,
 )
 
 
 class Event(Enum):
-    """Event enumeration for the SolanaTraderDecisionMakerAbci demo."""
+    """Event enumeration for the TraderDecisionMakerAbci demo."""
 
     DONE = "done"
     NONE = "none"
@@ -109,8 +109,8 @@ class SynchronizedData(BaseSynchronizedData):
         return Position.from_json(positions)
 
 
-class SolanaTraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
-    """Abstract round for the SolanaTraderDecisionMakerAbci skill."""
+class TraderDecisionMakerAbstractRound(AbstractRound[Event], ABC):
+    """Abstract round for the TraderDecisionMakerAbci skill."""
 
     @property
     def synchronized_data(self) -> SynchronizedData:
@@ -140,12 +140,12 @@ class RandomnessRound(CollectSameUntilThresholdRound):
     )
 
 
-class SolanaTraderDecisionMakerRound(
-    CollectSameUntilThresholdRound, SolanaTraderDecisionMakerAbstractRound
+class TraderDecisionMakerRound(
+    CollectSameUntilThresholdRound, TraderDecisionMakerAbstractRound
 ):
     """A round for the bets fetching & updating."""
 
-    payload_class = SolanaTraderDecisionMakerPayload
+    payload_class = TraderDecisionMakerPayload
     done_event: Enum = Event.DONE
     none_event: Enum = Event.NONE
     no_majority_event: Enum = Event.NO_MAJORITY
@@ -158,16 +158,16 @@ class SolanaTraderDecisionMakerRound(
     synchronized_data_class = SynchronizedData
 
 
-class FinishedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
+class FinishedTraderDecisionMakerRound(DegenerateRound, ABC):
     """A round that represents that the ABCI app has finished"""
 
 
-class FailedSolanaTraderDecisionMakerRound(DegenerateRound, ABC):
+class FailedTraderDecisionMakerRound(DegenerateRound, ABC):
     """A round that represents that the ABCI app has failed"""
 
 
-class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
-    """SolanaTraderDecisionMakerAbciApp
+class TraderDecisionMakerAbciApp(AbciApp[Event]):
+    """TraderDecisionMakerAbciApp
 
     Initial round: RandomnessRound
 
@@ -178,15 +178,15 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
             - done: 1.
             - round timeout: 0.
             - no majority: 0.
-        1. SolanaTraderDecisionMakerRound
+        1. TraderDecisionMakerRound
             - done: 2.
             - none: 3.
             - round timeout: 3.
             - no majority: 3.
-        2. FinishedSolanaTraderDecisionMakerRound
-        3. FailedSolanaTraderDecisionMakerRound
+        2. FinishedTraderDecisionMakerRound
+        3. FailedTraderDecisionMakerRound
 
-    Final states: {FailedSolanaTraderDecisionMakerRound, FinishedSolanaTraderDecisionMakerRound}
+    Final states: {FailedTraderDecisionMakerRound, FinishedTraderDecisionMakerRound}
 
     Timeouts:
         round timeout: 30.0
@@ -195,22 +195,22 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
     initial_round_cls: Type[AbstractRound] = RandomnessRound
     transition_function: AbciAppTransitionFunction = {
         RandomnessRound: {
-            Event.DONE: SolanaTraderDecisionMakerRound,
+            Event.DONE: TraderDecisionMakerRound,
             Event.ROUND_TIMEOUT: RandomnessRound,
             Event.NO_MAJORITY: RandomnessRound,
         },
-        SolanaTraderDecisionMakerRound: {
-            Event.DONE: FinishedSolanaTraderDecisionMakerRound,
-            Event.NONE: FailedSolanaTraderDecisionMakerRound,
-            Event.ROUND_TIMEOUT: FailedSolanaTraderDecisionMakerRound,
-            Event.NO_MAJORITY: FailedSolanaTraderDecisionMakerRound,
+        TraderDecisionMakerRound: {
+            Event.DONE: FinishedTraderDecisionMakerRound,
+            Event.NONE: FailedTraderDecisionMakerRound,
+            Event.ROUND_TIMEOUT: FailedTraderDecisionMakerRound,
+            Event.NO_MAJORITY: FailedTraderDecisionMakerRound,
         },
-        FinishedSolanaTraderDecisionMakerRound: {},
-        FailedSolanaTraderDecisionMakerRound: {},
+        FinishedTraderDecisionMakerRound: {},
+        FailedTraderDecisionMakerRound: {},
     }
     final_states: Set[AppState] = {
-        FinishedSolanaTraderDecisionMakerRound,
-        FailedSolanaTraderDecisionMakerRound,
+        FinishedTraderDecisionMakerRound,
+        FailedTraderDecisionMakerRound,
     }
     event_to_timeout: Dict[Event, float] = {
         Event.ROUND_TIMEOUT: 30.0,
@@ -220,14 +220,14 @@ class SolanaTraderDecisionMakerAbciApp(AbciApp[Event]):
     )
     db_pre_conditions: Dict[AppState, Set[str]] = {RandomnessRound: set()}
     db_post_conditions: Dict[AppState, Set[str]] = {
-        FinishedSolanaTraderDecisionMakerRound: {
+        FinishedTraderDecisionMakerRound: {
             get_name(SynchronizedData.selected_strategy),
             get_name(SynchronizedData.policy),
             get_name(SynchronizedData.positions),
             get_name(SynchronizedData.most_voted_randomness_round),
             get_name(SynchronizedData.most_voted_randomness),
         },
-        FailedSolanaTraderDecisionMakerRound: {
+        FailedTraderDecisionMakerRound: {
             get_name(SynchronizedData.most_voted_randomness_round),
             get_name(SynchronizedData.most_voted_randomness),
         },
