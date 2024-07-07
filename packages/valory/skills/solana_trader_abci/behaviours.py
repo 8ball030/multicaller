@@ -46,8 +46,8 @@ from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.round_beha
     AgentStrategyEvaluatorRoundBehaviour,
 )
 from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
-from packages.valory.skills.solana_trader_decision_maker_abci.behaviours import (
-    SolanaTraderDecisionMakerRoundBehaviour,
+from packages.valory.skills.trader_decision_maker_abci.behaviours import (
+    TraderDecisionMakerRoundBehaviour,
 )
 
 
@@ -59,7 +59,7 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
 
     behaviours: Set[Type[BaseBehaviour]] = {
         *AgentRegistrationRoundBehaviour.behaviours,
-        *SolanaTraderDecisionMakerRoundBehaviour.behaviours,
+        *TraderDecisionMakerRoundBehaviour.behaviours,
         *MarketDataFetcherRoundBehaviour.behaviours,
         *PortfolioTrackerRoundBehaviour.behaviours,
         *AgentStrategyEvaluatorRoundBehaviour.behaviours,

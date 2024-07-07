@@ -37,7 +37,7 @@ from packages.valory.skills.portfolio_tracker_abci.rounds import (
 from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
     IPFSHashPayload,
 )
-from packages.valory.skills.solana_trader_decision_maker_abci.rounds import (
+from packages.valory.skills.trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
 )
 

@@ -25,7 +25,7 @@ fingerprint:
   rounds.py: bafybeiakrnzlgmf3h6lcic2ijmdwwlhcgeqjwmimgoblzc32xb4ztnjnmq
   states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
   states/backtesting.py: bafybeidlh7h3v3sfhyy7hugrld7o77hcmd67re3cyhnusw6oyqtysxqk6a
-  states/base.py: bafybeih7dwpffrkwujrcp6dcwbnqi27zoaqpl7b7ik4nxe3xlq5sbh2i2e
+  states/base.py: bafybeiggo6fyaqr6vnwzdagikwr55rm5i3bk5exti5ehz5mpumlosbij7a
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
   states/prepare_swap.py: bafybeidideaz3zhr2v3pfpyqiscglppaguh2gk74rdbalwil3ky3jnqgsa
   states/proxy_swap_queue.py: bafybeie77ly44vkaxxwefna5wozdkskj3ov5oyikptorf4uxnho5ctv54a
@@ -38,7 +38,7 @@ protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/market_data_fetcher_abci:0.1.0:bafybeih3bktdtq5ceaaubbzogznivuekkq6nmkne4r4af7jtuynmtzo5bq
-- valory/solana_trader_decision_maker_abci:0.1.0:bafybeidzihsnoprtsbv5b2zydkuwzmwh7yzrkw2jewccwsv5ero3oslz5i
+- valory/trader_decision_maker_abci:0.1.0:bafybeieadjgqbwqcmqnosyln4oil2onttnvvip3i6fpyntf67rw3vrgdiq
 - valory/portfolio_tracker_abci:0.1.0:bafybeib3ganzvwb5jzknyu3fadyezow4w7yiwuzmoj6uvkpmqenbsqr5du
 behaviours:
   main:

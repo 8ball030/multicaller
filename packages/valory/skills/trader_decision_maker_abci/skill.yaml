@@ -6,16 +6,16 @@ description: This skill implements the TraderDecisionMakerAbci for an AEA.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeidgkgixh2lc4nom362dfunytny5yabi723ddzzkag3kv42cfysqxm
-  __init__.py: bafybeib5y3rjmvekip5ueh7lv4w5iegjed2fru7nkwhy7jghlr4pjeozta
-  behaviours.py: bafybeiaon74ytvhlvs6bkpyomobwmjnmez2ke6houekj7t6nfeovd42g7u
+  README.md: bafybeih6idgiwf3bbqhikxeldldnhqtrkyi2gf4lfctrkivdy5pno6ilte
+  __init__.py: bafybeie5vho3br34gvl6x2lqfnudpjjeqgcfguvxl3p7l4kiyfxe5e323u
+  behaviours.py: bafybeihqwxp6736auv6s2a72fsgnkooyzjf2bbgiwvoqdkk5luezvvs4tm
   dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
-  fsm_specification.yaml: bafybeiegvdyvhjtiqyqxa4eygn3tpneqy6omfwfyihlcsismlg7faj5t6y
-  handlers.py: bafybeicldadey2dleij242fzvk4gp6dmntcnryome3rsaxf2ekbsdgnjbe
-  models.py: bafybeidsywxcvsfie33i4pxr2kq52n6kdxouloyv3w7lbirxynuiu7dye4
-  payloads.py: bafybeidtk75bq3wfvhfcljv2xu7uvfe3w57nvu5vipxcrx5u733aha2tje
-  policy.py: bafybeidm4iga3uclw2jxbasj7glaflattpdha3tttexjsvk2roqeb6rkqi
-  rounds.py: bafybeidg6jukb3dxb3xjziwckl5kzkr53wugnzv2vmcsclb6iiculdegua
+  fsm_specification.yaml: bafybeihlwtlx3k2dcbjmahesfppgfrkruwwi75lcji6meqeobyaxjnydqu
+  handlers.py: bafybeifke4t4gg6fqb3zy3c6t4yginstypknvfgvj5u67yibhxlmo2cguy
+  models.py: bafybeifkzeulrztqnyekqrugcwchy4os4yz75rkxnxgmnmjnxp3qiiyxny
+  payloads.py: bafybeicwjheax7c4wpjcaxysbhwxoxv3z4gxldbcilv4gbhwshxahmjkru
+  policy.py: bafybeiblvryc57buhdnnh7qity6jy24haa4hngxpw43wgzy5ykf36vzv5y
+  rounds.py: bafybeiavk5uhky2tjnq67wntssk4we374x3wlz5ysgzkwcvpiggvlpv24e
   utils.py: bafybeiblton2rvdxlv3bnu3asubtfwt2tk77lwrxw3hmesv3qarh3ew6ke
 fingerprint_ignore_patterns: []
 connections: []
