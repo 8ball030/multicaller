@@ -22,16 +22,16 @@
 from typing import Dict, Generator, List, Optional, cast
 
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+from packages.valory.skills.strategy_evaluator_abci.models import (
     TxSettlementProxy,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+from packages.valory.skills.strategy_evaluator_abci.payloads import (
     SendSwapProxyPayload,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.proxy_swap_queue import (
+from packages.valory.skills.strategy_evaluator_abci.states.proxy_swap_queue import (
     ProxySwapQueueRound,
 )
 
@@ -94,7 +94,7 @@ class ProxySwapQueueBehaviour(StrategyEvaluatorBaseBehaviour):
 
     def handle_unknown_status(self, status: Optional[str]) -> None:
         """Handle a response with an unknown status."""
-        err = f"Unknown {status=} was received from the Solana transaction settlement proxy server!"
+        err = f"Unknown {status=} was received from the  transaction settlement proxy server!"
         self.context.logger.error(err)
 
     def handle_response(self, response: Optional[Dict[str, str]]) -> Optional[str]:

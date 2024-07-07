@@ -27,14 +27,14 @@ from packages.valory.skills.abstract_round_abci.base import (
     AppState,
     get_name,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import (
+from packages.valory.skills.strategy_evaluator_abci.states.backtesting import (
     BacktestRound,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+from packages.valory.skills.strategy_evaluator_abci.states.base import (
     Event,
     SynchronizedData,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states import (
+from packages.valory.skills.strategy_evaluator_abci.states.final_states import (
     BacktestingFailedRound,
     BacktestingNegativeRound,
     HodlRound,
@@ -43,16 +43,16 @@ from packages.valory.skills.solana_strategy_evaluator_abci.states.final_states i
     StrategyExecutionFailedRound,
     SwapTxPreparedRound,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.prepare_swap import (
+from packages.valory.skills.strategy_evaluator_abci.states.prepare_swap import (
     PrepareSwapRound,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.proxy_swap_queue import (
+from packages.valory.skills.strategy_evaluator_abci.states.proxy_swap_queue import (
     ProxySwapQueueRound,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
+from packages.valory.skills.strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.swap_queue import (
+from packages.valory.skills.strategy_evaluator_abci.states.swap_queue import (
     SwapQueueRound,
 )
 

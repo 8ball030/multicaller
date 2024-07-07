@@ -23,13 +23,13 @@ import json
 from typing import Any, Dict, Generator, List, Optional, cast
 
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+from packages.valory.skills.strategy_evaluator_abci.payloads import (
     SendSwapPayload,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.swap_queue import (
+from packages.valory.skills.strategy_evaluator_abci.states.swap_queue import (
     SwapQueueRound,
 )
 

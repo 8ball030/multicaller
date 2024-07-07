@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeihjrd6ht3a46at4djrhh5p4lacwx7ra5h2l3pjoreywr74p7xzovm
+agent: valory/solana_trader:0.1.0:bafybeidscp37myrovclk5hkvvria3k4yikdo2kesfiqqliozkd22gk2lhm
 number_of_agents: 4
 deployment: {}
 ---
@@ -54,7 +54,7 @@ type: skill
         entry_point_key: ${ENTRY_POINT_KEY:str:entry_point}
         callable_keys: ${CALLABLE_KEYS:list:["run_callable","transform_callable","evaluate_callable"]}
 ---
-public_id: valory/solana_trader_abci:0.1.0
+public_id: valory/trader_abci:0.1.0
 type: skill
 0:
   models:

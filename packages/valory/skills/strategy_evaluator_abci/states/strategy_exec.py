@@ -17,4 +17,25 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains the rounds for the 'solana_strategy_evaluator_abci' skill."""
+"""This module contains the strategy execution state of the strategy evaluator abci app."""
+
+from packages.valory.skills.abstract_round_abci.base import get_name
+from packages.valory.skills.strategy_evaluator_abci.states.base import (
+    Event,
+    IPFSRound,
+    SynchronizedData,
+)
+
+
+class StrategyExecRound(IPFSRound):
+    """A round for executing a strategy."""
+
+    done_event = Event.PREPARE_SWAP
+    incomplete_event = Event.PREPARE_INCOMPLETE_SWAP
+    no_hash_event = Event.NO_ORDERS
+    none_event = Event.ERROR_PREPARING_SWAPS
+    selection_key = (
+        get_name(SynchronizedData.orders_hash),
+        get_name(SynchronizedData.incomplete_exec),
+    )
+    collection_key = get_name(SynchronizedData.participant_to_orders)

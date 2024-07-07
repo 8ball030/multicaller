@@ -17,13 +17,13 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the solana_trader ABCI application."""
+"""This module contains the trader ABCI application."""
 
 import packages.valory.skills.market_data_fetcher_abci.rounds as MarketDataFetcherAbci
 import packages.valory.skills.portfolio_tracker_abci.rounds as PortfolioTrackerAbci
 import packages.valory.skills.registration_abci.rounds as RegistrationAbci
 import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
-import packages.valory.skills.solana_strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
+import packages.valory.skills.strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
 import packages.valory.skills.trader_decision_maker_abci.rounds as TraderDecisionMakerAbci
 from packages.valory.skills.abstract_round_abci.abci_app_chain import (
     AbciAppTransitionMapping,
@@ -31,7 +31,7 @@ from packages.valory.skills.abstract_round_abci.abci_app_chain import (
 )
 
 
-# import packages.valory.skills.solana_transaction_settlement_abci.rounds as TransactionSettlementAbci  noqa: E800
+# import packages.valory.skills.transaction_settlement_abci.rounds as TransactionSettlementAbci  noqa: E800
 
 DECISION_MAKING = TraderDecisionMakerAbci.RandomnessRound
 RESET_AND_PAUSE = ResetAndPauseAbci.ResetAndPauseRound
@@ -58,14 +58,14 @@ abci_app_transition_mapping: AbciAppTransitionMapping = {
     ResetAndPauseAbci.FinishedResetAndPauseErrorRound: RegistrationAbci.RegistrationRound,
 }
 
-SolanaTraderAbciApp = chain(
+TraderAbciApp = chain(
     (
         RegistrationAbci.AgentRegistrationAbciApp,
         TraderDecisionMakerAbci.TraderDecisionMakerAbciApp,
         MarketDataFetcherAbci.MarketDataFetcherAbciApp,
         PortfolioTrackerAbci.PortfolioTrackerAbciApp,
         StrategyEvaluatorAbci.StrategyEvaluatorAbciApp,
-        # SolanaTransactionSettlementAbci.SolanaTransactionSettlementAbciApp,  # TODO
+        # TransactionSettlementAbci.SolanaTransactionSettlementAbciApp,  # TODO
         ResetAndPauseAbci.ResetPauseAbciApp,
     ),
     abci_app_transition_mapping,

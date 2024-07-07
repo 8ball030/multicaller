@@ -22,16 +22,16 @@
 from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     CALLABLE_KEY,
     STRATEGY_KEY,
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.strategy_exec import (
     OUTPUT_MINT,
     TRANSFORMED_PRICE_DATA_KEY,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.backtesting import (
+from packages.valory.skills.strategy_evaluator_abci.states.backtesting import (
     BacktestRound,
 )
 

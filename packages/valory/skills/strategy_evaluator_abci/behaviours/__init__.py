@@ -17,9 +17,4 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the strategy evaluator skill for the Solana trader."""
-
-from aea.configurations.base import PublicId
-
-
-PUBLIC_ID = PublicId.from_str("valory/solana_strategy_evaluator_abci:0.1.0")
+"""This package contains the behaviours for the 'strategy_evaluator_abci' skill."""

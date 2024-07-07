@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the base behaviour for the 'solana_strategy_evaluator_abci' skill."""
+"""This module contains the base behaviour for the 'strategy_evaluator_abci' skill."""
 
 import json
 from abc import ABC
@@ -32,14 +32,14 @@ from packages.valory.skills.abstract_round_abci.io_.store import (
     SupportedObjectType,
 )
 from packages.valory.skills.abstract_round_abci.models import ApiSpecs
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+from packages.valory.skills.strategy_evaluator_abci.models import (
     SharedState,
     StrategyEvaluatorParams,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+from packages.valory.skills.strategy_evaluator_abci.payloads import (
     IPFSHashPayload,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+from packages.valory.skills.strategy_evaluator_abci.states.base import (
     SynchronizedData,
 )
 

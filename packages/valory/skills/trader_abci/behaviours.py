@@ -26,8 +26,8 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     BaseBehaviour,
 )
 
-# from packages.valory.skills.solana_transaction_settlement_abci.behaviours import (  noqa: E800
-#     SolanaTransactionSettlementRoundBehaviour,  noqa: E800
+# from packages.valory.skills.transaction_settlement_abci.behaviours import (  noqa: E800
+#     TransactionSettlementRoundBehaviour,  noqa: E800
 # )  noqa: E800
 from packages.valory.skills.market_data_fetcher_abci.behaviours import (
     MarketDataFetcherRoundBehaviour,
@@ -42,20 +42,20 @@ from packages.valory.skills.registration_abci.behaviours import (
 from packages.valory.skills.reset_pause_abci.behaviours import (
     ResetPauseABCIConsensusBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.round_behaviour import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.round_behaviour import (
     AgentStrategyEvaluatorRoundBehaviour,
 )
-from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
+from packages.valory.skills.trader_abci.composition import TraderAbciApp
 from packages.valory.skills.trader_decision_maker_abci.behaviours import (
     TraderDecisionMakerRoundBehaviour,
 )
 
 
-class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
-    """This behaviour manages the consensus stages for the solana_trader."""
+class TraderConsensusBehaviour(AbstractRoundBehaviour):
+    """This behaviour manages the consensus stages for the trader."""
 
     initial_behaviour_cls = RegistrationStartupBehaviour
-    abci_app_cls = SolanaTraderAbciApp
+    abci_app_cls = TraderAbciApp
 
     behaviours: Set[Type[BaseBehaviour]] = {
         *AgentRegistrationRoundBehaviour.behaviours,
@@ -63,6 +63,6 @@ class SolanaTraderConsensusBehaviour(AbstractRoundBehaviour):
         *MarketDataFetcherRoundBehaviour.behaviours,
         *PortfolioTrackerRoundBehaviour.behaviours,
         *AgentStrategyEvaluatorRoundBehaviour.behaviours,
-        # *SolanaTransactionSettlementRoundBehaviour.behaviours,  # TODO
+        # *TransactionSettlementRoundBehaviour.behaviours,  # TODO
         *ResetPauseABCIConsensusBehaviour.behaviours,
     }

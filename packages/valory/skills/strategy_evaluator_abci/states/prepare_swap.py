@@ -17,33 +17,25 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the backtesting state of the swap(s)."""
-
-from typing import Any
+"""This module contains the swap(s) instructions' preparation state of the strategy evaluator abci app."""
 
 from packages.valory.skills.abstract_round_abci.base import get_name
-from packages.valory.skills.solana_strategy_evaluator_abci.states.base import (
+from packages.valory.skills.strategy_evaluator_abci.states.base import (
     Event,
     IPFSRound,
     SynchronizedData,
 )
 
 
-class BacktestRound(IPFSRound):
+class PrepareSwapRound(IPFSRound):
     """A round in which the agents prepare swap(s) instructions."""
 
-    done_event = Event.BACKTEST_POSITIVE
-    incomplete_event = Event.BACKTEST_FAILED
-    no_hash_event = Event.ERROR_BACKTESTING
-    none_event = Event.BACKTEST_NEGATIVE
+    done_event = Event.INSTRUCTIONS_PREPARED
+    incomplete_event = Event.INCOMPLETE_INSTRUCTIONS_PREPARED
+    no_hash_event = Event.NO_INSTRUCTIONS
+    none_event = Event.ERROR_PREPARING_INSTRUCTIONS
     selection_key = (
-        get_name(SynchronizedData.backtested_orders_hash),
-        get_name(SynchronizedData.incomplete_exec),
+        get_name(SynchronizedData.instructions_hash),
+        get_name(SynchronizedData.incomplete_instructions),
     )
-    collection_key = get_name(SynchronizedData.participant_to_backtesting)
-
-    def __init__(self, *args: Any, **kwargs: Any):
-        """Initialize the strategy execution round."""
-        super().__init__(*args, **kwargs)
-        if self.context.params.use_proxy_server:
-            self.done_event = Event.BACKTEST_POSITIVE_PROXY_SERVER
+    collection_key = get_name(SynchronizedData.participant_to_instructions)

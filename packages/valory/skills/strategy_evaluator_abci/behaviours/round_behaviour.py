@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the round behaviour for the 'solana_strategy_evaluator_abci' skill."""
+"""This module contains the round behaviour for the 'strategy_evaluator_abci' skill."""
 
 from typing import Set, Type
 
@@ -25,22 +25,22 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.backtesting import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.backtesting import (
     BacktestBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.prepare_swap_tx import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.prepare_swap_tx import (
     PrepareSwapBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.proxy_swap_queue import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.proxy_swap_queue import (
     ProxySwapQueueBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.strategy_exec import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.strategy_exec import (
     StrategyExecBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.swap_queue import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.swap_queue import (
     SwapQueueBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
+from packages.valory.skills.strategy_evaluator_abci.rounds import (
     StrategyEvaluatorAbciApp,
 )
 

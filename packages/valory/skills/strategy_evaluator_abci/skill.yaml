@@ -1,4 +1,4 @@
-name: solana_strategy_evaluator_abci
+name: strategy_evaluator_abci
 author: valory
 version: 0.1.0
 type: skill
@@ -8,29 +8,29 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeicuikjki6yvgwmv6sxudjagjb3bhfsnypna36eceza2mzmqnthuiy
-  __init__.py: bafybeiazk47c7rnkzgaueooxp6qmvz3ti6ja327yt2lvxrmqrvnt744aom
-  behaviours/__init__.py: bafybeiamnjpgxmp7ywntlgoyszj3ew5wpvmz7pcokguw7qjq2imzohqhiy
-  behaviours/backtesting.py: bafybeihesm7ynyl5mjwsd7rufhlggimcfng546dx5tkruxaoogqhj4hcqi
-  behaviours/base.py: bafybeiawzfw5ujb3asu262j77di63lmqb2q5zfhxle7zg2cyw2kmia35rq
-  behaviours/prepare_swap_tx.py: bafybeihzmqdclrvscmgvsxu4zokzs2xcb5q53vuqyas3pxrls772mhr2x4
-  behaviours/proxy_swap_queue.py: bafybeigr5rhbf5l625khbjcmhilxit5gml2bsluafejivp5gydrijfudkq
-  behaviours/round_behaviour.py: bafybeieapl334xpmv37acwoz4nstu2qrdknndfvwyfkbrb4ok7wac2nnlq
-  behaviours/strategy_exec.py: bafybeier7nx6pauugeom7eco2qjpjjwaayw7jzxb46oo2ncgpxgdl5g3fa
-  behaviours/swap_queue.py: bafybeihqumnnrauqekptjulpyu7jhjhogwtmo2wiuaguoolvejuyqaiopy
+  __init__.py: bafybeifhkyp44uusta77c4ths3xixmrtel3ssoq5mhcstcfsclkvirmw3a
+  behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
+  behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
+  behaviours/base.py: bafybeie2hnlp7stuyt4hrslbn2tqlkjtx3ron2drkbcmnkdfltl6phnh3q
+  behaviours/prepare_swap_tx.py: bafybeigbylfqa4cyqcy5lz5t53ziyfk5kgydd2r6wmbzotayinahx2oara
+  behaviours/proxy_swap_queue.py: bafybeignv6m3kcbmpu26u3y6skzo24qob7voxc2idc3yxapldztia5jbua
+  behaviours/round_behaviour.py: bafybeifcdccxnposlab5g4sfyminberlvyrr3dj6ei2fxi4rfyqa23wwei
+  behaviours/strategy_exec.py: bafybeiatuhphihoyaglwyps4fj6dmms62lopawpdsrs44ygvpb43ae2xgq
+  behaviours/swap_queue.py: bafybeibi7xra3lzg4ktavj2j2t75f66xtl6jlqta546n6uihspmr73gf5e
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeidytd63a4rp4eqglrql2qi4izdg2ahb3cirp6dxzwhneasd3o5q7m
-  handlers.py: bafybeiccurkkx5rx5zalc662ci556hvqby5kde4m4b5gxszt4bstkkwshy
-  models.py: bafybeiejmsmvqaix6pa2irzoezpz56ud6zvba7r4uehcxk42rh5r5g6h3e
+  handlers.py: bafybeib542ztyxvvlcr6p2xwm4b3t3pyyl6wqiqfbvksy3znayqysdzjuu
+  models.py: bafybeiexnmplwoujlfhoemwqqhn2wln6uqfj7tzzmcoeiiejsedsocxpfa
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
-  rounds.py: bafybeiakrnzlgmf3h6lcic2ijmdwwlhcgeqjwmimgoblzc32xb4ztnjnmq
-  states/__init__.py: bafybeiezvowbydycflwvgxpwbz7sphwc76bs2za53ndmvnzrzmvqfqc53q
-  states/backtesting.py: bafybeidlh7h3v3sfhyy7hugrld7o77hcmd67re3cyhnusw6oyqtysxqk6a
-  states/base.py: bafybeiggo6fyaqr6vnwzdagikwr55rm5i3bk5exti5ehz5mpumlosbij7a
+  rounds.py: bafybeiaxhwgnlrcfzkduj6yt3csdys4jsftgjb35hjy65a4eph2zuvadgm
+  states/__init__.py: bafybeidgoz7uxrcafbiq5mfg6tl7fcmxmd5auu3lexl7cxpbhlxfvfnoom
+  states/backtesting.py: bafybeiagaoym3nodlbcpuripj2ogprk7wo5tr4aw4pkbqydcozsddmceli
+  states/base.py: bafybeicmo7mvozjl2copqptqisnporn2addbqmgpn6tgxavwhglatylqhe
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
-  states/prepare_swap.py: bafybeidideaz3zhr2v3pfpyqiscglppaguh2gk74rdbalwil3ky3jnqgsa
-  states/proxy_swap_queue.py: bafybeie77ly44vkaxxwefna5wozdkskj3ov5oyikptorf4uxnho5ctv54a
-  states/strategy_exec.py: bafybeifkkj35m7ogeiq4whhte4ayubcoh3l266rmwloxlhpc6hb3qeww24
-  states/swap_queue.py: bafybeigfkbv7s2f3ja7tgcjfx4czx3trajcgvexlb4ztyyywjgbmuhacha
+  states/prepare_swap.py: bafybeicq3jjudyzn6l2mc3el7dvvwowndcowon3mkh3dtv6j6djnhi5lsi
+  states/proxy_swap_queue.py: bafybeigwesykn2wgbjh25tinver7wdrbfwo6tatkgcnm647u6hkxnwj32q
+  states/strategy_exec.py: bafybeig72frgbgtxt3zccibv4ztnwvoydcfjmphipordf7gtf25xzk7ilq
+  states/swap_queue.py: bafybeialnpvzomttvmtrmfi467sxq7pnu2i7zepu55vhhfef5cco6oqzvu
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []

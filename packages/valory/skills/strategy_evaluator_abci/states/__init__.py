@@ -17,4 +17,4 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains the behaviours for the 'solana_strategy_evaluator_abci' skill."""
+"""This package contains the rounds for the 'strategy_evaluator_abci' skill."""

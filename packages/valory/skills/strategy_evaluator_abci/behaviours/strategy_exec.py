@@ -23,12 +23,12 @@ from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.portfolio_tracker_abci.behaviours import SOL_ADDRESS
-from packages.valory.skills.solana_strategy_evaluator_abci.behaviours.base import (
+from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     CALLABLE_KEY,
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import AMOUNT_PARAM
-from packages.valory.skills.solana_strategy_evaluator_abci.states.strategy_exec import (
+from packages.valory.skills.strategy_evaluator_abci.models import AMOUNT_PARAM
+from packages.valory.skills.strategy_evaluator_abci.states.strategy_exec import (
     StrategyExecRound,
 )
 

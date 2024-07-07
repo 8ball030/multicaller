@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""Custom objects for the 'solana_trader_abci' application."""
+"""Custom objects for the 'trader_abci' application."""
 
 from typing import Any
 
@@ -42,23 +42,23 @@ from packages.valory.skills.portfolio_tracker_abci.models import (
 )
 from packages.valory.skills.portfolio_tracker_abci.models import TokenAccounts
 from packages.valory.skills.reset_pause_abci.rounds import Event as ResetPauseEvent
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+from packages.valory.skills.strategy_evaluator_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+from packages.valory.skills.strategy_evaluator_abci.models import (
     StrategyEvaluatorParams as StrategyEvaluatorParams,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.models import (
+from packages.valory.skills.strategy_evaluator_abci.models import (
     SwapInstructionsSpecs,
     SwapQuotesSpecs,
     TxSettlementProxy,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
+from packages.valory.skills.strategy_evaluator_abci.rounds import (
     Event as StrategyEvaluatorEvent,
 )
-from packages.valory.skills.solana_trader_abci.composition import SolanaTraderAbciApp
+from packages.valory.skills.trader_abci.composition import TraderAbciApp
 from packages.valory.skills.trader_decision_maker_abci.models import (
-    Params as SolanaTraderDecisionMakerParams,
+    Params as TraderDecisionMakerParams,
 )
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
@@ -87,33 +87,33 @@ MARGIN = 5
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
-    abci_app_cls = SolanaTraderAbciApp
+    abci_app_cls = TraderAbciApp
 
     def setup(self) -> None:
         """Set up."""
         super().setup()
-        SolanaTraderAbciApp.event_to_timeout[
+        TraderAbciApp.event_to_timeout[
             DecisionMakingEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
-        SolanaTraderAbciApp.event_to_timeout[
+        TraderAbciApp.event_to_timeout[
             MarketDataFetcherEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
-        SolanaTraderAbciApp.event_to_timeout[
+        TraderAbciApp.event_to_timeout[
             StrategyEvaluatorEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
-        SolanaTraderAbciApp.event_to_timeout[
+        TraderAbciApp.event_to_timeout[
             StrategyEvaluatorEvent.PROXY_SWAP_TIMEOUT
         ] = self.context.params.proxy_round_timeout_seconds
-        SolanaTraderAbciApp.event_to_timeout[
+        TraderAbciApp.event_to_timeout[
             ResetPauseEvent.ROUND_TIMEOUT
         ] = self.context.params.round_timeout_seconds
-        SolanaTraderAbciApp.event_to_timeout[
+        TraderAbciApp.event_to_timeout[
             ResetPauseEvent.RESET_AND_PAUSE_TIMEOUT
         ] = (self.context.params.reset_pause_duration + MARGIN)
 
 
 class Params(
-    SolanaTraderDecisionMakerParams,
+    TraderDecisionMakerParams,
     MarketDataFetcherParams,
     StrategyEvaluatorParams,
     PortfolioTrackerParams,

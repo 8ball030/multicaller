@@ -32,7 +32,7 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.rounds import (
+from packages.valory.skills.strategy_evaluator_abci.rounds import (
     StrategyEvaluatorAbciApp,
 )
 

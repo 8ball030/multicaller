@@ -17,9 +17,9 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the solana_trader chained skill for an AEA."""
+"""This module contains the trader chained skill for an AEA."""
 
 from aea.configurations.base import PublicId
 
 
-PUBLIC_ID = PublicId.from_str("valory/solana_trader_abci:0.1.0")
+PUBLIC_ID = PublicId.from_str("valory/trader_abci:0.1.0")

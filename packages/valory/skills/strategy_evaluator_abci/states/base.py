@@ -34,7 +34,7 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
 from packages.valory.skills.portfolio_tracker_abci.rounds import (
     SynchronizedData as PortfolioTrackerSyncedData,
 )
-from packages.valory.skills.solana_strategy_evaluator_abci.payloads import (
+from packages.valory.skills.strategy_evaluator_abci.payloads import (
     IPFSHashPayload,
 )
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
@@ -42,8 +42,8 @@ from packages.valory.skills.trader_decision_maker_abci.rounds import (
 )
 
 
-# TODO replace with Solana tx settlement
-# from packages.valory.skills.solana_transaction_settlement_abci.rounds import (  noqa: E800
+# TODO replace with  tx settlement
+# from packages.valory.skills.transaction_settlement_abci.rounds import (  noqa: E800
 #     SynchronizedData as TxSettlementSyncedData,  noqa: E800
 # )  noqa: E800
 

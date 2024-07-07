@@ -5,7 +5,7 @@ license: Apache-2.0
 description: Solana trader agent.
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeig5bnpyiwsvqdaqubiw342kn3ncbd22i4vstlk3t5vcbtbdcfcad4
+  README.md: bafybeibm2adzlongvgzyepiiymb3hxpsjb43qgr7j4uydebjzcpdrwm3om
   __init__.py: bafybeig4rclm2fca7pv35dtigdm3slje4o4urhybxdkkdy2gd5p6d5gfju
 fingerprint_ignore_patterns: []
 connections:
@@ -34,8 +34,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
 - valory/market_data_fetcher_abci:0.1.0:bafybeih3bktdtq5ceaaubbzogznivuekkq6nmkne4r4af7jtuynmtzo5bq
-- valory/solana_strategy_evaluator_abci:0.1.0:bafybeieidjsquxry4fq3vkbin34ks26iqodap54pvsznlbqmklxeeyrkyq
-- valory/solana_trader_abci:0.1.0:bafybeiafj3fkwic2zdfnujmrkomrf534bs7qagj2kox6wclzpaxhojkvwi
+- valory/strategy_evaluator_abci:0.1.0:bafybeic7aerpxqxpjp6unm53juyidhygrdxan4x7xvsyfkpkxrcxdcbv6e
+- valory/trader_abci:0.1.0:bafybeiamykqs4dgdh56av4o37wdezkt2bldstj564xp6r7hg7mynleojtu
 - valory/trader_decision_maker_abci:0.1.0:bafybeieadjgqbwqcmqnosyln4oil2onttnvvip3i6fpyntf67rw3vrgdiq
 - valory/ipfs_package_downloader:0.1.0:bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea
 - valory/portfolio_tracker_abci:0.1.0:bafybeib3ganzvwb5jzknyu3fadyezow4w7yiwuzmoj6uvkpmqenbsqr5du
@@ -86,7 +86,7 @@ default_connection: null
 public_id: valory/abci:0.1.0
 type: connection
 config:
-  target_skill_id: valory/solana_trader_abci:0.1.0
+  target_skill_id: valory/trader_abci:0.1.0
   host: ${str:localhost}
   port: ${int:26658}
   use_tendermint: ${bool:false}
@@ -103,7 +103,7 @@ models:
       entry_point_key: ${str:entry_point}
       callable_keys: ${list:["run_callable","transform_callable","evaluate_callable"]}
 ---
-public_id: valory/solana_trader_abci:0.1.0
+public_id: valory/trader_abci:0.1.0
 type: skill
 models:
   benchmark_tool:
