@@ -46,15 +46,13 @@ from packages.valory.skills.trader_decision_maker_abci.payloads import (
     RandomnessPayload,
     TraderDecisionMakerPayload,
 )
-from packages.valory.skills.trader_decision_maker_abci.policy import (
-    EGreedyPolicy,
-)
+from packages.valory.skills.trader_decision_maker_abci.policy import EGreedyPolicy
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     Position,
     RandomnessRound,
+    SynchronizedData,
     TraderDecisionMakerAbciApp,
     TraderDecisionMakerRound,
-    SynchronizedData,
 )
 
 
