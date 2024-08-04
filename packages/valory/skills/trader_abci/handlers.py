@@ -41,6 +41,10 @@ from packages.valory.skills.abstract_round_abci.handlers import (
 )
 
 
+from packages.valory.skills.market_data_fetcher_abci.handlers import DcxtTickersHandler as BaseDcxtTickersHandler
+
+
+
 ABCITraderHandler = ABCIRoundHandler
 HttpHandler = BaseHttpHandler
 SigningHandler = BaseSigningHandler
@@ -48,3 +52,4 @@ LedgerApiHandler = BaseLedgerApiHandler
 ContractApiHandler = BaseContractApiHandler
 TendermintHandler = BaseTendermintHandler
 IpfsHandler = BaseIpfsHandler
+DcxtTickersHandler = BaseDcxtTickersHandler

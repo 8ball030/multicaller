@@ -9,7 +9,7 @@ fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
   behaviours.py: bafybeiecrlvzjpn2k3ti5xg7zagzgzxsott3a4aop5no6nqejtky6zyu3q
-  dialogues.py: bafybeidr5jmedduri5mbqnyrf43znchsklxv4vvyjvf5wsnsrb3tykwk2u
+  dialogues.py: bafybeiax7tunhzujcieresojvtjgync6jpsk24e24aj75mwzyqg2ukkot4
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
   handlers.py: bafybeihsjgmfsowj4qcnh6jw3sgqnrrhymuadm7wdx5l4pvrkzj6ylengy
   models.py: bafybeicdtmjc6ddji542ldwlrhp45chvszymj6a2bwqdntz6hjhnm4ogdu
@@ -126,6 +126,8 @@ models:
       tracked_tokens: []
       refill_action_timeout: 10
       rpc_polling_interval: 5
+      ledger_ids:
+      - ethereum
     class_name: Params
   requests:
     args: {}

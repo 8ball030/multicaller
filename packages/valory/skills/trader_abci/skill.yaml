@@ -10,21 +10,22 @@ fingerprint:
   __init__.py: bafybeifhg74e54dl7ekajnmc3j4w4dotl3fqlvmayzuct35jahqnkkuosi
   behaviours.py: bafybeicbhequh5dejccd37iay3ks7q3wiljxvwm3uhu7ja4s2o4mf2xh4a
   composition.py: bafybeigerospujwrhgk7n44zwsim6rzf6fh5ycnpie62dmu4hiha7soige
-  dialogues.py: bafybeieyljhi2bfvzytt6kxstbec7g5h5cauaul76guloysriqm22yo5fm
-  handlers.py: bafybeib64bienzx7gbddjezwo4wc2iyao55kf2x3g25ut7tfipb7so5jn4
+  dialogues.py: bafybeie3drzdkzotgf72rfrw4fie4d2oa4vebymyivjhhrd3zghaqshk7m
+  handlers.py: bafybeigwwvwij2ykecvqpxshw7vmw265y2tsp6x36hp37iweoh5l4cqsm4
   models.py: bafybeidkrjhatevi53r5esuncus3uxuqxfmr3x3jzwq5pvqxabtbilhbde
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
-protocols: []
+protocols:
+- eightballer/tickers:0.1.0:bafybeig3fe2wvlbzudqb3e24mzuehuu5skhhm6pbtw3ceoezgc4esieepe
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeih3bktdtq5ceaaubbzogznivuekkq6nmkne4r4af7jtuynmtzo5bq
+- valory/market_data_fetcher_abci:0.1.0:bafybeicol4sc2ch7ezshd4ehnzsacs4dw7rf7xomf7vuepjgwkj36kxzbe
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeia6ubazt7lz6hyba4zmep4auh2ldd7bvrubqgjubwleoqd27kl7z4
-- valory/portfolio_tracker_abci:0.1.0:bafybeib3ganzvwb5jzknyu3fadyezow4w7yiwuzmoj6uvkpmqenbsqr5du
+- valory/strategy_evaluator_abci:0.1.0:bafybeihi22fvy6rasq7c4ze4xwssrfxwzheuhwp3p73yof3si3qwfl4wja
+- valory/portfolio_tracker_abci:0.1.0:bafybeiadztgascioyfs6vo67axh3msszkwtf63pzkkjaj5azpb7oiexk2e
 behaviours:
   main:
     args: {}
@@ -51,6 +52,9 @@ handlers:
   tendermint:
     args: {}
     class_name: TendermintHandler
+  tickers:
+    args: {}
+    class_name: DcxtTickersHandler
 models:
   abci_dialogues:
     args: {}
@@ -156,6 +160,11 @@ models:
       rpc_polling_interval: 5
       epsilon: 0.1
       sharpe_threshold: 1.0
+      ledger_ids:
+      - ethereum
+      exchange_ids:
+        ethereum:
+        - balancer
     class_name: Params
   coingecko:
     args:
@@ -261,6 +270,9 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
+  tickers_dialogues:
+    args: {}
+    class_name: TickersDialogues
 dependencies:
   open-aea-cli-ipfs:
     version: ==1.51.0
