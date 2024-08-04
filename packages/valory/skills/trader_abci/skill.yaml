@@ -17,14 +17,14 @@ fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols:
-- eightballer/tickers:0.1.0:bafybeig3fe2wvlbzudqb3e24mzuehuu5skhhm6pbtw3ceoezgc4esieepe
+- eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeifzmttxmhhyku7ktpgvdfonxn6a2wzsq3pnmdmhrv2vfzl33yvdqi
+- valory/market_data_fetcher_abci:0.1.0:bafybeienxzp3a2bey45vujdoq6uef226mywxq3nix6lxwrlrjxgfc3u5me
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeicfypjeq3gfbtvg73zykkctr5tztmrpkam2r3u2brgcaajiytmngy
+- valory/strategy_evaluator_abci:0.1.0:bafybeib6s5m2yeo3jco5wyy72xemooanjcwv2u4daygsndithahlirh3fu
 - valory/portfolio_tracker_abci:0.1.0:bafybeiadztgascioyfs6vo67axh3msszkwtf63pzkkjaj5azpb7oiexk2e
 behaviours:
   main:

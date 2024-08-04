@@ -16,10 +16,10 @@ fingerprint:
   rounds.py: bafybeibf2cwrf6phrdnwlrfezy2erl4ux56uumc25jarqpwzhtyemtlhuu
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeicozecx535laevcfkrueuenw5w5zpmgecage5pa5dowfdmplaaq6a
+- eightballer/dcxt:0.1.0:bafybeibn6wiqtrgo3fhqvcsycsgybqxvcouodu4hmtys5mpuorazqxfmpu
 contracts: []
 protocols:
-- eightballer/tickers:0.1.0:bafybeig3fe2wvlbzudqb3e24mzuehuu5skhhm6pbtw3ceoezgc4esieepe
+- eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 behaviours:
