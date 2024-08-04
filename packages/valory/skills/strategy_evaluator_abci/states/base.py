@@ -34,9 +34,7 @@ from packages.valory.skills.market_data_fetcher_abci.rounds import (
 from packages.valory.skills.portfolio_tracker_abci.rounds import (
     SynchronizedData as PortfolioTrackerSyncedData,
 )
-from packages.valory.skills.strategy_evaluator_abci.payloads import (
-    IPFSHashPayload,
-)
+from packages.valory.skills.strategy_evaluator_abci.payloads import IPFSHashPayload
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
 )

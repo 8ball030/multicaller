@@ -25,12 +25,8 @@ from packages.valory.skills.abstract_round_abci.io_.store import SupportedFilety
 from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
-from packages.valory.skills.strategy_evaluator_abci.models import (
-    TxSettlementProxy,
-)
-from packages.valory.skills.strategy_evaluator_abci.payloads import (
-    SendSwapProxyPayload,
-)
+from packages.valory.skills.strategy_evaluator_abci.models import TxSettlementProxy
+from packages.valory.skills.strategy_evaluator_abci.payloads import SendSwapProxyPayload
 from packages.valory.skills.strategy_evaluator_abci.states.proxy_swap_queue import (
     ProxySwapQueueRound,
 )

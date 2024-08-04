@@ -11,12 +11,12 @@ fingerprint:
   __init__.py: bafybeifhkyp44uusta77c4ths3xixmrtel3ssoq5mhcstcfsclkvirmw3a
   behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
   behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
-  behaviours/base.py: bafybeie2hnlp7stuyt4hrslbn2tqlkjtx3ron2drkbcmnkdfltl6phnh3q
+  behaviours/base.py: bafybeidzevmaz3kvnizxt6cdoozj7mrtnbw3pthck372y3xqngju4afvee
   behaviours/prepare_swap_tx.py: bafybeigbylfqa4cyqcy5lz5t53ziyfk5kgydd2r6wmbzotayinahx2oara
-  behaviours/proxy_swap_queue.py: bafybeignv6m3kcbmpu26u3y6skzo24qob7voxc2idc3yxapldztia5jbua
+  behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeifcdccxnposlab5g4sfyminberlvyrr3dj6ei2fxi4rfyqa23wwei
   behaviours/strategy_exec.py: bafybeiatuhphihoyaglwyps4fj6dmms62lopawpdsrs44ygvpb43ae2xgq
-  behaviours/swap_queue.py: bafybeibi7xra3lzg4ktavj2j2t75f66xtl6jlqta546n6uihspmr73gf5e
+  behaviours/swap_queue.py: bafybeifuw22ri5vmso2krsspuahhbjzj4cm5v7bbbs2i6tqegw2aohvxby
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeidytd63a4rp4eqglrql2qi4izdg2ahb3cirp6dxzwhneasd3o5q7m
   handlers.py: bafybeib542ztyxvvlcr6p2xwm4b3t3pyyl6wqiqfbvksy3znayqysdzjuu
@@ -25,12 +25,12 @@ fingerprint:
   rounds.py: bafybeiaxhwgnlrcfzkduj6yt3csdys4jsftgjb35hjy65a4eph2zuvadgm
   states/__init__.py: bafybeidgoz7uxrcafbiq5mfg6tl7fcmxmd5auu3lexl7cxpbhlxfvfnoom
   states/backtesting.py: bafybeiagaoym3nodlbcpuripj2ogprk7wo5tr4aw4pkbqydcozsddmceli
-  states/base.py: bafybeicmo7mvozjl2copqptqisnporn2addbqmgpn6tgxavwhglatylqhe
+  states/base.py: bafybeiaykj3uvjb2a3fjx7467ctebsmaztxemdtix7jjk2g6wri4utmlsi
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
   states/prepare_swap.py: bafybeicq3jjudyzn6l2mc3el7dvvwowndcowon3mkh3dtv6j6djnhi5lsi
-  states/proxy_swap_queue.py: bafybeigwesykn2wgbjh25tinver7wdrbfwo6tatkgcnm647u6hkxnwj32q
+  states/proxy_swap_queue.py: bafybeidguarl5aoqlgc56df2v2xt6u7rsxij3aymeanfstjv2jsn3jtiay
   states/strategy_exec.py: bafybeig72frgbgtxt3zccibv4ztnwvoydcfjmphipordf7gtf25xzk7ilq
-  states/swap_queue.py: bafybeialnpvzomttvmtrmfi467sxq7pnu2i7zepu55vhhfef5cco6oqzvu
+  states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -38,7 +38,7 @@ protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/market_data_fetcher_abci:0.1.0:bafybeih3bktdtq5ceaaubbzogznivuekkq6nmkne4r4af7jtuynmtzo5bq
-- valory/trader_decision_maker_abci:0.1.0:bafybeieadjgqbwqcmqnosyln4oil2onttnvvip3i6fpyntf67rw3vrgdiq
+- valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/portfolio_tracker_abci:0.1.0:bafybeib3ganzvwb5jzknyu3fadyezow4w7yiwuzmoj6uvkpmqenbsqr5du
 behaviours:
   main:

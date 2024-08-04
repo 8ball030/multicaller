@@ -36,12 +36,8 @@ from packages.valory.skills.strategy_evaluator_abci.models import (
     SharedState,
     StrategyEvaluatorParams,
 )
-from packages.valory.skills.strategy_evaluator_abci.payloads import (
-    IPFSHashPayload,
-)
-from packages.valory.skills.strategy_evaluator_abci.states.base import (
-    SynchronizedData,
-)
+from packages.valory.skills.strategy_evaluator_abci.payloads import IPFSHashPayload
+from packages.valory.skills.strategy_evaluator_abci.states.base import SynchronizedData
 
 
 SWAP_DECISION_FILENAME = "swap_decision.json"
