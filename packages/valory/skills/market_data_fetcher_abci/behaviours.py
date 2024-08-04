@@ -265,23 +265,26 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             )
             self.context.logger.info(f"Received {len(msg.tickers.tickers)} tickers from {exchange_id}")
 
+
             for ticker in msg.tickers.tickers:
-                # We know thta balancer will give us everything prices in dollars.
+                # We know that balancer will give us the token address in the symbol.
+                # We need to create an internal array in the longer term, for now, we will just make a 
                 token_address = ticker.symbol.split("/")[0]
-                prices_volumes = {
-                    "prices": {
-                        0: {
-                            0: datetime.now().timestamp(),
-                            1: ticker.ask,
-                        }
-                    },
-                    "volumes": {
-                        0: {
-                            0: datetime.now().timestamp(),
-                            1: 100  # note we dont get the volume from the balancer for tickers as this requires a subgraph.
-                        }
-                    },
-                }
+                price_range = range(1, 50)
+                date_range  = range(1, 50)
+
+                prices = [
+                    [date, 
+                     ticker.ask]
+                     for date in date_range
+                ]
+                volumes = [
+                    [date,
+                     100, # This is a placeholder for the volume
+                    ]
+                    for date in date_range
+                ]
+                prices_volumes = {"prices": prices, "volumes": volumes}
                 markets[token_address] = prices_volumes
         return markets
 
