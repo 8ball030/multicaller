@@ -205,8 +205,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.portfolio[SOL_ADDRESS] = balance
         return True
 
-    def _is_solana_balance_sufficient(self) -> Generator[None, None, Optional[bool]]:
+    def _is_solana_balance_sufficient(self, ledger_id: str) -> Generator[None, None, Optional[bool]]:
         """Check whether the balance of the multisig and the agent are above the given thresholds."""
+        self.context.logger.info(f"Checking the SOL balance of the agent and the vault on ledger {ledger_id}...")
         agent_balance = yield from self.check_solana_balance(multisig=False)
         vault_balance = yield from self.check_solana_balance(multisig=True)
 
@@ -259,9 +260,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.unexpected_res_format_err(response)
             return None
 
-    def _track_solana_portfolio(self) -> Generator:
+    def _track_solana_portfolio(self, ledger_id: str) -> Generator:
         """Track the portfolio of the service."""
-        self.context.logger.info("Tracking the portfolio of the service...")
+        self.context.logger.info(f"Tracking the portfolio of the service... on ledger {ledger_id}")
         should_wait = False
         for token in self.params.tracked_tokens:
             self.context.logger.info(f"Tracking {token=}...")
@@ -287,37 +288,43 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            is_balance_sufficient_func = self._is_solana_balance_sufficient
-            track_portfolio_func = self._track_solana_portfolio
 
-            if self.synchronized_data.is_balance_sufficient is False:
-                # wait for some time for the user to take action
-                sleep_time = self.params.refill_action_timeout
-                self.context.logger.info(
-                    f"Waiting for a refill. Checking again in {sleep_time} seconds..."
+            for ledger_id in self.params.ledger_ids:
+                if ledger_id == _SOLANA_IDENTIFIER:
+                    is_balance_sufficient_func = self._is_solana_balance_sufficient
+                    track_portfolio_func = self._track_solana_portfolio
+                else:
+                    is_balance_sufficient_func = self._is_evm_balance_sufficient
+                    track_portfolio_func = self._track_evm_portfolio
+
+                if self.synchronized_data.is_balance_sufficient is False:
+                    # wait for some time for the user to take action
+                    sleep_time = self.params.refill_action_timeout
+                    self.context.logger.info(
+                        f"Waiting for a refill. Checking again in {sleep_time} seconds..."
+                    )
+                    yield from self.sleep(sleep_time)
+
+                is_balance_sufficient = yield from is_balance_sufficient_func(ledger_id)
+                if is_balance_sufficient is None:
+                    portfolio_hash = None
+                elif not is_balance_sufficient:
+                    # the value does not matter as the round will transition based on the insufficient balance event
+                    portfolio_hash = ""
+                else:
+                    yield from track_portfolio_func(ledger_id)
+                    portfolio_hash = yield from self.send_to_ipfs(
+                        str(self.portfolio_filepath),
+                        self.portfolio,
+                        filetype=SupportedFiletype.JSON,
+                    )
+                    if portfolio_hash is None:
+                        is_balance_sufficient = None
+
+                sender = self.context.agent_address
+                payload = PortfolioTrackerPayload(
+                    sender, portfolio_hash, is_balance_sufficient
                 )
-                yield from self.sleep(sleep_time)
-
-            is_balance_sufficient = yield from is_balance_sufficient_func()
-            if is_balance_sufficient is None:
-                portfolio_hash = None
-            elif not is_balance_sufficient:
-                # the value does not matter as the round will transition based on the insufficient balance event
-                portfolio_hash = ""
-            else:
-                yield from track_portfolio_func()
-                portfolio_hash = yield from self.send_to_ipfs(
-                    str(self.portfolio_filepath),
-                    self.portfolio,
-                    filetype=SupportedFiletype.JSON,
-                )
-                if portfolio_hash is None:
-                    is_balance_sufficient = None
-
-            sender = self.context.agent_address
-            payload = PortfolioTrackerPayload(
-                sender, portfolio_hash, is_balance_sufficient
-            )
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
