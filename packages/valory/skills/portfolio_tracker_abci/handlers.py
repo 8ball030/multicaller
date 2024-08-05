@@ -45,9 +45,7 @@ from packages.valory.skills.abstract_round_abci.handlers import (
 
 
 class DcxtBalancesHandler(AbstractResponseHandler):
-    """
-    This class implements a handler for DexBalancesHandler messages.
-    """
+    """This class implements a handler for DexBalancesHandler messages."""
 
     SUPPORTED_PROTOCOL = BalancesMessage.protocol_id
     allowed_response_performatives = frozenset(

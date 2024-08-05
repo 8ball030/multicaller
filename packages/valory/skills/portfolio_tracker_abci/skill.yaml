@@ -8,10 +8,10 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
-  behaviours.py: bafybeidjyaaegr6lcsr2lrgm6gjp2sdt755gs5cje43l3ffdvqynqcqrb4
+  behaviours.py: bafybeiaywv5m524p3usifpb37t4qe4roskhqrgdwhfkvfqdmqtp4wmiofu
   dialogues.py: bafybeibhhuam4c4cjhzv2l56pqkqhinpkiiivhr5akbqg765khwha3xauy
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
-  handlers.py: bafybeih374rsra6365hvglpk2am7ytfjzk57k4x4eihi2rjpj64vhwi6ke
+  handlers.py: bafybeidrynxgp6qyxlk2ert6dawcsji4b7dylnszpnb5gufcdc6tyej2ym
   models.py: bafybeian54yk62z474g3ujd7k4xwh7duow5i3so2jnn4jhw3f2d7zellaa
   payloads.py: bafybeid3sue7scr5dama3krank3gkmsucy6xasvds6jvebkptbpqziurlm
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u

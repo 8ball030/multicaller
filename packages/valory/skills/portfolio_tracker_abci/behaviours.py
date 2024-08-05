@@ -342,8 +342,8 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 exchange_id=exchange_id,
                 params={},
             )
-            address = balances_msg.balances.get("asset_id")
-            balance = balances_msg.balances.get("free")
+            address = balances_msg.balances.asset_id
+            balance = balances_msg.balances.free
             self.portfolio[address] = balance
 
     def async_act(self) -> Generator:
