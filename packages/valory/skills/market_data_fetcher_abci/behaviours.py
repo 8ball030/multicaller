@@ -22,9 +22,11 @@
 import json
 import os
 from abc import ABC
-from datetime import datetime
 from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
 
+from packages.eightballer.connections.dcxt.connection import (
+    PUBLIC_ID as DCXT_CONNECTION_ID,
+)
 from packages.eightballer.protocols.tickers.message import TickersMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviour_utils import SOLANA_LEDGER_ID
@@ -56,9 +58,6 @@ STRATEGY_KEY = "trading_strategy"
 ENTRY_POINT_STORE_KEY = "entry_point"
 TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
 
-from packages.eightballer.connections.dcxt.connection import (
-    PUBLIC_ID as DCXT_CONNECTION_ID,
-)
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -137,12 +136,10 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         protocol_performative: TickersMessage.Performative,
         **kwargs,
     ) -> Generator[None, None, Any]:
-        """
-        Get a ccxt response.
-        """
+        """Get a ccxt response."""
         if protocol_performative not in self._performative_to_dialogue_class:
             raise ValueError(
-                f"Unsupported protocol performative '{protocol_performative}'"
+                f"Unsupported protocol performative {protocol_performative:!r}"
             )
         dialogue_class = self._performative_to_dialogue_class[protocol_performative]
 
@@ -275,7 +272,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                 # We know that balancer will give us the token address in the symbol.
                 # We need to create an internal array in the longer term, for now, we will just make a
                 token_address = ticker.symbol.split("/")[0]
-                price_range = range(1, 50)
+
                 date_range = range(1, 50)
 
                 prices = [[date, ticker.ask] for date in date_range]
