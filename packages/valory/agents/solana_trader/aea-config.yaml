@@ -277,4 +277,4 @@ config:
     kwargs:
       chain_id: ${str:mainnet}
       rpc_url: ${str:https://rpc.ankr.com/eth}
-      etherscan_api_key: YOUR_ETHERSCAN_API_KEY
+      etherscan_api_key: ${str:YOUR_ETHERSCAN_API_KEY}
