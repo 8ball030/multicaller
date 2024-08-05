@@ -108,7 +108,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         self.portfolio: Dict[str, int] = {}
         self.portfolio_filepath = Path(self.context.data_dir) / PORTFOLIO_FILENAME
         self._performative_to_dialogue_class = {
-            BalancesMessage.Performative.ALL_BALANCES: self.context.balances_dialogues,
+            BalancesMessage.Performative.GET_ALL_BALANCES: self.context.balances_dialogues,
         }
 
     @property
@@ -193,7 +193,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         """Get a ccxt response."""
         if protocol_performative not in self._performative_to_dialogue_class:
             raise ValueError(
-                f"Unsupported protocol performative {protocol_performative:!r}"
+                f"Unsupported protocol performative {protocol_performative}."
             )
         dialogue_class = self._performative_to_dialogue_class[protocol_performative]
 
@@ -333,25 +333,18 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         self.context.logger.info(
             f"Tracking the portfolio of the service... on ledger {ledger_id}"
         )
-        should_wait = False
-        for token in self.params.tracked_tokens:
-            self.context.logger.info(f"Tracking {token=}...")
 
-            if token == SOL_ADDRESS:
-                # SOL will be populated using a different RPC method, in the `check_balance` method
-                continue
-
-            if should_wait:
-                # poll in intervals so that we do not get a 429 error code as a response
-                yield from self.sleep(self.params.rpc_polling_interval)
-            should_wait = True
+        for exchange_id in self.params.exchange_ids[ledger_id]:
+            self.context.logger.info(f"Tracking {exchange_id=}...")
 
             balances_msg = yield from self.get_dcxt_response(
-                BalancesMessage.Performative.ALL_BALANCES, token=token  # type: ignore
+                BalancesMessage.Performative.GET_ALL_BALANCES,  # type: ignore
+                exchange_id=exchange_id,
+                params={},
             )
-            balance = balances_msg.balances.get(token, None)
-            breakpoint()
-            self.portfolio[token] = balance
+            address = balances_msg.balances.get("asset_id")
+            balance = balances_msg.balances.get("free")
+            self.portfolio[address] = balance
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
