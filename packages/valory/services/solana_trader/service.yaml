@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeib2uwruwdkhqf6o63es3aivjxz6v2tr7gnvayo4uva2v47da7eqby
+agent: valory/solana_trader:0.1.0:bafybeid3pij32n55ucqovbrt23acluhr3s2sujbtmvjo2pl63jwa3msbsm
 number_of_agents: 4
 deployment: {}
 ---
@@ -208,7 +208,7 @@ type: skill
         rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
-        ledger_ids: ${list:["ethereum"]}
+        ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -267,7 +267,7 @@ type: skill
         rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
-        ledger_ids: ${list:["ethereum"]}
+        ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -326,7 +326,7 @@ type: skill
         rpc_polling_interval: ${RPC_POLLING_INTERVAL:int:5}
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
-        ledger_ids: ${list:["ethereum"]}
+        ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -389,3 +389,15 @@ config:
   host: ${HTTP_CLIENT_HOST:str:127.0.0.1}
   port: ${HTTP_CLIENT_PORT:int:8000}
   timeout: ${HTTP_CLIENT_TIMEOUT:int:1200}
+---
+public_id: eightballer/dcxt:0.1.0
+type: connection
+config:
+  target_skill_id: valory/trader_abci:0.1.0
+  exchanges:
+  - name: ${DCXT_EXCHANGE_NAME:str:balancer}
+    key_path: ${DCXT_KEY_PATH:str:ethereum_private_key.txt}
+    kwargs:
+      chain_id: ${DCXT_CHAIN_ID:str:mainnet}
+      rpc_url: ${DCXT_RPC_URL:str:https://rpc.ankr.com/eth}
+      etherscan_api_key: ${DCXT_ETHERSCAN_API_KEY:str:YOUR_ETHERSCAN_API_KEY}

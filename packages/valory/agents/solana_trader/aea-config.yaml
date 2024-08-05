@@ -272,9 +272,9 @@ type: connection
 config:
   target_skill_id: valory/trader_abci:0.1.0
   exchanges:
-  - name: balancer
-    key_path: ethereum_private_key.txt
+  - name: ${str:balancer}
+    key_path: ${str:ethereum_private_key.txt}
     kwargs:
-      chain_id: mainnet
-      rpc_url: https://rpc.ankr.com/eth
-      etherscan_api_key: YOUR_ETHERSCAN_API_KEY
+      chain_id: ${str:mainnet}
+      rpc_url: ${str:https://rpc.ankr.com/eth}
+      etherscan_api_key: ${str:YOUR_ETHERSCAN_API_KEY}
