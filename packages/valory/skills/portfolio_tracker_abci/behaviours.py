@@ -178,7 +178,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.context.logger.error("Failed to get SOL balance!")
         return response
 
-    def check_balance(self, multisig: bool) -> Generator[None, None, Optional[bool]]:
+    def check_solana_balance(
+        self, multisig: bool
+    ) -> Generator[None, None, Optional[bool]]:
         """Check whether the balance of the multisig or the agent is above the corresponding threshold."""
         if multisig:
             address = self.params.squad_vault
@@ -203,10 +205,10 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.portfolio[SOL_ADDRESS] = balance
         return True
 
-    def is_balance_sufficient(self) -> Generator[None, None, Optional[bool]]:
+    def _is_solana_balance_sufficient(self) -> Generator[None, None, Optional[bool]]:
         """Check whether the balance of the multisig and the agent are above the given thresholds."""
-        agent_balance = yield from self.check_balance(multisig=False)
-        vault_balance = yield from self.check_balance(multisig=True)
+        agent_balance = yield from self.check_solana_balance(multisig=False)
+        vault_balance = yield from self.check_solana_balance(multisig=True)
 
         balances = (agent_balance, vault_balance)
         if None in balances:
@@ -257,7 +259,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.unexpected_res_format_err(response)
             return None
 
-    def track_portfolio(self) -> Generator:
+    def _track_solana_portfolio(self) -> Generator:
         """Track the portfolio of the service."""
         self.context.logger.info("Tracking the portfolio of the service...")
         should_wait = False
@@ -285,6 +287,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            is_balance_sufficient_func = self._is_solana_balance_sufficient
+            track_portfolio_func = self._track_solana_portfolio
+
             if self.synchronized_data.is_balance_sufficient is False:
                 # wait for some time for the user to take action
                 sleep_time = self.params.refill_action_timeout
@@ -293,14 +298,14 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 )
                 yield from self.sleep(sleep_time)
 
-            is_balance_sufficient = yield from self.is_balance_sufficient()
+            is_balance_sufficient = yield from is_balance_sufficient_func()
             if is_balance_sufficient is None:
                 portfolio_hash = None
             elif not is_balance_sufficient:
                 # the value does not matter as the round will transition based on the insufficient balance event
                 portfolio_hash = ""
             else:
-                yield from self.track_portfolio()
+                yield from track_portfolio_func()
                 portfolio_hash = yield from self.send_to_ipfs(
                     str(self.portfolio_filepath),
                     self.portfolio,
