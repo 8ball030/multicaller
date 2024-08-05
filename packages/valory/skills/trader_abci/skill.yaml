@@ -10,8 +10,8 @@ fingerprint:
   __init__.py: bafybeifhg74e54dl7ekajnmc3j4w4dotl3fqlvmayzuct35jahqnkkuosi
   behaviours.py: bafybeicbhequh5dejccd37iay3ks7q3wiljxvwm3uhu7ja4s2o4mf2xh4a
   composition.py: bafybeigerospujwrhgk7n44zwsim6rzf6fh5ycnpie62dmu4hiha7soige
-  dialogues.py: bafybeie3drzdkzotgf72rfrw4fie4d2oa4vebymyivjhhrd3zghaqshk7m
-  handlers.py: bafybeigwwvwij2ykecvqpxshw7vmw265y2tsp6x36hp37iweoh5l4cqsm4
+  dialogues.py: bafybeicrkojrjy2yputm2j6cdoihkzq7yusmcvbxwo3la4nf3wxazcmlae
+  handlers.py: bafybeih4uhf5akotwtfvik2fjlfybfncwmisp7nmdu4pjdybzc572t2tgi
   models.py: bafybeidkrjhatevi53r5esuncus3uxuqxfmr3x3jzwq5pvqxabtbilhbde
 fingerprint_ignore_patterns: []
 connections: []
@@ -22,10 +22,10 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeienxzp3a2bey45vujdoq6uef226mywxq3nix6lxwrlrjxgfc3u5me
+- valory/market_data_fetcher_abci:0.1.0:bafybeiggsuyrw3scbd6ppmxxwfiyd375cxo6rvzinamrtg5odtujkolmvi
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeib6s5m2yeo3jco5wyy72xemooanjcwv2u4daygsndithahlirh3fu
-- valory/portfolio_tracker_abci:0.1.0:bafybeiadztgascioyfs6vo67axh3msszkwtf63pzkkjaj5azpb7oiexk2e
+- valory/strategy_evaluator_abci:0.1.0:bafybeif6dtvw6uvdantbapbxg75bj6pceatzo7m3cjqnsppt25qtty3gge
+- valory/portfolio_tracker_abci:0.1.0:bafybeieztbhlvcau2jpkoy3smyrtwllb5umjbp67zjyftkkafnvpubvrby
 behaviours:
   main:
     args: {}

@@ -19,10 +19,10 @@
 
 """This package contains round behaviours of MarketDataFetcherAbciApp."""
 
-from datetime import datetime
 import json
 import os
 from abc import ABC
+from datetime import datetime
 from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
 
 from packages.eightballer.protocols.tickers.message import TickersMessage
@@ -56,7 +56,9 @@ STRATEGY_KEY = "trading_strategy"
 ENTRY_POINT_STORE_KEY = "entry_point"
 TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
 
-from packages.eightballer.connections.dcxt.connection import PUBLIC_ID as DCXT_CONNECTION_ID
+from packages.eightballer.connections.dcxt.connection import (
+    PUBLIC_ID as DCXT_CONNECTION_ID,
+)
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -139,7 +141,9 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         Get a ccxt response.
         """
         if protocol_performative not in self._performative_to_dialogue_class:
-            raise ValueError(f"Unsupported protocol performative '{protocol_performative}'")
+            raise ValueError(
+                f"Unsupported protocol performative '{protocol_performative}'"
+            )
         dialogue_class = self._performative_to_dialogue_class[protocol_performative]
 
         msg, dialogue = dialogue_class.create(
@@ -157,6 +161,7 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         self._performative_to_dialogue_class = {
             TickersMessage.Performative.GET_ALL_TICKERS: self.context.tickers_dialogues,
         }
+
 
 class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
     """FetchMarketDataBehaviour"""
@@ -247,11 +252,10 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
     def _fetch_dcxt_market_data(
         self, ledger_id: str
     ) -> Generator[None, None, Optional[str]]:
-
         params = {
             "ledger_id": ledger_id,
         }
-        exchange_id = 'balancer'
+        exchange_id = "balancer"
         for key, value in params.items():
             params[key] = value.encode("utf-8")
         exchanges = self.params.exchange_ids[ledger_id]
@@ -263,34 +267,28 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                 exchange_id=exchange_id,
                 params=params,
             )
-            self.context.logger.info(f"Received {len(msg.tickers.tickers)} tickers from {exchange_id}")
-
+            self.context.logger.info(
+                f"Received {len(msg.tickers.tickers)} tickers from {exchange_id}"
+            )
 
             for ticker in msg.tickers.tickers:
                 # We know that balancer will give us the token address in the symbol.
-                # We need to create an internal array in the longer term, for now, we will just make a 
+                # We need to create an internal array in the longer term, for now, we will just make a
                 token_address = ticker.symbol.split("/")[0]
                 price_range = range(1, 50)
-                date_range  = range(1, 50)
+                date_range = range(1, 50)
 
-                prices = [
-                    [date, 
-                     ticker.ask]
-                     for date in date_range
-                ]
+                prices = [[date, ticker.ask] for date in date_range]
                 volumes = [
-                    [date,
-                     100, # This is a placeholder for the volume
+                    [
+                        date,
+                        100,  # This is a placeholder for the volume
                     ]
                     for date in date_range
                 ]
                 prices_volumes = {"prices": prices, "volumes": volumes}
                 markets[token_address] = prices_volumes
         return markets
-
-
-
-
 
     def fetch_markets(self) -> Generator[None, None, Optional[str]]:
         """Fetch markets from Coingecko and send to IPFS"""

@@ -22,8 +22,8 @@
 from packages.eightballer.protocols.tickers.message import TickersMessage
 from packages.valory.skills.abstract_round_abci.handlers import (
     ABCIRoundHandler as BaseABCIRoundHandler,
-    AbstractResponseHandler,
 )
+from packages.valory.skills.abstract_round_abci.handlers import AbstractResponseHandler
 from packages.valory.skills.abstract_round_abci.handlers import (
     ContractApiHandler as BaseContractApiHandler,
 )
@@ -43,10 +43,9 @@ from packages.valory.skills.abstract_round_abci.handlers import (
     TendermintHandler as BaseTendermintHandler,
 )
 
+
 class DcxtTickersHandler(AbstractResponseHandler):
-    """
-    This class implements a handler for DexTickersHandler messages.
-    """
+    """This class implements a handler for DexTickersHandler messages."""
 
     SUPPORTED_PROTOCOL = TickersMessage.protocol_id
     allowed_response_performatives = frozenset(
@@ -57,6 +56,7 @@ class DcxtTickersHandler(AbstractResponseHandler):
         }
     )
 
+
 ABCIHandler = BaseABCIRoundHandler
 HttpHandler = BaseHttpHandler
 SigningHandler = BaseSigningHandler
@@ -64,5 +64,3 @@ LedgerApiHandler = BaseLedgerApiHandler
 ContractApiHandler = BaseContractApiHandler
 TendermintHandler = BaseTendermintHandler
 IpfsHandler = BaseIpfsHandler
-
-
