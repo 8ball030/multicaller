@@ -36,11 +36,11 @@ skills:
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
 - valory/market_data_fetcher_abci:0.1.0:bafybeifqmt2anbcyefq5n22fvnoyaxonalrbcljcgvqmbrjwhca73rchxm
-- valory/strategy_evaluator_abci:0.1.0:bafybeiaylkasep74r6xxwsaj3awpfmmsgxbmfdhrv7w3cnjtce6zazce54
-- valory/trader_abci:0.1.0:bafybeievdd6k4q326mxcjeaoinvmzddq3pm2ifidbphiw5ldacqpd7mrsi
+- valory/strategy_evaluator_abci:0.1.0:bafybeia6rnkuw6z2nlcvznfzzhb6rbsohvzhllvka4zkkfeh4vggb4wtx4
+- valory/trader_abci:0.1.0:bafybeifzkna4wdkkmo3kj352ybiqj6puimegl3omwz2pv6qddbqfzrsgcu
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/ipfs_package_downloader:0.1.0:bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea
-- valory/portfolio_tracker_abci:0.1.0:bafybeieouxkptqlk4p5gzbhcfix55k6m5g5nkcdnfspd46w22c2mfdpiu4
+- valory/portfolio_tracker_abci:0.1.0:bafybeiggvtbcasjvqsqf5wtje357xateeyonazu7oo4akeutscb6katn5m
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -277,4 +277,4 @@ config:
     kwargs:
       chain_id: ${str:mainnet}
       rpc_url: ${str:https://rpc.ankr.com/eth}
-      etherscan_api_key: ${str:YOUR_ETHERSCAN_API_KEY}
+      etherscan_api_key: YOUR_ETHERSCAN_API_KEY

@@ -12,7 +12,7 @@ fingerprint:
   dialogues.py: bafybeidr5jmedduri5mbqnyrf43znchsklxv4vvyjvf5wsnsrb3tykwk2u
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
   handlers.py: bafybeihsjgmfsowj4qcnh6jw3sgqnrrhymuadm7wdx5l4pvrkzj6ylengy
-  models.py: bafybeicdtmjc6ddji542ldwlrhp45chvszymj6a2bwqdntz6hjhnm4ogdu
+  models.py: bafybeibtzlgvedoxvytuctm7bgjnmkrjt3osxzkrtx5qghfcvd5jvlt2ba
   payloads.py: bafybeid3sue7scr5dama3krank3gkmsucy6xasvds6jvebkptbpqziurlm
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
@@ -128,6 +128,9 @@ models:
       rpc_polling_interval: 5
       ledger_ids:
       - ethereum
+      exchange_ids:
+        ethereum:
+        - balancer
     class_name: Params
   requests:
     args: {}

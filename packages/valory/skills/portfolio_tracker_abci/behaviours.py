@@ -205,9 +205,13 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.portfolio[SOL_ADDRESS] = balance
         return True
 
-    def _is_solana_balance_sufficient(self, ledger_id: str) -> Generator[None, None, Optional[bool]]:
+    def _is_solana_balance_sufficient(
+        self, ledger_id: str
+    ) -> Generator[None, None, Optional[bool]]:
         """Check whether the balance of the multisig and the agent are above the given thresholds."""
-        self.context.logger.info(f"Checking the SOL balance of the agent and the vault on ledger {ledger_id}...")
+        self.context.logger.info(
+            f"Checking the SOL balance of the agent and the vault on ledger {ledger_id}..."
+        )
         agent_balance = yield from self.check_solana_balance(multisig=False)
         vault_balance = yield from self.check_solana_balance(multisig=True)
 
@@ -262,7 +266,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
 
     def _track_solana_portfolio(self, ledger_id: str) -> Generator:
         """Track the portfolio of the service."""
-        self.context.logger.info(f"Tracking the portfolio of the service... on ledger {ledger_id}")
+        self.context.logger.info(
+            f"Tracking the portfolio of the service... on ledger {ledger_id}"
+        )
         should_wait = False
         for token in self.params.tracked_tokens:
             self.context.logger.info(f"Tracking {token=}...")
@@ -288,7 +294,6 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-
             for ledger_id in self.params.ledger_ids:
                 if ledger_id == _SOLANA_IDENTIFIER:
                     is_balance_sufficient_func = self._is_solana_balance_sufficient
