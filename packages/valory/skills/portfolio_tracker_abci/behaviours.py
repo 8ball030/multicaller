@@ -27,13 +27,21 @@ from typing import Any, Dict, Generator, Optional, Set, Tuple, Type, cast
 
 from aea.configurations.constants import _SOLANA_IDENTIFIER
 
-from packages.valory.skills.abstract_round_abci.base import AbstractRound
+from packages.valory.protocols.ledger_api.message import LedgerApiMessage
+from packages.valory.skills.abstract_round_abci.base import (
+    AbstractRound,
+    LEDGER_API_ADDRESS,
+)
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
+from packages.valory.skills.abstract_round_abci.dialogues import (
+    LedgerApiDialogue,
+    LedgerApiDialogues,
+)
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
-from packages.valory.skills.abstract_round_abci.models import ApiSpecs
+from packages.valory.skills.abstract_round_abci.models import ApiSpecs, Requests
 from packages.valory.skills.portfolio_tracker_abci.models import (
     GetBalance,
     Params,
@@ -170,7 +178,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         api.reset_retries()
         return None
 
-    def get_native_balance(self, address: str) -> Generator[None, None, Optional[int]]:
+    def get_solana_native_balance(
+        self, address: str
+    ) -> Generator[None, None, Optional[int]]:
         """Get the SOL balance of the given address."""
         payload = RPCPayload(BALANCE_METHOD, [address])
         response = yield from self._get_response(self.get_balance, {}, asdict(payload))
@@ -192,7 +202,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             which = "agent"
 
         self.context.logger.info(f"Checking the SOl balance of the {which}...")
-        balance = yield from self.get_native_balance(address)
+        balance = yield from self.get_solana_native_balance(address)
         if balance is None:
             return None
         if balance < theta:
@@ -282,7 +292,33 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 yield from self.sleep(self.params.rpc_polling_interval)
             should_wait = True
 
-            balance = yield from self.get_token_balance(token)
+            balance = yield from self.get_solana_token_balance(token)
+            if balance is None:
+                self.context.logger.error(
+                    f"Portfolio tracking failed! Could not get the vault's balance for {token=}."
+                )
+                return None
+            self.portfolio[token] = balance
+
+    def _track_evm_portfolio(self, ledger_id: str) -> Generator:
+        """Track the portfolio of the service."""
+        self.context.logger.info(
+            f"Tracking the portfolio of the service... on ledger {ledger_id}"
+        )
+        should_wait = False
+        for token in self.params.tracked_tokens:
+            self.context.logger.info(f"Tracking {token=}...")
+
+            if token == SOL_ADDRESS:
+                # SOL will be populated using a different RPC method, in the `check_balance` method
+                continue
+
+            if should_wait:
+                # poll in intervals so that we do not get a 429 error code as a response
+                yield from self.sleep(self.params.rpc_polling_interval)
+            should_wait = True
+
+            balance = yield from self.get_evm_token_balance(token)
             if balance is None:
                 self.context.logger.error(
                     f"Portfolio tracking failed! Could not get the vault's balance for {token=}."
@@ -336,6 +372,120 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             yield from self.wait_until_round_end()
 
         self.set_done()
+
+    def _is_evm_balance_sufficient(
+        self, ledger_id: str
+    ) -> Generator[None, None, Optional[bool]]:
+        """Check whether the balance of the multisig and the agent are above the given thresholds."""
+        self.context.logger.info(
+            f"Checking the balance of the agent and the vault on ledger {ledger_id}..."
+        )
+        agent_balance = yield from self.check_evm_balance(
+            multisig=False, ledger_id=ledger_id
+        )
+        vault_balance = yield from self.check_evm_balance(
+            multisig=True, ledger_id=ledger_id
+        )
+
+        balances = (agent_balance, vault_balance)
+        if None in balances:
+            return None
+        return all(balances)
+
+    def check_evm_balance(
+        self, multisig: bool, ledger_id: str
+    ) -> Generator[None, None, Optional[bool]]:
+        """Check whether the balance of the multisig or the agent is above the corresponding threshold."""
+        if multisig:
+            address = self.params.setup_params["safe_contract_address"]
+            theta = self.params.multisig_balance_threshold
+            which = "vault"
+        else:
+            address = self.context.agent_addresses[ledger_id]
+            theta = self.params.agent_balance_threshold
+            which = "agent"
+
+        self.context.logger.info(f"Checking the balance of the {which}...")
+        balance = yield from self.get_evm_native_balance(address, ledger_id)
+        if balance is None:
+            return None
+        if balance < theta:
+            self.context.logger.warning(
+                f"The {which}'s balance is below the specified threshold: {balance} < {theta}"
+            )
+            return False
+        self.context.logger.info(f"Balance of the {which} is sufficient.")
+        return True
+
+    def get_evm_native_balance(
+        self, address: str, ledger_id: str
+    ) -> Generator[None, None, Optional[int]]:
+        """Get the balance of the given address."""
+        # We send a request to the ledger to get the balance of the agent.
+        ledger_api_msg = yield from self.get_ledger_api_response(
+            address=address,
+            performative=LedgerApiMessage.Performative.GET_BALANCE,
+            ledger_id=ledger_id,
+            ledger_callable="get_balance",
+        )
+
+        if ledger_api_msg.performative == LedgerApiMessage.Performative.ERROR:
+            self.context.logger.error(
+                f"Failed to get the balance of the agent from ledger {ledger_id}! with error: {ledger_api_msg}"
+            )
+            return None
+        elif ledger_api_msg.performative == LedgerApiMessage.Performative.BALANCE:
+            balance = ledger_api_msg.balance
+            self.context.logger.info(
+                f"Retrieved balance from ledger {ledger_id}: {balance}"
+            )
+            return balance
+
+    def get_ledger_api_response(
+        self,
+        performative: LedgerApiMessage.Performative,
+        ledger_callable: str,
+        ledger_id: str,
+        address: str,
+        **kwargs: Any,
+    ) -> Generator[None, None, LedgerApiMessage]:
+        """
+        Request data from ledger api
+
+        Happy-path full flow of the messages.
+
+        AbstractRoundAbci skill -> (LedgerApiMessage | LedgerApiMessage.Performative) -> Ledger connection
+        Ledger connection -> (LedgerApiMessage | LedgerApiMessage.Performative) -> AbstractRoundAbci skill
+
+        :param performative: the message performative
+        :param ledger_callable: the callable to call on the contract
+        :param kwargs: keyword argument for the contract api request
+        :return: the contract api response
+        :yields: the contract api response
+        """
+        ledger_api_dialogues = cast(
+            LedgerApiDialogues, self.context.ledger_api_dialogues
+        )
+        kwargs = {
+            "performative": performative,
+            "counterparty": LEDGER_API_ADDRESS,
+            "ledger_id": ledger_id,
+            "callable": ledger_callable,
+            "address": address,
+        }
+        ledger_api_msg, ledger_api_dialogue = ledger_api_dialogues.create(**kwargs)
+        ledger_api_dialogue = cast(
+            LedgerApiDialogue,
+            ledger_api_dialogue,
+        )
+        ledger_api_dialogue.terms = self._get_default_terms()
+        request_nonce = self._get_request_nonce_from_dialogue(ledger_api_dialogue)
+        cast(Requests, self.context.requests).request_id_to_callback[
+            request_nonce
+        ] = self.get_callback_request()
+        self.context.outbox.put_message(message=ledger_api_msg)
+        response = yield from self.wait_for_message()
+        return response
 
 
 class PortfolioTrackerRoundBehaviour(AbstractRoundBehaviour):
