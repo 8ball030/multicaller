@@ -10,22 +10,23 @@ fingerprint:
   __init__.py: bafybeifhg74e54dl7ekajnmc3j4w4dotl3fqlvmayzuct35jahqnkkuosi
   behaviours.py: bafybeicbhequh5dejccd37iay3ks7q3wiljxvwm3uhu7ja4s2o4mf2xh4a
   composition.py: bafybeigerospujwrhgk7n44zwsim6rzf6fh5ycnpie62dmu4hiha7soige
-  dialogues.py: bafybeicrkojrjy2yputm2j6cdoihkzq7yusmcvbxwo3la4nf3wxazcmlae
-  handlers.py: bafybeih4uhf5akotwtfvik2fjlfybfncwmisp7nmdu4pjdybzc572t2tgi
+  dialogues.py: bafybeihxobh6hbxo5jxygrzdily2hx2xeh25n2wsol2ukfsrl6ae7kd4ey
+  handlers.py: bafybeickpwowjn37dnfio2hymjjmpwyfmyikpunpw5kdkm2n5yj5e55ra4
   models.py: bafybeidkrjhatevi53r5esuncus3uxuqxfmr3x3jzwq5pvqxabtbilhbde
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols:
 - eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
+- eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
 - valory/market_data_fetcher_abci:0.1.0:bafybeifqmt2anbcyefq5n22fvnoyaxonalrbcljcgvqmbrjwhca73rchxm
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeie5itg3mslrhu2hjdrnthqu4hueiqez56xqulffovmija3poih2ni
-- valory/portfolio_tracker_abci:0.1.0:bafybeihbmxmly2f5guqatt2tb2ydb4corh74qxepushaq6ewlxnryqemji
+- valory/strategy_evaluator_abci:0.1.0:bafybeibsp5jx5wq3mouqsogya7suub7fcgdtg2mmkdyht4uypjd6wzumki
+- valory/portfolio_tracker_abci:0.1.0:bafybeie2z45jgyyfvlm7yzrttac76px44gcqhldnhws37eixxu5ohj2jwq
 behaviours:
   main:
     args: {}
@@ -55,6 +56,9 @@ handlers:
   tickers:
     args: {}
     class_name: DcxtTickersHandler
+  balances:
+    args: {}
+    class_name: DcxtBalancesHandler
 models:
   abci_dialogues:
     args: {}
@@ -273,6 +277,9 @@ models:
   tickers_dialogues:
     args: {}
     class_name: TickersDialogues
+  balances_dialogues:
+    args: {}
+    class_name: BalancesDialogues
 dependencies:
   open-aea-cli-ipfs:
     version: ==1.51.0

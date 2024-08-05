@@ -27,6 +27,10 @@ from typing import Any, Dict, Generator, Optional, Set, Tuple, Type, cast
 
 from aea.configurations.constants import _SOLANA_IDENTIFIER
 
+from packages.eightballer.connections.dcxt.connection import (
+    PUBLIC_ID as DCXT_CONNECTION_ID,
+)
+from packages.eightballer.protocols.balances.message import BalancesMessage
 from packages.valory.protocols.ledger_api.message import LedgerApiMessage
 from packages.valory.skills.abstract_round_abci.base import (
     AbstractRound,
@@ -103,6 +107,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         super().__init__(**kwargs)
         self.portfolio: Dict[str, int] = {}
         self.portfolio_filepath = Path(self.context.data_dir) / PORTFOLIO_FILENAME
+        self._performative_to_dialogue_class = {
+            BalancesMessage.Performative.ALL_BALANCES: self.context.balances_dialogues,
+        }
 
     @property
     def params(self) -> Params:
@@ -177,6 +184,27 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         self.context.logger.error(error)
         api.reset_retries()
         return None
+
+    def get_dcxt_response(
+        self,
+        protocol_performative: BalancesMessage.Performative,
+        **kwargs: Any,
+    ) -> Generator[None, None, Any]:
+        """Get a ccxt response."""
+        if protocol_performative not in self._performative_to_dialogue_class:
+            raise ValueError(
+                f"Unsupported protocol performative {protocol_performative:!r}"
+            )
+        dialogue_class = self._performative_to_dialogue_class[protocol_performative]
+
+        msg, dialogue = dialogue_class.create(
+            counterparty=str(DCXT_CONNECTION_ID),
+            performative=protocol_performative,
+            **kwargs,
+        )
+        msg._sender = str(self.context.skill_id)  # pylint: disable=protected-access
+        response = yield from self._do_request(msg, dialogue)
+        return response
 
     def get_solana_native_balance(
         self, address: str
@@ -318,12 +346,11 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 yield from self.sleep(self.params.rpc_polling_interval)
             should_wait = True
 
-            balance = yield from self.get_evm_token_balance(token)
-            if balance is None:
-                self.context.logger.error(
-                    f"Portfolio tracking failed! Could not get the vault's balance for {token=}."
-                )
-                return None
+            balances_msg = yield from self.get_dcxt_response(
+                BalancesMessage.Performative.ALL_BALANCES, token=token  # type: ignore
+            )
+            balance = balances_msg.balances.get(token, None)
+            breakpoint()
             self.portfolio[token] = balance
 
     def async_act(self) -> Generator:
@@ -424,7 +451,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         # We send a request to the ledger to get the balance of the agent.
         ledger_api_msg = yield from self.get_ledger_api_response(
             address=address,
-            performative=LedgerApiMessage.Performative.GET_BALANCE,
+            performative=LedgerApiMessage.Performative.GET_BALANCE,  # type: ignore
             ledger_id=ledger_id,
             ledger_callable="get_balance",
         )
@@ -440,8 +467,13 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 f"Retrieved balance from ledger {ledger_id}: {balance}"
             )
             return balance
+        else:
+            self.context.logger.error(
+                f"Unexpected performative from ledger {ledger_id}: {ledger_api_msg}"
+            )
+            return None
 
-    def get_ledger_api_response(
+    def get_ledger_api_response(  # type: ignore
         self,
         performative: LedgerApiMessage.Performative,
         ledger_callable: str,

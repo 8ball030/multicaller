@@ -8,17 +8,19 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
-  behaviours.py: bafybeigyglijmwwomg46uw4adwqealeophf6rmsrkcu4ggsai5iyqhizpu
-  dialogues.py: bafybeidr5jmedduri5mbqnyrf43znchsklxv4vvyjvf5wsnsrb3tykwk2u
+  behaviours.py: bafybeid7fdyjpkmdemjei7gn3a2ztb6a2chjkiaftcovknudn727xialgi
+  dialogues.py: bafybeibhhuam4c4cjhzv2l56pqkqhinpkiiivhr5akbqg765khwha3xauy
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
-  handlers.py: bafybeihsjgmfsowj4qcnh6jw3sgqnrrhymuadm7wdx5l4pvrkzj6ylengy
+  handlers.py: bafybeih374rsra6365hvglpk2am7ytfjzk57k4x4eihi2rjpj64vhwi6ke
   models.py: bafybeian54yk62z474g3ujd7k4xwh7duow5i3so2jnn4jhw3f2d7zellaa
   payloads.py: bafybeid3sue7scr5dama3krank3gkmsucy6xasvds6jvebkptbpqziurlm
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
-connections: []
+connections:
+- eightballer/dcxt:0.1.0:bafybeigi5jbpxyqpobj7an2tmtnr65l3up3pftfmogtwm7dbhc4byow7r4
 contracts: []
 protocols:
+- eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
 - valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
@@ -48,6 +50,9 @@ handlers:
   tendermint:
     args: {}
     class_name: TendermintHandler
+  balances:
+    args: {}
+    class_name: DcxtBalancesHandler
 models:
   abci_dialogues:
     args: {}
@@ -145,5 +150,8 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
+  balances_dialogues:
+    args: {}
+    class_name: BalancesDialogues
 dependencies: {}
 is_abstract: true
