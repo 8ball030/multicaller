@@ -284,7 +284,7 @@ web3 = "~6"
 
 [package.source]
 type = "directory"
-url = "../../upstream/balpy"
+url = "third_party/balpy"
 
 [[package]]
 name = "base58"
@@ -2258,7 +2258,7 @@ web3 = "~6"
 
 [package.source]
 type = "directory"
-url = "../../upstream/multicaller"
+url = "third_party/multicaller"
 
 [[package]]
 name = "multidict"
@@ -4480,4 +4480,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "<3.11,>=3.10"
-content-hash = "3383d3e8170144127be9eef0a2348c8e469fc4f12387e9530684032386a36627"
+content-hash = "2ae4705184bcacb4921ea8e118f994d5de2e4bf4a1c67fa021faaa5e3d3bcff5"
