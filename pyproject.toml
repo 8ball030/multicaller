@@ -55,6 +55,7 @@ pyalgotrade = "==0.20"
 lyra-v2-client = ">=0.2.9"
 balpy = {path = "third_party/balpy"}
 numpy = "==1.26.1"
+dateparser = ">=1.1.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest-xprocess = ">=0.18.1,<0.19.0"
