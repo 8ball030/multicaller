@@ -22,9 +22,22 @@
 import json
 import os
 from abc import ABC
-from datetime import datetime
-from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
+from packages.eightballer.connections.dcxt.connection import (
+    PUBLIC_ID as DCXT_CONNECTION_ID,
+)
 from packages.eightballer.protocols.tickers.message import TickersMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviour_utils import SOLANA_LEDGER_ID
@@ -55,10 +68,6 @@ UTF8 = "utf-8"
 STRATEGY_KEY = "trading_strategy"
 ENTRY_POINT_STORE_KEY = "entry_point"
 TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
-
-from packages.eightballer.connections.dcxt.connection import (
-    PUBLIC_ID as DCXT_CONNECTION_ID,
-)
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -135,14 +144,12 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
     def get_dcxt_response(
         self,
         protocol_performative: TickersMessage.Performative,
-        **kwargs,
+        **kwargs: Any,
     ) -> Generator[None, None, Any]:
-        """
-        Get a ccxt response.
-        """
+        """Get a ccxt response."""
         if protocol_performative not in self._performative_to_dialogue_class:
             raise ValueError(
-                f"Unsupported protocol performative '{protocol_performative}'"
+                f"Unsupported protocol performative {protocol_performative:!r}"
             )
         dialogue_class = self._performative_to_dialogue_class[protocol_performative]
 
@@ -168,7 +175,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
     matching_round: Type[AbstractRound] = FetchMarketDataRound
 
-    exchange_to_tickers = {}
+    exchange_to_tickers: Dict[str, Any] = {}
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -184,7 +191,9 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         self.set_done()
 
-    def _fetch_solana_market_data(self) -> Generator[None, None, Optional[str]]:
+    def _fetch_solana_market_data(
+        self,
+    ) -> Generator[None, None, Dict[Any, Dict[str, Any]]]:
         """Fetch Solana market data from Coingecko and send to IPFS"""
 
         headers = {
@@ -251,19 +260,19 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
     def _fetch_dcxt_market_data(
         self, ledger_id: str
-    ) -> Generator[None, None, Optional[str]]:
+    ) -> Generator[None, None, Dict[Union[str, Any], Dict[str, object]]]:
         params = {
             "ledger_id": ledger_id,
         }
         exchange_id = "balancer"
         for key, value in params.items():
-            params[key] = value.encode("utf-8")
+            params[key] = value.encode("utf-8")  # type: ignore
         exchanges = self.params.exchange_ids[ledger_id]
 
         markets = {}
         for exchange_id in exchanges:
             msg: TickersMessage = yield from self.get_dcxt_response(
-                protocol_performative=TickersMessage.Performative.GET_ALL_TICKERS,
+                protocol_performative=TickersMessage.Performative.GET_ALL_TICKERS,  # type: ignore
                 exchange_id=exchange_id,
                 params=params,
             )
@@ -272,10 +281,8 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             )
 
             for ticker in msg.tickers.tickers:
-                # We know that balancer will give us the token address in the symbol.
-                # We need to create an internal array in the longer term, for now, we will just make a
-                token_address = ticker.symbol.split("/")[0]
-                price_range = range(1, 50)
+                token_address = ticker.symbol.split("/")[0]  # type: ignore
+
                 date_range = range(1, 50)
 
                 prices = [[date, ticker.ask] for date in date_range]
