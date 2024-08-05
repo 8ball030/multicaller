@@ -191,7 +191,9 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         self.set_done()
 
-    def _fetch_solana_market_data(self) -> Generator[None, None, Dict[Any, Dict[str, Any]]]:
+    def _fetch_solana_market_data(
+        self,
+    ) -> Generator[None, None, Dict[Any, Dict[str, Any]]]:
         """Fetch Solana market data from Coingecko and send to IPFS"""
 
         headers = {
