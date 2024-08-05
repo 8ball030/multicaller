@@ -36,11 +36,11 @@ skills:
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
 - valory/market_data_fetcher_abci:0.1.0:bafybeifqmt2anbcyefq5n22fvnoyaxonalrbcljcgvqmbrjwhca73rchxm
-- valory/strategy_evaluator_abci:0.1.0:bafybeiff4eqodtixytqyge4cag24pk6nln6x2skvhywkimdcci4kqvgylq
-- valory/trader_abci:0.1.0:bafybeihmn3ic73rhtxpqu53yaxtiq6kylmkv3i6sx3xm2zs3vxbbby2g3y
+- valory/strategy_evaluator_abci:0.1.0:bafybeifdhgcgfoupqugt2yrvwxnhlhgtvvgao3ecctibjdcxiq5hb2hsfe
+- valory/trader_abci:0.1.0:bafybeigw3tk23vkaympfnxbkkfdt4oysv2shmvmfwt5r7nxcbz45p3pfvu
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/ipfs_package_downloader:0.1.0:bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea
-- valory/portfolio_tracker_abci:0.1.0:bafybeiccqte226z25e5cnv7fgwhzqsiwejckpg4cbndh7la5qqkr7gbthu
+- valory/portfolio_tracker_abci:0.1.0:bafybeicod3gwasbtr3unwnnfrn2gb3nbxsyfizkt7bst4kym3drddcfcfa
 default_ledger: ethereum
 required_ledgers:
 - ethereum

@@ -342,9 +342,8 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 exchange_id=exchange_id,
                 params={},
             )
-            address = balances_msg.balances.asset_id
-            balance = balances_msg.balances.free
-            self.portfolio[address] = balance
+            for balance in balances_msg.balances.balances:
+                self.portfolio[balance.asset_id] = balance.free
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
