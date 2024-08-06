@@ -9,7 +9,7 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeie2levqwqkcjxg4moucgjjv2gvt4dwrdek5imyzg7pzpi74wde3hi
-  test_strategy.py: bafybeiarjwwrkll2whihw2zrsq4vyhqyeg3cunu65buftpvrb6gzxfdurq
+  test_strategy.py: bafybeicxbkxp6eodruo7padmo2pikc5ekkon3d4cbc25tenqoibs4tiq4i
   trend_following_strategy.py: bafybeifjhjrlqlqfqpth4gy35ddp5bcjcb2vplkyhsb3jelnnwiaux52lq
 fingerprint_ignore_patterns: []
 entry_point: trend_following_strategy.py
