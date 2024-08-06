@@ -264,6 +264,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         ledger_id = "ethereum"
         base_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
         native_token = "ETH"
+        required_amount ='1000000'
 
         portfolio = yield from self.get_from_ipfs(
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
@@ -299,23 +300,26 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 # holding token, no tx to perform
                 continue
 
-            quote_data = {INPUT_MINT: SOL_ADDRESS, OUTPUT_MINT: SOL_ADDRESS}
-            quote_data[token_swap_position] = token
-            input_token = quote_data[INPUT_MINT]
-            if input_token is not SOL:
-                token_balance = portfolio.get(input_token, None)
-                if token_balance is None:
-                    err = f"The portfolio data do not contain any information for {token!r}."
-                    self.context.logger.error(err)
-                    # return, because a swap for another token might be performed
-                    continue
-            else:
-                token_balance = self.sol_balance
+            input_token = base_token
+            output_token = token
 
-            enough_tokens = self.is_balance_sufficient(input_token, token_balance)
-            if not enough_tokens:
+            input_balance = portfolio.get(input_token, None)
+            if input_balance is None:
+                err = f"The portfolio does nto contain information for the base token {base_token!r}. The base token is required for all swaps."
+                self.context.logger.error(err)
+                # return, because a swap for another token might be performed
+                continue
+
+            if input_token == native_token:
                 incomplete = True
                 continue
+
+            if input_balance < int(required_amount):
+                err = f"The portfolio does not contain enough balance for the base token {base_token!r}."
+                self.context.logger.error(err)
+                incomplete = True
+                continue
+            quote_data = {INPUT_MINT: input_token, OUTPUT_MINT: output_token}
             orders.append(quote_data)
 
         # we only yield here to convert this method to a generator, so that it can be used by `get_process_store_act`

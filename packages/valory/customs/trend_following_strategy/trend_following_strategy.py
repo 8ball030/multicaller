@@ -157,4 +157,4 @@ def optimise(*args, **kwargs):  # type: ignore
 def evaluate(*args, **kwargs):  # type: ignore
     """Evaluate the strategy."""
     del args, kwargs
-    return {"sharpe_ratio": -10}
+    return {"sharpe_ratio": -10.0}

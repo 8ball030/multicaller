@@ -47,3 +47,6 @@ class BacktestRound(IPFSRound):
         super().__init__(*args, **kwargs)
         if self.context.params.use_proxy_server:
             self.done_event = Event.BACKTEST_POSITIVE_PROXY_SERVER
+        # Note, using evm takes precedence over proxy server
+        if not self.context.params.use_solana:
+            self.done_event = Event.BACKTEST_POSITIVE_EVM

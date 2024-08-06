@@ -3,16 +3,16 @@
         "custom/eightballer/rsi_strategy/0.1.0": "bafybeigbofp2nqwcxu3rlkuugpc3w6ils3u7glse7c335rddcqg56ybh34",
         "custom/eightballer/sma_strategy/0.1.0": "bafybeibve7aw6oye6dc66nl2w6wxuqgxrfh5rilw64vvtfjbld6ocnbcr4",
         "custom/eightballer/vwap_momentum/0.1.0": "bafybeih2uiklkrin777kzhyk5khlnj35wapw2m5zeojrhglfosm76xjhym",
-        "custom/valory/trend_following_strategy/0.1.0": "bafybeiefhmvyiejsfjfl4fhkoageh66y6y6qwie4th27uis32a3ysc4nqm",
-        "custom/eightballer/always_buy/0.1.0": "bafybeicbc6nwuetrpqdso73akxpnfeshldera6aqnpdatokm7ntouxgqkq",
+        "custom/valory/trend_following_strategy/0.1.0": "bafybeibejqrhpxpcszjjq6sqqknk6ja72zfiyebqmpyw32e5hjd5hanx7e",
+        "custom/eightballer/always_buy/0.1.0": "bafybeic2fpf5ozhkf5jgzmppmfsprqw5ayfx6spgl3owuws464n7mkhpqi",
         "skill/valory/trader_decision_maker_abci/0.1.0": "bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi",
-        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeia5z7pcqpreexu3tyqsmo73dqxh7delznntnlr5hcjsx5pjwxyy6u",
+        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeidof2xqv7podwv5u72w4x2cbwh7xz7s5yx7ncf7nxmtcunf4eutke",
         "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeidbypni7pjepxwemoh5sjwdaho4z2kqqzt27npiozn4k6brjqycau",
-        "skill/valory/trader_abci/0.1.0": "bafybeibku7uveabddvrlwr7m274gliktwslrgeovalxefc4rstctevcnia",
+        "skill/valory/trader_abci/0.1.0": "bafybeideu47dfbwlqujqw4jq7estlqh2m4pdo5zzifcnvwb7yiel456zty",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeidx5i3n2wwndwk3cwrwm5cnwnknbyghmt7j3nzgw5i7xtqgjm5gcq",
-        "agent/valory/solana_trader/0.1.0": "bafybeigf4cmmoyzqpnbiaxdukwphbnsujbdky3alijgdmdxkhfnrt5lsvq",
-        "service/valory/solana_trader/0.1.0": "bafybeicnitr7xhp3cd64jr3z57ruaw2zrxq5tp22kttnoe76as3srj6cxq"
+        "agent/valory/solana_trader/0.1.0": "bafybeiadfvfpr2skts272d76h2yvarznnkisklaj7c2t464aiifqhqnkhy",
+        "service/valory/solana_trader/0.1.0": "bafybeic7zr5fhsz4d4ajvozpvut4zqmchbcn3jlveyotjaybtdcatq7aza"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",

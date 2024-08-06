@@ -39,3 +39,17 @@ class PrepareSwapRound(IPFSRound):
         get_name(SynchronizedData.incomplete_instructions),
     )
     collection_key = get_name(SynchronizedData.participant_to_instructions)
+
+class PrepareEvmSwapRound(IPFSRound):
+    """A round in which the agents prepare swap(s) instructions."""
+
+    done_event = Event.TRANSACTION_PREPARED
+    incomplete_event = Event.ERROR_PREPARING_SWAPS
+    no_hash_event = Event.NO_INSTRUCTIONS
+    none_event = Event.ERROR_PREPARING_SWAPS
+    selection_key = (
+        get_name(SynchronizedData.instructions_hash),
+        get_name(SynchronizedData.incomplete_instructions),
+    )
+    collection_key = get_name(SynchronizedData.participant_to_instructions)
+

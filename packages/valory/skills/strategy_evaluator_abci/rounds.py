@@ -44,6 +44,7 @@ from packages.valory.skills.strategy_evaluator_abci.states.final_states import (
     SwapTxPreparedRound,
 )
 from packages.valory.skills.strategy_evaluator_abci.states.prepare_swap import (
+    PrepareEvmSwapRound,
     PrepareSwapRound,
 )
 from packages.valory.skills.strategy_evaluator_abci.states.proxy_swap_queue import (
@@ -147,6 +148,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         BacktestRound: {
             Event.BACKTEST_POSITIVE: PrepareSwapRound,
             Event.BACKTEST_POSITIVE_PROXY_SERVER: ProxySwapQueueRound,
+            Event.BACKTEST_POSITIVE_EVM: PrepareEvmSwapRound,
             Event.BACKTEST_NEGATIVE: BacktestingNegativeRound,
             Event.BACKTEST_FAILED: BacktestingFailedRound,
             Event.ERROR_BACKTESTING: BacktestingFailedRound,
@@ -175,6 +177,12 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.NO_MAJORITY: ProxySwapQueueRound,
             Event.PROXY_SWAP_TIMEOUT: ProxySwapQueueRound,
         },
+        PrepareEvmSwapRound: {
+            Event.TRANSACTION_PREPARED: SwapTxPreparedRound,
+            Event.ERROR_PREPARING_SWAPS: PrepareEvmSwapRound,
+            Event.NO_INSTRUCTIONS: PrepareEvmSwapRound,
+        },
+
         SwapTxPreparedRound: {},
         NoMoreSwapsRound: {},
         StrategyExecutionFailedRound: {},

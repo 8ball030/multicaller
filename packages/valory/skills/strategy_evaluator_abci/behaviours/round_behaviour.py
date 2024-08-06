@@ -30,6 +30,7 @@ from packages.valory.skills.strategy_evaluator_abci.behaviours.backtesting impor
 )
 from packages.valory.skills.strategy_evaluator_abci.behaviours.prepare_swap_tx import (
     PrepareSwapBehaviour,
+    PrepareEvmSwapBehaviour
 )
 from packages.valory.skills.strategy_evaluator_abci.behaviours.proxy_swap_queue import (
     ProxySwapQueueBehaviour,
@@ -53,6 +54,7 @@ class AgentStrategyEvaluatorRoundBehaviour(AbstractRoundBehaviour):
     behaviours: Set[Type[BaseBehaviour]] = {
         StrategyExecBehaviour,  # type: ignore
         PrepareSwapBehaviour,  # type: ignore
+        PrepareEvmSwapBehaviour,  # type: ignore
         SwapQueueBehaviour,  # type: ignore
         ProxySwapQueueBehaviour,  # type: ignore
         BacktestBehaviour,  # type: ignore

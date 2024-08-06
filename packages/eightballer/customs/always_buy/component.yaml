@@ -12,7 +12,7 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeie2levqwqkcjxg4moucgjjv2gvt4dwrdek5imyzg7pzpi74wde3hi
-  strategy.py: bafybeievowrox6uxqiqx4igzylkysy6aux6h7jkh3pkfpkir47gb6m5uq4
+  strategy.py: bafybeihdh32cwyurzv2ejwhlzojybbmbl63f7o7r2vy4jkda2gdvqmmitm
   test_strategy.py: bafybeicaquwixgwao4xwhxqsybbeaskqcesdeu7xfky42b7vj2aatho6hu
 fingerprint_ignore_patterns: []
 entry_point: strategy.py
