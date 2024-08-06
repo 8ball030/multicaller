@@ -63,7 +63,8 @@ def trend_following_signal(
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
 ) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
-    prices = [price for _timestamp, price in transformed_data]
+    df = pd.read_json(transformed_data)
+    prices = df["Close"].tolist()
 
     if len(prices) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
