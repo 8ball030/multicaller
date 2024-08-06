@@ -10,14 +10,15 @@ fingerprint:
   __init__.py: bafybeifhg74e54dl7ekajnmc3j4w4dotl3fqlvmayzuct35jahqnkkuosi
   behaviours.py: bafybeicbhequh5dejccd37iay3ks7q3wiljxvwm3uhu7ja4s2o4mf2xh4a
   composition.py: bafybeigerospujwrhgk7n44zwsim6rzf6fh5ycnpie62dmu4hiha7soige
-  dialogues.py: bafybeihxobh6hbxo5jxygrzdily2hx2xeh25n2wsol2ukfsrl6ae7kd4ey
-  handlers.py: bafybeickpwowjn37dnfio2hymjjmpwyfmyikpunpw5kdkm2n5yj5e55ra4
+  dialogues.py: bafybeidwn2jk4vb4lbtkzbxoyhvbspsvwoww52laqav4qcvq6ixdf4txra
+  handlers.py: bafybeihz3mhjyull7hpufo6gizfxrtdxinbnrlitmllwowykbbucdqcfkq
   models.py: bafybeidkrjhatevi53r5esuncus3uxuqxfmr3x3jzwq5pvqxabtbilhbde
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols:
 - eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
+- eightballer/orders:0.1.0:bafybeifvom6eqscy4uniihnodvgdhvbj6cjjybkwyitkp3dmnsrv3a6tum
 - eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
@@ -25,7 +26,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
 - valory/market_data_fetcher_abci:0.1.0:bafybeidbypni7pjepxwemoh5sjwdaho4z2kqqzt27npiozn4k6brjqycau
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeidof2xqv7podwv5u72w4x2cbwh7xz7s5yx7ncf7nxmtcunf4eutke
+- valory/strategy_evaluator_abci:0.1.0:bafybeibcgerabmdtitwcf3rp3ur75jw5xe32d754buoexlufau4to7tqcm
 - valory/portfolio_tracker_abci:0.1.0:bafybeidx5i3n2wwndwk3cwrwm5cnwnknbyghmt7j3nzgw5i7xtqgjm5gcq
 behaviours:
   main:
@@ -59,6 +60,9 @@ handlers:
   balances:
     args: {}
     class_name: DcxtBalancesHandler
+  orders:
+    args: {}
+    class_name: DcxtOrdersHandler
 models:
   abci_dialogues:
     args: {}
@@ -281,6 +285,9 @@ models:
   balances_dialogues:
     args: {}
     class_name: BalancesDialogues
+  orders_dialogues:
+    args: {}
+    class_name: OrdersDialogues
 dependencies:
   open-aea-cli-ipfs:
     version: ==1.51.0

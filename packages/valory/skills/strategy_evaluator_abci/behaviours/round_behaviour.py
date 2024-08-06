@@ -29,8 +29,8 @@ from packages.valory.skills.strategy_evaluator_abci.behaviours.backtesting impor
     BacktestBehaviour,
 )
 from packages.valory.skills.strategy_evaluator_abci.behaviours.prepare_swap_tx import (
+    PrepareEvmSwapBehaviour,
     PrepareSwapBehaviour,
-    PrepareEvmSwapBehaviour
 )
 from packages.valory.skills.strategy_evaluator_abci.behaviours.proxy_swap_queue import (
     ProxySwapQueueBehaviour,

@@ -264,7 +264,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         ledger_id = "ethereum"
         base_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
         native_token = "ETH"
-        required_amount ='1000000'
+        required_amount = "1000000"
 
         portfolio = yield from self.get_from_ipfs(
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON

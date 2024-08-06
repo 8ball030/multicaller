@@ -182,7 +182,6 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.ERROR_PREPARING_SWAPS: PrepareEvmSwapRound,
             Event.NO_INSTRUCTIONS: PrepareEvmSwapRound,
         },
-
         SwapTxPreparedRound: {},
         NoMoreSwapsRound: {},
         StrategyExecutionFailedRound: {},

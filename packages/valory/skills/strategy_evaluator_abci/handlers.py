@@ -19,9 +19,11 @@
 
 """This module contains the handler for the 'strategy_evaluator_abci' skill."""
 
+from packages.eightballer.protocols.orders.message import OrdersMessage
 from packages.valory.skills.abstract_round_abci.handlers import (
     ABCIRoundHandler as BaseABCIRoundHandler,
 )
+from packages.valory.skills.abstract_round_abci.handlers import AbstractResponseHandler
 from packages.valory.skills.abstract_round_abci.handlers import (
     ContractApiHandler as BaseContractApiHandler,
 )
@@ -40,6 +42,19 @@ from packages.valory.skills.abstract_round_abci.handlers import (
 from packages.valory.skills.abstract_round_abci.handlers import (
     TendermintHandler as BaseTendermintHandler,
 )
+
+
+class DcxtOrdersHandler(AbstractResponseHandler):
+    """This class implements a handler for DexTickersHandler messages."""
+
+    SUPPORTED_PROTOCOL = OrdersMessage.protocol_id
+    allowed_response_performatives = frozenset(
+        {
+            OrdersMessage.Performative.GET_ORDERS,
+            OrdersMessage.Performative.CREATE_ORDER,
+            OrdersMessage.Performative.ERROR,
+        }
+    )
 
 
 ABCIHandler = BaseABCIRoundHandler

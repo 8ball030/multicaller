@@ -21,6 +21,13 @@
 
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
+from packages.eightballer.connections.dcxt import PUBLIC_ID as DCXT_ID
+from packages.eightballer.protocols.orders.custom_types import (
+    Order,
+    OrderSide,
+    OrderType,
+)
+from packages.eightballer.protocols.orders.message import OrdersMessage
 from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
@@ -107,6 +114,9 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         """Initialize the swap-preparation behaviour."""
         super().__init__(**kwargs)
         self.incomplete = False
+        self._performative_to_dialogue_class = {
+            OrdersMessage.Performative.CREATE_ORDER: self.context.orders_dialogues,
+        }
 
     def setup(self) -> None:
         """Initialize the behaviour."""
@@ -148,13 +158,26 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
     ) -> Generator[None, None, Tuple[List[Dict[str, Any]], bool]]:
         """Prepare the instructions for a Swap transaction."""
         instructions = []
-        breakpoint()
         for quote_data in orders:
-            swap_instruction = yield from self.build_swap_tx(quote_data)
-            if swap_instruction is None:
+            symbol = f'{quote_data["inputMint"]}/{quote_data["outputMint"]}'
+            size = 0.1
+            order = Order(
+                exchange_id="balancer",
+                symbol=symbol,
+                amount=size,
+                side=OrderSide.BUY,
+                type=OrderType.MARKET,
+            )
+
+            result = yield from self.get_dcxt_response(
+                protocol_performative=OrdersMessage.Performative.CREATE_ORDER,  # type: ignore
+                order=order,
+            )
+            transaction = result.Order.info.get("transaction", None)
+            if transaction is None:
                 self.incomplete = True
             else:
-                instructions.append(swap_instruction)
+                instructions.append(transaction)
 
         return instructions, self.incomplete
 
@@ -165,3 +188,24 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             self.prepare_instructions,
             str(self.swap_instructions_filepath),
         )
+
+    def get_dcxt_response(
+        self,
+        protocol_performative: OrdersMessage.Performative,
+        **kwargs: Any,
+    ) -> Generator[None, None, Any]:
+        """Get a ccxt response."""
+        if protocol_performative not in self._performative_to_dialogue_class:
+            raise ValueError(
+                f"Unsupported protocol performative {protocol_performative}."
+            )
+        dialogue_class = self._performative_to_dialogue_class[protocol_performative]
+
+        msg, dialogue = dialogue_class.create(
+            counterparty=str(DCXT_ID),
+            performative=protocol_performative,
+            **kwargs,
+        )
+        msg._sender = str(self.context.skill_id)  # pylint: disable=protected-access
+        response = yield from self._do_request(msg, dialogue)
+        return response

@@ -45,6 +45,9 @@ from packages.valory.skills.market_data_fetcher_abci.handlers import (
 from packages.valory.skills.portfolio_tracker_abci.handlers import (
     DcxtBalancesHandler as BaseDcxtBalancesHandler,
 )
+from packages.valory.skills.strategy_evaluator_abci.handlers import (
+    DcxtOrdersHandler as BaseDcxtOrdersHandler,
+)
 
 
 ABCITraderHandler = ABCIRoundHandler
@@ -56,3 +59,4 @@ TendermintHandler = BaseTendermintHandler
 IpfsHandler = BaseIpfsHandler
 DcxtTickersHandler = BaseDcxtTickersHandler
 DcxtBalancesHandler = BaseDcxtBalancesHandler
+DcxtOrdersHandler = BaseDcxtOrdersHandler

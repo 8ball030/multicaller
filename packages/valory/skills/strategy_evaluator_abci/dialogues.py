@@ -19,6 +19,12 @@
 
 """This module contains the classes required for dialogue management."""
 
+from packages.eightballer.protocols.orders.dialogues import (
+    OrdersDialogue as BaseOrdersDialogue,
+)
+from packages.eightballer.protocols.orders.dialogues import (
+    OrdersDialogues as BaseOrdersDialogues,
+)
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
 )
@@ -89,3 +95,6 @@ TendermintDialogues = BaseTendermintDialogues
 
 IpfsDialogue = BaseIpfsDialogue
 IpfsDialogues = BaseIpfsDialogues
+
+DcxtOrdersDialogue = BaseOrdersDialogue
+DcxtOrdersDialogues = BaseOrdersDialogues

@@ -40,6 +40,7 @@ class PrepareSwapRound(IPFSRound):
     )
     collection_key = get_name(SynchronizedData.participant_to_instructions)
 
+
 class PrepareEvmSwapRound(IPFSRound):
     """A round in which the agents prepare swap(s) instructions."""
 
@@ -52,4 +53,3 @@ class PrepareEvmSwapRound(IPFSRound):
         get_name(SynchronizedData.incomplete_instructions),
     )
     collection_key = get_name(SynchronizedData.participant_to_instructions)
-
