@@ -252,7 +252,10 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         return orders, incomplete
 
     def get_evm_orders(
-        self, token_data: Dict[str, Any]
+        self,
+        token_data: Dict[str, Any],
+        ledger_id: str = "ethereum",
+        required_amount: int = 1000000,
     ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
         # We need to check if the portfolio contains any information for the NATIVE_TOKEN which is yet to be defined
@@ -261,14 +264,18 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         # TODO: Check if the portfolio contains any information for the NATIVE_TOKEN
         # TODO: Mapping of ledger id to base token
         # TODO: update evm balance checker to include native token balance in the portfolio.
-        ledger_id = "ethereum"
-        base_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-        native_token = "ETH"
-        required_amount = "1000000"
 
         portfolio = yield from self.get_from_ipfs(
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
         )
+        base_token: str = self.params.base_tokens.get(ledger_id, None)
+        native_token: str = self.params.native_currencies.get(ledger_id, None)
+        if base_token is None:
+            self.context.logger.error(
+                f"Could not get the base token for ledger {ledger_id!r} from the configuration."
+            )
+            # return empty orders and incomplete status, because the base token is necessary for all the swaps
+            return [], True
         portfolio = cast(Optional[Dict[str, int]], portfolio)
         if portfolio is None:
             self.context.logger.error("Could not get the portfolio from IPFS.")
@@ -334,6 +341,6 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         )
         yield from self.get_process_store_act(
             self.synchronized_data.transformed_data_hash,
-            processing_function,
+            processing_function,  # type: ignore
             str(self.swap_decision_filepath),
         )

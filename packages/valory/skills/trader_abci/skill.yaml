@@ -24,10 +24,10 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeidbypni7pjepxwemoh5sjwdaho4z2kqqzt27npiozn4k6brjqycau
+- valory/market_data_fetcher_abci:0.1.0:bafybeidoscv6gylbtitr4cg7n4moydubo5h2ycg3psuqvkk5dt2hgi5oxi
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeibcgerabmdtitwcf3rp3ur75jw5xe32d754buoexlufau4to7tqcm
-- valory/portfolio_tracker_abci:0.1.0:bafybeidx5i3n2wwndwk3cwrwm5cnwnknbyghmt7j3nzgw5i7xtqgjm5gcq
+- valory/strategy_evaluator_abci:0.1.0:bafybeie2f6swav5txtlyg6qdj4lh7pv56zebufs3tskzr7yir4akcj75sm
+- valory/portfolio_tracker_abci:0.1.0:bafybeihext4pbezzzv26shi4dbezitn6vleq5hojmjl5lebwjvne6wzgry
 behaviours:
   main:
     args: {}
@@ -174,6 +174,10 @@ models:
       exchange_ids:
         ethereum:
         - balancer
+      base_tokens:
+        ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+      native_currencies:
+        ethereum: ETH
     class_name: Params
   coingecko:
     args:

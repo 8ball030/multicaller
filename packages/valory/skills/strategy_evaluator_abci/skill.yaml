@@ -15,12 +15,12 @@ fingerprint:
   behaviours/prepare_swap_tx.py: bafybeiesaw3r5qkh67gxxukro5ihanspedndapcfojpxex6aehybuk3n6m
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
-  behaviours/strategy_exec.py: bafybeigrro4x6rd53bxlpdanhzusg7sa63c25icu5keoswypirs6benol4
+  behaviours/strategy_exec.py: bafybeihboxj62na22jnvu2nwk56biggkxgkxefezhv4d7mlevxln7o6rr4
   behaviours/swap_queue.py: bafybeifuw22ri5vmso2krsspuahhbjzj4cm5v7bbbs2i6tqegw2aohvxby
   dialogues.py: bafybeigxdc3i2wq5hp266op5lyyfswwbosphqzrcapgqxscrznggrllype
   fsm_specification.yaml: bafybeidytd63a4rp4eqglrql2qi4izdg2ahb3cirp6dxzwhneasd3o5q7m
   handlers.py: bafybeig23xoczpbgqjyx5ms4r4dmdht6lx4v4arnn7lcj7eyljmbn5yuyy
-  models.py: bafybeibxtxfg52t4ytgzuyrbqqiquryski2bnwgl7uvnle4ehsvrpygbxu
+  models.py: bafybeiezx55cdvrvacfbxt7u5cbkkiyviwt567xau7nei4ohxgulrvvouy
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
   rounds.py: bafybeigvqircfll5yattvet7u5cwffdbfikhdbjjp7nsjprimk3khnpxee
   states/__init__.py: bafybeidgoz7uxrcafbiq5mfg6tl7fcmxmd5auu3lexl7cxpbhlxfvfnoom
@@ -33,15 +33,15 @@ fingerprint:
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeigin5mavvudnr2hnjf2tnyviuuy3rbqlkzf65xpnhtk77k4urgxle
+- eightballer/dcxt:0.1.0:bafybeiap7t3oeyq3ygbdfmprona6gi3d65s3pbvnpeka3dqokn7cej336e
 contracts: []
 protocols:
 - eightballer/orders:0.1.0:bafybeifvom6eqscy4uniihnodvgdhvbj6cjjybkwyitkp3dmnsrv3a6tum
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeidbypni7pjepxwemoh5sjwdaho4z2kqqzt27npiozn4k6brjqycau
+- valory/market_data_fetcher_abci:0.1.0:bafybeidoscv6gylbtitr4cg7n4moydubo5h2ycg3psuqvkk5dt2hgi5oxi
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/portfolio_tracker_abci:0.1.0:bafybeidx5i3n2wwndwk3cwrwm5cnwnknbyghmt7j3nzgw5i7xtqgjm5gcq
+- valory/portfolio_tracker_abci:0.1.0:bafybeihext4pbezzzv26shi4dbezitn6vleq5hojmjl5lebwjvne6wzgry
 behaviours:
   main:
     args: {}
@@ -157,6 +157,10 @@ models:
       expected_swap_tx_cost: 20000000
       ipfs_fetch_retries: 5
       sharpe_threshold: 1.0
+      base_tokens:
+        ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+      native_currencies:
+        ethereum: ETH
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:
