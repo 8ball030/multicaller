@@ -17,7 +17,7 @@ fingerprint:
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeifkw3jetphsxi3er74e76czniui363udhh7svl7wi4s3kbwpca3oa
+- eightballer/dcxt:0.1.0:bafybeiculmglnfnd7wvjeprtkf5e2rppqf7mdgsj3xvf5jdz24o2hyvpey
 contracts: []
 protocols:
 - eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
