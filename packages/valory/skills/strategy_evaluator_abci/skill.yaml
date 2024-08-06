@@ -12,14 +12,14 @@ fingerprint:
   behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
   behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
   behaviours/base.py: bafybeidzevmaz3kvnizxt6cdoozj7mrtnbw3pthck372y3xqngju4afvee
-  behaviours/prepare_swap_tx.py: bafybeiesaw3r5qkh67gxxukro5ihanspedndapcfojpxex6aehybuk3n6m
+  behaviours/prepare_swap_tx.py: bafybeicgybp5w5h4n5mkiho4knisjbihix25hrncz6wr56lsea4tcktady
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
   behaviours/strategy_exec.py: bafybeihboxj62na22jnvu2nwk56biggkxgkxefezhv4d7mlevxln7o6rr4
   behaviours/swap_queue.py: bafybeifuw22ri5vmso2krsspuahhbjzj4cm5v7bbbs2i6tqegw2aohvxby
   dialogues.py: bafybeigxdc3i2wq5hp266op5lyyfswwbosphqzrcapgqxscrznggrllype
   fsm_specification.yaml: bafybeidytd63a4rp4eqglrql2qi4izdg2ahb3cirp6dxzwhneasd3o5q7m
-  handlers.py: bafybeig23xoczpbgqjyx5ms4r4dmdht6lx4v4arnn7lcj7eyljmbn5yuyy
+  handlers.py: bafybeihwqu65rsc5lhixfnhxgocxcn7synhmw66cbzqrfmuevbtkvvwbae
   models.py: bafybeiezx55cdvrvacfbxt7u5cbkkiyviwt567xau7nei4ohxgulrvvouy
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
   rounds.py: bafybeigvqircfll5yattvet7u5cwffdbfikhdbjjp7nsjprimk3khnpxee
@@ -33,15 +33,15 @@ fingerprint:
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeiap7t3oeyq3ygbdfmprona6gi3d65s3pbvnpeka3dqokn7cej336e
+- eightballer/dcxt:0.1.0:bafybeifkw3jetphsxi3er74e76czniui363udhh7svl7wi4s3kbwpca3oa
 contracts: []
 protocols:
-- eightballer/orders:0.1.0:bafybeifvom6eqscy4uniihnodvgdhvbj6cjjybkwyitkp3dmnsrv3a6tum
+- eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeidoscv6gylbtitr4cg7n4moydubo5h2ycg3psuqvkk5dt2hgi5oxi
+- valory/market_data_fetcher_abci:0.1.0:bafybeibgjsy5r7psv3kla6aqq6z6qv54kc5bx5h6ptd5qjfxgyz2s7ct5a
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/portfolio_tracker_abci:0.1.0:bafybeihext4pbezzzv26shi4dbezitn6vleq5hojmjl5lebwjvne6wzgry
+- valory/portfolio_tracker_abci:0.1.0:bafybeiebef6i7vp64hemzsf7nyioato5xakljs4hkenhjsqu3gzhyhoy5q
 behaviours:
   main:
     args: {}

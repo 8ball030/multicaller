@@ -19,6 +19,7 @@
 
 """This module contains the behaviour for preparing swap(s) instructions."""
 
+import json
 from typing import Any, Dict, Generator, List, Optional, Tuple
 
 from packages.eightballer.connections.dcxt import PUBLIC_ID as DCXT_ID
@@ -153,31 +154,37 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         instructions = yield from self.build_instructions(quote)
         return instructions
 
-    def prepare_instructions(
+    def prepare_transactions(
         self, orders: List[Dict[str, str]]
     ) -> Generator[None, None, Tuple[List[Dict[str, Any]], bool]]:
         """Prepare the instructions for a Swap transaction."""
         instructions = []
         for quote_data in orders:
             symbol = f'{quote_data["inputMint"]}/{quote_data["outputMint"]}'
-            size = 0.1
+            size = 0.0001
             order = Order(
                 exchange_id="balancer",
                 symbol=symbol,
                 amount=size,
                 side=OrderSide.BUY,
                 type=OrderType.MARKET,
+                data=json.dumps(
+                    {
+                        "safe_address": self.params.setup_params.get("safe_address"),
+                    }
+                ),
             )
+            # TODO: add in a check for
 
             result = yield from self.get_dcxt_response(
                 protocol_performative=OrdersMessage.Performative.CREATE_ORDER,  # type: ignore
                 order=order,
             )
-            transaction = result.Order.info.get("transaction", None)
-            if transaction is None:
+            call_data = result.order.data
+            if call_data is None:
                 self.incomplete = True
             else:
-                instructions.append(transaction)
+                instructions.append(call_data)
 
         return instructions, self.incomplete
 
@@ -185,7 +192,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         """Do the action."""
         yield from self.get_process_store_act(
             self.synchronized_data.backtested_orders_hash,
-            self.prepare_instructions,
+            self.prepare_transactions,
             str(self.swap_instructions_filepath),
         )
 

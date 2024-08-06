@@ -18,16 +18,16 @@ connections: []
 contracts: []
 protocols:
 - eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
-- eightballer/orders:0.1.0:bafybeifvom6eqscy4uniihnodvgdhvbj6cjjybkwyitkp3dmnsrv3a6tum
+- eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
 - eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeidoscv6gylbtitr4cg7n4moydubo5h2ycg3psuqvkk5dt2hgi5oxi
+- valory/market_data_fetcher_abci:0.1.0:bafybeibgjsy5r7psv3kla6aqq6z6qv54kc5bx5h6ptd5qjfxgyz2s7ct5a
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeie2f6swav5txtlyg6qdj4lh7pv56zebufs3tskzr7yir4akcj75sm
-- valory/portfolio_tracker_abci:0.1.0:bafybeihext4pbezzzv26shi4dbezitn6vleq5hojmjl5lebwjvne6wzgry
+- valory/strategy_evaluator_abci:0.1.0:bafybeifq64ui6gb3gqv6iu6b4tqnr7vptjx4ptmkpb5n6gwfvqe7fz465a
+- valory/portfolio_tracker_abci:0.1.0:bafybeiebef6i7vp64hemzsf7nyioato5xakljs4hkenhjsqu3gzhyhoy5q
 behaviours:
   main:
     args: {}

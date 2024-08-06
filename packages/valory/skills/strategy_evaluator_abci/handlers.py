@@ -52,6 +52,7 @@ class DcxtOrdersHandler(AbstractResponseHandler):
         {
             OrdersMessage.Performative.GET_ORDERS,
             OrdersMessage.Performative.CREATE_ORDER,
+            OrdersMessage.Performative.ORDER_CREATED,
             OrdersMessage.Performative.ERROR,
         }
     )
