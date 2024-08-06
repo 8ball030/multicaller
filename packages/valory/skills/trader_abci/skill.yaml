@@ -23,10 +23,10 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeifqmt2anbcyefq5n22fvnoyaxonalrbcljcgvqmbrjwhca73rchxm
+- valory/market_data_fetcher_abci:0.1.0:bafybeidbry7wly25rgrk2t5esn3wpcgnxtehhqcuz2r5xlodsfjyb37p7m
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeifdhgcgfoupqugt2yrvwxnhlhgtvvgao3ecctibjdcxiq5hb2hsfe
-- valory/portfolio_tracker_abci:0.1.0:bafybeicod3gwasbtr3unwnnfrn2gb3nbxsyfizkt7bst4kym3drddcfcfa
+- valory/strategy_evaluator_abci:0.1.0:bafybeidrzllzv3oi23o27k3ffyazwne2rcpquvczwynvzymxn5eqqqp3ma
+- valory/portfolio_tracker_abci:0.1.0:bafybeiahbav66yq2hhvjkczqurs3fwfutayjvhdsn4gwtmarcrqcyv4pdy
 behaviours:
   main:
     args: {}
@@ -164,6 +164,7 @@ models:
       rpc_polling_interval: 5
       epsilon: 0.1
       sharpe_threshold: 1.0
+      use_solana: false
       ledger_ids:
       - ethereum
       exchange_ids:

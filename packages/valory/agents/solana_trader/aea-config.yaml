@@ -9,7 +9,7 @@ fingerprint:
   __init__.py: bafybeig4rclm2fca7pv35dtigdm3slje4o4urhybxdkkdy2gd5p6d5gfju
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeigi5jbpxyqpobj7an2tmtnr65l3up3pftfmogtwm7dbhc4byow7r4
+- eightballer/dcxt:0.1.0:bafybeia2z45dsriinehusfboyy6do7xzvjf5dvgxoimiy3vcfna7mcooum
 - valory/abci:0.1.0:bafybeihhtx7t5fsxaoajzq5nm4hrq57smigx7gqv35bss766txaaffjmsa
 - valory/http_client:0.23.0:bafybeihi772xgzpqeipp3fhmvpct4y6e6tpjp4sogwqrnf3wqspgeilg4u
 - valory/ipfs:0.1.0:bafybeifqca6e232lbvwrjhd7ioh43bo3evxfkpumdvcr6re2sdwjuntgna
@@ -35,12 +35,12 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
 - valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeifqmt2anbcyefq5n22fvnoyaxonalrbcljcgvqmbrjwhca73rchxm
-- valory/strategy_evaluator_abci:0.1.0:bafybeifdhgcgfoupqugt2yrvwxnhlhgtvvgao3ecctibjdcxiq5hb2hsfe
-- valory/trader_abci:0.1.0:bafybeigw3tk23vkaympfnxbkkfdt4oysv2shmvmfwt5r7nxcbz45p3pfvu
+- valory/market_data_fetcher_abci:0.1.0:bafybeidbry7wly25rgrk2t5esn3wpcgnxtehhqcuz2r5xlodsfjyb37p7m
+- valory/strategy_evaluator_abci:0.1.0:bafybeidrzllzv3oi23o27k3ffyazwne2rcpquvczwynvzymxn5eqqqp3ma
+- valory/trader_abci:0.1.0:bafybeicz6cdddsict4y5wfkpto7toui4xsc6lgjmwxx52lilkwxebfsjdm
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/ipfs_package_downloader:0.1.0:bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea
-- valory/portfolio_tracker_abci:0.1.0:bafybeicod3gwasbtr3unwnnfrn2gb3nbxsyfizkt7bst4kym3drddcfcfa
+- valory/portfolio_tracker_abci:0.1.0:bafybeiahbav66yq2hhvjkczqurs3fwfutayjvhdsn4gwtmarcrqcyv4pdy
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -100,7 +100,7 @@ models:
     args:
       cleanup_freq: ${int:50}
       timeout_limit: ${int:3}
-      file_hash_to_id: ${list:[["bafybeief7zgkk2yv2nas7yo2cbeceiuzoqcvggzzfrb6bnriy3ksn7j2n4",["sma_strategy"]]]}
+      file_hash_to_id: ${list:[["bafybeiayk532dvpiqhwjneps4of2pybfys5hgf2iyedo4dpsqvvt6vjn3m",["sma_strategy"]]]}
       component_yaml_filename: ${str:component.yaml}
       entry_point_key: ${str:entry_point}
       callable_keys: ${list:["run_callable","transform_callable","evaluate_callable"]}

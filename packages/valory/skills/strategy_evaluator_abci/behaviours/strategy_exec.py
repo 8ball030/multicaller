@@ -189,7 +189,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
         return token_swap_position
 
-    def get_orders(
+    def get_solana_orders(
         self, token_data: Dict[str, Any]
     ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
@@ -251,10 +251,85 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         yield
         return orders, incomplete
 
+    def get_evm_orders(
+        self, token_data: Dict[str, Any]
+    ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
+        """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
+        # We need to check if the portfolio contains any information for the NATIVE_TOKEN which is yet to be defined
+        # We will temporarily skip this check
+        # TODO: Define NATIVE_TOKEN, BASE_TOKEN, and LEDGER_ID
+        # TODO: Check if the portfolio contains any information for the NATIVE_TOKEN
+        # TODO: Mapping of ledger id to base token
+        # TODO: update evm balance checker to include native token balance in the portfolio.
+        ledger_id = "ethereum"
+        base_token = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+        native_token = "ETH"
+
+        portfolio = yield from self.get_from_ipfs(
+            self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
+        )
+        portfolio = cast(Optional[Dict[str, int]], portfolio)
+        if portfolio is None:
+            self.context.logger.error("Could not get the portfolio from IPFS.")
+            # return empty orders and incomplete status, because the portfolio is necessary for all the swaps
+            return [], True
+
+        native_balance = portfolio.get(native_token, None)
+        if native_balance is None:
+            err = f"The portfolio data do not contain any information for the native {native_token!r} on ledger {ledger_id!r}."
+            self.context.logger.error(err)
+            # return empty orders and incomplete status, because SOL are necessary for all the swaps
+            return [], True
+
+        orders: List[Dict[str, str]] = []
+        incomplete = False
+        for token, data in token_data.items():
+            if token == base_token or token == native_token:
+                continue
+
+            decision = self.get_swap_decision(data, portfolio, token)
+            if decision is None:
+                incomplete = True
+                continue
+
+            msg = f"Decided to {decision} token with address {token!r}."
+            self.context.logger.info(msg)
+            token_swap_position = self.get_token_swap_position(decision)
+            if token_swap_position is None:
+                # holding token, no tx to perform
+                continue
+
+            quote_data = {INPUT_MINT: SOL_ADDRESS, OUTPUT_MINT: SOL_ADDRESS}
+            quote_data[token_swap_position] = token
+            input_token = quote_data[INPUT_MINT]
+            if input_token is not SOL:
+                token_balance = portfolio.get(input_token, None)
+                if token_balance is None:
+                    err = f"The portfolio data do not contain any information for {token!r}."
+                    self.context.logger.error(err)
+                    # return, because a swap for another token might be performed
+                    continue
+            else:
+                token_balance = self.sol_balance
+
+            enough_tokens = self.is_balance_sufficient(input_token, token_balance)
+            if not enough_tokens:
+                incomplete = True
+                continue
+            orders.append(quote_data)
+
+        # we only yield here to convert this method to a generator, so that it can be used by `get_process_store_act`
+        yield
+        return orders, incomplete
+
     def async_act(self) -> Generator:
         """Do the action."""
+        # We check if we are processing the solana or the ethereum chain
+        processing_function = (
+            self.get_solana_orders if self.params.use_solana else self.get_evm_orders
+        )
         yield from self.get_process_store_act(
             self.synchronized_data.transformed_data_hash,
-            self.get_orders,
+            processing_function,
             str(self.swap_decision_filepath),
         )

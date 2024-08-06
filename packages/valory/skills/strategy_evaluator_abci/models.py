@@ -125,6 +125,7 @@ class StrategyEvaluatorParams(BaseParams):
         )
         self.ipfs_fetch_retries: int = self._ensure("ipfs_fetch_retries", kwargs, int)
         self.sharpe_threshold: float = self._ensure("sharpe_threshold", kwargs, float)
+        self.use_solana = self._ensure("use_solana", kwargs, bool)
         super().__init__(*args, **kwargs)
 
 

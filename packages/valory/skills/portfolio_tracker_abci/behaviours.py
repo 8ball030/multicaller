@@ -62,6 +62,12 @@ from packages.valory.skills.portfolio_tracker_abci.rounds import (
 )
 
 
+ledger_to_native_mapping = {
+    "ethereum": ("ETH", 18),
+    "xdai": ("XDAI", 18),
+    "optimism": ("ETH", 18),
+}
+
 PORTFOLIO_FILENAME = "portfolio.json"
 SOL_ADDRESS = "So11111111111111111111111111111111111111112"
 BALANCE_METHOD = "getBalance"
@@ -343,7 +349,11 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 params={},
             )
             for balance in balances_msg.balances.balances:
+                self.context.logger.info(
+                    f"Retrieved balance from {exchange_id}: {balance}"
+                )
                 self.portfolio[balance.asset_id] = balance.free
+                # We also store the balance in the agent's address
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -426,8 +436,10 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
 
         self.context.logger.info(f"Checking the balance of the {which}...")
         balance = yield from self.get_evm_native_balance(address, ledger_id)
+        # We store in the portfolio the balance of the agent
         if balance is None:
             return None
+        self.portfolio[ledger_to_native_mapping[ledger_id][0]] = balance
         if balance < theta:
             self.context.logger.warning(
                 f"The {which}'s balance is below the specified threshold: {balance} < {theta}"

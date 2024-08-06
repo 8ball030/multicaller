@@ -15,12 +15,12 @@ fingerprint:
   behaviours/prepare_swap_tx.py: bafybeigbylfqa4cyqcy5lz5t53ziyfk5kgydd2r6wmbzotayinahx2oara
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeifcdccxnposlab5g4sfyminberlvyrr3dj6ei2fxi4rfyqa23wwei
-  behaviours/strategy_exec.py: bafybeiatuhphihoyaglwyps4fj6dmms62lopawpdsrs44ygvpb43ae2xgq
+  behaviours/strategy_exec.py: bafybeibcq5j66wm6rkenwsuu3xqnpbzsx2weu5sb5pdv52l7afjkc4hl6a
   behaviours/swap_queue.py: bafybeifuw22ri5vmso2krsspuahhbjzj4cm5v7bbbs2i6tqegw2aohvxby
   dialogues.py: bafybeibgshsgcqg6uoa4f43egwe357lfmmjvz57rqvyn7wov4bsgqzxsau
   fsm_specification.yaml: bafybeidytd63a4rp4eqglrql2qi4izdg2ahb3cirp6dxzwhneasd3o5q7m
   handlers.py: bafybeib542ztyxvvlcr6p2xwm4b3t3pyyl6wqiqfbvksy3znayqysdzjuu
-  models.py: bafybeiexnmplwoujlfhoemwqqhn2wln6uqfj7tzzmcoeiiejsedsocxpfa
+  models.py: bafybeibxtxfg52t4ytgzuyrbqqiquryski2bnwgl7uvnle4ehsvrpygbxu
   payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
   rounds.py: bafybeiaxhwgnlrcfzkduj6yt3csdys4jsftgjb35hjy65a4eph2zuvadgm
   states/__init__.py: bafybeidgoz7uxrcafbiq5mfg6tl7fcmxmd5auu3lexl7cxpbhlxfvfnoom
@@ -37,9 +37,9 @@ contracts: []
 protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeifqmt2anbcyefq5n22fvnoyaxonalrbcljcgvqmbrjwhca73rchxm
+- valory/market_data_fetcher_abci:0.1.0:bafybeidbry7wly25rgrk2t5esn3wpcgnxtehhqcuz2r5xlodsfjyb37p7m
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/portfolio_tracker_abci:0.1.0:bafybeicod3gwasbtr3unwnnfrn2gb3nbxsyfizkt7bst4kym3drddcfcfa
+- valory/portfolio_tracker_abci:0.1.0:bafybeiahbav66yq2hhvjkczqurs3fwfutayjvhdsn4gwtmarcrqcyv4pdy
 behaviours:
   main:
     args: {}
@@ -148,6 +148,7 @@ models:
       - - extra_2
         - value
       use_proxy_server: false
+      use_solana: false
       expected_swap_tx_cost: 20000000
       ipfs_fetch_retries: 5
       sharpe_threshold: 1.0

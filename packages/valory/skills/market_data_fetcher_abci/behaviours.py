@@ -22,6 +22,7 @@
 import json
 import os
 from abc import ABC
+from datetime import datetime, timedelta
 from typing import (
     Any,
     Callable,
@@ -283,15 +284,25 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             for ticker in msg.tickers.tickers:
                 token_address = ticker.symbol.split("/")[0]  # type: ignore
 
-                date_range = range(1, 50)
+                def date_range(  # type: ignore
+                    start, end, seconds_delta=300
+                ) -> Generator[int, None, None]:
+                    """Generate a range of dates in the ms format. We do this as tickers are just spot prices and we dont yet retrieve historical data."""
+                    current = start
+                    while current < end:
+                        yield current.timestamp() * 1000
+                        current += timedelta(seconds=seconds_delta)
 
-                prices = [[date, ticker.ask] for date in date_range]
+                dates = list(
+                    date_range(datetime.now() - timedelta(minutes=60), datetime.now())
+                )
+                prices = [[date, ticker.ask] for date in dates]
                 volumes = [
                     [
                         date,
                         100,  # This is a placeholder for the volume
                     ]
-                    for date in date_range
+                    for date in dates
                 ]
                 prices_volumes = {"prices": prices, "volumes": volumes}
                 markets[token_address] = prices_volumes

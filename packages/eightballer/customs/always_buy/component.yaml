@@ -1,0 +1,24 @@
+name: always_buy
+author: eightballer
+version: 0.1.0
+type: custom
+description: Always buy strategy. This strategy submits buy orders for all available
+  assets. This strategy is used for testing purposes. This strategy is not profitable.
+  This strategy is not recommended for live trading. This strategy is not recommended
+  for backtesting. This strategy is not recommended for paper trading. This strategy
+  is not recommended for any trading. This strategy is not recommended for any purpose.
+  This strategy is not recommended for any reason
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeie2levqwqkcjxg4moucgjjv2gvt4dwrdek5imyzg7pzpi74wde3hi
+  strategy.py: bafybeievowrox6uxqiqx4igzylkysy6aux6h7jkh3pkfpkir47gb6m5uq4
+  test_strategy.py: bafybeicaquwixgwao4xwhxqsybbeaskqcesdeu7xfky42b7vj2aatho6hu
+fingerprint_ignore_patterns: []
+entry_point: strategy.py
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
+dependencies:
+  pandas:
+    version: <2.0.0
