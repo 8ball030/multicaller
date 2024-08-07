@@ -105,6 +105,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             - transaction prepared: 6.
             - error preparing swaps: 5.
             - no instructions: 5.
+            - no majority: 5.
         6. SwapTxPreparedRound
         7. NoMoreSwapsRound
         8. StrategyExecutionFailedRound
@@ -186,6 +187,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             Event.TRANSACTION_PREPARED: SwapTxPreparedRound,
             Event.ERROR_PREPARING_SWAPS: PrepareEvmSwapRound,
             Event.NO_INSTRUCTIONS: PrepareEvmSwapRound,
+            Event.NO_MAJORITY: PrepareEvmSwapRound,
         },
         SwapTxPreparedRound: {},
         NoMoreSwapsRound: {},

@@ -60,6 +60,7 @@ transition_func:
     (PrepareEvmSwapRound, ERROR_PREPARING_SWAPS): PrepareEvmSwapRound
     (PrepareEvmSwapRound, NO_INSTRUCTIONS): PrepareEvmSwapRound
     (PrepareEvmSwapRound, TRANSACTION_PREPARED): SwapTxPreparedRound
+    (PrepareEvmSwapRound, NO_MAJORITY): PrepareEvmSwapRound
     (PrepareSwapRound, ERROR_PREPARING_INSTRUCTIONS): InstructionPreparationFailedRound
     (PrepareSwapRound, INCOMPLETE_INSTRUCTIONS_PREPARED): SwapQueueRound
     (PrepareSwapRound, INSTRUCTIONS_PREPARED): SwapQueueRound
