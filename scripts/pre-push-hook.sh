@@ -9,5 +9,4 @@ tox -e check-packages,check-abci-docstrings,check-handlers,analyse-service,check
 
 
 autonomy packages lock
-git add packages
 echo "Pre-push hook completed successfully."
