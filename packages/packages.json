@@ -6,13 +6,13 @@
         "custom/valory/trend_following_strategy/0.1.0": "bafybeibejqrhpxpcszjjq6sqqknk6ja72zfiyebqmpyw32e5hjd5hanx7e",
         "custom/eightballer/always_buy/0.1.0": "bafybeic2fpf5ozhkf5jgzmppmfsprqw5ayfx6spgl3owuws464n7mkhpqi",
         "skill/valory/trader_decision_maker_abci/0.1.0": "bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi",
-        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeie5ag2ljhs4h2fkr65fitfestbr5tj6ehmpmuozixj2tos3flwtia",
-        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeiap4nyegi6oi5f5imckpid4kq6oobyy6sjt5fdi6w6rr7qqu4zdja",
-        "skill/valory/trader_abci/0.1.0": "bafybeidzkouj2dvl2almxlimie7n22t6jffqozc5zhidtknlneg4wlbemy",
+        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeiaylrewwbi4ag35hx4krop3w5ghltnnv6yjlds3lhieusac6rgfyy",
+        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeihod4smm5k3ena4tgnilcdbfgrc2ulg5t6ctdd4uiuuu6g3jy3e5u",
+        "skill/valory/trader_abci/0.1.0": "bafybeidt5vk67z6sgnyniz2q47yymcbiz5yqrhmosgaoxv5gdrrml2jcoq",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea",
-        "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeiajfbxq3nfdit5kze26rz5yyr5tolkhvriw74ppiharvj7ptx75wq",
-        "agent/valory/solana_trader/0.1.0": "bafybeig3pzhs4dxczf2bwe3qzwjoijnzvm7vyxjjunqdxpcurxst7soodq",
-        "service/valory/solana_trader/0.1.0": "bafybeiccdr3iq2pmscg77ojvgmiex6mmg7dz3yvsck6iyg2vqqwiyvfeha"
+        "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q",
+        "agent/valory/solana_trader/0.1.0": "bafybeiddm46n7hr2njjwfepktzpn3soy4n4apld7d5rtgayn4q4lm7gm34",
+        "service/valory/solana_trader/0.1.0": "bafybeiespdmtv2k6ofslqo5onv7tezrh4xtotr4iy5mtnimuyl2oiw5dlq"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
@@ -38,7 +38,7 @@
         "contract/eightballer/erc_20/0.1.0": "bafybeifjtxoyahzgrn622tipbrv2mx6r22fazawbffzszymjdlzs3uikbq",
         "contract/eightballer/spl_token/0.1.0": "bafybeieihaknw6ergbe2llk3e7ix5f6drzdt65zb2e3v2uv7nju54ptlze",
         "contract/valory/service_registry/0.1.0": "bafybeigrfupd7lo6aet376rwluqgm33jfghibkbvumfsdgrymqxoopqydq",
-        "connection/eightballer/dcxt/0.1.0": "bafybeibf45a6v5k2k4c7u3m7yfbimwyi4a4vm4kvumv7r7bjrwtfx5zxk4",
+        "connection/eightballer/dcxt/0.1.0": "bafybeicyeg2jnnvbhmles6gssw5zj2mjvcr2j2lyp5jrzdft3qsrnwgv5a",
         "connection/valory/abci/0.1.0": "bafybeihhtx7t5fsxaoajzq5nm4hrq57smigx7gqv35bss766txaaffjmsa",
         "connection/valory/ipfs/0.1.0": "bafybeifqca6e232lbvwrjhd7ioh43bo3evxfkpumdvcr6re2sdwjuntgna",
         "connection/valory/http_client/0.23.0": "bafybeihi772xgzpqeipp3fhmvpct4y6e6tpjp4sogwqrnf3wqspgeilg4u",
