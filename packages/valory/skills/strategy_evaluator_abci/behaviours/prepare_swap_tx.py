@@ -204,7 +204,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                 )
             except Exception as e:
                 self.context.logger.error(
-                    f"Error building safe tx hash: {traceback.format_exc()}"
+                    f"Error building safe tx hash: {traceback.format_exc()} with error {e}"
                 )
 
             if call_data is None:
@@ -305,14 +305,14 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
             sender = self.context.agent_address
-            payload_data = yield from self.get_ipfs_hash_payload_content(
+            yield from self.get_ipfs_hash_payload_content(
                 data, process_fn, store_filepath
             )
             payload = TransactionHashPayload(
                 sender,
                 tx_hash=self.safe_tx_hash,
-                data_json=payload_data,
-                signature=None,
+                data_json=self.synchronized_data.data_json,
+                signature=self.synchronized_data.signature,
             )
 
         yield from self.finish_behaviour(payload)

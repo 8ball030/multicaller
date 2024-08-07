@@ -151,6 +151,21 @@ class SynchronizedData(
         """Get the most_voted_tx_hash."""
         return cast(float, self.db.get_strict("most_voted_tx_hash"))
 
+    @property
+    def participant_to_signatures(self) -> float:
+        """Get the most_voted_tx_hash."""
+        return cast(float, self.db.get_strict("most_voted_tx_hash"))
+
+    @property
+    def signature(self) -> str:
+        """Get the current agent's signature."""
+        return str(self.db.get("signature", {}))
+
+    @property
+    def data_json(self) -> str:
+        """Get the data json."""
+        return str(self.db.get("data_json", ""))
+
 
 class IPFSRound(CollectSameUntilThresholdRound):
     """A round for sending data to IPFS and storing the returned hash."""

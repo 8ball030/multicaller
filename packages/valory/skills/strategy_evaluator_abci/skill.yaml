@@ -12,7 +12,7 @@ fingerprint:
   behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
   behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
   behaviours/base.py: bafybeidzevmaz3kvnizxt6cdoozj7mrtnbw3pthck372y3xqngju4afvee
-  behaviours/prepare_swap_tx.py: bafybeicgybp5w5h4n5mkiho4knisjbihix25hrncz6wr56lsea4tcktady
+  behaviours/prepare_swap_tx.py: bafybeia7x3roadnumftyvpimhhdz36je4eg5zru5i36qxu4l3rjaxd4jhu
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
   behaviours/strategy_exec.py: bafybeihboxj62na22jnvu2nwk56biggkxgkxefezhv4d7mlevxln7o6rr4
@@ -21,27 +21,30 @@ fingerprint:
   fsm_specification.yaml: bafybeicplfvxmgkkdveyoqefnukjt3lovx265p3ofh7x7x5jwtyru3yx7a
   handlers.py: bafybeihwqu65rsc5lhixfnhxgocxcn7synhmw66cbzqrfmuevbtkvvwbae
   models.py: bafybeiezx55cdvrvacfbxt7u5cbkkiyviwt567xau7nei4ohxgulrvvouy
-  payloads.py: bafybeielaaqlkgfdqgnbe35bg6tmlxel2u362okwtu7si5iu27sdudsya4
+  payloads.py: bafybeihtz2dcsnuppwr2wf7dlaazrakikxihivkjfueujjt6qm5rthj5s4
   rounds.py: bafybeicec2uhu6plr4mz32jspzoqpb63l3xfgnwwh7favfsbq76347n3w4
   states/__init__.py: bafybeidgoz7uxrcafbiq5mfg6tl7fcmxmd5auu3lexl7cxpbhlxfvfnoom
   states/backtesting.py: bafybeid6hsayprjbkzfhfvkbw4azs3v3cf7u74vdi465ywmy2j5chfctnu
   states/base.py: bafybeiegfygotwsggfdxebi5hxebdofj5w2znmzonm2ck5rkia2e377jai
   states/final_states.py: bafybeigkrwvzg2o3exdiofxmunjn2kgolnnojiik7ckzi26dgn2ydh7mla
-  states/prepare_swap.py: bafybeig2x3ws74f2hx6axxtlg6rnfbrshd5poez6fat6wqzfyuarfkudk4
+  states/prepare_swap.py: bafybeifl2if2dmv7msyzq34plcm5s53tinjixdcilaf5m6fq2cdk6xpnzq
   states/proxy_swap_queue.py: bafybeidguarl5aoqlgc56df2v2xt6u7rsxij3aymeanfstjv2jsn3jtiay
   states/strategy_exec.py: bafybeig72frgbgtxt3zccibv4ztnwvoydcfjmphipordf7gtf25xzk7ilq
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeiculmglnfnd7wvjeprtkf5e2rppqf7mdgsj3xvf5jdz24o2hyvpey
-contracts: []
+- eightballer/dcxt:0.1.0:bafybeic6x4zteicwuzd3f45vaq4geg2b6t443unrbeg7isvpoo4turz4ye
+contracts:
+- valory/gnosis_safe:0.1.0:bafybeiag5jjj5c66skkbjnxcjngeufhtcvcpnbnjlgox5mtuo2tk4w3ohi
 protocols:
 - eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
+- valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeifwmxrich5ccm3r23gjdtcbt6ixw54sitsyc337mucdnxkpnfyt7y
+- valory/market_data_fetcher_abci:0.1.0:bafybeieqshtt6qvopo24swg43uto222krcbzm6ejadovvyouenmwaz3fsa
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/portfolio_tracker_abci:0.1.0:bafybeifdpaj74pi75kv7mbi3gwuzoi2kxbupqqhthlwcfl52z47ud4ucse
+- valory/portfolio_tracker_abci:0.1.0:bafybeigetycrg4gjdq5twsn2llwomaq7swkayj25lpo3ecjnrfvw2h2scq
+- valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
 behaviours:
   main:
     args: {}
