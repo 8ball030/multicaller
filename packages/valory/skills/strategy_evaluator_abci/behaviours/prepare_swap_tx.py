@@ -20,7 +20,8 @@
 """This module contains the behaviour for preparing swap(s) instructions."""
 
 import json
-from typing import Any, Dict, Generator, List, Optional, Tuple
+import traceback
+from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple
 
 from packages.eightballer.connections.dcxt import PUBLIC_ID as DCXT_ID
 from packages.eightballer.protocols.orders.custom_types import (
@@ -29,13 +30,27 @@ from packages.eightballer.protocols.orders.custom_types import (
     OrderType,
 )
 from packages.eightballer.protocols.orders.message import OrdersMessage
+from packages.valory.contracts.gnosis_safe.contract import (
+    GnosisSafeContract,
+    SafeOperation,
+)
+from packages.valory.protocols.contract_api.message import ContractApiMessage
+from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
+from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
 from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
+)
+from packages.valory.skills.strategy_evaluator_abci.payloads import (
+    TransactionHashPayload,
 )
 from packages.valory.skills.strategy_evaluator_abci.states.prepare_swap import (
     PrepareEvmSwapRound,
     PrepareSwapRound,
 )
+from packages.valory.skills.transaction_settlement_abci.rounds import TX_HASH_LENGTH
+
+
+SAFE_GAS = 0
 
 
 class PrepareSwapBehaviour(StrategyEvaluatorBaseBehaviour):
@@ -170,7 +185,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                 type=OrderType.MARKET,
                 data=json.dumps(
                     {
-                        "safe_address": self.params.setup_params.get("safe_address"),
+                        "safe_contract_address": self.synchronized_data.safe_contract_address,
                     }
                 ),
             )
@@ -181,12 +196,65 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                 order=order,
             )
             call_data = result.order.data
+            try:
+                can_create_hash = yield from self._build_safe_tx_hash(
+                    vault_address=call_data["vault_address"],
+                    chain_id=call_data["chain_id"],
+                    call_data=call_data["data"],
+                )
+            except Exception as e:
+                self.context.logger.error(
+                    f"Error building safe tx hash: {traceback.format_exc()}"
+                )
+
             if call_data is None:
-                self.incomplete = True
+                self.incomplete = not can_create_hash
             else:
                 instructions.append(call_data)
 
         return instructions, self.incomplete
+
+    def _build_safe_tx_hash(
+        self,
+        vault_address: str,
+        chain_id: int,
+        call_data: str,
+    ) -> Any:
+        """Prepares and returns the safe tx hash for a multisend tx."""
+        self.context.logger.info(
+            f"Building safe tx hash: safe={self.synchronized_data.safe_contract_address}"
+        )
+        response_msg = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            contract_address=self.synchronized_data.safe_contract_address,
+            contract_id=str(GnosisSafeContract.contract_id),
+            contract_callable="get_raw_safe_transaction_hash",
+            to_address=vault_address,
+            value=0,
+            data=call_data,
+            safe_tx_gas=SAFE_GAS,
+            operation=SafeOperation.DELEGATE_CALL.value,
+            ledger_id="ethereum",
+        )
+
+        if response_msg.performative != ContractApiMessage.Performative.STATE:
+            self.context.logger.error(
+                "Couldn't get safe tx hash. Expected response performative "
+                f"{ContractApiMessage.Performative.STATE.value}, "  # type: ignore
+                f"received {response_msg.performative.value}: {response_msg}."
+            )
+            return False
+
+        tx_hash = response_msg.state.body.get("tx_hash", None)
+        if tx_hash is None or len(tx_hash) != TX_HASH_LENGTH:
+            self.context.logger.error(
+                "Something went wrong while trying to get the buy transaction's hash. "
+                f"Invalid hash {tx_hash!r} was returned."
+            )
+            return False
+
+        self.safe_tx_hash = tx_hash
+        return True
 
     def async_act(self) -> Generator:
         """Do the action."""
@@ -216,3 +284,43 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         msg._sender = str(self.context.skill_id)  # pylint: disable=protected-access
         response = yield from self._do_request(msg, dialogue)
         return response
+
+    def get_process_store_act(
+        self,
+        hash_: Optional[str],
+        process_fn: Callable[[Any], Generator[None, None, Tuple[Sized, bool]]],
+        store_filepath: str,
+    ) -> Generator:
+        """An async act method for getting some data, processing them, and storing the result.
+
+        1. Get some data using the given hash.
+        2. Process them using the given fn.
+        3. Send them to IPFS using the given filepath as intermediate storage.
+
+        :param hash_: the hash of the data to process.
+        :param process_fn: the function to process the data.
+        :param store_filepath: path to the file to store the processed data.
+        :yield: None
+        """
+        with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            data = yield from self.get_from_ipfs(hash_, SupportedFiletype.JSON)
+            sender = self.context.agent_address
+            payload_data = yield from self.get_ipfs_hash_payload_content(
+                data, process_fn, store_filepath
+            )
+            payload = TransactionHashPayload(
+                sender,
+                tx_hash=self.safe_tx_hash,
+                data_json=payload_data,
+                signature=None,
+            )
+
+        yield from self.finish_behaviour(payload)
+
+    def finish_behaviour(self, payload: BaseTxPayload) -> Generator:
+        """Finish the behaviour."""
+        with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
+            yield from self.send_a2a_transaction(payload)
+            yield from self.wait_until_round_end()
+
+        self.set_done()
