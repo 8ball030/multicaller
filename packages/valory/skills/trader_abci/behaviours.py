@@ -25,10 +25,6 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
 )
-
-# from packages.valory.skills.transaction_settlement_abci.behaviours import (  noqa: E800
-#     TransactionSettlementRoundBehaviour,  noqa: E800
-# )  noqa: E800
 from packages.valory.skills.market_data_fetcher_abci.behaviours import (
     MarketDataFetcherRoundBehaviour,
 )
@@ -49,6 +45,9 @@ from packages.valory.skills.trader_abci.composition import TraderAbciApp
 from packages.valory.skills.trader_decision_maker_abci.behaviours import (
     TraderDecisionMakerRoundBehaviour,
 )
+from packages.valory.skills.transaction_settlement_abci.behaviours import (
+    TransactionSettlementRoundBehaviour,
+)
 
 
 class TraderConsensusBehaviour(AbstractRoundBehaviour):
@@ -63,6 +62,6 @@ class TraderConsensusBehaviour(AbstractRoundBehaviour):
         *MarketDataFetcherRoundBehaviour.behaviours,
         *PortfolioTrackerRoundBehaviour.behaviours,
         *AgentStrategyEvaluatorRoundBehaviour.behaviours,
-        # *TransactionSettlementRoundBehaviour.behaviours,  # TODO
+        *TransactionSettlementRoundBehaviour.behaviours,  # TODO
         *ResetPauseABCIConsensusBehaviour.behaviours,
     }

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set e 
+set -e 
 
 tox -e isort,black,pylint,mypy,flake8,safety,bandit -p
 

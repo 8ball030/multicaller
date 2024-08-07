@@ -146,6 +146,11 @@ class SynchronizedData(
         """Get the participants to the backtesting."""
         return self._get_deserialized("participant_to_backtesting")
 
+    @property
+    def most_voted_tx_hash(self) -> float:
+        """Get the most_voted_tx_hash."""
+        return cast(float, self.db.get_strict("most_voted_tx_hash"))
+
 
 class IPFSRound(CollectSameUntilThresholdRound):
     """A round for sending data to IPFS and storing the returned hash."""

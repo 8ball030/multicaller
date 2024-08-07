@@ -8,8 +8,8 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeidyqa4hfgrw5ghpl7vihuyaplpjpurmqfelf7kne4ep64s2c5cw3q
   __init__.py: bafybeifhg74e54dl7ekajnmc3j4w4dotl3fqlvmayzuct35jahqnkkuosi
-  behaviours.py: bafybeicbhequh5dejccd37iay3ks7q3wiljxvwm3uhu7ja4s2o4mf2xh4a
-  composition.py: bafybeigerospujwrhgk7n44zwsim6rzf6fh5ycnpie62dmu4hiha7soige
+  behaviours.py: bafybeiftem2lmvjr6ygyk44amp4hfnuqdprmarowb6nsvvrsvvafmcwaxu
+  composition.py: bafybeigsxpmfwbvg2uaiqbngtt2mrarlzzp6lsdp6qaueh2puqww3on3ti
   dialogues.py: bafybeidwn2jk4vb4lbtkzbxoyhvbspsvwoww52laqav4qcvq6ixdf4txra
   handlers.py: bafybeihz3mhjyull7hpufo6gizfxrtdxinbnrlitmllwowykbbucdqcfkq
   models.py: bafybeidkrjhatevi53r5esuncus3uxuqxfmr3x3jzwq5pvqxabtbilhbde
@@ -26,7 +26,8 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
 - valory/market_data_fetcher_abci:0.1.0:bafybeifwmxrich5ccm3r23gjdtcbt6ixw54sitsyc337mucdnxkpnfyt7y
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/strategy_evaluator_abci:0.1.0:bafybeia2hc73ne64khw6lgazybv4l4yohhus3zqpd6xtmlkfddulkfztg4
+- valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
+- valory/strategy_evaluator_abci:0.1.0:bafybeieu6nmawoyyf2ydcx4stpbqptqhrd7sxnfitrbx3mbtemrx7kwimm
 - valory/portfolio_tracker_abci:0.1.0:bafybeifdpaj74pi75kv7mbi3gwuzoi2kxbupqqhthlwcfl52z47ud4ucse
 behaviours:
   main:

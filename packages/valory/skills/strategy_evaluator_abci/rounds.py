@@ -198,7 +198,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         HodlRound: {},
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
-        SwapTxPreparedRound: set(),  # TODO: {get_name(SynchronizedData.most_voted_instruction_set)},
+        SwapTxPreparedRound: {get_name(SynchronizedData.most_voted_tx_hash)},
         NoMoreSwapsRound: set(),
         StrategyExecutionFailedRound: set(),
         BacktestingNegativeRound: set(),
