@@ -19,9 +19,10 @@
 
 """This module contains the behaviour for preparing swap(s) instructions."""
 
+import hashlib
 import json
 import traceback
-from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple
+from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple, cast
 
 from packages.eightballer.connections.dcxt import PUBLIC_ID as DCXT_ID
 from packages.eightballer.protocols.orders.custom_types import (
@@ -46,6 +47,9 @@ from packages.valory.skills.strategy_evaluator_abci.payloads import (
 from packages.valory.skills.strategy_evaluator_abci.states.prepare_swap import (
     PrepareEvmSwapRound,
     PrepareSwapRound,
+)
+from packages.valory.skills.transaction_settlement_abci.payload_tools import (
+    hash_payload_to_hex,
 )
 from packages.valory.skills.transaction_settlement_abci.rounds import TX_HASH_LENGTH
 
@@ -189,7 +193,6 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                     }
                 ),
             )
-            # TODO: add in a check for
 
             result = yield from self.get_dcxt_response(
                 protocol_performative=OrdersMessage.Performative.CREATE_ORDER,  # type: ignore
@@ -200,7 +203,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                 can_create_hash = yield from self._build_safe_tx_hash(
                     vault_address=call_data["vault_address"],
                     chain_id=call_data["chain_id"],
-                    call_data=call_data["data"],
+                    call_data=call_data["data"].encode(),
                 )
             except Exception as e:
                 self.context.logger.error(
@@ -222,8 +225,14 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
     ) -> Any:
         """Prepares and returns the safe tx hash for a multisend tx."""
         self.context.logger.info(
-            f"Building safe tx hash: safe={self.synchronized_data.safe_contract_address}"
+            f"Building safe tx hash: safe={self.synchronized_data.safe_contract_address}\n"
+            + f"vault={vault_address}\n"
+            + f"chain_id={chain_id}\n"
+            + f"call_data={call_data}"
         )
+
+        data = cast(bytes, call_data)
+
         response_msg = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_address=self.synchronized_data.safe_contract_address,
@@ -231,7 +240,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             contract_callable="get_raw_safe_transaction_hash",
             to_address=vault_address,
             value=0,
-            data=call_data,
+            data=data,
             safe_tx_gas=SAFE_GAS,
             operation=SafeOperation.DELEGATE_CALL.value,
             ledger_id="ethereum",
@@ -253,7 +262,15 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             )
             return False
 
-        self.safe_tx_hash = tx_hash
+        safe_tx_hash = tx_hash[2:]
+        self.context.logger.info(f"Hash of the Safe transaction: {safe_tx_hash}")
+        # temp hack:
+        payload_string = hash_payload_to_hex(
+            safe_tx_hash, 0, SAFE_GAS, vault_address, data
+        )
+        self.safe_tx_hash = safe_tx_hash
+        self.payload_string = payload_string
+        self.call_data = call_data
         return True
 
     def async_act(self) -> Generator:
@@ -308,11 +325,20 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             yield from self.get_ipfs_hash_payload_content(
                 data, process_fn, store_filepath
             )
+            signature, data_json = yield from self.get_data_signature(
+                self.payload_string
+            )
+
+            self.context.logger.info(f"Data json: {data_json}")
+            self.context.logger.info(f"Signature: {signature}")
+            self.context.logger.info(f"Safe tx hash: {self.safe_tx_hash}")
+
+            safe_tx_hash = self.safe_tx_hash
             payload = TransactionHashPayload(
                 sender,
-                tx_hash=self.safe_tx_hash,
-                data_json=self.synchronized_data.data_json,
-                signature=self.synchronized_data.signature,
+                signature=signature,
+                data_json=safe_tx_hash,
+                tx_hash=data_json,
             )
 
         yield from self.finish_behaviour(payload)
@@ -324,3 +350,16 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             yield from self.wait_until_round_end()
 
         self.set_done()
+
+    def get_data_signature(self, string: str) -> Generator[None, None, Tuple[str, str]]:
+        """Get signature for the data."""
+        data_bytes = string.encode("ascii")
+        hash_bytes = hashlib.sha256(data_bytes).digest()
+
+        signature_hex = yield from self.get_signature(
+            hash_bytes, is_deprecated_mode=True
+        )
+        # remove the leading '0x'
+        signature_hex = signature_hex[2:]
+        self.context.logger.info(f"Data signature: {signature_hex}")
+        return signature_hex, string

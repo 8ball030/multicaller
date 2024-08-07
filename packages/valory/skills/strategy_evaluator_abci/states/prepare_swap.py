@@ -19,7 +19,10 @@
 
 """This module contains the swap(s) instructions' preparation state of the strategy evaluator abci app."""
 
-from typing import Any, Counter, Dict, Tuple, Type, cast
+import copy
+import hashlib
+import json
+from typing import Any, Counter, Dict, Generator, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     ABCIAppException,
@@ -115,3 +118,22 @@ class PrepareEvmSwapRound(CollectSameUntilThresholdRound):
         super().check_majority_possible(
             votes_by_participant, nb_participants, exception_cls
         )
+
+    def get_data_signature(self, data: Dict) -> Generator[None, None, Tuple[str, str]]:
+        """Get signature for the data."""
+        data = copy.deepcopy(data)
+
+        data.pop("agent_address", None)  # agent address is unique, need to remove it
+        data.pop("data_source", None)  # data_source can be unique, need to remove it
+
+        data_json = json.dumps(data, sort_keys=True)
+        data_bytes = data_json.encode("ascii")
+        hash_bytes = hashlib.sha256(data_bytes).digest()
+
+        signature_hex = yield from self.get_signature(  # type: ignore
+            hash_bytes, is_deprecated_mode=True
+        )
+        # remove the leading '0x'
+        signature_hex = signature_hex[2:]
+        self.context.logger.info(f"Data signature: {signature_hex}")
+        return signature_hex, data_json

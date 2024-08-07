@@ -57,7 +57,7 @@ transition_func:
     (BacktestRound, ERROR_BACKTESTING): BacktestingFailedRound
     (BacktestRound, NO_MAJORITY): BacktestRound
     (BacktestRound, ROUND_TIMEOUT): BacktestRound
-    (PrepareEvmSwapRound, ERROR_PREPARING_SWAPS): PrepareEvmSwapRound
+    (PrepareEvmSwapRound, ROUND_TIMEOUT): PrepareEvmSwapRound
     (PrepareEvmSwapRound, NO_INSTRUCTIONS): PrepareEvmSwapRound
     (PrepareEvmSwapRound, TRANSACTION_PREPARED): SwapTxPreparedRound
     (PrepareEvmSwapRound, NO_MAJORITY): PrepareEvmSwapRound

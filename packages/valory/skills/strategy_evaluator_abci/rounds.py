@@ -103,7 +103,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
             - proxy swap timeout: 4.
         5. PrepareEvmSwapRound
             - transaction prepared: 6.
-            - error preparing swaps: 5.
+            - round timeout: 5.
             - no instructions: 5.
             - no majority: 5.
         6. SwapTxPreparedRound
@@ -185,7 +185,7 @@ class StrategyEvaluatorAbciApp(AbciApp[Event]):
         },
         PrepareEvmSwapRound: {
             Event.TRANSACTION_PREPARED: SwapTxPreparedRound,
-            Event.ERROR_PREPARING_SWAPS: PrepareEvmSwapRound,
+            Event.ROUND_TIMEOUT: PrepareEvmSwapRound,
             Event.NO_INSTRUCTIONS: PrepareEvmSwapRound,
             Event.NO_MAJORITY: PrepareEvmSwapRound,
         },
