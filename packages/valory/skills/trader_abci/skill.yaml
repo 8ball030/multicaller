@@ -27,7 +27,7 @@ skills:
 - valory/market_data_fetcher_abci:0.1.0:bafybeiceugx5n4a5dnk6w4ochanufcviocvfbq67yxfxdcfxys4k7l3ple
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
-- valory/strategy_evaluator_abci:0.1.0:bafybeiekkfuv5f4rmzvp7tyykpmvkthrum6hk4zacnofrrerbizdpywd2a
+- valory/strategy_evaluator_abci:0.1.0:bafybeihncn36q7ubamkadxc4hhimhyjpmwvrauce33wg3czqncgttqueqa
 - valory/portfolio_tracker_abci:0.1.0:bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q
 behaviours:
   main:
