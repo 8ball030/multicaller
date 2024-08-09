@@ -128,6 +128,7 @@ type: skill
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
         ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
+        trade_size_in_base_token: ${TRADE_SIZE_IN_BASE_TOKEN:float:0.0001}
     benchmark_tool: &id004
       args:
         log_dir: ${LOG_DIR:str:/benchmarks}
@@ -209,6 +210,7 @@ type: skill
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
         ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
+        trade_size_in_base_token: ${TRADE_SIZE_IN_BASE_TOKEN:float:0.0001}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -268,6 +270,7 @@ type: skill
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
         ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
+        trade_size_in_base_token: ${TRADE_SIZE_IN_BASE_TOKEN:float:0.0001}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
@@ -327,6 +330,7 @@ type: skill
         epsilon: ${EPSILON:float:0.1}
         sharpe_threshold: ${SHARPE_THRESHOLD:float:1.0}
         ledger_ids: ${LEDGER_IDS:list:["ethereum"]}
+        trade_size_in_base_token: ${TRADE_SIZE_IN_BASE_TOKEN:float:0.0001}
     benchmark_tool: *id004
     get_balance: *id001
     token_accounts: *id001
