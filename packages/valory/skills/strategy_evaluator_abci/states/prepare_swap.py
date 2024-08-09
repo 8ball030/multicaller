@@ -69,10 +69,8 @@ class PrepareEvmSwapRound(CollectSameUntilThresholdRound):
     done_event = Event.TRANSACTION_PREPARED
     none_event = Event.NO_INSTRUCTIONS
     no_majority_event = Event.NO_MAJORITY
-    collection_key = get_name(SynchronizedData.participant_to_signatures)
+    collection_key = get_name(SynchronizedData.participant_to_signature)
     selection_key = (
-        get_name(SynchronizedData.signature),
-        get_name(SynchronizedData.data_json),
         get_name(SynchronizedData.most_voted_tx_hash),
     )
 
