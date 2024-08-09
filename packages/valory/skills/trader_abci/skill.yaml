@@ -27,7 +27,7 @@ skills:
 - valory/market_data_fetcher_abci:0.1.0:bafybeihod4smm5k3ena4tgnilcdbfgrc2ulg5t6ctdd4uiuuu6g3jy3e5u
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
-- valory/strategy_evaluator_abci:0.1.0:bafybeifrzpsiq42i5wfnzs2edefkcp275nwxgsqia4oviyay2ikifxnrla
+- valory/strategy_evaluator_abci:0.1.0:bafybeigel5cwcnavbrdxvhz2nkktkahrkz2krnhmqdnxnccwix4fian4jy
 - valory/portfolio_tracker_abci:0.1.0:bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q
 behaviours:
   main:
@@ -170,6 +170,7 @@ models:
       epsilon: 0.1
       sharpe_threshold: 1.0
       use_solana: false
+      trade_size_in_base_token: 0.0001
       ledger_ids:
       - ethereum
       exchange_ids:

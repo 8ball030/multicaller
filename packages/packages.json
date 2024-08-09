@@ -6,13 +6,13 @@
         "custom/valory/trend_following_strategy/0.1.0": "bafybeibejqrhpxpcszjjq6sqqknk6ja72zfiyebqmpyw32e5hjd5hanx7e",
         "custom/eightballer/always_buy/0.1.0": "bafybeic2fpf5ozhkf5jgzmppmfsprqw5ayfx6spgl3owuws464n7mkhpqi",
         "skill/valory/trader_decision_maker_abci/0.1.0": "bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi",
-        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeifrzpsiq42i5wfnzs2edefkcp275nwxgsqia4oviyay2ikifxnrla",
+        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeigel5cwcnavbrdxvhz2nkktkahrkz2krnhmqdnxnccwix4fian4jy",
         "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeihod4smm5k3ena4tgnilcdbfgrc2ulg5t6ctdd4uiuuu6g3jy3e5u",
-        "skill/valory/trader_abci/0.1.0": "bafybeihyp2odknjylo7vdagc27ht5i2sr3itvzu44kum5szzqhkmmcqt5u",
+        "skill/valory/trader_abci/0.1.0": "bafybeib7ogs4rt6bisjxl5pvviqjl5nny6thztuvinm2lbhmkrdxrmvyra",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q",
-        "agent/valory/solana_trader/0.1.0": "bafybeihgmjom3jbcpomm4xhw7qqpw46jjnbn6opga2kc7alx4kcaonnhfi",
-        "service/valory/solana_trader/0.1.0": "bafybeiecaxzcbmfeuiakdqlpicr3cohu33w3xr7zab3qf4uw3dpo7q7ele"
+        "agent/valory/solana_trader/0.1.0": "bafybeigrivtzjqxs74ili4r5rqfr6nzsbtecyt7lnjl3ylwbmcjahysyoi",
+        "service/valory/solana_trader/0.1.0": "bafybeiddam4lp66buulbnown7s5szqkqmgh5ykuetlluwqtl4qe2fqwcm4"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
