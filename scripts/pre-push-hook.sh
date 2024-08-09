@@ -2,7 +2,8 @@
 
 set -e 
 
-tox -e isort,black,pylint,mypy,flake8,safety,bandit -p
+# We assume we have run linters and tests locally in the pre-commit hook.
+# tox -e isort,black,pylint,mypy,flake8,safety,bandit -p 
 
 # Run the tests for abci.
 tox -e check-packages,check-abci-docstrings,check-handlers,analyse-service,check-abciapp-specs
@@ -12,3 +13,13 @@ tomte check-copyright --author valory --exclude-part abci --exclude-part http_cl
 
 autonomy packages lock
 echo "Pre-push hook completed successfully."
+# Check if there are any changes to packages/packages.json
+
+function check_changes() {
+    if [ -n "$(git status --porcelain)" ]; then
+        echo "Changes detected in packages/packages.json. Please run 'autonomy packages lock' and push again."
+        exit 1
+    fi
+}
+
+make clean && autonomy push-all

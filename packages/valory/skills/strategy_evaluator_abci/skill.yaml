@@ -12,7 +12,7 @@ fingerprint:
   behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
   behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
   behaviours/base.py: bafybeidzevmaz3kvnizxt6cdoozj7mrtnbw3pthck372y3xqngju4afvee
-  behaviours/prepare_swap_tx.py: bafybeiff3mh4bb6fezm4lsedpikmedxwvkpbta2zmjcaxhojn6e4beng6u
+  behaviours/prepare_swap_tx.py: bafybeiepexzlxlnitx5benjae56rtoedk4rc7ej76ust25sheqki72yyw4
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
   behaviours/strategy_exec.py: bafybeihboxj62na22jnvu2nwk56biggkxgkxefezhv4d7mlevxln7o6rr4
@@ -20,7 +20,7 @@ fingerprint:
   dialogues.py: bafybeigxdc3i2wq5hp266op5lyyfswwbosphqzrcapgqxscrznggrllype
   fsm_specification.yaml: bafybeifkf2mffocii4jspbjcx7wc5ji2mypksfil7ddgebiid2bi55pvfy
   handlers.py: bafybeihwqu65rsc5lhixfnhxgocxcn7synhmw66cbzqrfmuevbtkvvwbae
-  models.py: bafybeiezx55cdvrvacfbxt7u5cbkkiyviwt567xau7nei4ohxgulrvvouy
+  models.py: bafybeictphbbro6hxbyf4waeg55vw5ytts3hwz4wxjuaructwuhu3ehpga
   payloads.py: bafybeifwtdmelb4g6boltjce6am4odchk6gp7zh6galr3susbdo2tlanoe
   rounds.py: bafybeiegmi3xzdpvxld2ufkbrylzyl5g2xhjmxw3brw5ndgmrwo4cotdcy
   states/__init__.py: bafybeidgoz7uxrcafbiq5mfg6tl7fcmxmd5auu3lexl7cxpbhlxfvfnoom
@@ -41,7 +41,7 @@ protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeihod4smm5k3ena4tgnilcdbfgrc2ulg5t6ctdd4uiuuu6g3jy3e5u
+- valory/market_data_fetcher_abci:0.1.0:bafybeiceugx5n4a5dnk6w4ochanufcviocvfbq67yxfxdcfxys4k7l3ple
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/portfolio_tracker_abci:0.1.0:bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q
 - valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
@@ -164,6 +164,7 @@ models:
         ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
       native_currencies:
         ethereum: ETH
+      trade_size_in_base_token: 0.0001
     class_name: StrategyEvaluatorParams
   swap_quotes:
     args:

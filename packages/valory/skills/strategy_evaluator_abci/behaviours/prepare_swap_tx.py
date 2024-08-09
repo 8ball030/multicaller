@@ -180,11 +180,10 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         instructions = []
         for quote_data in orders:
             symbol = f'{quote_data["inputMint"]}/{quote_data["outputMint"]}'
-            size = 0.0001
             order = Order(
                 exchange_id="balancer",
                 symbol=symbol,
-                amount=size,
+                amount=self.params.trade_size_in_base_token,
                 side=OrderSide.BUY,
                 type=OrderType.MARKET,
                 data=json.dumps(

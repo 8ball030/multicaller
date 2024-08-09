@@ -130,6 +130,9 @@ class StrategyEvaluatorParams(BaseParams):
         self.native_currencies = self._ensure(
             "native_currencies", kwargs, Dict[str, str]
         )
+        self.trade_size_in_base_token = self._ensure(
+            "trade_size_in_base_token", kwargs, float
+        )
         super().__init__(*args, **kwargs)
 
 
