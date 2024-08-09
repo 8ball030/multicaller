@@ -22,4 +22,4 @@ function check_changes() {
     fi
 }
 
-make clean-build && autonomy push-all
+make clean-pyc && autonomy push-all
