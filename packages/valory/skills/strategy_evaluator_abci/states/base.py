@@ -38,12 +38,9 @@ from packages.valory.skills.strategy_evaluator_abci.payloads import IPFSHashPayl
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
 )
-
-
-# TODO replace with  tx settlement
-# from packages.valory.skills.transaction_settlement_abci.rounds import (  noqa: E800
-#     SynchronizedData as TxSettlementSyncedData,  noqa: E800
-# )  noqa: E800
+from packages.valory.skills.transaction_settlement_abci.rounds import (
+    SynchronizedData as TxSettlementSyncedData,
+)
 
 
 class Event(Enum):
@@ -77,7 +74,8 @@ class Event(Enum):
 class SynchronizedData(
     DecisionMakerSyncedData,
     MarketFetcherSyncedData,
-    PortfolioTrackerSyncedData,  # TODO: TxSettlementSyncedData
+    PortfolioTrackerSyncedData,
+    TxSettlementSyncedData,
 ):
     """Class to represent the synchronized data.
 
@@ -145,26 +143,6 @@ class SynchronizedData(
     def participant_to_backtesting(self) -> DeserializedCollection:
         """Get the participants to the backtesting."""
         return self._get_deserialized("participant_to_backtesting")
-
-    @property
-    def most_voted_tx_hash(self) -> float:
-        """Get the most_voted_tx_hash."""
-        return cast(float, self.db.get_strict("most_voted_tx_hash"))
-
-    @property
-    def participant_to_signatures(self) -> float:
-        """Get the most_voted_tx_hash."""
-        return cast(float, self.db.get_strict("most_voted_tx_hash"))
-
-    @property
-    def signature(self) -> str:
-        """Get the current agent's signature."""
-        return str(self.db.get("signature", {}))
-
-    @property
-    def data_json(self) -> str:
-        """Get the data json."""
-        return str(self.db.get("data_json", ""))
 
 
 class IPFSRound(CollectSameUntilThresholdRound):

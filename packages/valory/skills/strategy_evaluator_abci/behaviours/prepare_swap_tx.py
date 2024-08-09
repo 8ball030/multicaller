@@ -332,12 +332,11 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             self.context.logger.info(f"Signature: {signature}")
             self.context.logger.info(f"Safe tx hash: {self.safe_tx_hash}")
 
-            safe_tx_hash = self.safe_tx_hash
             payload = TransactionHashPayload(
                 sender,
                 signature=signature,
-                data_json=safe_tx_hash,
-                tx_hash=data_json,
+                data_json=data_json,
+                tx_hash=self.safe_tx_hash,
             )
 
         yield from self.finish_behaviour(payload)

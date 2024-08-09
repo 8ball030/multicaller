@@ -19,10 +19,7 @@
 
 """This module contains the swap(s) instructions' preparation state of the strategy evaluator abci app."""
 
-import copy
-import hashlib
-import json
-from typing import Any, Counter, Dict, Generator, Tuple, Type, cast
+from typing import Any, Counter, Dict, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     ABCIAppException,
@@ -69,12 +66,8 @@ class PrepareEvmSwapRound(CollectSameUntilThresholdRound):
     done_event = Event.TRANSACTION_PREPARED
     none_event = Event.NO_INSTRUCTIONS
     no_majority_event = Event.NO_MAJORITY
-    collection_key = get_name(SynchronizedData.participant_to_signatures)
-    selection_key = (
-        get_name(SynchronizedData.signature),
-        get_name(SynchronizedData.data_json),
-        get_name(SynchronizedData.most_voted_tx_hash),
-    )
+    collection_key = get_name(SynchronizedData.participant_to_signature)
+    selection_key = (get_name(SynchronizedData.most_voted_tx_hash),)
 
     @property
     def payload_values_count(self) -> Counter:
@@ -118,22 +111,3 @@ class PrepareEvmSwapRound(CollectSameUntilThresholdRound):
         super().check_majority_possible(
             votes_by_participant, nb_participants, exception_cls
         )
-
-    def get_data_signature(self, data: Dict) -> Generator[None, None, Tuple[str, str]]:
-        """Get signature for the data."""
-        data = copy.deepcopy(data)
-
-        data.pop("agent_address", None)  # agent address is unique, need to remove it
-        data.pop("data_source", None)  # data_source can be unique, need to remove it
-
-        data_json = json.dumps(data, sort_keys=True)
-        data_bytes = data_json.encode("ascii")
-        hash_bytes = hashlib.sha256(data_bytes).digest()
-
-        signature_hex = yield from self.get_signature(  # type: ignore
-            hash_bytes, is_deprecated_mode=True
-        )
-        # remove the leading '0x'
-        signature_hex = signature_hex[2:]
-        self.context.logger.info(f"Data signature: {signature_hex}")
-        return signature_hex, data_json
