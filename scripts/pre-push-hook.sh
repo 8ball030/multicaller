@@ -12,3 +12,13 @@ tomte check-copyright --author valory --exclude-part abci --exclude-part http_cl
 
 autonomy packages lock
 echo "Pre-push hook completed successfully."
+# Check if there are any changes to packages/packages.json
+
+function check_changes() {
+    if [ -n "$(git status --porcelain)" ]; then
+        echo "Changes detected in packages/packages.json. Please run 'autonomy packages lock' and push again."
+        exit 1
+    fi
+}
+
+make clean && autonomy push-all
