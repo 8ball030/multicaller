@@ -332,7 +332,6 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             self.context.logger.info(f"Signature: {signature}")
             self.context.logger.info(f"Safe tx hash: {self.safe_tx_hash}")
 
-            safe_tx_hash = self.safe_tx_hash
             payload = TransactionHashPayload(
                 sender,
                 signature=signature,

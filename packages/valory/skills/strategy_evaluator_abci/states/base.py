@@ -38,7 +38,6 @@ from packages.valory.skills.strategy_evaluator_abci.payloads import IPFSHashPayl
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
 )
-
 from packages.valory.skills.transaction_settlement_abci.rounds import (
     SynchronizedData as TxSettlementSyncedData,
 )
@@ -75,8 +74,8 @@ class Event(Enum):
 class SynchronizedData(
     DecisionMakerSyncedData,
     MarketFetcherSyncedData,
-    PortfolioTrackerSyncedData,  
-    TxSettlementSyncedData
+    PortfolioTrackerSyncedData,
+    TxSettlementSyncedData,
 ):
     """Class to represent the synchronized data.
 
