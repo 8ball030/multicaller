@@ -2,7 +2,8 @@
 
 set -e 
 
-tox -e isort,black,pylint,mypy,flake8,safety,bandit -p
+# We assume we have run linters and tests locally in the pre-commit hook.
+# tox -e isort,black,pylint,mypy,flake8,safety,bandit -p 
 
 # Run the tests for abci.
 tox -e check-packages,check-abci-docstrings,check-handlers,analyse-service,check-abciapp-specs

@@ -41,7 +41,7 @@ protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeihod4smm5k3ena4tgnilcdbfgrc2ulg5t6ctdd4uiuuu6g3jy3e5u
+- valory/market_data_fetcher_abci:0.1.0:bafybeiceugx5n4a5dnk6w4ochanufcviocvfbq67yxfxdcfxys4k7l3ple
 - valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
 - valory/portfolio_tracker_abci:0.1.0:bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q
 - valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
