@@ -44,7 +44,7 @@ abci_app_transition_mapping: AbciAppTransitionMapping = {
     MarketDataFetcherAbci.FailedMarketFetchRound: DECISION_MAKING,
     PortfolioTrackerAbci.FinishedPortfolioTrackerRound: StrategyEvaluatorAbci.StrategyExecRound,
     PortfolioTrackerAbci.FailedPortfolioTrackerRound: DECISION_MAKING,
-    StrategyEvaluatorAbci.SwapTxPreparedRound: TransactionSettlementAbci.RandomnessTransactionSubmissionRound,  # TODO
+    StrategyEvaluatorAbci.SwapTxPreparedRound: TransactionSettlementAbci.RandomnessTransactionSubmissionRound,
     StrategyEvaluatorAbci.NoMoreSwapsRound: RESET_AND_PAUSE,
     StrategyEvaluatorAbci.StrategyExecutionFailedRound: DECISION_MAKING,
     StrategyEvaluatorAbci.InstructionPreparationFailedRound: DECISION_MAKING,
