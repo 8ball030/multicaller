@@ -114,7 +114,8 @@ jobs:
         tox -e check-handlers
         tox -e analyse-service
         tox -e check-abciapp-specs
-
+    - name: Run Tests
+      run: pytest packages/eightballer/customs/ packages/valory/customs/
   scan:
     name: gitleaks
     runs-on: ubuntu-latest
