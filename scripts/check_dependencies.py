@@ -208,7 +208,6 @@ class ToxFile:
         "open-aea-ledger-fetchai",
         "lyra-v2-client",
         "balpy",
-
     ]
 
     def __init__(
