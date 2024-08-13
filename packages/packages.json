@@ -5,14 +5,14 @@
         "custom/eightballer/vwap_momentum/0.1.0": "bafybeih2uiklkrin777kzhyk5khlnj35wapw2m5zeojrhglfosm76xjhym",
         "custom/valory/trend_following_strategy/0.1.0": "bafybeibejqrhpxpcszjjq6sqqknk6ja72zfiyebqmpyw32e5hjd5hanx7e",
         "custom/eightballer/always_buy/0.1.0": "bafybeic2fpf5ozhkf5jgzmppmfsprqw5ayfx6spgl3owuws464n7mkhpqi",
-        "skill/valory/trader_decision_maker_abci/0.1.0": "bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi",
-        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeihncn36q7ubamkadxc4hhimhyjpmwvrauce33wg3czqncgttqueqa",
-        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeiceugx5n4a5dnk6w4ochanufcviocvfbq67yxfxdcfxys4k7l3ple",
-        "skill/valory/trader_abci/0.1.0": "bafybeificpr6ooxmp5s7vejw3akeifptejb2zohn5n3trnqpjpb5kexlga",
-        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeiahme4udzjo4fg4ynk65ca5xodqzrwmad5vgjsji27byunvgy4iea",
-        "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q",
-        "agent/valory/solana_trader/0.1.0": "bafybeibnezswkkcsyhoevebiwge6thaklxltbjwpktcwywazaxg6ycpkrq",
-        "service/valory/solana_trader/0.1.0": "bafybeidckrftjxhiakqnjy3fhkizpmouhjt3e2bthnm3dag3rl3eeusn6y"
+        "skill/valory/trader_decision_maker_abci/0.1.0": "bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu",
+        "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeia5oxrsx5l3hb52set4l2hdhcjdaxmobstnzpme5ws7jpk3qpnzwa",
+        "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeibu7ruyfy2cbmi7tnkbc7q267t2bvvt47qch45hmasq45zszv6n24",
+        "skill/valory/trader_abci/0.1.0": "bafybeiawkgfw7kbk54i4w3wyqidxphhv4vfwbzcglxbssmjj6qzylw4lta",
+        "skill/valory/ipfs_package_downloader/0.1.0": "bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi",
+        "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeihnpy4fso2q6f5osf3u2yg5wkgrfuk6wewimhhwfglfktrrvliaju",
+        "agent/valory/solana_trader/0.1.0": "bafybeigru7kct7mrdjijurfktdeiv4vjuf2p6ctlgmpf5gcwlcnuc6s3ym",
+        "service/valory/solana_trader/0.1.0": "bafybeif6pgkqpyki6ejyxf23rvzierocnhc45ttovuddwnmsii4ef3bs44"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
