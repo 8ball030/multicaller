@@ -296,5 +296,5 @@ models:
     class_name: OrdersDialogues
 dependencies:
   open-aea-cli-ipfs:
-    version: ==1.51.0
+    version: ==1.55.0
 is_abstract: false
