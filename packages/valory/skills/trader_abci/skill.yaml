@@ -21,14 +21,14 @@ protocols:
 - eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
 - eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/registration_abci:0.1.0:bafybeihwkqc6klqrk247esh4cumfphosx3yadullxhmrrkovzg2rward5y
-- valory/reset_pause_abci:0.1.0:bafybeibd5divbbng3klkxlkzfwmwdc7imobcymfx57lf3owbyf7we7xdem
-- valory/market_data_fetcher_abci:0.1.0:bafybeiceugx5n4a5dnk6w4ochanufcviocvfbq67yxfxdcfxys4k7l3ple
-- valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
-- valory/strategy_evaluator_abci:0.1.0:bafybeihncn36q7ubamkadxc4hhimhyjpmwvrauce33wg3czqncgttqueqa
-- valory/portfolio_tracker_abci:0.1.0:bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q
+- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
+- valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
+- valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
+- valory/market_data_fetcher_abci:0.1.0:bafybeibu7ruyfy2cbmi7tnkbc7q267t2bvvt47qch45hmasq45zszv6n24
+- valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
+- valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
+- valory/strategy_evaluator_abci:0.1.0:bafybeia5oxrsx5l3hb52set4l2hdhcjdaxmobstnzpme5ws7jpk3qpnzwa
+- valory/portfolio_tracker_abci:0.1.0:bafybeihnpy4fso2q6f5osf3u2yg5wkgrfuk6wewimhhwfglfktrrvliaju
 behaviours:
   main:
     args: {}
@@ -296,5 +296,5 @@ models:
     class_name: OrdersDialogues
 dependencies:
   open-aea-cli-ipfs:
-    version: ==1.51.0
+    version: ==1.55.0
 is_abstract: false

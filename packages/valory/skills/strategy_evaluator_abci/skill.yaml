@@ -35,16 +35,16 @@ fingerprint_ignore_patterns: []
 connections:
 - eightballer/dcxt:0.1.0:bafybeicyeg2jnnvbhmles6gssw5zj2mjvcr2j2lyp5jrzdft3qsrnwgv5a
 contracts:
-- valory/gnosis_safe:0.1.0:bafybeiag5jjj5c66skkbjnxcjngeufhtcvcpnbnjlgox5mtuo2tk4w3ohi
+- valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
 protocols:
 - eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
-- valory/market_data_fetcher_abci:0.1.0:bafybeiceugx5n4a5dnk6w4ochanufcviocvfbq67yxfxdcfxys4k7l3ple
-- valory/trader_decision_maker_abci:0.1.0:bafybeifhi6yv6by3duducnvphcpzkmkmybmw5uhagc75mhseudoflzpcoi
-- valory/portfolio_tracker_abci:0.1.0:bafybeibnflo3pold7goq2gq2o3qwjlcnmk3wbijd4teywpe2e7t4kvza4q
-- valory/transaction_settlement_abci:0.1.0:bafybeihfrdgfhu7ijjorvktjplfa4aq3b5as4dtwmkgl6nhy2oz4ayidfu
+- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
+- valory/market_data_fetcher_abci:0.1.0:bafybeibu7ruyfy2cbmi7tnkbc7q267t2bvvt47qch45hmasq45zszv6n24
+- valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
+- valory/portfolio_tracker_abci:0.1.0:bafybeihnpy4fso2q6f5osf3u2yg5wkgrfuk6wewimhhwfglfktrrvliaju
+- valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
     args: {}
