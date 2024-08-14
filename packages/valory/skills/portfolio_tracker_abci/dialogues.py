@@ -19,6 +19,12 @@
 
 """This module contains the dialogues of the FSM app."""
 
+from packages.eightballer.protocols.balances.dialogues import (
+    BalancesDialogue as BaseBalancesDialogue,
+)
+from packages.eightballer.protocols.balances.dialogues import (
+    BalancesDialogues as BaseBalancesDialogues,
+)
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
 )
@@ -89,3 +95,7 @@ TendermintDialogues = BaseTendermintDialogues
 
 IpfsDialogue = BaseIpfsDialogue
 IpfsDialogues = BaseIpfsDialogues
+
+
+BaseBalancesDialogue = BaseBalancesDialogue
+BaseBalancesDialogues = BaseBalancesDialogues

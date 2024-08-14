@@ -19,6 +19,18 @@
 
 """This module contains the classes required for dialogue management."""
 
+from packages.eightballer.protocols.balances.dialogues import (
+    BalancesDialogue as BaseBalancesDialogue,
+)
+from packages.eightballer.protocols.balances.dialogues import (
+    BalancesDialogues as BaseBalancesDialogues,
+)
+from packages.eightballer.protocols.orders.dialogues import (
+    OrdersDialogue as BaseOrdersDialogue,
+)
+from packages.eightballer.protocols.orders.dialogues import (
+    OrdersDialogues as BaseOrdersDialogues,
+)
 from packages.eightballer.protocols.tickers.dialogues import (
     TickersDialogue as BaseTickersDialogue,
 )
@@ -97,3 +109,9 @@ IpfsDialogues = BaseIpfsDialogues
 
 TickersDialogue = BaseTickersDialogue
 TickersDialogues = BaseTickersDialogues
+
+BalancesDialogue = BaseBalancesDialogue
+BalancesDialogues = BaseBalancesDialogues
+
+OrdersDialogue = BaseOrdersDialogue
+OrdersDialogues = BaseOrdersDialogues

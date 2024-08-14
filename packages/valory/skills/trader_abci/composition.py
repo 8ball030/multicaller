@@ -25,13 +25,12 @@ import packages.valory.skills.registration_abci.rounds as RegistrationAbci
 import packages.valory.skills.reset_pause_abci.rounds as ResetAndPauseAbci
 import packages.valory.skills.strategy_evaluator_abci.rounds as StrategyEvaluatorAbci
 import packages.valory.skills.trader_decision_maker_abci.rounds as TraderDecisionMakerAbci
+import packages.valory.skills.transaction_settlement_abci.rounds as TransactionSettlementAbci
 from packages.valory.skills.abstract_round_abci.abci_app_chain import (
     AbciAppTransitionMapping,
     chain,
 )
 
-
-# import packages.valory.skills.transaction_settlement_abci.rounds as TransactionSettlementAbci  noqa: E800
 
 DECISION_MAKING = TraderDecisionMakerAbci.RandomnessRound
 RESET_AND_PAUSE = ResetAndPauseAbci.ResetAndPauseRound
@@ -45,15 +44,15 @@ abci_app_transition_mapping: AbciAppTransitionMapping = {
     MarketDataFetcherAbci.FailedMarketFetchRound: DECISION_MAKING,
     PortfolioTrackerAbci.FinishedPortfolioTrackerRound: StrategyEvaluatorAbci.StrategyExecRound,
     PortfolioTrackerAbci.FailedPortfolioTrackerRound: DECISION_MAKING,
-    # StrategyEvaluatorAbci.SwapTxPreparedRound: TransactionSettlementAbci.RandomnessTransactionSubmissionRound,    # TODO
+    StrategyEvaluatorAbci.SwapTxPreparedRound: TransactionSettlementAbci.RandomnessTransactionSubmissionRound,
     StrategyEvaluatorAbci.NoMoreSwapsRound: RESET_AND_PAUSE,
     StrategyEvaluatorAbci.StrategyExecutionFailedRound: DECISION_MAKING,
     StrategyEvaluatorAbci.InstructionPreparationFailedRound: DECISION_MAKING,
     StrategyEvaluatorAbci.HodlRound: RESET_AND_PAUSE,
     StrategyEvaluatorAbci.BacktestingNegativeRound: DECISION_MAKING,
     StrategyEvaluatorAbci.BacktestingFailedRound: DECISION_MAKING,
-    # TransactionSettlementAbci.FinishedTransactionSubmissionRound: DECISION_MAKING,    # TODO
-    # TransactionSettlementAbci.FailedRound: DECISION_MAKING,    # TODO
+    TransactionSettlementAbci.FinishedTransactionSubmissionRound: DECISION_MAKING,
+    TransactionSettlementAbci.FailedRound: DECISION_MAKING,
     ResetAndPauseAbci.FinishedResetAndPauseRound: DECISION_MAKING,
     ResetAndPauseAbci.FinishedResetAndPauseErrorRound: RegistrationAbci.RegistrationRound,
 }
@@ -65,6 +64,7 @@ TraderAbciApp = chain(
         MarketDataFetcherAbci.MarketDataFetcherAbciApp,
         PortfolioTrackerAbci.PortfolioTrackerAbciApp,
         StrategyEvaluatorAbci.StrategyEvaluatorAbciApp,
+        TransactionSettlementAbci.TransactionSubmissionAbciApp,
         # TransactionSettlementAbci.SolanaTransactionSettlementAbciApp,  # TODO
         ResetAndPauseAbci.ResetPauseAbciApp,
     ),

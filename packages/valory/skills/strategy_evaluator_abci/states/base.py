@@ -38,12 +38,9 @@ from packages.valory.skills.strategy_evaluator_abci.payloads import IPFSHashPayl
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     SynchronizedData as DecisionMakerSyncedData,
 )
-
-
-# TODO replace with  tx settlement
-# from packages.valory.skills.transaction_settlement_abci.rounds import (  noqa: E800
-#     SynchronizedData as TxSettlementSyncedData,  noqa: E800
-# )  noqa: E800
+from packages.valory.skills.transaction_settlement_abci.rounds import (
+    SynchronizedData as TxSettlementSyncedData,
+)
 
 
 class Event(Enum):
@@ -52,10 +49,12 @@ class Event(Enum):
     NO_ORDERS = "no_orders"
     PREPARE_SWAP = "prepare_swap"
     BACKTEST_POSITIVE_PROXY_SERVER = "prepare_swap_proxy_server"
+    BACKTEST_POSITIVE_EVM = "prepare_swap_evm"
     PREPARE_INCOMPLETE_SWAP = "prepare_incomplete_swap"
     ERROR_PREPARING_SWAPS = "error_preparing_swaps"
     NO_INSTRUCTIONS = "no_instructions"
     INSTRUCTIONS_PREPARED = "instructions_prepared"
+    TRANSACTION_PREPARED = "transaction_prepared"
     INCOMPLETE_INSTRUCTIONS_PREPARED = "incomplete_instructions_prepared"
     ERROR_PREPARING_INSTRUCTIONS = "error_preparing_instructions"
     SWAP_TX_PREPARED = "swap_tx_prepared"
@@ -75,7 +74,8 @@ class Event(Enum):
 class SynchronizedData(
     DecisionMakerSyncedData,
     MarketFetcherSyncedData,
-    PortfolioTrackerSyncedData,  # TODO: TxSettlementSyncedData
+    PortfolioTrackerSyncedData,
+    TxSettlementSyncedData,
 ):
     """Class to represent the synchronized data.
 

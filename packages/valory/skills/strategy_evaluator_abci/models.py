@@ -125,6 +125,14 @@ class StrategyEvaluatorParams(BaseParams):
         )
         self.ipfs_fetch_retries: int = self._ensure("ipfs_fetch_retries", kwargs, int)
         self.sharpe_threshold: float = self._ensure("sharpe_threshold", kwargs, float)
+        self.use_solana = self._ensure("use_solana", kwargs, bool)
+        self.base_tokens = self._ensure("base_tokens", kwargs, Dict[str, str])
+        self.native_currencies = self._ensure(
+            "native_currencies", kwargs, Dict[str, str]
+        )
+        self.trade_size_in_base_token = self._ensure(
+            "trade_size_in_base_token", kwargs, float
+        )
         super().__init__(*args, **kwargs)
 
 

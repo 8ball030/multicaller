@@ -22,6 +22,7 @@
 import json
 import os
 from abc import ABC
+from datetime import datetime, timedelta
 from typing import (
     Any,
     Callable,
@@ -68,6 +69,9 @@ UTF8 = "utf-8"
 STRATEGY_KEY = "trading_strategy"
 ENTRY_POINT_STORE_KEY = "entry_point"
 TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
+DEFAULT_MARKET_SEPARATOR = "/"
+DEFAULT_DATE_RANGE_SECONDS = 300
+DEFAULT_DATA_LOOKBACK_MINUTES = 60
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -264,7 +268,6 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         params = {
             "ledger_id": ledger_id,
         }
-        exchange_id = "balancer"
         for key, value in params.items():
             params[key] = value.encode("utf-8")  # type: ignore
         exchanges = self.params.exchange_ids[ledger_id]
@@ -281,17 +284,31 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             )
 
             for ticker in msg.tickers.tickers:
-                token_address = ticker.symbol.split("/")[0]  # type: ignore
+                token_address = ticker.symbol.split(DEFAULT_MARKET_SEPARATOR)[0]  # type: ignore
 
-                date_range = range(1, 50)
+                def date_range(  # type: ignore
+                    start, end, seconds_delta=DEFAULT_DATE_RANGE_SECONDS
+                ) -> Generator[int, None, None]:
+                    """Generate a range of dates in the ms format. We do this as tickers are just spot prices and we dont yet retrieve historical data."""
+                    current = start
+                    while current < end:
+                        yield current.timestamp() * 1000
+                        current += timedelta(seconds=seconds_delta)
 
-                prices = [[date, ticker.ask] for date in date_range]
+                dates = list(
+                    date_range(
+                        datetime.now()
+                        - timedelta(minutes=DEFAULT_DATA_LOOKBACK_MINUTES),
+                        datetime.now(),
+                    )
+                )
+                prices = [[date, ticker.ask] for date in dates]
                 volumes = [
                     [
                         date,
                         100,  # This is a placeholder for the volume
                     ]
-                    for date in date_range
+                    for date in dates
                 ]
                 prices_volumes = {"prices": prices, "volumes": volumes}
                 markets[token_address] = prices_volumes

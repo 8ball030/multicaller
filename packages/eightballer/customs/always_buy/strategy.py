@@ -55,7 +55,7 @@ def remove_irrelevant_fields(kwargs: Dict[str, Any]) -> Dict[str, Any]:
     return {key: value for key, value in kwargs.items() if key in ALL_FIELDS}
 
 
-def trend_following_signal(
+def always_buy(
     transformed_data: List[Tuple[int, float]],
     ma_period: int = DEFAULT_MA_PERIOD,
     rsi_period: int = DEFAULT_RSI_PERIOD,
@@ -63,41 +63,7 @@ def trend_following_signal(
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
 ) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
-    df = pd.read_json(transformed_data)
-    prices = df["Close"].tolist()
-
-    if len(prices) < max(ma_period, rsi_period + 1):
-        return {"signal": NA_SIGNAL}
-
-    ma = sum(prices[-ma_period:]) / ma_period
-
-    gains = [
-        prices[i] - prices[i - 1]
-        for i in range(1, len(prices))
-        if prices[i] > prices[i - 1]
-    ]
-    losses = [
-        -1 * (prices[i] - prices[i - 1])
-        for i in range(1, len(prices))
-        if prices[i] < prices[i - 1]
-    ]
-
-    avg_gain = sum(gains) / rsi_period
-    avg_loss = sum(losses) / rsi_period
-
-    if avg_loss != 0:
-        rs = avg_gain / avg_loss
-        rsi = 100 - (100 / (1 + rs))
-    else:
-        rsi = 100
-
-    if prices[-1] > ma and rsi < rsi_overbought_threshold:
-        return {"signal": BUY_SIGNAL}
-
-    if prices[-1] < ma and rsi > rsi_oversold_threshold:
-        return {"signal": SELL_SIGNAL}
-
-    return {"signal": HOLD_SIGNAL}
+    return {"signal": BUY_SIGNAL}
 
 
 def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
@@ -107,7 +73,7 @@ def run(*_args: Any, **kwargs: Any) -> Dict[str, Union[str, List[str]]]:
         return {"error": f"Required kwargs {missing} were not provided."}
 
     kwargs = remove_irrelevant_fields(kwargs)
-    return trend_following_signal(**kwargs)
+    return always_buy(**kwargs)
 
 
 def transform(

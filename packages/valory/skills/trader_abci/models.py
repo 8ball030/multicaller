@@ -63,6 +63,7 @@ from packages.valory.skills.trader_decision_maker_abci.models import (
 from packages.valory.skills.trader_decision_maker_abci.rounds import (
     Event as DecisionMakingEvent,
 )
+from packages.valory.skills.transaction_settlement_abci.models import TransactionParams
 
 
 Coingecko = Coingecko
@@ -117,6 +118,7 @@ class Params(
     MarketDataFetcherParams,
     StrategyEvaluatorParams,
     PortfolioTrackerParams,
+    TransactionParams,
 ):
     """A model to represent params for multiple abci apps."""
 

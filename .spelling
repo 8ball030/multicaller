@@ -12,8 +12,8 @@ Solana
 solana_trader
 Freire
 StrategyEvaluator
-solana_trader_decision_maker_abci
-SolanaTraderDecisionMakerAbci
+trader_decision_maker_abci
+TraderDecisionMakerAbci
 uppercase
 MarketManager
 fulfill
@@ -464,3 +464,4 @@ packages_valory.md
 valory
 Infura
 ContributionKit
+eightballer

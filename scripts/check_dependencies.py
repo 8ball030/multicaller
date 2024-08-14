@@ -205,9 +205,9 @@ class ToxFile:
     """Class to represent tox.ini file."""
 
     skip = [
-        "open-aea-ledger-cosmos",
-        "open-aea-ledger-ethereum",
         "open-aea-ledger-fetchai",
+        "lyra-v2-client",
+        "balpy",
     ]
 
     def __init__(
