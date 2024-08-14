@@ -19,6 +19,12 @@
 
 """This module contains the dialogues of the MarketDataFetcherAbciApp."""
 
+from packages.eightballer.protocols.tickers.dialogues import (
+    TickersDialogue as BaseTickersDialogue,
+)
+from packages.eightballer.protocols.tickers.dialogues import (
+    TickersDialogues as BaseTickersDialogues,
+)
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
 )
@@ -89,3 +95,7 @@ TendermintDialogues = BaseTendermintDialogues
 
 IpfsDialogue = BaseIpfsDialogue
 IpfsDialogues = BaseIpfsDialogues
+
+
+TickersDialogue = BaseTickersDialogue
+TickersDialogues = BaseTickersDialogues

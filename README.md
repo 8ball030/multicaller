@@ -34,6 +34,8 @@ The service continuously runs the following loop:
 - Clone this repository:
 
       git clone https://github.com/valory-xyz/solana-trader.git
+      # Checkout the submodules
+      git submodule update --init --recursive
 
 - Create a development environment:
 

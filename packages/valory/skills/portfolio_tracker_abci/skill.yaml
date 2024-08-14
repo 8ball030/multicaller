@@ -126,6 +126,8 @@ models:
       tracked_tokens: []
       refill_action_timeout: 10
       rpc_polling_interval: 5
+      ledger_ids:
+      - ethereum
     class_name: Params
   requests:
     args: {}

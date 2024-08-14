@@ -22,9 +22,25 @@
 import json
 import os
 from abc import ABC
-from typing import Any, Callable, Dict, Generator, Optional, Set, Tuple, Type, cast
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
+from packages.eightballer.connections.dcxt.connection import (
+    PUBLIC_ID as DCXT_CONNECTION_ID,
+)
+from packages.eightballer.protocols.tickers.message import TickersMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
+from packages.valory.skills.abstract_round_abci.behaviour_utils import SOLANA_LEDGER_ID
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
     BaseBehaviour,
@@ -125,11 +141,41 @@ class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
         self.context.logger.error(f"Request failed after {retries} retries.")
         return False, response_json
 
+    def get_dcxt_response(
+        self,
+        protocol_performative: TickersMessage.Performative,
+        **kwargs: Any,
+    ) -> Generator[None, None, Any]:
+        """Get a ccxt response."""
+        if protocol_performative not in self._performative_to_dialogue_class:
+            raise ValueError(
+                f"Unsupported protocol performative {protocol_performative:!r}"
+            )
+        dialogue_class = self._performative_to_dialogue_class[protocol_performative]
+
+        msg, dialogue = dialogue_class.create(
+            counterparty=str(DCXT_CONNECTION_ID),
+            performative=protocol_performative,
+            **kwargs,
+        )
+        msg._sender = str(self.context.skill_id)  # pylint: disable=protected-access
+        response = yield from self._do_request(msg, dialogue)
+        return response
+
+    def __init__(self, **kwargs: Any):
+        """Initialize the behaviour."""
+        super().__init__(**kwargs)
+        self._performative_to_dialogue_class = {
+            TickersMessage.Performative.GET_ALL_TICKERS: self.context.tickers_dialogues,
+        }
+
 
 class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
     """FetchMarketDataBehaviour"""
 
     matching_round: Type[AbstractRound] = FetchMarketDataRound
+
+    exchange_to_tickers: Dict[str, Any] = {}
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
@@ -145,17 +191,17 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
 
         self.set_done()
 
-    def fetch_markets(self) -> Generator[None, None, Optional[str]]:
-        """Fetch markets from Coingecko and send to IPFS"""
+    def _fetch_solana_market_data(
+        self,
+    ) -> Generator[None, None, Dict[Any, Dict[str, Any]]]:
+        """Fetch Solana market data from Coingecko and send to IPFS"""
 
-        markets = {}
         headers = {
             "Accept": "application/json",
         }
         if self.coingecko.api_key:
             headers["x-cg-pro-api-key"] = self.coingecko.api_key
-
-        # Get the market data for each token
+        markets = {}
         for token_data in self.params.token_symbol_whitelist:
             token_id = token_data.get(TOKEN_ID_FIELD, None)
             token_address = token_data.get(TOKEN_ADDRESS_FIELD, None)
@@ -210,8 +256,62 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             volumes = response_json.get(self.coingecko.volumes_field, [])
             prices_volumes = {"prices": prices, "volumes": volumes}
             markets[token_address] = prices_volumes
+        return markets
 
-        # Send to IPFS
+    def _fetch_dcxt_market_data(
+        self, ledger_id: str
+    ) -> Generator[None, None, Dict[Union[str, Any], Dict[str, object]]]:
+        params = {
+            "ledger_id": ledger_id,
+        }
+        exchange_id = "balancer"
+        for key, value in params.items():
+            params[key] = value.encode("utf-8")  # type: ignore
+        exchanges = self.params.exchange_ids[ledger_id]
+
+        markets = {}
+        for exchange_id in exchanges:
+            msg: TickersMessage = yield from self.get_dcxt_response(
+                protocol_performative=TickersMessage.Performative.GET_ALL_TICKERS,  # type: ignore
+                exchange_id=exchange_id,
+                params=params,
+            )
+            self.context.logger.info(
+                f"Received {len(msg.tickers.tickers)} tickers from {exchange_id}"
+            )
+
+            for ticker in msg.tickers.tickers:
+                token_address = ticker.symbol.split("/")[0]  # type: ignore
+
+                date_range = range(1, 50)
+
+                prices = [[date, ticker.ask] for date in date_range]
+                volumes = [
+                    [
+                        date,
+                        100,  # This is a placeholder for the volume
+                    ]
+                    for date in date_range
+                ]
+                prices_volumes = {"prices": prices, "volumes": volumes}
+                markets[token_address] = prices_volumes
+        return markets
+
+    def fetch_markets(self) -> Generator[None, None, Optional[str]]:
+        """Fetch markets from Coingecko and send to IPFS"""
+
+        ledger_market_data: Dict[str, Dict[str, Any]] = {}
+
+        # Get the market data for each token for each ledger_id
+        for ledger_id in self.params.ledger_ids:
+            self.context.logger.info(f"Fetching market data for {ledger_id}.")
+            if ledger_id == SOLANA_LEDGER_ID:
+                markets = yield from self._fetch_solana_market_data()
+                ledger_market_data.update(SOLANA_LEDGER_ID=markets)
+            else:
+                # We assume it is an EVM chain and thus route to dcxt.
+                markets = yield from self._fetch_dcxt_market_data(ledger_id)
+                ledger_market_data.update({ledger_id: markets})
         data_hash = None
         if markets:
             data_hash = yield from self.send_to_ipfs(
