@@ -72,6 +72,18 @@ TRANSFORM_CALLABLE_STORE_KEY = "transform_callable"
 DEFAULT_MARKET_SEPARATOR = "/"
 DEFAULT_DATE_RANGE_SECONDS = 300
 DEFAULT_DATA_LOOKBACK_MINUTES = 60
+DEFAULT_DATA_VOLUME = 100
+SECONDS_TO_MILLISECONDS = 1000
+
+
+def date_range_generator(  # type: ignore
+    start, end, seconds_delta=DEFAULT_DATE_RANGE_SECONDS
+) -> Generator[int, None, None]:
+    """Generate a range of dates in the ms format. We do this as tickers are just spot prices and we dont yet retrieve historical data."""
+    current = start
+    while current < end:
+        yield current.timestamp() * SECONDS_TO_MILLISECONDS
+        current += timedelta(seconds=seconds_delta)
 
 
 class MarketDataFetcherBaseBehaviour(BaseBehaviour, ABC):
@@ -286,17 +298,8 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
             for ticker in msg.tickers.tickers:
                 token_address = ticker.symbol.split(DEFAULT_MARKET_SEPARATOR)[0]  # type: ignore
 
-                def date_range(  # type: ignore
-                    start, end, seconds_delta=DEFAULT_DATE_RANGE_SECONDS
-                ) -> Generator[int, None, None]:
-                    """Generate a range of dates in the ms format. We do this as tickers are just spot prices and we dont yet retrieve historical data."""
-                    current = start
-                    while current < end:
-                        yield current.timestamp() * 1000
-                        current += timedelta(seconds=seconds_delta)
-
                 dates = list(
-                    date_range(
+                    date_range_generator(
                         datetime.now()
                         - timedelta(minutes=DEFAULT_DATA_LOOKBACK_MINUTES),
                         datetime.now(),
@@ -306,7 +309,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
                 volumes = [
                     [
                         date,
-                        100,  # This is a placeholder for the volume
+                        DEFAULT_DATA_VOLUME,  # This is a placeholder for the volume
                     ]
                     for date in dates
                 ]
