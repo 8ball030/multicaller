@@ -1,3 +1,4 @@
+.nix-venv
 .certs
 multisig_address
 multisig_vault
