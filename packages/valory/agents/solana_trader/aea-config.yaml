@@ -35,9 +35,9 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeibu7ruyfy2cbmi7tnkbc7q267t2bvvt47qch45hmasq45zszv6n24
-- valory/strategy_evaluator_abci:0.1.0:bafybeigxob44xgliywpkyrf7jn4376fgfcvm3mjhghx5mapzmqgfpkjxyy
-- valory/trader_abci:0.1.0:bafybeidlq4qdkcorhyuhki5ijpkygu2cfgerby66rdt3jjn6vvxslhvcle
+- valory/market_data_fetcher_abci:0.1.0:bafybeidmyipsuadj3aoxfto4iarkqoyk4q46qjg2fwdkorqgoezb4hvrcq
+- valory/strategy_evaluator_abci:0.1.0:bafybeiaxgnxhkh36rmu4u7zsyjp3zow7if6aabkicwcxwhaofp24i7dcji
+- valory/trader_abci:0.1.0:bafybeig5nkiu7vbky27hv64s3imyyufxsz5ljg4mx5f4mbouq7x2hcp45e
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/ipfs_package_downloader:0.1.0:bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi
