@@ -36,8 +36,8 @@ skills:
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
 - valory/market_data_fetcher_abci:0.1.0:bafybeibu7ruyfy2cbmi7tnkbc7q267t2bvvt47qch45hmasq45zszv6n24
-- valory/strategy_evaluator_abci:0.1.0:bafybeia5oxrsx5l3hb52set4l2hdhcjdaxmobstnzpme5ws7jpk3qpnzwa
-- valory/trader_abci:0.1.0:bafybeiawkgfw7kbk54i4w3wyqidxphhv4vfwbzcglxbssmjj6qzylw4lta
+- valory/strategy_evaluator_abci:0.1.0:bafybeia3jj6tlxn6k3yi2vuv2z546bdqeel7kvdo75pz2bsrnuuuhk6bze
+- valory/trader_abci:0.1.0:bafybeiflrrzishr7t2zp6vi34q3xv2qffk7c6rkzzwoeay7nyw6y3faace
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/ipfs_package_downloader:0.1.0:bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi
