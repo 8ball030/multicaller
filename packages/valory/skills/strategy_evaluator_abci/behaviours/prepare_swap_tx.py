@@ -336,7 +336,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                 sender,
                 signature=signature,
                 data_json=data_json,
-                tx_hash=self.safe_tx_hash,
+                tx_hash=self.payload_string,
             )
 
         yield from self.finish_behaviour(payload)
