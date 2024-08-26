@@ -159,5 +159,5 @@ jobs:
         
       - name: Test Customs
         run: |
-            tox -e test-customs
+            poetry run tox -e test-customs
         
