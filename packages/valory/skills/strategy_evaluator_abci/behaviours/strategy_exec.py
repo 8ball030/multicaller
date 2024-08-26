@@ -265,7 +265,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         # TODO: Mapping of ledger id to base token
         # TODO: update evm balance checker to include native token balance in the portfolio.
 
-        portfolio = yield from self.get_from_ipfs(
+        portfolio: Optional[Dict[str, int]] = yield from self.get_from_ipfs(
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
         )
         base_token: str = self.params.base_tokens.get(ledger_id, None)
@@ -276,7 +276,6 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             )
             # return empty orders and incomplete status, because the base token is necessary for all the swaps
             return [], True
-        portfolio = cast(Optional[Dict[str, int]], portfolio)
         if portfolio is None:
             self.context.logger.error("Could not get the portfolio from IPFS.")
             # return empty orders and incomplete status, because the portfolio is necessary for all the swaps
