@@ -19,7 +19,8 @@
 
 """This module contains the swap(s) instructions' preparation state of the strategy evaluator abci app."""
 
-from typing import Any, Counter, Dict, Tuple, Type, cast
+from collections import Counter
+from typing import Any, Dict, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     ABCIAppException,
