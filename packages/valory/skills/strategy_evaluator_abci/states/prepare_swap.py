@@ -67,7 +67,7 @@ class PrepareEvmSwapRound(CollectSameUntilThresholdRound):
     none_event = Event.NO_INSTRUCTIONS
     no_majority_event = Event.NO_MAJORITY
     collection_key = get_name(SynchronizedData.participant_to_signature)
-    selection_key = (get_name(SynchronizedData.most_voted_tx_hash),)
+    selection_key = get_name(SynchronizedData.most_voted_tx_hash)
 
     @property
     def payload_values_count(self) -> Counter:
