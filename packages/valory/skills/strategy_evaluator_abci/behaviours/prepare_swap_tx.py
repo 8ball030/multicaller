@@ -22,7 +22,7 @@
 import hashlib
 import json
 import traceback
-from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple, cast
+from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple
 
 from packages.eightballer.connections.dcxt import PUBLIC_ID as DCXT_ID
 from packages.eightballer.protocols.orders.custom_types import (
@@ -265,7 +265,6 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         # temp hack:
         payload_string = hash_payload_to_hex(
             safe_tx_hash, 0, SAFE_GAS, vault_address, call_data
-            safe_tx_hash, 0, SAFE_GAS, vault_address, data
         )
         self.safe_tx_hash = safe_tx_hash
         self.payload_string = payload_string

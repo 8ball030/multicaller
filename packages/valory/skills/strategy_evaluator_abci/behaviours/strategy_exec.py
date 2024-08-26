@@ -265,7 +265,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         # TODO: Mapping of ledger id to base token
         # TODO: update evm balance checker to include native token balance in the portfolio.
 
-        portfolio: Optional[Dict[str, int]] = yield from self.get_from_ipfs(
+        portfolio: Optional[Dict[str, int]] = yield from self.get_from_ipfs(  # type: ignore
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
         )
         base_token: str = self.params.base_tokens.get(ledger_id, None)
