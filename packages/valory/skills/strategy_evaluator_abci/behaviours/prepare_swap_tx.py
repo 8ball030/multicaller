@@ -202,9 +202,10 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
                 can_create_hash = yield from self._build_safe_tx_hash(
                     vault_address=call_data["vault_address"],
                     chain_id=call_data["chain_id"],
-                    call_data=call_data["data"].encode(),
+                    call_data=bytes.fromhex(call_data["data"][2:]),
                 )
             except Exception as e:
+                can_create_hash = False
                 self.context.logger.error(
                     f"Error building safe tx hash: {traceback.format_exc()} with error {e}"
                 )
@@ -220,17 +221,15 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         self,
         vault_address: str,
         chain_id: int,
-        call_data: str,
+        call_data: bytes,
     ) -> Any:
         """Prepares and returns the safe tx hash for a multisend tx."""
         self.context.logger.info(
             f"Building safe tx hash: safe={self.synchronized_data.safe_contract_address}\n"
             + f"vault={vault_address}\n"
             + f"chain_id={chain_id}\n"
-            + f"call_data={call_data}"
+            + f"call_data={call_data.hex()}"
         )
-
-        data = cast(bytes, call_data)
 
         response_msg = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
@@ -239,7 +238,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             contract_callable="get_raw_safe_transaction_hash",
             to_address=vault_address,
             value=0,
-            data=data,
+            data=call_data,
             safe_tx_gas=SAFE_GAS,
             operation=SafeOperation.DELEGATE_CALL.value,
             ledger_id="ethereum",
@@ -265,6 +264,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         self.context.logger.info(f"Hash of the Safe transaction: {safe_tx_hash}")
         # temp hack:
         payload_string = hash_payload_to_hex(
+            safe_tx_hash, 0, SAFE_GAS, vault_address, call_data
             safe_tx_hash, 0, SAFE_GAS, vault_address, data
         )
         self.safe_tx_hash = safe_tx_hash
