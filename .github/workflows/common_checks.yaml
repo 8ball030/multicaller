@@ -157,7 +157,7 @@ jobs:
         run: |
           poetry install
         
-      - name: Test
+      - name: Test Customs
         run: |
-            poetry run pytest packages/eightballer/customs/ packages/valory/customs/
+            tox -e test-customs
         
