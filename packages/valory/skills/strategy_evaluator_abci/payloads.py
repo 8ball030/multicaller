@@ -52,13 +52,4 @@ class SendSwapPayload(BaseTxPayload):
 class TransactionHashPayload(BaseTxPayload):
     """Represent a transaction payload of type 'tx_hash'."""
 
-    signature: Optional[str]
-    data_json: Optional[str]
-    tx_hash: Optional[str]
-
-
-@dataclass(frozen=True)
-class TransactionHashSamePayload(BaseTxPayload):
-    """Represent a transaction payload of type 'tx_hash'."""
-
     tx_hash: Optional[str]
