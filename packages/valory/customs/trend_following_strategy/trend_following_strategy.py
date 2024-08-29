@@ -63,7 +63,8 @@ def trend_following_signal(
     rsi_oversold_threshold: int = DEFAULT_RSI_OVERSOLD_THRESHOLD,
 ) -> Dict[str, Union[str, List[str]]]:
     """Compute the trend following signal"""
-    prices = [price for _timestamp, price in transformed_data]
+    df = pd.read_json(transformed_data)
+    prices = df["Close"].tolist()
 
     if len(prices) < max(ma_period, rsi_period + 1):
         return {"signal": NA_SIGNAL}
@@ -144,7 +145,7 @@ def transform(
         "vol_3",
     ]
     df = df.drop(columns=["vol_1", "vol_2", "vol_3"])
-    return df.to_json(index=False)
+    return df.to_json()
 
 
 def optimise(*args, **kwargs):  # type: ignore
@@ -156,4 +157,4 @@ def optimise(*args, **kwargs):  # type: ignore
 def evaluate(*args, **kwargs):  # type: ignore
     """Evaluate the strategy."""
     del args, kwargs
-    return {"sharpe_ratio": -10}
+    return {"sharpe_ratio": -10.0}

@@ -19,9 +19,11 @@
 
 """This module contains the handlers of the FSM app."""
 
+from packages.eightballer.protocols.balances.message import BalancesMessage
 from packages.valory.skills.abstract_round_abci.handlers import (
     ABCIRoundHandler as BaseABCIRoundHandler,
 )
+from packages.valory.skills.abstract_round_abci.handlers import AbstractResponseHandler
 from packages.valory.skills.abstract_round_abci.handlers import (
     ContractApiHandler as BaseContractApiHandler,
 )
@@ -40,6 +42,19 @@ from packages.valory.skills.abstract_round_abci.handlers import (
 from packages.valory.skills.abstract_round_abci.handlers import (
     TendermintHandler as BaseTendermintHandler,
 )
+
+
+class DcxtBalancesHandler(AbstractResponseHandler):
+    """This class implements a handler for DexBalancesHandler messages."""
+
+    SUPPORTED_PROTOCOL = BalancesMessage.protocol_id
+    allowed_response_performatives = frozenset(
+        {
+            BalancesMessage.Performative.ALL_BALANCES,
+            BalancesMessage.Performative.BALANCE,
+            BalancesMessage.Performative.ERROR,
+        }
+    )
 
 
 ABCIHandler = BaseABCIRoundHandler

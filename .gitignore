@@ -1,7 +1,9 @@
+.nix-venv
+.certs
 multisig_address
 multisig_vault
 */keys.json
-*private_key.txt
+*private_key.txt*
 packages/fetchai/
 packages/open_aea/
 packages/valory/connections/abci/
@@ -14,7 +16,7 @@ packages/valory/skills/abstract_abci/
 packages/valory/skills/abstract_round_abci/
 packages/valory/skills/registration_abci/
 packages/valory/skills/reset_pause_abci/
-packages/valory/skills/solana_transaction_settlement_abci/
+packages/valory/skills/transaction_settlement_abci/
 packages/valory/skills/termination_abci/
 
 packages/valory/contracts/multisend/
@@ -52,3 +54,18 @@ solana_trader/
 !/packages/valory/services/solana_trader/
 
 node_modules/
+.env
+
+packages/open_aea/protocols/signing
+packages/eightballer/protocols/order_book
+packages/eightballer/protocols/ohlcv
+packages/eightballer/protocols/balances
+packages/eightballer/protocols/positions
+packages/eightballer/protocols/spot_asset
+packages/eightballer/protocols/orders
+packages/eightballer/protocols/tickers
+packages/eightballer/protocols/default
+packages/eightballer/protocols/markets
+packages/eightballer/contracts/erc_20
+packages/eightballer/contracts/spl_token
+packages/eightballer/connections/dcxt

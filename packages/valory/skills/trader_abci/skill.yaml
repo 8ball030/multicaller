@@ -1,0 +1,300 @@
+name: trader_abci
+author: valory
+version: 0.1.0
+type: skill
+description: The chained abci for the trader.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  README.md: bafybeidyqa4hfgrw5ghpl7vihuyaplpjpurmqfelf7kne4ep64s2c5cw3q
+  __init__.py: bafybeifhg74e54dl7ekajnmc3j4w4dotl3fqlvmayzuct35jahqnkkuosi
+  behaviours.py: bafybeiftem2lmvjr6ygyk44amp4hfnuqdprmarowb6nsvvrsvvafmcwaxu
+  composition.py: bafybeicqwhjjvyccm22huc6thkiolee55usk255ndgdsa4vzrb44xr63ba
+  dialogues.py: bafybeidwn2jk4vb4lbtkzbxoyhvbspsvwoww52laqav4qcvq6ixdf4txra
+  handlers.py: bafybeihz3mhjyull7hpufo6gizfxrtdxinbnrlitmllwowykbbucdqcfkq
+  models.py: bafybeiapbhmyb3whdmm6tcrpedm7kx5aqqpuiopiywdc5oebgkrdt6wr7y
+fingerprint_ignore_patterns: []
+connections: []
+contracts: []
+protocols:
+- eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
+- eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
+- eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
+skills:
+- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
+- valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
+- valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
+- valory/market_data_fetcher_abci:0.1.0:bafybeidmyipsuadj3aoxfto4iarkqoyk4q46qjg2fwdkorqgoezb4hvrcq
+- valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
+- valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
+- valory/strategy_evaluator_abci:0.1.0:bafybeienzcn6n7zggkqyjumlfybvl3upme6adt3riqpml6ixgyxq4n7uqy
+- valory/portfolio_tracker_abci:0.1.0:bafybeihnpy4fso2q6f5osf3u2yg5wkgrfuk6wewimhhwfglfktrrvliaju
+behaviours:
+  main:
+    args: {}
+    class_name: TraderConsensusBehaviour
+handlers:
+  abci:
+    args: {}
+    class_name: ABCIRoundHandler
+  contract_api:
+    args: {}
+    class_name: ContractApiHandler
+  http:
+    args: {}
+    class_name: HttpHandler
+  ipfs:
+    args: {}
+    class_name: IpfsHandler
+  ledger_api:
+    args: {}
+    class_name: LedgerApiHandler
+  signing:
+    args: {}
+    class_name: SigningHandler
+  tendermint:
+    args: {}
+    class_name: TendermintHandler
+  tickers:
+    args: {}
+    class_name: DcxtTickersHandler
+  balances:
+    args: {}
+    class_name: DcxtBalancesHandler
+  orders:
+    args: {}
+    class_name: DcxtOrdersHandler
+models:
+  abci_dialogues:
+    args: {}
+    class_name: AbciDialogues
+  benchmark_tool:
+    args:
+      log_dir: /logs
+    class_name: BenchmarkTool
+  contract_api_dialogues:
+    args: {}
+    class_name: ContractApiDialogues
+  http_dialogues:
+    args: {}
+    class_name: HttpDialogues
+  ipfs_dialogues:
+    args: {}
+    class_name: IpfsDialogues
+  ledger_api_dialogues:
+    args: {}
+    class_name: LedgerApiDialogues
+  params:
+    args:
+      broadcast_to_server: false
+      history_end: null
+      cleanup_history_depth: 1
+      cleanup_history_depth_current: null
+      drand_public_key: 868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31
+      dynamic_contribution_contract_address: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+      earliest_block_to_monitor: 8053690
+      genesis_config:
+        genesis_time: '2022-09-26T00:00:00.000000000Z'
+        chain_id: chain-c4daS1
+        consensus_params:
+          block:
+            max_bytes: '22020096'
+            max_gas: '-1'
+            time_iota_ms: '1000'
+          evidence:
+            max_age_num_blocks: '100000'
+            max_age_duration: '172800000000000'
+            max_bytes: '1048576'
+          validator:
+            pub_key_types:
+            - ed25519
+          version: {}
+        voting_power: '10'
+      keeper_timeout: 30.0
+      max_attempts: 10
+      max_healthcheck: 120
+      multisend_address: '0x0000000000000000000000000000000000000000'
+      termination_sleep: 900
+      init_fallback_gas: 0
+      keeper_allowed_retries: 3
+      reset_pause_duration: 10
+      on_chain_service_id: null
+      request_retry_delay: 1.0
+      request_timeout: 10.0
+      reset_tendermint_after: 2
+      retry_attempts: 400
+      retry_timeout: 3
+      round_timeout_seconds: 350.0
+      proxy_round_timeout_seconds: 1200.0
+      service_id: impact_evaluator
+      service_registry_address: null
+      agent_registry_address: null
+      setup:
+        all_participants: []
+        safe_contract_address: '0x0000000000000000000000000000000000000000'
+        consensus_threshold: null
+      share_tm_config_on_startup: false
+      sleep_time: 1
+      tendermint_check_sleep_delay: 3
+      tendermint_com_url: http://localhost:8080
+      tendermint_max_retries: 5
+      tendermint_p2p_url: localhost:26656
+      tendermint_url: http://localhost:26657
+      tx_timeout: 10.0
+      use_termination: false
+      validate_timeout: 1205
+      finalize_timeout: 60.0
+      history_check_timeout: 1205
+      use_slashing: false
+      slash_cooldown_hours: 3
+      slash_threshold_amount: 10000000000000000
+      light_slash_unit_amount: 5000000000000000
+      serious_slash_unit_amount: 8000000000000000
+      ipfs_address: https://gateway.autonolas.tech/ipfs/
+      token_symbol_whitelist: []
+      trading_strategy: strategy_name
+      strategies_kwargs:
+      - - extra_1
+        - value
+      - - extra_2
+        - value
+      use_proxy_server: false
+      expected_swap_tx_cost: 20000000
+      ipfs_fetch_retries: 5
+      squad_vault: 39Zh4C687EXLY7CT8gjCxe2hUc3krESjUsqs7A1CKD5E
+      agent_balance_threshold: 50000000
+      multisig_balance_threshold: 1000000000
+      tracked_tokens: []
+      refill_action_timeout: 10
+      rpc_polling_interval: 5
+      epsilon: 0.1
+      sharpe_threshold: 1.0
+      use_solana: false
+      trade_size_in_base_token: 0.0001
+      ledger_ids:
+      - ethereum
+      exchange_ids:
+        ethereum:
+        - balancer
+      base_tokens:
+        ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+      native_currencies:
+        ethereum: ETH
+    class_name: Params
+  coingecko:
+    args:
+      endpoint: https://api.coingecko.com/api/v3/coins/{token_id}/market_chart?vs_currency=usd&days=1
+      api_key: null
+      prices_field: prices
+      volumes_field: total_volumes
+      requests_per_minute: 5
+      credits: 10000
+      rate_limited_code: 429
+    class_name: Coingecko
+  randomness_api:
+    args:
+      api_id: cloudflare
+      headers: {}
+      method: GET
+      parameters: {}
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://drand.cloudflare.com/public/latest
+    class_name: RandomnessApi
+  swap_quotes:
+    args:
+      api_id: swap_quotes
+      headers:
+        Content-Type: application/json
+      method: GET
+      parameters:
+        amount: 100000000
+        slippageBps: 5
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/quote
+    class_name: SwapQuotesSpecs
+  swap_instructions:
+    args:
+      api_id: swap_instructions
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://quote-api.jup.ag/v6/swap-instructions
+    class_name: SwapInstructionsSpecs
+  tx_settlement_proxy:
+    args:
+      api_id: tx_settlement_proxy
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters:
+        amount: 100000000
+        slippageBps: 5
+        resendAmount: 200
+        timeoutInMs: 120000
+        priorityFee: 5000000
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: http://tx_proxy:3000/tx
+    class_name: TxSettlementProxy
+  get_balance:
+    args:
+      api_id: get_balance
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: result:value
+      response_type: int
+      error_key: error:message
+      error_type: str
+      retries: 5
+      url: replace_with_a_rpc
+    class_name: GetBalance
+  token_accounts:
+    args:
+      api_id: token_accounts
+      headers:
+        Content-Type: application/json
+      method: POST
+      parameters: {}
+      response_key: result:value
+      response_type: list
+      error_key: error:message
+      error_type: str
+      retries: 5
+      url: replace_with_a_rpc
+    class_name: TokenAccounts
+  requests:
+    args: {}
+    class_name: Requests
+  signing_dialogues:
+    args: {}
+    class_name: SigningDialogues
+  state:
+    args: {}
+    class_name: SharedState
+  tendermint_dialogues:
+    args: {}
+    class_name: TendermintDialogues
+  tickers_dialogues:
+    args: {}
+    class_name: TickersDialogues
+  balances_dialogues:
+    args: {}
+    class_name: BalancesDialogues
+  orders_dialogues:
+    args: {}
+    class_name: OrdersDialogues
+dependencies:
+  open-aea-cli-ipfs:
+    version: ==1.55.0
+is_abstract: false

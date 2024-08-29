@@ -1,6 +1,6 @@
 # Solana Trader Agent
 
-This agent uses `solana_trader_abci` skill, which:
+This agent uses `trader_abci` skill, which:
 
 1. Selects a trading strategy
 2. Retrieves information on the exchange of Solana tokens

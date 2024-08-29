@@ -8,19 +8,22 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
-  behaviours.py: bafybeiecrlvzjpn2k3ti5xg7zagzgzxsott3a4aop5no6nqejtky6zyu3q
-  dialogues.py: bafybeidr5jmedduri5mbqnyrf43znchsklxv4vvyjvf5wsnsrb3tykwk2u
+  behaviours.py: bafybeih6owatjpkt7adoykc3istraeqk5xqwpigxazcq3gnliimz7ppyui
+  dialogues.py: bafybeibhhuam4c4cjhzv2l56pqkqhinpkiiivhr5akbqg765khwha3xauy
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
-  handlers.py: bafybeihsjgmfsowj4qcnh6jw3sgqnrrhymuadm7wdx5l4pvrkzj6ylengy
-  models.py: bafybeicdtmjc6ddji542ldwlrhp45chvszymj6a2bwqdntz6hjhnm4ogdu
+  handlers.py: bafybeidrynxgp6qyxlk2ert6dawcsji4b7dylnszpnb5gufcdc6tyej2ym
+  models.py: bafybeian54yk62z474g3ujd7k4xwh7duow5i3so2jnn4jhw3f2d7zellaa
   payloads.py: bafybeid3sue7scr5dama3krank3gkmsucy6xasvds6jvebkptbpqziurlm
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
-connections: []
+connections:
+- eightballer/dcxt:0.1.0:bafybeicyeg2jnnvbhmles6gssw5zj2mjvcr2j2lyp5jrzdft3qsrnwgv5a
 contracts: []
-protocols: []
+protocols:
+- eightballer/balances:0.1.0:bafybeihrnjigqe3cwzsybhfgb2745e3pxccojpqhy4bu7jtg62ugwnuole
+- valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
 skills:
-- valory/abstract_round_abci:0.1.0:bafybeia7msuvsouwcky263k6lup5hwcj73pka4pepkgyii6sya2wfawqvy
+- valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 behaviours:
   main:
     args: {}
@@ -47,6 +50,9 @@ handlers:
   tendermint:
     args: {}
     class_name: TendermintHandler
+  balances:
+    args: {}
+    class_name: DcxtBalancesHandler
 models:
   abci_dialogues:
     args: {}
@@ -126,6 +132,11 @@ models:
       tracked_tokens: []
       refill_action_timeout: 10
       rpc_polling_interval: 5
+      ledger_ids:
+      - ethereum
+      exchange_ids:
+        ethereum:
+        - balancer
     class_name: Params
   requests:
     args: {}
@@ -139,5 +150,8 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
+  balances_dialogues:
+    args: {}
+    class_name: BalancesDialogues
 dependencies: {}
 is_abstract: true

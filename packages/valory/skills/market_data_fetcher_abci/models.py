@@ -68,6 +68,8 @@ class Params(BaseParams):
         self.token_symbol_whitelist: List[Dict] = format_whitelist(
             self._ensure("token_symbol_whitelist", kwargs, List[str])
         )
+        self.ledger_ids = self._ensure("ledger_ids", kwargs, List[str])
+        self.exchange_ids = self._ensure("exchange_ids", kwargs, Dict[str, List[str]])
         super().__init__(*args, **kwargs)
 
 

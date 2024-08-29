@@ -1,3 +1,4 @@
+c14bca78d92aa33f06265038deb7706710a7fd40:packages/valory/skills/strategy_evaluator_abci/behaviours/strategy_exec.py:generic-api-key:265
 e7839f82234edaec54aa076b7ede29b58d2f61e0:packages/valory/skills/solana_strategy_evaluator_abci/skill.yaml:generic-api-key:71
 d4df7c45e9f1f739db653f5d859db8e44ccc8c62:packages/valory/skills/solana_trader_abci/skill.yaml:generic-api-key:78
 d4df7c45e9f1f739db653f5d859db8e44ccc8c62:packages/valory/skills/solana_trader_abci/skill.yaml:generic-api-key:155
@@ -6,3 +7,5 @@ d4df7c45e9f1f739db653f5d859db8e44ccc8c62:packages/valory/skills/solana_trader_ab
 6a70be2e3d272a730fb8788de7f29809be145639:packages/valory/skills/market_data_fetcher_abci/skill.yaml:generic-api-key:80
 a95fe91272dc9ba5ca9e3509903a9b5bbd386b0a:packages/valory/skills/portfolio_tracker_abci/skill.yaml:generic-api-key:73
 e079a27b11eb30aca5ac0945d6163f5995096fb7:tests/test_strategies.py:generic-api-key:57
+732dbf124e12afed2cfeb30a156d71efc0c129c5:packages/eightballer/connections/dcxt/connection.yaml:generic-api-key:32
+732dbf124e12afed2cfeb30a156d71efc0c129c5:packages/eightballer/connections/dcxt/tests/test_dcxt_connection.py:generic-api-key:50
