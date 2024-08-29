@@ -19,7 +19,6 @@
 
 """This module contains the behaviour for preparing swap(s) instructions."""
 
-import hashlib
 import json
 import traceback
 from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple
@@ -31,10 +30,7 @@ from packages.eightballer.protocols.orders.custom_types import (
     OrderType,
 )
 from packages.eightballer.protocols.orders.message import OrdersMessage
-from packages.valory.contracts.gnosis_safe.contract import (
-    GnosisSafeContract,
-    SafeOperation,
-)
+from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
 from packages.valory.protocols.contract_api.message import ContractApiMessage
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
@@ -232,7 +228,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         )
 
         response_msg = yield from self.get_contract_api_response(
-            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
             contract_address=self.synchronized_data.safe_contract_address,
             contract_id=str(GnosisSafeContract.contract_id),
             contract_callable="get_raw_safe_transaction_hash",
@@ -240,19 +236,18 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             value=0,
             data=call_data,
             safe_tx_gas=SAFE_GAS,
-            operation=SafeOperation.DELEGATE_CALL.value,
             ledger_id="ethereum",
         )
 
-        if response_msg.performative != ContractApiMessage.Performative.STATE:
+        if response_msg.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
             self.context.logger.error(
                 "Couldn't get safe tx hash. Expected response performative "
-                f"{ContractApiMessage.Performative.STATE.value}, "  # type: ignore
+                f"{ContractApiMessage.Performative.RAW_TRANSACTION.value}, "  # type: ignore
                 f"received {response_msg.performative.value}: {response_msg}."
             )
             return False
 
-        tx_hash = response_msg.state.body.get("tx_hash", None)
+        tx_hash = response_msg.raw_transaction.body.get("tx_hash", None)
         if tx_hash is None or len(tx_hash) != TX_HASH_LENGTH:
             self.context.logger.error(
                 "Something went wrong while trying to get the buy transaction's hash. "
@@ -323,18 +318,9 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             yield from self.get_ipfs_hash_payload_content(
                 data, process_fn, store_filepath
             )
-            signature, data_json = yield from self.get_data_signature(
-                self.payload_string
-            )
-
-            self.context.logger.info(f"Data json: {data_json}")
-            self.context.logger.info(f"Signature: {signature}")
-            self.context.logger.info(f"Safe tx hash: {self.safe_tx_hash}")
 
             payload = TransactionHashPayload(
                 sender,
-                signature=signature,
-                data_json=data_json,
                 tx_hash=self.payload_string,
             )
 
@@ -347,16 +333,3 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             yield from self.wait_until_round_end()
 
         self.set_done()
-
-    def get_data_signature(self, string: str) -> Generator[None, None, Tuple[str, str]]:
-        """Get signature for the data."""
-        data_bytes = string.encode("ascii")
-        hash_bytes = hashlib.sha256(data_bytes).digest()
-
-        signature_hex = yield from self.get_signature(
-            hash_bytes, is_deprecated_mode=True
-        )
-        # remove the leading '0x'
-        signature_hex = signature_hex[2:]
-        self.context.logger.info(f"Data signature: {signature_hex}")
-        return signature_hex, string
