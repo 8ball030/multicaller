@@ -9,7 +9,7 @@ fingerprint:
   __init__.py: bafybeig4rclm2fca7pv35dtigdm3slje4o4urhybxdkkdy2gd5p6d5gfju
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeic5htwdpd47mvqmqjp66yftbafwouxylgdodbibp6rxr3dwx4klia
+- eightballer/dcxt:0.1.0:bafybeieg2gm2t23ugl2bgqphnxdxk2efybhlspgsaahfsyivrhdfjn335i
 - valory/abci:0.1.0:bafybeie4eixvrdpc5ifoovj24a6res6g2e22dl6di6gzib7d3fczshzyti
 - valory/http_client:0.23.0:bafybeihi772xgzpqeipp3fhmvpct4y6e6tpjp4sogwqrnf3wqspgeilg4u
 - valory/ipfs:0.1.0:bafybeiefkqvh5ylbk77xylcmshyuafmiecopt4gvardnubq52psvogis6a
@@ -35,13 +35,13 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeib4zzlorro6cgvykli6th2sgz6xgr4tiooy7ikvtnvcpdzb4c5zpe
-- valory/strategy_evaluator_abci:0.1.0:bafybeib7hps7mfkouetbyziuc73velrdoge4fml5xsx3zllsb6rgfkaaei
-- valory/trader_abci:0.1.0:bafybeihm2h6pnbslebc5unkc5woto2sjr7w3ryqolsvge6vzh5n2bxfa2m
+- valory/market_data_fetcher_abci:0.1.0:bafybeicjikrgp3p44rugv34iqkseruimlxuntlx74bk7myw5b4qxasiubi
+- valory/strategy_evaluator_abci:0.1.0:bafybeidvprkrv5awlrd7du6ycwcfxywss54ju7nuso42acvbqnf5gqd75u
+- valory/trader_abci:0.1.0:bafybeiggimguh5ephzr2zsgwkp6xbhonvqfqxhdj5s52pvj2mnfdw4zt6m
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/ipfs_package_downloader:0.1.0:bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi
-- valory/portfolio_tracker_abci:0.1.0:bafybeiet2xgza4bizj5eq7oq6oo3uh6culjpc6kngwgkwnvvfvcsjyaetu
+- valory/portfolio_tracker_abci:0.1.0:bafybeiantint5uyovhpw6pbyycwa46yduwcbp2zyhvwuuynpheaegdyzsy
 default_ledger: ethereum
 required_ledgers:
 - ethereum
