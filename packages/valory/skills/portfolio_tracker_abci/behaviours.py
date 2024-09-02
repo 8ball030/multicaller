@@ -340,7 +340,8 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             f"Tracking the portfolio of the service... on ledger {ledger_id}"
         )
 
-        for exchange_id in self.params.exchange_ids[ledger_id]:
+        for exchange in self.params.exchange_ids[ledger_id]:
+            exchange_id = f"{exchange}_{ledger_id}"
             self.context.logger.info(f"Tracking {exchange_id=}...")
 
             balances_msg = yield from self.get_dcxt_response(

@@ -176,8 +176,27 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         instructions = []
         for quote_data in orders:
             symbol = f'{quote_data["inputMint"]}/{quote_data["outputMint"]}'
+            # We assume for now that we are only sending to the one exchange
+            exchange_id_array = self.params.exchange_ids
+            if len(exchange_id_array) != 1:
+                self.context.logger.error(
+                    f"Expected exactly one exchange id, got {exchange_id_array}."
+                )
+                raise ValueError(
+                    f"Expected exactly one exchange id, got {exchange_id_array}."
+                )
+            for ledger_id, exchange_ids in exchange_id_array.items():
+                if len(exchange_ids) != 1:
+                    self.context.logger.error(
+                        f"Expected exactly one exchange id, got {exchange_ids}."
+                    )
+                    raise ValueError(
+                        f"Expected exactly one exchange id, got {exchange_ids}."
+                    )
+            exchange_id = f'{exchange_ids[0]}_{ledger_id}'
+
             order = Order(
-                exchange_id="balancer",
+                exchange_id=exchange_id,
                 symbol=symbol,
                 amount=self.params.trade_size_in_base_token,
                 side=OrderSide.BUY,

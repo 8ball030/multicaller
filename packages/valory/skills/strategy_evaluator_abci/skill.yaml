@@ -12,7 +12,7 @@ fingerprint:
   behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
   behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
   behaviours/base.py: bafybeidzevmaz3kvnizxt6cdoozj7mrtnbw3pthck372y3xqngju4afvee
-  behaviours/prepare_swap_tx.py: bafybeierwwvyvwymcfb24hyhrxrgpzvnfzxytnzdvrlvppvlsjdie5ausy
+  behaviours/prepare_swap_tx.py: bafybeidghst3wp2rs5fqriwvnsilwj43kx6aowuak7qasq77dxhirb3z5y
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
   behaviours/strategy_exec.py: bafybeibiaj5sylfxmt5tbsqi32nfs7uxfoy2rmcdy25knw4zxy65wqaoz4
@@ -33,7 +33,7 @@ fingerprint:
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeieg2gm2t23ugl2bgqphnxdxk2efybhlspgsaahfsyivrhdfjn335i
+- eightballer/dcxt:0.1.0:bafybeickmlg7felvsxkrgz47ucdxl4uxybduoikg2ito2h2afzfoghpvsq
 contracts:
 - valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
 protocols:
@@ -41,9 +41,9 @@ protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/market_data_fetcher_abci:0.1.0:bafybeicjikrgp3p44rugv34iqkseruimlxuntlx74bk7myw5b4qxasiubi
+- valory/market_data_fetcher_abci:0.1.0:bafybeic2smm7iibtlgn2lqnlqsstw3p3uyuiz4vo66xtu2j52p2q5kwxsq
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
-- valory/portfolio_tracker_abci:0.1.0:bafybeiantint5uyovhpw6pbyycwa46yduwcbp2zyhvwuuynpheaegdyzsy
+- valory/portfolio_tracker_abci:0.1.0:bafybeieyrpebpfan3uzt7n5576ljykhcew7y264caumpckmm5jeek377uq
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
