@@ -8,7 +8,7 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
-  behaviours.py: bafybeif62girhfbjmvdhx7aupkc6jdee5qeolgfnymhqbbejyb6y3jztvi
+  behaviours.py: bafybeicttwei6l76ritzifdwznm7273wj6iha7dwyzzzfell4obhbo6qea
   dialogues.py: bafybeibhhuam4c4cjhzv2l56pqkqhinpkiiivhr5akbqg765khwha3xauy
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
   handlers.py: bafybeidrynxgp6qyxlk2ert6dawcsji4b7dylnszpnb5gufcdc6tyej2ym
@@ -17,7 +17,7 @@ fingerprint:
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeickmlg7felvsxkrgz47ucdxl4uxybduoikg2ito2h2afzfoghpvsq
+- eightballer/dcxt:0.1.0:bafybeih35gsxv4nfqeqthx54nfe3eoeyq5aapwhfoqaydxbej2qm632epq
 contracts: []
 protocols:
 - eightballer/balances:0.1.0:bafybeiajh5vzhcofdpemm3545t3yh6g4okpwnejvbqchxapo765batiitu
@@ -133,9 +133,10 @@ models:
       refill_action_timeout: 10
       rpc_polling_interval: 5
       ledger_ids:
-      - ethereum
+      - optimism
       exchange_ids:
-        ethereum:
+        ethereum: []
+        optimism:
         - balancer
     class_name: Params
   requests:

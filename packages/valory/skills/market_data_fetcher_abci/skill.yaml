@@ -16,7 +16,7 @@ fingerprint:
   rounds.py: bafybeibf2cwrf6phrdnwlrfezy2erl4ux56uumc25jarqpwzhtyemtlhuu
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeickmlg7felvsxkrgz47ucdxl4uxybduoikg2ito2h2afzfoghpvsq
+- eightballer/dcxt:0.1.0:bafybeih35gsxv4nfqeqthx54nfe3eoeyq5aapwhfoqaydxbej2qm632epq
 contracts: []
 protocols:
 - eightballer/tickers:0.1.0:bafybeicjbpa24tla2enenmlzipqhu6grutqso74q6y7is2cpk7acub3bca
@@ -128,7 +128,8 @@ models:
       ledger_ids:
       - ethereum
       exchange_ids:
-        ethereum:
+        ethereum: []
+        optimism:
         - balancer
     class_name: Params
   coingecko:

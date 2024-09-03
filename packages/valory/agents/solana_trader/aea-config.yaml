@@ -9,7 +9,7 @@ fingerprint:
   __init__.py: bafybeig4rclm2fca7pv35dtigdm3slje4o4urhybxdkkdy2gd5p6d5gfju
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeickmlg7felvsxkrgz47ucdxl4uxybduoikg2ito2h2afzfoghpvsq
+- eightballer/dcxt:0.1.0:bafybeih35gsxv4nfqeqthx54nfe3eoeyq5aapwhfoqaydxbej2qm632epq
 - valory/abci:0.1.0:bafybeie4eixvrdpc5ifoovj24a6res6g2e22dl6di6gzib7d3fczshzyti
 - valory/http_client:0.23.0:bafybeihi772xgzpqeipp3fhmvpct4y6e6tpjp4sogwqrnf3wqspgeilg4u
 - valory/ipfs:0.1.0:bafybeiefkqvh5ylbk77xylcmshyuafmiecopt4gvardnubq52psvogis6a
@@ -35,13 +35,13 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeic2smm7iibtlgn2lqnlqsstw3p3uyuiz4vo66xtu2j52p2q5kwxsq
-- valory/strategy_evaluator_abci:0.1.0:bafybeifp6tdbtbqgsp2xtfamjk723v65hufsesqsirrsupcd4qws3tpbem
-- valory/trader_abci:0.1.0:bafybeidmortyvvzlirsgrbeymzmxf37uo47byrk2pivkaqla2c7hnfof4q
+- valory/market_data_fetcher_abci:0.1.0:bafybeicmfq52gpf3dhhmkw4kbr253trvvreztlrwkwilibmocsfnvsur7q
+- valory/strategy_evaluator_abci:0.1.0:bafybeidevwkfrqtklg22zbyq25hajonszdtcq7ff5xl3a55nfedw4wcp7u
+- valory/trader_abci:0.1.0:bafybeibipt3pxuhwi3bosdbscw77rrsut4c6xj3oo2xsk3mxcmv7un3p6m
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/ipfs_package_downloader:0.1.0:bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi
-- valory/portfolio_tracker_abci:0.1.0:bafybeieyrpebpfan3uzt7n5576ljykhcew7y264caumpckmm5jeek377uq
+- valory/portfolio_tracker_abci:0.1.0:bafybeiakd6wijxypmmdmdeslojcfyoxhphjneplu45opb5n7k6hevwyd4e
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -231,10 +231,11 @@ models:
       rpc_polling_interval: ${int:5}
       epsilon: ${float:0.1}
       sharpe_threshold: ${float:-10.1}
-      ledger_ids: ${list:["ethereum"]}
+      ledger_ids: ${list:["optimism"]}
       exchange_ids:
-        ethereum:
+        optimism:
         - balancer
+        ethereum: []
       trade_size_in_base_token: ${float:0.0001}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
@@ -257,8 +258,13 @@ type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${str:https://rpc.ankr.com/eth}
-      chain_id: ${int:1}
+      address: ${str:https://mainnet.optimism.io}
+      chain_id: ${int:10}
+      default_gas_price_strategy: ${str:eip1559}
+      poa_chain: ${bool:false}
+    optimism:
+      address: ${str:https://mainnet.optimism.io}
+      chain_id: ${int:10}
       default_gas_price_strategy: ${str:eip1559}
       poa_chain: ${bool:false}
 ---
@@ -274,18 +280,8 @@ type: connection
 config:
   target_skill_id: eightballer/chained_dex_app:0.1.0
   exchanges:
-  - name: balancer
-    key_path: ethereum_private_key.txt
-    ledger_id: ethereum
-    rpc_url: https://rpc.ankr.com/eth
-    etherscan_api_key: YOUR_ETHERSCAN_API_KEY
-  - name: balancer
-    key_path: ethereum_private_key.txt
-    ledger_id: optimism
-    rpc_url: https://mainnet.optimism.io
-    etherscan_api_key: YOUR_ETHERSCAN_API_KEY
-  - name: balancer
-    key_path: ethereum_private_key.txt
-    ledger_id: base
-    rpc_url: https://base.llamarpc.com
-    etherscan_api_key: YOUR_ETHERSCAN_API_KEY
+  - name: ${str:balancer}
+    key_path: ${str:ethereum_private_key.txt}
+    ledger_id: ${str:optimism}
+    rpc_url: ${str:https://mainnet.optimism.io}
+    etherscan_api_key: ${str:YOUR_ETHERSCAN_API_KEY}

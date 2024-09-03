@@ -24,11 +24,11 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeic2smm7iibtlgn2lqnlqsstw3p3uyuiz4vo66xtu2j52p2q5kwxsq
+- valory/market_data_fetcher_abci:0.1.0:bafybeicmfq52gpf3dhhmkw4kbr253trvvreztlrwkwilibmocsfnvsur7q
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
-- valory/strategy_evaluator_abci:0.1.0:bafybeifp6tdbtbqgsp2xtfamjk723v65hufsesqsirrsupcd4qws3tpbem
-- valory/portfolio_tracker_abci:0.1.0:bafybeieyrpebpfan3uzt7n5576ljykhcew7y264caumpckmm5jeek377uq
+- valory/strategy_evaluator_abci:0.1.0:bafybeidevwkfrqtklg22zbyq25hajonszdtcq7ff5xl3a55nfedw4wcp7u
+- valory/portfolio_tracker_abci:0.1.0:bafybeiakd6wijxypmmdmdeslojcfyoxhphjneplu45opb5n7k6hevwyd4e
 behaviours:
   main:
     args: {}
@@ -172,14 +172,17 @@ models:
       use_solana: false
       trade_size_in_base_token: 0.0001
       ledger_ids:
-      - ethereum
+      - optimism
       exchange_ids:
-        ethereum:
+        ethereum: []
+        optimism:
         - balancer
       base_tokens:
         ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        optimism: '0x0b2c639c533813f4aa9d7837caf62653d097ff85'
       native_currencies:
         ethereum: ETH
+        optimism: ETH
     class_name: Params
   coingecko:
     args:
