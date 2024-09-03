@@ -67,6 +67,7 @@ ledger_to_native_mapping = {
     "ethereum": ("ETH", 18),
     "xdai": ("XDAI", 18),
     "optimism": ("ETH", 18),
+    "base": ("ETH", 18),
 }
 
 PORTFOLIO_FILENAME = "portfolio.json"
