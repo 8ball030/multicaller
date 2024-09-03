@@ -24,11 +24,11 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeicmfq52gpf3dhhmkw4kbr253trvvreztlrwkwilibmocsfnvsur7q
+- valory/market_data_fetcher_abci:0.1.0:bafybeigs6kgs43wqzl4md6g5637mfbbgtl7kiaeairge4mnznjnx4f4ihm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
-- valory/strategy_evaluator_abci:0.1.0:bafybeidevwkfrqtklg22zbyq25hajonszdtcq7ff5xl3a55nfedw4wcp7u
-- valory/portfolio_tracker_abci:0.1.0:bafybeiakd6wijxypmmdmdeslojcfyoxhphjneplu45opb5n7k6hevwyd4e
+- valory/strategy_evaluator_abci:0.1.0:bafybeidtsa24znxv73scr2eq7xdzjyqw6s7swpabmujxiezjlpzj3yfksa
+- valory/portfolio_tracker_abci:0.1.0:bafybeif4ih3e4eii5crxbgq45g7zebkv2gorqulkeohasrxrhaycn4t3nu
 behaviours:
   main:
     args: {}

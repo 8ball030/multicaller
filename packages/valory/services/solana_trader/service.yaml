@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeigjahterhsf2rsibufdhh7aat6bik2o4pjb5mmds4k47hqe4qbxoe
+agent: valory/solana_trader:0.1.0:bafybeihkl3srwf6n4cfuuktvlpg7mffmotmswkmzvdcdoh5zeezfygdryq
 number_of_agents: 4
 deployment: {}
 ---
