@@ -12,10 +12,10 @@ fingerprint:
   behaviours/__init__.py: bafybeihpuluelzi5sbxgxbeks7rfsbcjivhj57cqoshpkxgufqec55s3rq
   behaviours/backtesting.py: bafybeihquc6zopikmkzmc27627txajuzwqwcrnj65nnph55wbexk7f3k4u
   behaviours/base.py: bafybeidzevmaz3kvnizxt6cdoozj7mrtnbw3pthck372y3xqngju4afvee
-  behaviours/prepare_swap_tx.py: bafybeierwwvyvwymcfb24hyhrxrgpzvnfzxytnzdvrlvppvlsjdie5ausy
+  behaviours/prepare_swap_tx.py: bafybeibgvkxsssk65dqi44fwfzfpj66ud36jmpaxp7h2kvor37exqgu5jq
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
-  behaviours/strategy_exec.py: bafybeibiaj5sylfxmt5tbsqi32nfs7uxfoy2rmcdy25knw4zxy65wqaoz4
+  behaviours/strategy_exec.py: bafybeifgxoxqb6sfayanbd36schtsylfjnod76god7hvbyokwaykgzd4tq
   behaviours/swap_queue.py: bafybeifuw22ri5vmso2krsspuahhbjzj4cm5v7bbbs2i6tqegw2aohvxby
   dialogues.py: bafybeigxdc3i2wq5hp266op5lyyfswwbosphqzrcapgqxscrznggrllype
   fsm_specification.yaml: bafybeifkf2mffocii4jspbjcx7wc5ji2mypksfil7ddgebiid2bi55pvfy
@@ -33,17 +33,17 @@ fingerprint:
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeicyeg2jnnvbhmles6gssw5zj2mjvcr2j2lyp5jrzdft3qsrnwgv5a
+- eightballer/dcxt:0.1.0:bafybeihes2id6qmqqybvdqfpchu6h3i5mpnhq6lztfxp52twd22iwqxacq
 contracts:
 - valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
 protocols:
-- eightballer/orders:0.1.0:bafybeie5t3ue2hrb7o7lfwz2w4cb43xuad5fapuxh3vo7wyjo44yzj7774
+- eightballer/orders:0.1.0:bafybeibprhniaoq3y2uzc4arwwl7yws3i54ahaicrphh5gtl4xxhxqexdy
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/market_data_fetcher_abci:0.1.0:bafybeidmyipsuadj3aoxfto4iarkqoyk4q46qjg2fwdkorqgoezb4hvrcq
+- valory/market_data_fetcher_abci:0.1.0:bafybeia3kld7ogbaolbxskys7r5ccolhm53fqi4tdkrwnvilfm7gn5ztcm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
-- valory/portfolio_tracker_abci:0.1.0:bafybeihnpy4fso2q6f5osf3u2yg5wkgrfuk6wewimhhwfglfktrrvliaju
+- valory/portfolio_tracker_abci:0.1.0:bafybeieyf3w67gaw3fvtg4ueynjbfluvysszestk4ea7e2vyajvbuwprpq
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
@@ -162,8 +162,10 @@ models:
       sharpe_threshold: 1.0
       base_tokens:
         ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        optimism: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1'
       native_currencies:
         ethereum: ETH
+        optimism: ETH
       trade_size_in_base_token: 0.0001
     class_name: StrategyEvaluatorParams
   swap_quotes:

@@ -31,6 +31,7 @@ from packages.eightballer.connections.dcxt.connection import (
     PUBLIC_ID as DCXT_CONNECTION_ID,
 )
 from packages.eightballer.protocols.balances.message import BalancesMessage
+from packages.valory.protocols.ledger_api.custom_types import Kwargs
 from packages.valory.protocols.ledger_api.message import LedgerApiMessage
 from packages.valory.skills.abstract_round_abci.base import (
     AbstractRound,
@@ -66,6 +67,7 @@ ledger_to_native_mapping = {
     "ethereum": ("ETH", 18),
     "xdai": ("XDAI", 18),
     "optimism": ("ETH", 18),
+    "base": ("ETH", 18),
 }
 
 PORTFOLIO_FILENAME = "portfolio.json"
@@ -340,7 +342,8 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             f"Tracking the portfolio of the service... on ledger {ledger_id}"
         )
 
-        for exchange_id in self.params.exchange_ids[ledger_id]:
+        for exchange in self.params.exchange_ids[ledger_id]:
+            exchange_id = f"{exchange}_{ledger_id}"
             self.context.logger.info(f"Tracking {exchange_id=}...")
 
             balances_msg = yield from self.get_dcxt_response(
@@ -430,7 +433,7 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             theta = self.params.multisig_balance_threshold
             which = "vault"
         else:
-            address = self.context.agent_addresses[ledger_id]
+            address = self.context.agent_address
             theta = self.params.agent_balance_threshold
             which = "agent"
 
@@ -505,9 +508,14 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         kwargs = {
             "performative": performative,
             "counterparty": LEDGER_API_ADDRESS,
-            "ledger_id": ledger_id,
+            "ledger_id": "ethereum",
             "callable": ledger_callable,
             "address": address,
+            "kwargs": Kwargs(
+                {
+                    "chain_id": ledger_id,
+                }
+            ),
         }
         ledger_api_msg, ledger_api_dialogue = ledger_api_dialogues.create(**kwargs)
         ledger_api_dialogue = cast(

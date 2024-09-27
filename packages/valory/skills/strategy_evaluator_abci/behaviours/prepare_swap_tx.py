@@ -21,7 +21,7 @@
 
 import json
 import traceback
-from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple
+from typing import Any, Callable, Dict, Generator, List, Optional, Sized, Tuple, cast
 
 from packages.eightballer.connections.dcxt import PUBLIC_ID as DCXT_ID
 from packages.eightballer.protocols.orders.custom_types import (
@@ -32,8 +32,16 @@ from packages.eightballer.protocols.orders.custom_types import (
 from packages.eightballer.protocols.orders.message import OrdersMessage
 from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
 from packages.valory.protocols.contract_api.message import ContractApiMessage
-from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
+from packages.valory.skills.abstract_round_abci.base import (
+    BaseTxPayload,
+    LEDGER_API_ADDRESS,
+)
+from packages.valory.skills.abstract_round_abci.dialogues import (
+    ContractApiDialogue,
+    ContractApiDialogues,
+)
 from packages.valory.skills.abstract_round_abci.io_.store import SupportedFiletype
+from packages.valory.skills.abstract_round_abci.models import Requests
 from packages.valory.skills.strategy_evaluator_abci.behaviours.base import (
     StrategyEvaluatorBaseBehaviour,
 )
@@ -176,8 +184,20 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
         instructions = []
         for quote_data in orders:
             symbol = f'{quote_data["inputMint"]}/{quote_data["outputMint"]}'
+            # We assume for now that we are only sending to the one exchange
+            ledger_id: str = self.params.ledger_ids[0]
+            exchange_ids = self.params.exchange_ids[ledger_id]
+            if len(exchange_ids) != 1:
+                self.context.logger.error(
+                    f"Expected exactly one exchange id, got {exchange_ids}."
+                )
+                raise ValueError(
+                    f"Expected exactly one exchange id, got {exchange_ids}."
+                )
+            exchange_id = f"{exchange_ids[0]}_{ledger_id}"
+
             order = Order(
-                exchange_id="balancer",
+                exchange_id=exchange_id,
                 symbol=symbol,
                 amount=self.params.trade_size_in_base_token,
                 side=OrderSide.BUY,
@@ -227,6 +247,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             + f"call_data={call_data.hex()}"
         )
 
+        ledger_id: str = self.params.ledger_ids[0]
         response_msg = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
             contract_address=self.synchronized_data.safe_contract_address,
@@ -237,6 +258,7 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             data=call_data,
             safe_tx_gas=SAFE_GAS,
             ledger_id="ethereum",
+            chain_id=ledger_id,
         )
 
         if response_msg.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
@@ -333,3 +355,58 @@ class PrepareEvmSwapBehaviour(StrategyEvaluatorBaseBehaviour):
             yield from self.wait_until_round_end()
 
         self.set_done()
+
+    def get_contract_api_response(
+        self,
+        performative: ContractApiMessage.Performative,
+        contract_address: Optional[str],
+        contract_id: str,
+        contract_callable: str,
+        ledger_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> Generator[None, None, ContractApiMessage]:
+        """
+        Request contract safe transaction hash
+
+        Happy-path full flow of the messages.
+
+        AbstractRoundAbci skill -> (ContractApiMessage | ContractApiMessage.Performative) -> Ledger connection (contract dispatcher)
+        Ledger connection (contract dispatcher) -> (ContractApiMessage | ContractApiMessage.Performative) -> AbstractRoundAbci skill
+
+        :param performative: the message performative
+        :param contract_address: the contract address
+        :param contract_id: the contract id
+        :param contract_callable: the callable to call on the contract
+        :param ledger_id: the ledger id, if not specified, the default ledger id is used
+        :param kwargs: keyword argument for the contract api request
+        :return: the contract api response
+        :yields: the contract api response
+        """
+        contract_api_dialogues = cast(
+            ContractApiDialogues, self.context.contract_api_dialogues
+        )
+        kwargs = {
+            "performative": performative,
+            "counterparty": LEDGER_API_ADDRESS,
+            "ledger_id": ledger_id or self.context.default_ledger_id,
+            "contract_id": contract_id,
+            "callable": contract_callable,
+            "kwargs": ContractApiMessage.Kwargs(kwargs),
+        }
+        if contract_address is not None:
+            kwargs["contract_address"] = contract_address
+        contract_api_msg, contract_api_dialogue = contract_api_dialogues.create(
+            **kwargs
+        )
+        contract_api_dialogue = cast(
+            ContractApiDialogue,
+            contract_api_dialogue,
+        )
+        contract_api_dialogue.terms = self._get_default_terms()
+        request_nonce = self._get_request_nonce_from_dialogue(contract_api_dialogue)
+        cast(Requests, self.context.requests).request_id_to_callback[
+            request_nonce
+        ] = self.get_callback_request()
+        self.context.outbox.put_message(message=contract_api_msg)
+        response = yield from self.wait_for_message()
+        return response

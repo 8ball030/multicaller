@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeiasyvanypleay7yspri6igebqccpm3a7uvvrlna5yjkzdsnvcbu4q
 fingerprint_ignore_patterns: []
-agent: valory/solana_trader:0.1.0:bafybeibmr7w44pbbpk6f7xcgjvlrmfl3vlj5ccm4ot5opnmlid6w7isj3u
+agent: valory/solana_trader:0.1.0:bafybeifwoqncoeans345unsoxyp2rizq3hkydygtnlr6tjxykrsgjx2o5q
 number_of_agents: 4
 deployment: {}
 ---
@@ -401,7 +401,6 @@ config:
   exchanges:
   - name: ${DCXT_EXCHANGE_NAME:str:balancer}
     key_path: ${DCXT_KEY_PATH:str:ethereum_private_key.txt}
-    kwargs:
-      chain_id: ${DCXT_CHAIN_ID:str:mainnet}
-      rpc_url: ${DCXT_RPC_URL:str:https://rpc.ankr.com/eth}
-      etherscan_api_key: ${DCXT_ETHERSCAN_API_KEY:str:YOUR_ETHERSCAN_API_KEY}
+    ledger_id: ${DCXT_LEDGER_ID:str:ethereum}
+    rpc_url: ${DCXT_RPC_URL:str:http://host.docker.internal:8545}
+    etherscan_api_key: ${DCXT_ETHERSCAN_API_KEY:str:null}

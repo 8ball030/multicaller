@@ -7,7 +7,7 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeih2dsi3e5ax36ooryzjkeoprkeqif3sguc4h63ldx6clkhmdsztka
-  behaviours.py: bafybeia5eyxh54aimhjd4cxz3baquxrjeeeymz4ul7tkwn2vsygprlhhbu
+  behaviours.py: bafybeidbor36h5a364j2yal4idziy7u5fsofkivcizzasepliz7pxa3pki
   dialogues.py: bafybeihqyvgfzkno2kch5jf7qefrwgknhraz345svglrc6bfgtmuo7gbmi
   fsm_specification.yaml: bafybeib6ucxlubtfscg7vris2ia2f7iwlpzxte2bhqcvdluoge4xl2paba
   handlers.py: bafybeia3jv2qaq7s6ao6b2xoyvqb4wpzc2zhu75cd26xrqjq3puqxesefy
@@ -16,10 +16,10 @@ fingerprint:
   rounds.py: bafybeibf2cwrf6phrdnwlrfezy2erl4ux56uumc25jarqpwzhtyemtlhuu
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeicyeg2jnnvbhmles6gssw5zj2mjvcr2j2lyp5jrzdft3qsrnwgv5a
+- eightballer/dcxt:0.1.0:bafybeihes2id6qmqqybvdqfpchu6h3i5mpnhq6lztfxp52twd22iwqxacq
 contracts: []
 protocols:
-- eightballer/tickers:0.1.0:bafybeibbmsflypgdsn7p2gkfy5fstpkrb5wrwwobvdsbs33tkqnu2ihdr4
+- eightballer/tickers:0.1.0:bafybeicjbpa24tla2enenmlzipqhu6grutqso74q6y7is2cpk7acub3bca
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 behaviours:
@@ -128,7 +128,8 @@ models:
       ledger_ids:
       - ethereum
       exchange_ids:
-        ethereum:
+        ethereum: []
+        optimism:
         - balancer
     class_name: Params
   coingecko:

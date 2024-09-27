@@ -9,14 +9,14 @@ fingerprint:
   __init__.py: bafybeig4rclm2fca7pv35dtigdm3slje4o4urhybxdkkdy2gd5p6d5gfju
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeicyeg2jnnvbhmles6gssw5zj2mjvcr2j2lyp5jrzdft3qsrnwgv5a
+- eightballer/dcxt:0.1.0:bafybeihes2id6qmqqybvdqfpchu6h3i5mpnhq6lztfxp52twd22iwqxacq
 - valory/abci:0.1.0:bafybeie4eixvrdpc5ifoovj24a6res6g2e22dl6di6gzib7d3fczshzyti
 - valory/http_client:0.23.0:bafybeihi772xgzpqeipp3fhmvpct4y6e6tpjp4sogwqrnf3wqspgeilg4u
 - valory/ipfs:0.1.0:bafybeiefkqvh5ylbk77xylcmshyuafmiecopt4gvardnubq52psvogis6a
 - valory/ledger:0.19.0:bafybeihynkdraqthjtv74qk3nc5r2xubniqx2hhzpxn7bd4qmlf7q4wruq
 - valory/p2p_libp2p_client:0.1.0:bafybeid3xg5k2ol5adflqloy75ibgljmol6xsvzvezebsg7oudxeeolz7e
 contracts:
-- eightballer/erc_20:0.1.0:bafybeifjtxoyahzgrn622tipbrv2mx6r22fazawbffzszymjdlzs3uikbq
+- eightballer/erc_20:0.1.0:bafybeiezbnm3f5zhuj5bsc542isnlh2fki5q4nmm2vsajzps4uuoamofo4
 - valory/service_registry:0.1.0:bafybeieqgcuxmz4uxvlyb62mfsf33qy4xwa5lrij4vvcmrtcsfkng43oyq
 - valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
 - valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
@@ -35,13 +35,13 @@ skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeidmyipsuadj3aoxfto4iarkqoyk4q46qjg2fwdkorqgoezb4hvrcq
-- valory/strategy_evaluator_abci:0.1.0:bafybeienzcn6n7zggkqyjumlfybvl3upme6adt3riqpml6ixgyxq4n7uqy
-- valory/trader_abci:0.1.0:bafybeicraayr63u72ykjes5qllyw3lrmxhvmay32awnvjjeayi3o52p4pm
+- valory/market_data_fetcher_abci:0.1.0:bafybeia3kld7ogbaolbxskys7r5ccolhm53fqi4tdkrwnvilfm7gn5ztcm
+- valory/strategy_evaluator_abci:0.1.0:bafybeibddzgitaf44lu3lhx25iv4x5a64drkvexbtev6fc55ygorqivl7i
+- valory/trader_abci:0.1.0:bafybeidjm7yludtc2t64weh2otueu5znrfrjc3bwgg6x272g3rsfelxpiq
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/ipfs_package_downloader:0.1.0:bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi
-- valory/portfolio_tracker_abci:0.1.0:bafybeihnpy4fso2q6f5osf3u2yg5wkgrfuk6wewimhhwfglfktrrvliaju
+- valory/portfolio_tracker_abci:0.1.0:bafybeieyf3w67gaw3fvtg4ueynjbfluvysszestk4ea7e2vyajvbuwprpq
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -231,9 +231,11 @@ models:
       rpc_polling_interval: ${int:5}
       epsilon: ${float:0.1}
       sharpe_threshold: ${float:-10.1}
-      ledger_ids: ${list:["ethereum"]}
+      ledger_ids: ${list:["base"]}
       exchange_ids:
-        ethereum:
+        optimism: []
+        ethereum: []
+        base:
         - balancer
       trade_size_in_base_token: ${float:0.0001}
 ---
@@ -257,8 +259,18 @@ type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${str:https://rpc.ankr.com/eth}
-      chain_id: ${int:1}
+      address: ${str:https://base.blockpi.network/v1/rpc/public}
+      chain_id: ${int:8453}
+      default_gas_price_strategy: ${str:eip1559}
+      poa_chain: ${bool:false}
+    optimism:
+      address: ${str:https://mainnet.optimism.io}
+      chain_id: ${int:10}
+      default_gas_price_strategy: ${str:eip1559}
+      poa_chain: ${bool:false}
+    base:
+      address: ${str:https://base.meowrpc.com}
+      chain_id: ${int:8453}
       default_gas_price_strategy: ${str:eip1559}
       poa_chain: ${bool:false}
 ---
@@ -272,11 +284,10 @@ config:
 public_id: eightballer/dcxt:0.1.0
 type: connection
 config:
-  target_skill_id: valory/trader_abci:0.1.0
+  target_skill_id: eightballer/chained_dex_app:0.1.0
   exchanges:
   - name: ${str:balancer}
     key_path: ${str:ethereum_private_key.txt}
-    kwargs:
-      chain_id: ${str:mainnet}
-      rpc_url: ${str:https://rpc.ankr.com/eth}
-      etherscan_api_key: ${str:YOUR_ETHERSCAN_API_KEY}
+    ledger_id: ${str:base}
+    rpc_url: ${str:https://base.blockpi.network/v1/rpc/public}
+    etherscan_api_key: ${str:YOUR_ETHERSCAN_API_KEY}

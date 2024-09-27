@@ -288,7 +288,7 @@ class FetchMarketDataBehaviour(MarketDataFetcherBaseBehaviour):
         for exchange_id in exchanges:
             msg: TickersMessage = yield from self.get_dcxt_response(
                 protocol_performative=TickersMessage.Performative.GET_ALL_TICKERS,  # type: ignore
-                exchange_id=exchange_id,
+                exchange_id=f"{exchange_id}_{ledger_id}",
                 params=params,
             )
             self.context.logger.info(
