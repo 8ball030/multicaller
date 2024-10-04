@@ -33,7 +33,7 @@ fingerprint:
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeifciqjqpdmj7ciubnmzmjlrtw4k4nq6p3xwd6wwh36e4o2obht4du
+- eightballer/dcxt:0.1.0:bafybeihcde5ldl4znybf4cpjaj76a4b66zzubwzusxecctnrjn4wp6fcde
 contracts:
 - valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
 protocols:
@@ -41,9 +41,9 @@ protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/market_data_fetcher_abci:0.1.0:bafybeiebh5y6b7xjpbsw7ucdfygqgdnxr5tfxblqoxnl5vgzsoc7oa2kye
+- valory/market_data_fetcher_abci:0.1.0:bafybeibowelbvqfqjhctvc2k6diq4ive4vfx4myeaor7rdd2jazhaxosw4
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
-- valory/portfolio_tracker_abci:0.1.0:bafybeigbm5ivhmmveizf4bkzfq4x5msz4zrpggrpg3pjmk6sel6utsc3jm
+- valory/portfolio_tracker_abci:0.1.0:bafybeihadvdlyvyhmsfkro6tzv3yavz7qwdh4vb7l4hqpgrqe6neoypwg4
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
