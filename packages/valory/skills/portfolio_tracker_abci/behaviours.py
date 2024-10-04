@@ -355,11 +355,10 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 self.context.logger.info(
                     f"Retrieved balance from {exchange_id}: {balance}"
                 )
-                self.portfolio[balance.asset_id] = balance.free
                 # We also store the balance in the agent's address
-                # TODO: we implement a mapping of ledger to exchanges, 
+                # TODO: we implement a mapping of ledger to exchanges
                 # so that we can also track the portfolio of the address across different exchanges.
-
+                self.portfolio[balance.asset_id] = balance.free
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""

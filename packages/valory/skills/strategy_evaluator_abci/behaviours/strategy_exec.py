@@ -254,7 +254,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def get_evm_orders(
         self,
         token_data: Dict[str, Any],
-        required_amount: int = 0.00001,
+        required_amount: float = 0.00001,
     ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
         # We need to check if the portfolio contains any information for the NATIVE_TOKEN which is yet to be defined

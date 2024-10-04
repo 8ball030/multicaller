@@ -8,7 +8,7 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   README.md: bafybeif4z5ogzdq474b2k67kwyit5yiwiyoc4n42ucv3j52v2vcpophtnu
   __init__.py: bafybeifc2ovpf3gofxafilnv2jgtbn73wrcpwoss6ic7ftvnk2rwboenza
-  behaviours.py: bafybeiasowd66cebllflpxvahzrc5o65cjaiwvnpnfhlcz7ylvlbdoyltm
+  behaviours.py: bafybeighiei4q4x7joiazzy5puww66nkjisrhmzzq4tzrvnjwe5gu2yciy
   dialogues.py: bafybeibhhuam4c4cjhzv2l56pqkqhinpkiiivhr5akbqg765khwha3xauy
   fsm_specification.yaml: bafybeicdgdc4qoaco2et6kcommb753xlw3d4wma3x6t57jhc6hdjzfczoy
   handlers.py: bafybeidrynxgp6qyxlk2ert6dawcsji4b7dylnszpnb5gufcdc6tyej2ym
@@ -17,7 +17,7 @@ fingerprint:
   rounds.py: bafybeihcblnqrf3jwtvmwgfrrcss7bs5ihq4e4kpyld2dnc6uibgwkjs2u
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeide6f32midzxzo7ms7xn3xokpthxbxwqzmuiarpl5r4guhjrp623q
+- eightballer/dcxt:0.1.0:bafybeial3wairkyfkpdpqz7itjvfvfmtwre7nwckxeh7x2uuvt4i5vxmje
 contracts: []
 protocols:
 - eightballer/balances:0.1.0:bafybeieczloag3mjzvd4y2qqpbrtx6suoqjww3v7mf3dgrez5xopmo4h3m

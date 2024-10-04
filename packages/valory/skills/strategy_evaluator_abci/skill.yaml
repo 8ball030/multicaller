@@ -15,7 +15,7 @@ fingerprint:
   behaviours/prepare_swap_tx.py: bafybeibgvkxsssk65dqi44fwfzfpj66ud36jmpaxp7h2kvor37exqgu5jq
   behaviours/proxy_swap_queue.py: bafybeihtsgtmh3sv4ptqw6msbuwhf3krgdrlzlu4gjrdqri55wmbxqk7gy
   behaviours/round_behaviour.py: bafybeif26u7uapmhvtzdljj3hlvlqmdgb33dw3bif5lhbtpdjeghe7cdfy
-  behaviours/strategy_exec.py: bafybeiabstmctll3ofblf7lzso3tjkcptop2rgvf7nvsi34cg3rzggazy4
+  behaviours/strategy_exec.py: bafybeiezlgzqff3huxriyjncyr5uqikjzg475njni3ugnsjmi2agoa7jkm
   behaviours/swap_queue.py: bafybeifuw22ri5vmso2krsspuahhbjzj4cm5v7bbbs2i6tqegw2aohvxby
   dialogues.py: bafybeigxdc3i2wq5hp266op5lyyfswwbosphqzrcapgqxscrznggrllype
   fsm_specification.yaml: bafybeifkf2mffocii4jspbjcx7wc5ji2mypksfil7ddgebiid2bi55pvfy
@@ -33,7 +33,7 @@ fingerprint:
   states/swap_queue.py: bafybeihtnpowhqoym5lmpiob6wt5ejynnsfjg4j5usutohat4eyq54fzki
 fingerprint_ignore_patterns: []
 connections:
-- eightballer/dcxt:0.1.0:bafybeide6f32midzxzo7ms7xn3xokpthxbxwqzmuiarpl5r4guhjrp623q
+- eightballer/dcxt:0.1.0:bafybeial3wairkyfkpdpqz7itjvfvfmtwre7nwckxeh7x2uuvt4i5vxmje
 contracts:
 - valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
 protocols:
@@ -41,9 +41,9 @@ protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/market_data_fetcher_abci:0.1.0:bafybeieyaop63uqw3nk2mx7nu3yvqp45eioz7rkfn5n3ocvvt3odrddoke
+- valory/market_data_fetcher_abci:0.1.0:bafybeig62n44jqsypmu7aomfsd55c2npmbnics3uooysknxghq77xw7wf4
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
-- valory/portfolio_tracker_abci:0.1.0:bafybeictj7o35cttmhy43xi25fxyqmfhb7g2rd4yefj6hq2362xukifrpi
+- valory/portfolio_tracker_abci:0.1.0:bafybeifmkvzzq4on2znnr65x37ulaow3aacodyontm35nc2tfh3cvuuiru
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 behaviours:
   main:
