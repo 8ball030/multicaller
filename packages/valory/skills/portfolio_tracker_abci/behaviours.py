@@ -320,11 +320,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             self.context.logger.info(f"Tracking {token=}...")
 
             if token == SOL_ADDRESS:
-                # SOL will be populated using a different RPC method, in the `check_balance` method
                 continue
 
             if should_wait:
-                # poll in intervals so that we do not get a 429 error code as a response
                 yield from self.sleep(self.params.rpc_polling_interval)
             should_wait = True
 
@@ -346,9 +344,12 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
             exchange_id = f"{exchange}_{ledger_id}"
             self.context.logger.info(f"Tracking {exchange_id=}...")
 
+            breakpoint()
+
             balances_msg = yield from self.get_dcxt_response(
                 BalancesMessage.Performative.GET_ALL_BALANCES,  # type: ignore
                 exchange_id=exchange_id,
+                ledger_id=ledger_id,
                 params={},
             )
             for balance in balances_msg.balances.balances:
@@ -357,6 +358,9 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
                 )
                 self.portfolio[balance.asset_id] = balance.free
                 # We also store the balance in the agent's address
+                # TODO: we implement a mapping of ledger to exchanges, 
+                # so that we can also track the portfolio of the address across different exchanges.
+
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""

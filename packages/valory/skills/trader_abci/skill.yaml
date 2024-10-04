@@ -19,16 +19,16 @@ contracts: []
 protocols:
 - eightballer/tickers:0.1.0:bafybeicjbpa24tla2enenmlzipqhu6grutqso74q6y7is2cpk7acub3bca
 - eightballer/orders:0.1.0:bafybeibprhniaoq3y2uzc4arwwl7yws3i54ahaicrphh5gtl4xxhxqexdy
-- eightballer/balances:0.1.0:bafybeiajh5vzhcofdpemm3545t3yh6g4okpwnejvbqchxapo765batiitu
+- eightballer/balances:0.1.0:bafybeihu5iwqjbuzoh7nlbxua3cqme2dpsmbppjqj6swkriow4bpvfkbty
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeia3kld7ogbaolbxskys7r5ccolhm53fqi4tdkrwnvilfm7gn5ztcm
+- valory/market_data_fetcher_abci:0.1.0:bafybeick6mnztauba5enipeotj4sjzfxvhvz3w4pzohqxrq2ayvqdkaga4
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
-- valory/strategy_evaluator_abci:0.1.0:bafybeibddzgitaf44lu3lhx25iv4x5a64drkvexbtev6fc55ygorqivl7i
-- valory/portfolio_tracker_abci:0.1.0:bafybeieyf3w67gaw3fvtg4ueynjbfluvysszestk4ea7e2vyajvbuwprpq
+- valory/strategy_evaluator_abci:0.1.0:bafybeifyhl5byyezyskboadmmnhbd2ac3ssp5ty5m6d7ybyxhz4ulxgn6u
+- valory/portfolio_tracker_abci:0.1.0:bafybeigpspv3mmopwz4dcotz2fipvgq4hq2hpwbyab635sjub47tpfit7i
 behaviours:
   main:
     args: {}
