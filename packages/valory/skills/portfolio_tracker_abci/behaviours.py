@@ -341,15 +341,14 @@ class PortfolioTrackerBehaviour(BaseBehaviour):
         )
 
         for exchange in self.params.exchange_ids[ledger_id]:
-            exchange_id = f"{exchange}_{ledger_id}"
-            self.context.logger.info(f"Tracking {exchange_id=}...")
-
-            breakpoint()
+            exchange_id = f"{exchange}"
+            self.context.logger.info(f"Tracking {exchange_id=} on {ledger_id=}...")
 
             balances_msg = yield from self.get_dcxt_response(
                 BalancesMessage.Performative.GET_ALL_BALANCES,  # type: ignore
                 exchange_id=exchange_id,
                 ledger_id=ledger_id,
+                address=self.context.params.setup_params["safe_contract_address"],
                 params={},
             )
             for balance in balances_msg.balances.balances:

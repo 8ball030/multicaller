@@ -254,7 +254,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
     def get_evm_orders(
         self,
         token_data: Dict[str, Any],
-        required_amount: int = 1000000,
+        required_amount: int = 0.00001,
     ) -> Generator[None, None, Tuple[List[Dict[str, str]], bool]]:
         """Get a mapping from a string indicating whether to buy or sell, to a list of tokens."""
         # We need to check if the portfolio contains any information for the NATIVE_TOKEN which is yet to be defined
@@ -326,8 +326,9 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
                 continue
 
             if input_balance < int(required_amount):
-                err = f"The portfolio does not contain enough balance for the base token {base_token!r}."
+                err = f"The portfolio does not contain enough balance for the base token {base_token!r}. Current balance: {input_balance}. Required amount: {required_amount}."
                 self.context.logger.error(err)
+                breakpoint()
                 incomplete = True
                 continue
             quote_data = {INPUT_MINT: input_token, OUTPUT_MINT: output_token}
