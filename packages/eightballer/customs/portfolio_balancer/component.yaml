@@ -1,0 +1,26 @@
+name: portfolio_balancer
+author: eightballer
+version: 0.1.0
+type: custom
+description: -| A custom component for portfolio balancing. It uses a simple strategy
+  to balance the portfolio. Given a portfolio of assets, the component returns the
+  action to take. The strategy is to balance the portfolio by selling the assets that
+  are above the target allocation and buying the assets that are below the target
+  allocation. The component uses the `pandas` library to manipulate the data. - `run`
+  it receives the data and returns the action to take. - `transform` it receives the
+  data and returns the transformed data. - `evaluate` it receives the data and returns
+  the evaluation of the data.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeih3xdjh5da7qtyn5ysaiwfdfucu3qsafj2pxgqhafitlhancsv36e
+  strategy.py: bafybeics7s6ihyrhl5phe2wzjwuclenbaycigjc5austullr6bodopw43u
+  test_strategy.py: bafybeickrgs2agmxkrsvrpvav3d46s3dmd2qwfhmv33q3oqrfrtv4sc7ve
+fingerprint_ignore_patterns: []
+entry_point: strategy.py
+run_callable: run
+transform_callable: transform
+evaluate_callable: evaluate
+dependencies:
+  pandas:
+    version: <2.0.0

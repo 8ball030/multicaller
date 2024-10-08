@@ -260,9 +260,9 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         # We need to check if the portfolio contains any information for the NATIVE_TOKEN which is yet to be defined
         # We will temporarily skip this check
         # TODO: Define NATIVE_TOKEN, BASE_TOKEN, and LEDGER_ID
-        # TODO: Check if the portfolio contains any information for the NATIVE_TOKEN
-        # TODO: Mapping of ledger id to base token
-        # TODO: update evm balance checker to include native token balance in the portfolio.
+        # TODO: Check if the portfolio contains any information for the NATIVE_TOKEN. DCXT does this.
+        # TODO: Mapping of ledger id to base token -> dcxt does this.
+        # TODO: update evm balance checker to include native token balance in the portfolio. DCXT does this 
 
         portfolio: Optional[Dict[str, int]] = yield from self.get_from_ipfs(  # type: ignore
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
@@ -299,7 +299,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             if token == base_token or token == native_token:
                 continue
 
-            decision = self.get_swap_decision(data, portfolio, token)
+            decision = self.get_swap_decision(token_data, portfolio, token)
             if decision is None:
                 incomplete = True
                 continue
@@ -328,10 +328,15 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
             if input_balance < int(required_amount):
                 err = f"The portfolio does not contain enough balance for the base token {base_token!r}. Current balance: {input_balance}. Required amount: {required_amount}."
                 self.context.logger.error(err)
-                breakpoint()
                 incomplete = True
                 continue
-            quote_data = {INPUT_MINT: input_token, OUTPUT_MINT: output_token}
+
+            if decision == BUY_DECISION:
+                quote_data = {INPUT_MINT: input_token, OUTPUT_MINT: output_token}
+            elif decision == SELL_DECISION:
+                quote_data = {INPUT_MINT: output_token, OUTPUT_MINT: input_token}
+            else:
+                continue
             orders.append(quote_data)
 
         # we only yield here to convert this method to a generator, so that it can be used by `get_process_store_act`
@@ -344,6 +349,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         processing_function = (
             self.get_solana_orders if self.params.use_solana else self.get_evm_orders
         )
+        # we first get the the raw_data from IPFS.
         yield from self.get_process_store_act(
             self.synchronized_data.transformed_data_hash,
             processing_function,  # type: ignore
