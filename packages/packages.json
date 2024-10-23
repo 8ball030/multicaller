@@ -13,7 +13,9 @@
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeid54srronvfqbvcdjgtuhmr4mbndjkpxtgzguykeg4p3wwj3zboyi",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeiev673hsw4a342i3dhrdu4wgj4l4hdkiogtgj4fq62b7uo7rgloqi",
         "agent/valory/solana_trader/0.1.0": "bafybeigpxck5yj5mpyzatotfly7unakd36othibimbqtqptz5z7xqb4tam",
-        "service/valory/solana_trader/0.1.0": "bafybeiailmuusvf6yma6lgjb7hl3py4yfp3ru2fkg5ocejypbnxas4cnea",
+        "service/valory/solana_trader/0.1.0": "bafybeiailmuusvf6yma6lgjb7hl3py4yfp3ru2fkg5ocejypbnxas4cnea"
+    },
+    "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
         "protocol/valory/abci/0.1.0": "bafybeiaqmp7kocbfdboksayeqhkbrynvlfzsx4uy4x6nohywnmaig4an7u",
         "protocol/valory/contract_api/1.0.0": "bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i",
@@ -48,7 +50,5 @@
         "skill/valory/reset_pause_abci/0.1.0": "bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im",
         "skill/valory/registration_abci/0.1.0": "bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta",
         "skill/valory/transaction_settlement_abci/0.1.0": "bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm"
-    },
-    "third_party": {
     }
 }
