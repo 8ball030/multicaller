@@ -37,7 +37,7 @@ skills:
 - valory/reset_pause_abci:0.1.0:bafybeif4lgvbzsmzljesxbphycdv52ka7qnihyjrjpfaseclxadcmm6yiq
 - valory/market_data_fetcher_abci:0.1.0:bafybeibaf2ubj56busl7ngaamyjtm3tqsxthluuve6znxeogoxo7ta6b3y
 - valory/strategy_evaluator_abci:0.1.0:bafybeibsk56r3dd5tza5yl2ltbonxdkb7zgfrupgiq3iyzr2ywqycskvz4
-- valory/trader_abci:0.1.0:bafybeih7b3j4wy6bflod3orcilb5icrbxyqwpaia74y7pphurzawmu4lke
+- valory/trader_abci:0.1.0:bafybeif4z3fn27wltjjuc2lbpjfktadr5t5nddgtgusprq3ps3xdaza4sy
 - valory/transaction_settlement_abci:0.1.0:bafybeielv6eivt2z6nforq43xewl2vmpfwpdu2s2vfogobziljnwsclmlm
 - valory/trader_decision_maker_abci:0.1.0:bafybeicskzcqr7dd4d5ulwss5u3hsx2wvcxatugtxiuja2neobbr3tqtkm
 - valory/ipfs_package_downloader:0.1.0:bafybeieokinjosnulrsee3kbj7ly4kjfx2ub6lmwkyplgs33vxgmx3fbvm
@@ -73,13 +73,13 @@ logging_config:
       propagate: true
 dependencies:
   open-aea-ledger-cosmos:
-    version: ==1.55.0
+    version: ==1.58.0
   open-aea-ledger-solana:
-    version: ==1.55.0
+    version: ==1.58.0
   open-aea-ledger-ethereum:
-    version: ==1.55.0
+    version: ==1.58.0
   open-aea-test-autonomy:
-    version: ==0.15.2
+    version: ==0.18.1
   pyalgotrade:
     version: ==0.20
 skill_exception_policy: stop_and_exit
