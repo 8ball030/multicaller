@@ -17,18 +17,18 @@ fingerprint_ignore_patterns: []
 connections: []
 contracts: []
 protocols:
-- eightballer/tickers:0.1.0:bafybeicjbpa24tla2enenmlzipqhu6grutqso74q6y7is2cpk7acub3bca
-- eightballer/orders:0.1.0:bafybeibprhniaoq3y2uzc4arwwl7yws3i54ahaicrphh5gtl4xxhxqexdy
-- eightballer/balances:0.1.0:bafybeieczloag3mjzvd4y2qqpbrtx6suoqjww3v7mf3dgrez5xopmo4h3m
+- eightballer/tickers:0.1.0:bafybeihmlyrsrztednef3p2nu42z5vnkur2jr46kbesxqujbfo3ap26jze
+- eightballer/orders:0.1.0:bafybeifhwwwwj2ygxd3k5syf3oaohhhvwlb3frspszzofyatempnhnk3la
+- eightballer/balances:0.1.0:bafybeicjxjwmr4wubghu4fa3cdg7dhwpy6b3dhvuaqbzem3jvycooyyazm
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/market_data_fetcher_abci:0.1.0:bafybeidsrupkwmlxmgoya7kplrjloplgt6aj3uev3o3qdafa4idek4lg6q
+- valory/market_data_fetcher_abci:0.1.0:bafybeicwjya2hasu4bdqcbtjelu4cdzzeqi5y2xuirq3gmkjzap6zakivi
 - valory/trader_decision_maker_abci:0.1.0:bafybeih7duxvbjevmeez4bvdpahgvefoik3hnpjq3ik5g4jaqbuw5rybtu
 - valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
-- valory/strategy_evaluator_abci:0.1.0:bafybeig5iwd6k44o4hrdsgpgr5vkllvvsp6dbqk3ddwxcvcdexmvochyhm
-- valory/portfolio_tracker_abci:0.1.0:bafybeidbcuhihzdv3xyinyna4knucuhw67puzqgvurl5a3brtricej7o7q
+- valory/strategy_evaluator_abci:0.1.0:bafybeiaovvvb4irc4pzkyfcbf73ez5e3la2l635722cpmotgzpipy3esmm
+- valory/portfolio_tracker_abci:0.1.0:bafybeiev673hsw4a342i3dhrdu4wgj4l4hdkiogtgj4fq62b7uo7rgloqi
 behaviours:
   main:
     args: {}
