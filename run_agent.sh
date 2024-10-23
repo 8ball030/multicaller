@@ -1,3 +1,4 @@
+#! /usr/bin/env bash 
 
 
 strategy=$(echo $1)
@@ -35,17 +36,20 @@ echo $SKILL_IPFS_PACKAGE_DOWNLOADER_MODELS_PARAMS_ARGS_FILE_HASH_TO_I
 
 rm -r solana_trader
 find . -empty -type d -delete  # remove empty directories to avoid wrong hashes
+
+# we need this to make sure the strategy is retrievd
 autonomy packages lock
 python scripts/update_aea_strategy_hash.py packages/valory/agents/solana_trader/aea-config.yaml $hash
 autonomy packages lock
 autonomy push-all
+# can fetch locally now
 
-autonomy fetch --local --agent valory/solana_trader && cd solana_trader || exit
+autonomy -s fetch --local --agent valory/solana_trader && cd solana_trader || exit
 # if running for the first time, replace the following two lines with: autonomy generate-key solana --add-key
 cp "$PWD"/../ethereum_private_key.txt .  # replace with the path to your ethereum key
-autonomy add-key ethereum ethereum_private_key.txt
+autonomy -s add-key ethereum ethereum_private_key.txt
 cp "$PWD"/../solana_private_key.txt .  # replace with the path to your solana key
-autonomy add-key solana solana_private_key.txt
-autonomy issue-certificates
+autonomy -s add-key solana solana_private_key.txt
+autonomy -s issue-certificates
 # aea -s install
 aea -s run

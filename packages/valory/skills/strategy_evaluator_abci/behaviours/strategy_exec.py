@@ -262,7 +262,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
         # TODO: Define NATIVE_TOKEN, BASE_TOKEN, and LEDGER_ID
         # TODO: Check if the portfolio contains any information for the NATIVE_TOKEN. DCXT does this.
         # TODO: Mapping of ledger id to base token -> dcxt does this.
-        # TODO: update evm balance checker to include native token balance in the portfolio. DCXT does this 
+        # TODO: update evm balance checker to include native token balance in the portfolio. DCXT does this
 
         portfolio: Optional[Dict[str, int]] = yield from self.get_from_ipfs(  # type: ignore
             self.synchronized_data.portfolio_hash, SupportedFiletype.JSON
@@ -295,7 +295,7 @@ class StrategyExecBehaviour(StrategyEvaluatorBaseBehaviour):
 
         orders: List[Dict[str, str]] = []
         incomplete = False
-        for token, data in token_data.items():
+        for token, _ in token_data.items():
             if token == base_token or token == native_token:
                 continue
 

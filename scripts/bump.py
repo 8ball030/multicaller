@@ -117,7 +117,7 @@ def dump_git_cache() -> None:
 
 def make_git_request(url: str) -> requests.Response:
     """Make git request"""
-    auth = os.environ.get("GITHUB_AUTH")
+    auth = os.environ.get("GITHUB_AUTH")  # pylint: disable=E1101
     if auth is None:
         return requests.get(url=url)
     return requests.get(url=url, headers={"Authorization": f"Bearer {auth}"})
