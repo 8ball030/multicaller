@@ -41,7 +41,7 @@ def update_aea_strategy_hash(aea_config_path: str, strategy_hash: str) -> None:
         + ',["sma_strategy"]]]}'
     )
 
-    with open(aea_config_path, "r", encoding='utf8') as file:
+    with open(aea_config_path, "r", encoding="utf8") as file:
         filedata = file.read()
 
     # We search uintil ",
@@ -50,7 +50,7 @@ def update_aea_strategy_hash(aea_config_path: str, strategy_hash: str) -> None:
 
     newdata = re.sub(regex, replace_with, filedata)
 
-    with open(aea_config_path, "w", encoding='utf8') as file:
+    with open(aea_config_path, "w", encoding="utf8") as file:
         file.write(newdata)
 
 
