@@ -73,13 +73,13 @@ logging_config:
       propagate: true
 dependencies:
   open-aea-ledger-cosmos:
-    version: ==1.55.0
+    version: ==1.57.0
   open-aea-ledger-solana:
-    version: ==1.55.0
+    version: ==1.57.0
   open-aea-ledger-ethereum:
-    version: ==1.55.0
+    version: ==1.57.0
   open-aea-test-autonomy:
-    version: ==0.15.2
+    version: ==0.16.1
   pyalgotrade:
     version: ==0.20
 skill_exception_policy: stop_and_exit

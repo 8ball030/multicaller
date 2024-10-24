@@ -12,8 +12,8 @@
         "skill/valory/trader_abci/0.1.0": "bafybeih7b3j4wy6bflod3orcilb5icrbxyqwpaia74y7pphurzawmu4lke",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeieokinjosnulrsee3kbj7ly4kjfx2ub6lmwkyplgs33vxgmx3fbvm",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeidprqeiomlvs6e5nvcqr2hnntwiuwyaxifidznjowoexx65yoplmq",
-        "agent/valory/solana_trader/0.1.0": "bafybeihv27xbjuzbuaftyv7njx3d3ixijkvpgky5h57qb6ldhusdnpc6kq",
-        "service/valory/solana_trader/0.1.0": "bafybeigoxn36fdfpegmnd4umwvay2lt6glclgp37jedmrsojw23i5tc3wi"
+        "agent/valory/solana_trader/0.1.0": "bafybeidayunmak2vte4ni7xofwalw3ied45ty7pespqom3qa63o2g6d4qy",
+        "service/valory/solana_trader/0.1.0": "bafybeigdyatafv5otrzfrxshqjha4uttrl6majrr66hmr6ldyiwf4buama"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
@@ -37,7 +37,7 @@
         "contract/valory/gnosis_safe/0.1.0": "bafybeib375xmvcplw7ageic2np3hq4yqeijrvd5kl7rrdnyvswats6ngmm",
         "contract/valory/multisend/0.1.0": "bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y",
         "contract/eightballer/erc_20/0.1.0": "bafybeiezbnm3f5zhuj5bsc542isnlh2fki5q4nmm2vsajzps4uuoamofo4",
-        "contract/eightballer/spl_token/0.1.0": "bafybeigjod6fzp2nybm32mokhljogicgu6vz4zrietno74kb7ndm6euonm",
+        "contract/eightballer/spl_token/0.1.0": "bafybeidut74uztdcvhnw7qy6ui6e6ghsrg7hytehgeiysmcl7rkzkoyiaq",
         "contract/valory/service_registry/0.1.0": "bafybeihafe524ilngwzavkhwz4er56p7nyar26lfm7lrksfiqvvzo3kdcq",
         "connection/eightballer/dcxt/0.1.0": "bafybeihnaxpiki57ivphf24qpie5g6rxwnztbrymutlw4yuyjxzvj3pdry",
         "connection/valory/abci/0.1.0": "bafybeiejymu4ul62zx6weoibnlsrfprfpjnplhjefz6sr6izgdr4sajlnu",
