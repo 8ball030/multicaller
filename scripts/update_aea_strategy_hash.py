@@ -37,7 +37,7 @@ def update_aea_strategy_hash(aea_config_path: str, strategy_hash: str) -> None:
 
     replace_with = (
         "file_hash_to_id: ${list:[["
-        + f"{strategy_hash.strip()!r}"
+        + f"{strategy_hash.strip()!r}".replace("'", '"')
         + ',["sma_strategy"]]]}'
     )
 
