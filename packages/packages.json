@@ -9,11 +9,11 @@
         "skill/valory/trader_decision_maker_abci/0.1.0": "bafybeicskzcqr7dd4d5ulwss5u3hsx2wvcxatugtxiuja2neobbr3tqtkm",
         "skill/valory/strategy_evaluator_abci/0.1.0": "bafybeibsk56r3dd5tza5yl2ltbonxdkb7zgfrupgiq3iyzr2ywqycskvz4",
         "skill/valory/market_data_fetcher_abci/0.1.0": "bafybeibaf2ubj56busl7ngaamyjtm3tqsxthluuve6znxeogoxo7ta6b3y",
-        "skill/valory/trader_abci/0.1.0": "bafybeih7b3j4wy6bflod3orcilb5icrbxyqwpaia74y7pphurzawmu4lke",
+        "skill/valory/trader_abci/0.1.0": "bafybeigco23fstumklkdfaatafca6eyv2vcwzabdsrzhlpmkyl7d3nbgv4",
         "skill/valory/ipfs_package_downloader/0.1.0": "bafybeieokinjosnulrsee3kbj7ly4kjfx2ub6lmwkyplgs33vxgmx3fbvm",
         "skill/valory/portfolio_tracker_abci/0.1.0": "bafybeidprqeiomlvs6e5nvcqr2hnntwiuwyaxifidznjowoexx65yoplmq",
-        "agent/valory/solana_trader/0.1.0": "bafybeidayunmak2vte4ni7xofwalw3ied45ty7pespqom3qa63o2g6d4qy",
-        "service/valory/solana_trader/0.1.0": "bafybeigdyatafv5otrzfrxshqjha4uttrl6majrr66hmr6ldyiwf4buama"
+        "agent/valory/solana_trader/0.1.0": "bafybeihorgwi6whlpz3o2uo5kmuq2wxkkxuyzhzo5lxfuf3nbwtqfwhu5a",
+        "service/valory/solana_trader/0.1.0": "bafybeigye3dmd7tm2kctssavlcgqpdfvvdhrkbvkw2ldapsu76dhrzw5ha"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",

@@ -300,6 +300,5 @@ models:
     args: {}
     class_name: OrdersDialogues
 dependencies:
-  open-aea-cli-ipfs:
-    version: ==1.55.0
+  open-aea-cli-ipfs: {}
 is_abstract: false
