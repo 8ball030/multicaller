@@ -1,7 +1,7 @@
 #! /usr/bin/env bash 
 
-
 strategy=$(echo $1)
+source .env
 
 if ["$strategy" == ""]; then
     echo "Please provide a strategy as an argument."
@@ -44,6 +44,8 @@ autonomy packages lock
 autonomy push-all
 # can fetch locally now
 
+set -e
+
 autonomy -s fetch --local --agent valory/solana_trader && cd solana_trader || exit
 # if running for the first time, replace the following two lines with: autonomy generate-key solana --add-key
 cp "$PWD"/../ethereum_private_key.txt .  # replace with the path to your ethereum key
@@ -52,4 +54,4 @@ cp "$PWD"/../solana_private_key.txt .  # replace with the path to your solana ke
 autonomy -s add-key solana solana_private_key.txt
 autonomy -s issue-certificates
 # aea -s install
-aea -s run
+autonomy -s run --env ../.env
