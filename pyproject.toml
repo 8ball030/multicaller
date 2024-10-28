@@ -1,13 +1,18 @@
 [tool.poetry]
 name = "open-multicaller"
-version = "0.1.7"
+version = "0.1.8"
 description = "web3py multicaller simplified interface"
 authors = ["gerrrg <gerrrrrrrg@gmail.com>", "8baller <8baller@station.codes>"]
 readme = "README.md"
+packages = [
+    { include = "multicaller", from = "." }
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4"
 web3 = "~6"
+
+
 
 [tool.poetry.group.dev.dependencies]
 pytest="*"
