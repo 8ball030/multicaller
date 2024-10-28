@@ -1,3 +1,4 @@
+.nix-venv
 multicaller.egg-info
 build
 venv

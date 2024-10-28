@@ -3,9 +3,9 @@ Class for testing the base imports.
 """
 import json
 
+from multicaller.multicaller import multicaller
 from web3 import Web3
 
-from multicaller.multicaller import multicaller
 
 chainId = 137
 rpcEndpoint = "https://polygon-rpc.com"
