@@ -4,6 +4,7 @@ import pkgutil
 from functools import lru_cache as cache
 
 from web3 import Web3
+
 try:
     from eth_utils import get_abi_output_types
 except ImportError:  # web3 6.x fallback
