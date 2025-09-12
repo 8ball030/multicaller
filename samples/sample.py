@@ -1,8 +1,8 @@
 import json
 
-from multicaller import multicaller
 from web3 import Web3
 
+from multicaller import multicaller
 
 chainId = 137
 rpcEndpoint = "https://polygon-rpc.com"

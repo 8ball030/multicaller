@@ -4,7 +4,11 @@ import pkgutil
 from functools import lru_cache as cache
 
 from web3 import Web3
-from web3._utils.abi import get_abi_output_types
+
+try:
+    from eth_utils import get_abi_output_types
+except ImportError:  # web3 6.x fallback
+    from web3._utils.abi import get_abi_output_types
 
 
 def split(a, n):
@@ -72,7 +76,7 @@ class multicaller(object):
     @cache
     def getCallData(self, contract, functionName, argsString):
         args = self.stringToList(argsString)
-        callData = contract.encodeABI(fn_name=functionName, args=args)
+        callData = contract.encode_abi(functionName, args=args)
         return callData
 
     @cache

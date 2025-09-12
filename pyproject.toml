@@ -10,7 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4"
-web3 = "~6"
+web3 = ">=7.0.0,<8"
 
 
 
