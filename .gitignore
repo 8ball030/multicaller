@@ -1,5 +1,5 @@
 .nix-venv
-multicaller.egg-info
+open_multicaller.egg-info
 build
 venv
 dist
