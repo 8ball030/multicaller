@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "open-multicaller"
-version = "0.3.4"
+version = "0.3.5"
 description = "web3py multicaller simplified interface"
 authors = ["gerrrg <gerrrrrrrg@gmail.com>", "8baller <8baller@station.codes>"]
 readme = "README.md"
